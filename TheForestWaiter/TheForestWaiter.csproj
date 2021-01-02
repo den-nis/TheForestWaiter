@@ -1,0 +1,65 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <ApplicationIcon>Icon.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Content\Fonts\arial.ttf" />
+    <None Remove="Content\Textures\Bullets\bullet_generic.png" />
+    <None Remove="Content\Textures\Player\player_gun.png" />
+    <None Remove="Content\Textures\Player\player_idle.png" />
+    <None Remove="Content\Textures\Player\player_running.png" />
+    <None Remove="Content\Textures\Player\player_small_gun.png" />
+    <None Remove="Content\Textures\World\world.png" />
+    <None Remove="Content\Worlds\main.json" />
+    <None Remove="Icon.ico" />
+    <None Remove="TileSet.tsx" />
+    <None Remove="~VC9AD2.tmp" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Content\Fonts\arial.ttf">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Content\Textures\Bullets\bullet_generic.png" />
+    <EmbeddedResource Include="Content\Textures\Player\player_gun.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Content\Textures\Player\player_running.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Content\Textures\Player\player_small_gun.png" />
+    <EmbeddedResource Include="Content\Textures\World\world.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Content\Worlds\main.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Icon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="SFML.Net" Version="2.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Content\Player.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Content\PlayerRunning.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Content\Sheet.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
