@@ -68,7 +68,7 @@ namespace TheForestWaiter.Objects.Weapons
         {
             LastShotFromAngle = LastAimAngle + (Cone * (Rng.Float() - 0.5f)); 
 
-            if (Game.World.PointHit(BarrelPosition + TrigHelper.FromAngleRad(LastShotFromAngle, 8)))  //8 is margin for big bullets
+            if (Game.World.TouchingSolid(BarrelPosition + TrigHelper.FromAngleRad(LastShotFromAngle, 8)))  //8 is margin for big bullets
             {
                 //Gun is stuck in wall
                 //TODO: play sound?

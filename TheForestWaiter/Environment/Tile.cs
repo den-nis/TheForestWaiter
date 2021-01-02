@@ -5,9 +5,11 @@ using System.Text;
 
 namespace TheForestWaiter.Environment
 {
-    public struct Tile
+    struct Tile
     {
-        public bool Emtpy { get; set; }
+        public TileLayers Layer { get; set; }
+
+        public bool Air { get; set; }
         public bool Solid { get; set; }
         public int TileId { get; set; }
 
@@ -21,7 +23,7 @@ namespace TheForestWaiter.Environment
         }
     }
 
-    public struct TileInfo
+    struct TileInfo
     {
         public Tile Tile { get; set; }
         public Vector2f Position { get; set; }

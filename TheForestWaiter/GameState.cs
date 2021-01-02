@@ -59,8 +59,9 @@ namespace TheForestWaiter
 
         public void Draw()
         {    
-            Data.World.Draw(Window, new FloatRect(Camera.Position, Camera.Size));
+            Data.World.Draw(Window, new FloatRect(Camera.Position, Camera.Size), TileLayers.Middleground | TileLayers.Background);
             Data.Objects.Draw(Window);
+            Data.World.Draw(Window, new FloatRect(Camera.Position, Camera.Size), TileLayers.Foreground);
         }
 
         public void Update(float time)

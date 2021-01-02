@@ -30,8 +30,15 @@ namespace TheForestWaiter.Environment
                 Tiles = new Tile[map.Layers.First().Width, map.Layers.First().Height],
             };
 
-            var layerLookup = map.Layers.ToDictionary(k => k.Type);
-            world.LoadTileLayer(map.Layers.First(k => k.Type == "tilelayer"));
+
+            var layerLookup = map.Layers.ToDictionary(l => l.Name);
+
+            world.LoadTileLayers
+            (
+                layerLookup["Foreground"],
+                layerLookup["Solid"],
+                layerLookup["Background"]
+            );
 
             return world;
         }
@@ -40,17 +47,17 @@ namespace TheForestWaiter.Environment
         {
             var topLeft = center - size / 2;
 
-            return GetTilesInRect(new FloatRect(
+            return GetSolidTilesInRect(new FloatRect(
                 topLeft,
                 size));
         }
 
-        public IEnumerable<TileInfo> GetNonEmptyTilesInFrame(FloatRect rect)
+        public IEnumerable<TileInfo> GetSolidTilesInFrame(FloatRect rect)
         {
-            return GetTilesInRect(rect);
+            return GetSolidTilesInRect(rect);
         }
 
-        public IEnumerable<TileInfo> GetTilesInRect(FloatRect rect)
+        public IEnumerable<TileInfo> GetSolidTilesInRect(FloatRect rect)
         {
             var r = GetTileBounds(rect);
 
@@ -58,7 +65,7 @@ namespace TheForestWaiter.Environment
             {
                 for (int x = r.Left; x < r.Left + r.Width; x++)
                 {
-                    if (!Tiles[x, y].Emtpy)
+                    if (Tiles[x, y].Solid)
                     {
                         yield return Tiles[x, y].ToTileInfo(new Vector2f(x * TILE_SIZE, y * TILE_SIZE));
                     }
@@ -79,7 +86,7 @@ namespace TheForestWaiter.Environment
             return tile.ToTileInfo(new Vector2f(x * TILE_SIZE, y * TILE_SIZE));
         }
 
-        public bool PointHit(Vector2f location)
+        public bool TouchingSolid(Vector2f location)
         {
             var tx = (int)Math.Floor(location.X / TILE_SIZE);
             var ty = (int)Math.Floor(location.Y / TILE_SIZE);
@@ -87,10 +94,10 @@ namespace TheForestWaiter.Environment
             if (tx > Tiles.GetLength(0) || tx < 0 || ty > Tiles.GetLength(1) || ty < 0)
                 return false;
 
-            return !Tiles[tx, ty].Emtpy;
+            return Tiles[tx, ty].Solid;
         }
 
-        public void Draw(RenderWindow win, FloatRect rect)
+        public void Draw(RenderWindow win, FloatRect rect, TileLayers layers)
         {
             var r = GetTileBounds(rect);
 
@@ -98,7 +105,7 @@ namespace TheForestWaiter.Environment
             {
                 for (int x = r.Left; x < r.Left + r.Width; x++)
                 {
-                    if (!Tiles[x, y].Emtpy)
+                    if (!Tiles[x, y].Air && (Tiles[x,y].Layer | layers) > 0)
                     {
                         Sheet.SetRect(Tiles[x, y].TileId);
                         Sheet.Sprite.Position = new Vector2f(x * TILE_SIZE, y * TILE_SIZE);
@@ -125,19 +132,40 @@ namespace TheForestWaiter.Environment
             return new IntRect(new Vector2i(left, top), new Vector2i(right - left, bottom - top));
         }
 
-        private void LoadTileLayer(Layer layer)
+        private void LoadTileLayers(Layer background, Layer middleground, Layer foreground)
         {
-            for (int i = 0; i < layer.Data.Length; i++)
+            for (int i = 0; i < background.Data.Length; i++)
             {
-                ref Tile t = ref Tiles[i % layer.Width, i / layer.Width];
+                ref Tile t = ref Tiles[i % background.Width, i / background.Width];
+                ref int backId = ref background.Data[i];
+                ref int middleId = ref middleground.Data[i];
+                ref int foreId = ref foreground.Data[i];
 
-                if (layer.Data[i] == 0)
+                int air = 0;
+
+                t.Air =
+                    backId == air &&
+                    middleId == air &&
+                    foreId == air;
+
+                t.Solid = middleId != air;
+                
+                if (backId != air)
                 {
-                    t.Emtpy = true;
+                    t.TileId = backId;
+                    t.Layer = TileLayers.Background;
+                    continue;
+                }
+                else if (middleId != air)
+                {
+                    t.TileId = middleId;
+                    t.Layer = TileLayers.Middleground;
+                    continue;
                 }
                 else
                 {
-                    t.TileId = layer.Data[i];
+                    t.TileId = foreId;
+                    t.Layer = TileLayers.Foreground;
                 }
             }
         }

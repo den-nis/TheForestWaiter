@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<objecttypes>
- <objecttype name="Dog" color="#b85600"/>
- <objecttype name="Spawn" color="#eaff00"/>
- <objecttype name="Tree" color="#37ff00">
-  <property name="TreeSkin" type="string" default="1"/>
- </objecttype>
-</objecttypes>
