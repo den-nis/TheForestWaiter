@@ -25,5 +25,19 @@ namespace TheForestWaiter.Debugging
                 Console.WriteLine("There is no player");
             }
         }
+
+        [Command("getpos", null, "gets the player position")]
+        public static void GetPosition(string[] args)
+        {
+            if (GameDebug.Game?.Objects?.Player != null)
+            {
+                var pos = GameDebug.Game.Objects.Player.Position;
+                Console.WriteLine($"x:{pos.X} y:{pos.Y}");
+            }
+            else
+            {
+                Console.WriteLine("There is no player");
+            }
+        }
     }
 }
