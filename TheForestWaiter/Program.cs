@@ -21,7 +21,7 @@ namespace TheForestWaiter
         {
             var settings = GameSettings.Current;
             RenderWindow window = new RenderWindow(new VideoMode((uint)settings.WindowWidth, (uint)settings.WindowHeight), settings.Title, Styles.Titlebar | Styles.Close);
-            window.Closed += window.Close();
+            window.Closed += (x,y) => window.Close();
 
             window.SetKeyRepeatEnabled(false);
             window.Clear(Color.Black); window.Display();
