@@ -73,7 +73,6 @@ namespace TheForestWaiter
             }
 
             Camera.Center = Data.Objects.Player.Center;
-            Data.World.UpdateView(time, new FloatRect(Camera.Position, Camera.Size));
             Data.Objects.Update(time);
         }
     }
