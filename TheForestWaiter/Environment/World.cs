@@ -90,11 +90,6 @@ namespace TheForestWaiter.Environment
             return !Tiles[tx, ty].Emtpy;
         }
 
-        public void UpdateView(float time, FloatRect view)
-        {
-            //TODO: add functionality
-        }
-
         public void Draw(RenderWindow win, FloatRect rect)
         {
             var r = GetTileBounds(rect);
