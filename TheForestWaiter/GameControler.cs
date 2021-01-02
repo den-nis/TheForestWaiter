@@ -22,8 +22,7 @@ namespace TheForestWaiter
             Window.MouseWheelScrolled += WindowMouseWheelScrolled;
             Window.MouseMoved += WindowMouseMoved;
             Window.MouseButtonPressed += WindowMouseButtonPressed;
-            window.MouseButtonReleased += WindowMouseButtonReleased;
-            
+            Window.MouseButtonReleased += WindowMouseButtonReleased;
         }
 
         private void WindowMouseButtonReleased(object sender, MouseButtonEventArgs e)
@@ -47,7 +46,7 @@ namespace TheForestWaiter
         {
             var settings = GameSettings.Current;
 
-            Camera.Scale -= (float)Math.Round(e.Delta / 10f,1);
+            Camera.Scale = (float)Math.Round(Camera.Scale - (e.Delta/10), 1);
             Camera.Scale = Math.Max(Camera.Scale, settings.MaxZoomIn);
             Camera.Scale = Math.Min(Camera.Scale, settings.MaxZoomOut);
         }
