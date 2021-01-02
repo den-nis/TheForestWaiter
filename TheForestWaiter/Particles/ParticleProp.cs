@@ -6,7 +6,7 @@ using System.Text;
 
 namespace TheForestWaiter.Particles
 {
-    public class ParticleProp
+    class ParticleProp
     {
         public Color ColorStart { get; set; }
         public Color ColorEnd { get; set; }

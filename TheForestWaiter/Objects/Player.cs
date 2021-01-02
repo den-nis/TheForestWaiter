@@ -8,7 +8,6 @@ using TheForestWaiter.Debugging;
 using TheForestWaiter.Entites;
 using TheForestWaiter.Environment;
 using TheForestWaiter.Essentials;
-using TheForestWaiter.Extensions;
 using TheForestWaiter.Graphics;
 using TheForestWaiter.Objects.Weapons;
 using TheForestWaiter.Objects.Weapons.Guns;
@@ -16,7 +15,7 @@ using TheForestWaiter.Particles;
 
 namespace TheForestWaiter.Objects
 {
-    public class Player : DynamicObject
+    class Player : DynamicObject
     {
         public AnimatedSprite AnimatedSprite { get; set; } 
         private GunBase Gun { get; set; }

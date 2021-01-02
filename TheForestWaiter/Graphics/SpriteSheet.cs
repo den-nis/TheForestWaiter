@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TheForestWaiter.Graphics
 {
-    public class SpriteSheet : Drawable
+    class SpriteSheet : Drawable
     {
         public Sprite Sprite { get; set; }
 

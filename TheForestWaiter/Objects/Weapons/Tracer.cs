@@ -3,11 +3,11 @@ using SFML.System;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using TheForestWaiter.Extensions;
+using TheForestWaiter.Essentials;
 
 namespace TheForestWaiter.Objects.Weapons
 {
-    public class Tracer
+    class Tracer
     {
         public Color Color { get; set; }
         public Vector2f Start { get; set; }

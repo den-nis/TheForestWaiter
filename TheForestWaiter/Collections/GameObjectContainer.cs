@@ -9,7 +9,7 @@ using TheForestWaiter.Debugging;
 
 namespace TheForestWaiter
 {
-    public class GameObjectContainer<G> : IEnumerable<G>, IUpdateDraw where G : GameObject
+    class GameObjectContainer<G> : IEnumerable<G>, IUpdateDraw where G : GameObject
     {
         List<G> Objects { get; set; } = new List<G>();
 

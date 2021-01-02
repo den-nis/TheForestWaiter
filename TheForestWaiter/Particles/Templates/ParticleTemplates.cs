@@ -6,7 +6,7 @@ using System.Text;
 
 namespace TheForestWaiter.Particles.Templates
 {
-    public static class ParticleTemplates
+    static class ParticleTemplates
     {
         public static ParticleProp GenericSmoke => new ParticleProp
         {

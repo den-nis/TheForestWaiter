@@ -6,7 +6,7 @@ using TheForestWaiter.Particles;
 
 namespace TheForestWaiter
 {
-    public class GameData
+    class GameData
     {
         public World World { get; private set; }
         public GameObjects Objects { get; private set; } = new GameObjects();

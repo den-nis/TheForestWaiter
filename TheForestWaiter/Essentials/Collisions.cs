@@ -6,7 +6,7 @@ using System.Text;
 
 namespace TheForestWaiter.Essentials
 {
-    public class Collisions
+    class Collisions
     {
         public static Vector2f RayCast(FloatRect sBox, Vector2f start, Vector2f end)
         {

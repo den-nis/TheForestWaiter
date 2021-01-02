@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TheForestWaiter.Environment
 {
-    public class Map
+    class Map
     {
         public Layer[] Layers { get; set; }
     }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TheForestWaiter.Debugging
 {
-    public class CommandAttribute : Attribute
+    class CommandAttribute : Attribute
     {
         public string Name { get; private set; }
         public string Description { get; private set; }

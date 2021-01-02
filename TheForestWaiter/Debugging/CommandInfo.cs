@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TheForestWaiter.Debugging
 {
-    public class CommandInfo
+    class CommandInfo
     {
         public MethodInfo Method { get; set; }
         public CommandAttribute Attribute { get; set; }

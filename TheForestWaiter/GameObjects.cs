@@ -10,7 +10,7 @@ using TheForestWaiter.Particles;
 
 namespace TheForestWaiter.Environment
 {
-    public class GameObjects : IUpdateDraw
+    class GameObjects : IUpdateDraw
     {
         public Player Player { get; set; }
         public GameObjectContainer<DynamicObject> Enemies { get; set; } = new GameObjectContainer<DynamicObject>();

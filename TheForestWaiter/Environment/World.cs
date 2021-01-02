@@ -8,12 +8,11 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using TheForestWaiter.Essentials;
-using TheForestWaiter.Extensions;
 using TheForestWaiter.Graphics;
 
 namespace TheForestWaiter.Environment
 {
-    public class World
+    class World
     {
         public const int TILE_SIZE = 32;
         public Tile[,] Tiles { get; set; }

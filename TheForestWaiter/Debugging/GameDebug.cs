@@ -13,7 +13,7 @@ using TheForestWaiter.Environment;
 
 namespace TheForestWaiter.Debugging
 {
-    public static partial class GameDebug
+    static partial class GameDebug
     {
         public static List<Vector2f> WorldCollisionChecks { get; set; } = new List<Vector2f>();
         public static List<(Vector2f position, Vector2f size)> HitBoxes { get; set; } = new List<(Vector2f, Vector2f)>();

@@ -4,12 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using TheForestWaiter.Essentials;
-using TheForestWaiter.Extensions;
 using TheForestWaiter.Objects.Weapons.Bullets;
 
 namespace TheForestWaiter.Objects.Weapons
 {
-    public abstract class GunBase
+    abstract class GunBase
     {
         //Public options
         public bool Firing { get; set; }

@@ -13,7 +13,7 @@ namespace TheForestWaiter.Entites
     /// <summary>
     /// Dynamic objects have physics and can interact with the world
     /// </summary>
-    public abstract class DynamicObject : GameObject
+    abstract class DynamicObject : GameObject
     {
         public DynamicObject(GameData game) : base(game) { }
 

@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace TheForestWaiter.Extensions
+namespace TheForestWaiter.Essentials
 {
     public static class Vector2fExtensions
     {

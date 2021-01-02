@@ -6,7 +6,7 @@ using System.Text;
 
 namespace TheForestWaiter.Entites
 {
-    public abstract class GameObject : IUpdateDraw
+    abstract class GameObject : IUpdateDraw
     {
         protected GameData Game { get; set; }
 

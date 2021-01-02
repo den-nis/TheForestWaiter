@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Text;
 using TheForestWaiter.Environment;
 using TheForestWaiter.Essentials;
-using TheForestWaiter.Extensions;
 using TheForestWaiter.Particles;
 
 namespace TheForestWaiter.Objects.Weapons.Guns

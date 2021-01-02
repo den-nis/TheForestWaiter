@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TheForestWaiter
 {
-    public class GameTimer
+    class GameTimer
     {
         public GameTimer(TimeSpan interval) : this(interval, true)
         {

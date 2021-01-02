@@ -8,7 +8,7 @@ using TheForestWaiter.Essentials;
 namespace TheForestWaiter.Particles
 {
     // Inspired by Cherno https://github.com/TheCherno/OneHourParticleSystem
-    public class ParticleSystem
+    class ParticleSystem
     {
         private static RectangleShape ParticleShape { get; set; } = new RectangleShape();
         public bool Active { get; private set; }

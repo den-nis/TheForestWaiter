@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TheForestWaiter
 {
-    public class GameSettings
+    class GameSettings
     {
         //TODO: load from json?
         public static GameSettings Current => new GameSettings();

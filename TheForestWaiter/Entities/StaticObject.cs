@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TheForestWaiter.Entites
 {
-    public class StaticObject : GameObject
+    class StaticObject : GameObject
     {
         public StaticObject(GameData game) : base(game)
         {

@@ -6,7 +6,7 @@ using TheForestWaiter.Entites;
 
 namespace TheForestWaiter.Environment
 {
-    public class MapObject
+    class MapObject
     {
         public int Id { get; set; }
         public string Name { get; set; }

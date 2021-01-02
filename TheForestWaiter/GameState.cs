@@ -16,7 +16,7 @@ using TheForestWaiter.States;
 
 namespace TheForestWaiter
 {
-    public class GameState : IState, IDisposable
+    class GameState : IState, IDisposable
     {
         private RenderWindow Window { get; }
         private GameControler Controler { get; }
