@@ -21,6 +21,8 @@ namespace TheForestWaiter
         {
             var settings = GameSettings.Current;
             RenderWindow window = new RenderWindow(new VideoMode((uint)settings.WindowWidth, (uint)settings.WindowHeight), settings.Title, Styles.Titlebar | Styles.Close);
+            window.Closed += window.Close();
+
             window.SetKeyRepeatEnabled(false);
             window.Clear(Color.Black); window.Display();
 
@@ -28,7 +30,6 @@ namespace TheForestWaiter
 
             StateManager manager = new StateManager();
             manager.SetState(new GameState(window));
-
             GameDebug.StartConsoleThread();
             Stopwatch timer = Stopwatch.StartNew();
 
@@ -38,7 +39,7 @@ namespace TheForestWaiter
                 timer.Restart();
 
                 window.DispatchEvents();
-                window.Clear(new Color(46,36,115));
+                window.Clear(Color.White);//new Color(46,36,115));
 
                 manager.Update(deltaTime);
                 GameDebug.Update(deltaTime);
