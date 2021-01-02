@@ -38,12 +38,25 @@ namespace TheForestWaiter.Objects.Weapons.Bullets
             };
         }
 
+        private void Explode()
+        {
+            MarkedForDeletion = true;
+            HasHit = true;
+            velocity = default;
+
+            var prop = ParticleTemplates.Spark;
+            prop.Position = Center;
+            prop.Life = 0.2f;
+
+            Game.Objects.WorldParticles.Emit(prop, 10);
+        }
+
         public override void Update(float time)
         {
             Traveled = (Center - Spawn).Len();
             if (Traveled > Range)
             {
-                MarkedForDeletion = true;
+                Explode();
                 return;
             }
 
@@ -51,15 +64,7 @@ namespace TheForestWaiter.Objects.Weapons.Bullets
 
             if (TouchingHorizontal || TouchingVertical)
             {
-                MarkedForDeletion = true;
-                HasHit = true;
-                velocity = default;
-
-                var prop = ParticleTemplates.Spark;
-                prop.Position = Center;
-                prop.Life = 0.2f;
-
-                Game.Objects.WorldParticles.Emit(prop, 10);
+                Explode();
             } 
 
             base.Update(time);
