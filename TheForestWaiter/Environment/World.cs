@@ -20,7 +20,7 @@ namespace TheForestWaiter.Environment
 
         private World()
         {
-            Sheet = new SpriteSheet(GameContent.GetTexture("Content.Textures.World.world.png"), TILE_SIZE, TILE_SIZE);
+            Sheet = new SpriteSheet(GameContent.GetTexture("Content.Textures.World.world.png"), TILE_SIZE, TILE_SIZE, new Vector2i(1,1));
         }
 
         public static World LoadFromMap(Map map)
