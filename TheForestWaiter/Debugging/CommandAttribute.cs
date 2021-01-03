@@ -4,6 +4,7 @@ using System.Text;
 
 namespace TheForestWaiter.Debugging
 {
+    [AttributeUsage(AttributeTargets.Method)]
     class CommandAttribute : Attribute
     {
         public string Name { get; private set; }
@@ -15,14 +16,14 @@ namespace TheForestWaiter.Debugging
             Name = command;
         }
 
-        public CommandAttribute(string command, string usage) : this(command)
-        {
-            Usage = usage;
-        }
-
-        public CommandAttribute(string command, string usage, string description) : this(command, usage)
+        public CommandAttribute(string command, string description) : this(command)
         {
             Description = description;
+        }
+
+        public CommandAttribute(string command, string description, string usage) : this(command, usage)
+        {
+            Usage = usage;
         }
     }
 }

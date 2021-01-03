@@ -8,7 +8,7 @@ namespace TheForestWaiter.Debugging
 {
     public static partial class Commands
     {
-        [Command("help", null, "Shows commands")]
+        [Command("help", "Shows commands")]
         public static void Help()
         {
             var commands = GameDebug.GetAllCommandInfo();
@@ -22,7 +22,7 @@ namespace TheForestWaiter.Debugging
             }
         }
 
-        [Command("info", "info {command}", "shows more info about command")]
+        [Command("info", "shows more info about command", "info {command}")]
         public static void Info(string[] args)
         {
             var command = GameDebug.GetCommandInfo(args[0]);
@@ -34,7 +34,7 @@ namespace TheForestWaiter.Debugging
                 Console.WriteLine($"\tDescription : {command.Attribute.Description}");
         }
 
-        [Command("clear", null, "Clears the console")]
+        [Command("clear", "Clears the console")]
         public static void Clear() => Console.Clear();
 
         [Command("log", null, "Shows the log")]
@@ -46,13 +46,13 @@ namespace TheForestWaiter.Debugging
             }
         }
 
-        [Command("set", "set {name} {value}", "Set a variable")]
+        [Command("set", "Set a variable", "set {name} {value}")]
         public static void SetVar(string[] args)
         {
             GameDebug.Variables[args[0]] = Convert.ChangeType(args[1], GameDebug.Variables[args[0]].GetType());
         }
 
-        [Command("getvars", null, "Get current variables")]
+        [Command("getvars", "Get current variables")]
         public static void GetVars()
         {
             foreach(var i in GameDebug.Variables)

@@ -9,7 +9,7 @@ namespace TheForestWaiter.Debugging
 {
     public static partial class Commands
     {
-        [Command("setpos", "setpos {x} {y}", "sets the player position")]
+        [Command("setpos", "sets the player position", "setpos {x} {y}")]
         public static void SetPosition(string[] args)
         {  
             if (GameDebug.Game?.Objects?.Player != null)
@@ -26,7 +26,7 @@ namespace TheForestWaiter.Debugging
             }
         }
 
-        [Command("getpos", null, "gets the player position")]
+        [Command("getpos", "gets the player position")]
         public static void GetPosition(string[] args)
         {
             if (GameDebug.Game?.Objects?.Player != null)
