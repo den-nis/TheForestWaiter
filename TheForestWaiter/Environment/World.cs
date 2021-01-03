@@ -91,7 +91,7 @@ namespace TheForestWaiter.Environment
             var tx = (int)Math.Floor(location.X / TILE_SIZE);
             var ty = (int)Math.Floor(location.Y / TILE_SIZE);
 
-            if (tx > Tiles.GetLength(0) || tx < 0 || ty > Tiles.GetLength(1) || ty < 0)
+            if (tx >= Tiles.GetLength(0) || tx < 0 || ty >= Tiles.GetLength(1) || ty < 0)
                 return false;
 
             return Tiles[tx, ty].Solid;
