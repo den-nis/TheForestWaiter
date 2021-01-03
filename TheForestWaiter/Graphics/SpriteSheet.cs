@@ -1,4 +1,5 @@
 ﻿using SFML.Graphics;
+using SFML.System;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -16,17 +17,20 @@ namespace TheForestWaiter.Graphics
         public int CellsHeight => (int)(Sprite.Texture.Size.Y / CellHeight);
         public int TotatlCells => CellsWidth * CellsHeight;
 
+        public Vector2i Padding { get; set; }
+
         public bool MirrorX { get; set; } = false;
         public bool MirrorY { get; set; } = false;
 
-        public SpriteSheet(Texture texture, int cellWidth, int cellHeight) 
+        public SpriteSheet(Texture texture, int cellWidth, int cellHeight, Vector2i padding = default) 
         {
             Sprite = new Sprite(texture);
             CellWidth = cellWidth;
             CellHeight = cellHeight;
+            Padding = padding;
         }
 
-        public SpriteSheet(Sprite sheet, int cellWidth, int cellHeight)
+        public SpriteSheet(Sprite sheet, int cellWidth, int cellHeight, Vector2i padding = default)
         {
             Sprite = sheet;
             CellWidth = cellWidth;
@@ -40,7 +44,12 @@ namespace TheForestWaiter.Graphics
 
         public void SetRect(int cellX, int cellY)
         {
-            var rect = new IntRect(cellX * CellWidth, cellY * CellHeight, CellWidth, CellHeight);
+            var rect = new IntRect(
+               Padding.X + cellX * (Padding.X + CellWidth),
+               Padding.Y + cellY * (Padding.Y + CellHeight), 
+                CellWidth , 
+                CellHeight
+                );
 
             if (MirrorX)
             {
