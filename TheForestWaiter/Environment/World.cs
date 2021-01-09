@@ -20,7 +20,11 @@ namespace TheForestWaiter.Environment
 
         private World()
         {
-            Sheet = new SpriteSheet(GameContent.GetTexture("Content.Textures.World.world.png"), TILE_SIZE, TILE_SIZE, new Vector2i(1,1));
+            Sheet = new SpriteSheet(GameContent.GetTexture("Content.Textures.World.world.png"), TILE_SIZE, TILE_SIZE)
+            {
+                Spacing = new Vector2i(2, 2),
+                Margin = new Vector2i(1, 1)
+            };
         }
 
         public static World LoadFromMap(Map map)
@@ -35,9 +39,10 @@ namespace TheForestWaiter.Environment
 
             world.LoadTileLayers
             (
+                layerLookup["Background"],
+                layerLookup["Middleground"],
                 layerLookup["Foreground"],
-                layerLookup["Solid"],
-                layerLookup["Background"]
+                layerLookup["Solid"]
             );
 
             return world;
@@ -97,19 +102,42 @@ namespace TheForestWaiter.Environment
             return Tiles[tx, ty].Solid;
         }
 
-        public void Draw(RenderWindow win, FloatRect rect, TileLayers layers)
+        public void Draw(RenderWindow win, FloatRect rect, bool onlyForeground)
         {
             var r = GetTileBounds(rect);
+
+            int i = 0;
 
             for (int y = r.Top; y < r.Top + r.Height; y++)
             {
                 for (int x = r.Left; x < r.Left + r.Width; x++)
                 {
-                    if (!Tiles[x, y].Air && (Tiles[x,y].Layer | layers) > 0)
+                    if (!Tiles[x, y].Air)
                     {
-                        Sheet.SetRect(Tiles[x, y].TileId);
                         Sheet.Sprite.Position = new Vector2f(x * TILE_SIZE, y * TILE_SIZE);
-                        win.Draw(Sheet.Sprite);
+
+                        if (onlyForeground)
+                        {
+                            if (Tiles[x, y].HasForeground)
+                            {
+                                Sheet.SetRect(Tiles[x, y].ForegroundTileId);
+                                win.Draw(Sheet.Sprite);
+                            }
+                        }
+                        else
+                        {
+                            if (Tiles[x, y].HasBackground)
+                            {
+                                Sheet.SetRect(Tiles[x, y].BackgroundTileId);
+                                win.Draw(Sheet.Sprite);
+                            }
+
+                            if (Tiles[x, y].HasMiddleground)
+                            {
+                                Sheet.SetRect(Tiles[x, y].MiddlegroundTileId);
+                                win.Draw(Sheet.Sprite);
+                            }
+                        }
                     }
                 }
             }
@@ -132,41 +160,26 @@ namespace TheForestWaiter.Environment
             return new IntRect(new Vector2i(left, top), new Vector2i(right - left, bottom - top));
         }
 
-        private void LoadTileLayers(Layer background, Layer middleground, Layer foreground)
+        private void LoadTileLayers(Layer background, Layer middleground, Layer foreground, Layer solid)
         {
             for (int i = 0; i < background.Data.Length; i++)
             {
                 ref Tile t = ref Tiles[i % background.Width, i / background.Width];
-                ref int backId = ref background.Data[i];
+                ref int backId   = ref background.Data[i];
                 ref int middleId = ref middleground.Data[i];
-                ref int foreId = ref foreground.Data[i];
-
-                int air = 0;
+                ref int foreId   = ref foreground.Data[i];
+                ref int solidId  = ref solid.Data[i];
 
                 t.Air =
-                    backId == air &&
-                    middleId == air &&
-                    foreId == air;
+                    backId   == 0 &&
+                    middleId == 0 &&
+                    foreId   == 0;
 
-                t.Solid = middleId != air;
-                
-                if (backId != air)
-                {
-                    t.TileId = backId;
-                    t.Layer = TileLayers.Background;
-                    continue;
-                }
-                else if (middleId != air)
-                {
-                    t.TileId = middleId;
-                    t.Layer = TileLayers.Middleground;
-                    continue;
-                }
-                else
-                {
-                    t.TileId = foreId;
-                    t.Layer = TileLayers.Foreground;
-                }
+                t.Solid = solidId > 0;
+
+                t.BackgroundTileId   = (short)backId;
+                t.MiddlegroundTileId = (short)middleId;
+                t.ForegroundTileId   = (short)foreId;
             }
         }
     }
