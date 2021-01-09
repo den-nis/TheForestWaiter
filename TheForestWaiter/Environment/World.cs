@@ -106,8 +106,6 @@ namespace TheForestWaiter.Environment
         {
             var r = GetTileBounds(rect);
 
-            int i = 0;
-
             for (int y = r.Top; y < r.Top + r.Height; y++)
             {
                 for (int x = r.Left; x < r.Left + r.Width; x++)

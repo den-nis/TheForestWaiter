@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 using TheForestWaiter.Debugging;
 using TheForestWaiter.Environment;
 using TheForestWaiter.Objects;
-using TheForestWaiter.Resources;
 using TheForestWaiter.States;
 
 namespace TheForestWaiter

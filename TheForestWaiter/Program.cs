@@ -10,7 +10,6 @@ using TheForestWaiter.Objects;
 using System.Linq;
 using TheForestWaiter.Environment;
 using TheForestWaiter.States;
-using TheForestWaiter.Resources;
 using TheForestWaiter.Debugging;
 
 namespace TheForestWaiter
@@ -39,7 +38,7 @@ namespace TheForestWaiter
                 timer.Restart();
 
                 window.DispatchEvents();
-                window.Clear(Color.White);//new Color(46,36,115));
+                window.Clear(Color.Black);//new Color(46,36,115));
 
                 manager.Update(deltaTime);
                 GameDebug.Update(deltaTime);

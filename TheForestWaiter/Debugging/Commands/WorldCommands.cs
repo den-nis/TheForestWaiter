@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using TheForestWaiter.Objects;
-using TheForestWaiter.Resources;
 
 namespace TheForestWaiter.Debugging
 {
