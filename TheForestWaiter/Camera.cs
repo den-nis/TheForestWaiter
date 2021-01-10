@@ -29,7 +29,7 @@ namespace TheForestWaiter
 
         public static Vector2f ToCamera(Vector2f world)
         {
-            throw new NotImplementedException();
+            return (world - Position) / Scale;
         }
 
         public static View GetView()
