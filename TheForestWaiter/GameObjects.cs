@@ -53,6 +53,8 @@ namespace TheForestWaiter.Environment
             Player.Update(time);
             Bullets.Update(time);
             WorldParticles.Update(time);
+
+            Chunks.LoadChunksAt(Player.Center);
         }
 
         public void LoadAllFromMap(Map map, World world, GameData data)
