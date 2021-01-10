@@ -16,20 +16,20 @@ namespace TheForestWaiter.Environment
         public GameObjectContainer<DynamicObject> Enemies { get; set; } = new GameObjectContainer<DynamicObject>();
         public GameObjectContainer<DynamicObject> Npcs { get; set; } = new GameObjectContainer<DynamicObject>();
         public GameObjectContainer<DynamicObject> Bullets { get; set; } = new GameObjectContainer<DynamicObject>();
-        public GameObjectContainer<StaticObject> Objects { get; set; } = new GameObjectContainer<StaticObject>();
+        public Chunks Chunks { get; set; } = null;
         public ParticleSystem WorldParticles { get; set; } = new ParticleSystem(GameSettings.Current.MaxWorldParticles);
 
         public void ClearAll()
         {
+            Chunks = null;
             Player = null;
             Enemies.Clear();
+            Bullets.Clear();
             Npcs.Clear();
-            Objects.Clear();
         }
 
         public void CleanUp()
         {
-            Objects.CleanupMarkedForDeletion();
             Npcs.CleanupMarkedForDeletion();
             Enemies.CleanupMarkedForDeletion();
             Bullets.CleanupMarkedForDeletion();
@@ -37,7 +37,7 @@ namespace TheForestWaiter.Environment
 
         public void Draw(RenderWindow window)
         {
-            Objects.Draw(window);
+            Chunks.Draw(window);
             Npcs.Draw(window);
             Enemies.Draw(window);
             Player.Draw(window);
@@ -47,7 +47,7 @@ namespace TheForestWaiter.Environment
 
         public void Update(float time)
         {
-            Objects.Update(time);
+            Chunks.Update(time);
             Npcs.Update(time);
             Enemies.Update(time);
             Player.Update(time);
@@ -55,35 +55,25 @@ namespace TheForestWaiter.Environment
             WorldParticles.Update(time);
         }
 
-        public void LoadAllFromMap(Map map, GameData data)
+        public void LoadAllFromMap(Map map, World world, GameData data)
         {
-            var layer = map.Layers.First(l => l.Type == "objectgroup");
+            Chunks = new Chunks(world);
+
+            var objects = map.Layers.Where(l => l.Type == "objectgroup").SelectMany(l => l.Objects);
             ObjectFactory factory = new ObjectFactory();
 
-            foreach(MapObject inf in layer.Objects)
+            foreach(MapObject inf in objects)
             {
                 StaticObject staticObject = factory.GetStaticObject(inf.Type);
                 if (staticObject != null)
                 {
-                    Objects.Add(staticObject);
                     inf.SetSpawn(staticObject);
+                    Chunks.Add(staticObject);
                     continue;
                 }
-
-                DynamicObject enemy = factory.GetEnemy(inf.Type, data);
-                if (enemy != null)
+                else
                 {
-                    Enemies.Add(enemy);
-                    inf.SetSpawn(enemy);
-                    continue;
-                }
-
-                DynamicObject npc = factory.GetNpc(inf.Type, data);
-                if (npc != null)
-                {
-                    Npcs.Add(npc);
-                    inf.SetSpawn(npc);
-                    continue;
+                    Debugging.GameDebug.Log($"Missing StaticObject {inf.Type}");
                 }
 
                 if (inf.Type == "Spawn")

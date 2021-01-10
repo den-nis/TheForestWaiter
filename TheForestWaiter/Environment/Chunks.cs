@@ -13,8 +13,6 @@ namespace TheForestWaiter.Environment
     { 
         class Chunk : IUpdateDraw
         {
-            public bool CouldDespawn { get; set; } = false;
-
             public GameObjectContainer<StaticObject> Objects { get; } = new GameObjectContainer<StaticObject>();
 
             public void Draw(RenderWindow window)
@@ -25,6 +23,11 @@ namespace TheForestWaiter.Environment
             public void Update(float time)
             {
                 Objects.Update(time);
+            }
+
+            public void Unloaded()
+            {
+                Objects.CleanupMarkedForDeletion();
             }
         }
 
@@ -41,6 +44,12 @@ namespace TheForestWaiter.Environment
             TotalChunks = (int)(worldSize / CHUNK_WIDTH);
             ChunkArray = new Chunk[TotalChunks];
             ActiveChunks = new Chunk[LOAD_DISTANCE_CHUNKS * 2];
+
+            for (int i = 0; i < ChunkArray.Length; i++)
+                ChunkArray[i] = new Chunk();
+
+            for (int i = 0; i < ActiveChunks.Length; i++)
+                ActiveChunks[i] = ChunkArray[i]; 
         }
 
         private static int GetChunkIdAt(Vector2f location) => (int)(location.X / CHUNK_WIDTH);
@@ -57,12 +66,13 @@ namespace TheForestWaiter.Environment
 
             for (int i = -LOAD_DISTANCE_CHUNKS; i <= LOAD_DISTANCE_CHUNKS; i++)
             {
-                //if (Chu)
+                var chunkId = chunk + i;
+                var previousChunk = LastChunkId + i;
+                if (previousChunk < -LOAD_DISTANCE_CHUNKS || previousChunk > LOAD_DISTANCE_CHUNKS)
+                    ChunkArray[previousChunk].Unloaded();
 
-                //var chunkId = chunk + i;
-                //ActiveChunks[i] = ChunkArray[chunkId];
+                ActiveChunks[i] = ChunkArray[chunkId];
             }
-
 
             LastChunkId = chunk;
         }

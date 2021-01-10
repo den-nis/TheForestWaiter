@@ -18,7 +18,7 @@ namespace TheForestWaiter
 
             progress?.Report("Loading objects...");
             Objects.ClearAll();
-            Objects.LoadAllFromMap(map, this);
+            Objects.LoadAllFromMap(map, World, this);
         }
     }
 }
