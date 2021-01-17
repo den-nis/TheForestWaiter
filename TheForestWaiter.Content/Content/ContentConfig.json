@@ -1,0 +1,19 @@
+﻿{
+  //Key path must contain backslash(es)
+  "content": {
+    "Textures\\world.png": {
+
+      "type": "Texture",
+      "compression": "NoCompression",
+
+      "textureTileWidth": 32,
+      "textureTileHeight": 32,
+      "textureHasTileSpacing": true,
+      "textureFramerate": 0,
+      "textureStartFrame": 0,
+      "textureEndFrame": 0,
+
+      "soundLooping": true
+    }
+  }
+}

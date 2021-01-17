@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "TheForestWaiter.Content": {
+      "commandName": "Project",
+      "commandLineArgs": "Content Content.zip"
+    }
+  }
+}
