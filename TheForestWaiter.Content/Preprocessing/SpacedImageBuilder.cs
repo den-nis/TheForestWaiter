@@ -53,11 +53,11 @@ namespace TheForestWaiter.Content
         {
             ushort[] brushXLeft = pixels.GetArea(1, 0, 1, height);
             ushort[] brushXRight = pixels.GetArea(width - 2, 0, 1, height);
-            ushort[] brushYLeft = pixels.GetArea(0, 1, width, 1);
-            ushort[] brushYRight = pixels.GetArea(0, height - 2, width, 1);
-
             pixels.SetArea(0, 0, 1, height, brushXLeft);
             pixels.SetArea(width - 1, 0, 1, height, brushXRight);
+
+            ushort[] brushYLeft = pixels.GetArea(0, 1, width, 1);
+            ushort[] brushYRight = pixels.GetArea(0, height - 2, width, 1);
             pixels.SetArea(0, 0, width, 1, brushYLeft);
             pixels.SetArea(0, height - 1, width, 1, brushYRight);
         }

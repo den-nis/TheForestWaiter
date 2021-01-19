@@ -2,7 +2,7 @@
   "profiles": {
     "TheForestWaiter.Content": {
       "commandName": "Project",
-      "commandLineArgs": "Content Content.zip"
+      "commandLineArgs": "$(projectDir)Content Content.zip"
     }
   }
 }
