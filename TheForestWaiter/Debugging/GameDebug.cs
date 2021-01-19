@@ -20,8 +20,7 @@ namespace TheForestWaiter.Debugging
         public static Dictionary<string, object> Variables { get; set; } = new Dictionary<string, object>();
 
         public static GameData Game { get; set; } = null;
-        private static ConcurrentQueue<string> CommandQueue { get; set; } = new ConcurrentQueue<string>();
-        private static ManualResetEvent CommandHandled { get; set; } = new ManualResetEvent(false);
+        private static BlockingCollection<string> PendingCommands { get; set; } = new BlockingCollection<string>();
         private const BindingFlags COMMAND_BINDINGS = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static;
 
         private static float Fps { get; set; }
@@ -63,9 +62,7 @@ namespace TheForestWaiter.Debugging
             {
                 while (true)
                 {
-                    CommandQueue.Enqueue(Console.ReadLine());
-                    while (!CommandQueue.IsEmpty)
-                        CommandHandled.WaitOne();
+                    PendingCommands.Add(Console.ReadLine());
                 }
             });
         }
@@ -79,19 +76,18 @@ namespace TheForestWaiter.Debugging
             if (lag > 0)
                 Thread.Sleep(lag);
 
-
-            while(CommandQueue.TryDequeue(out string rawCommand))
+            while(PendingCommands.Count > 0)
             {
+                var command = PendingCommands.Take();
                 try
                 {
-                    var parts = rawCommand.Split(' ');
+                    var parts = command.Split(' ');
                     ExecuteCommand(parts[0], parts[1..]);
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Console.WriteLine(e);
                 }
-                CommandHandled.Set();
             }
         }
 
@@ -232,7 +228,7 @@ namespace TheForestWaiter.Debugging
                 Position = new Vector2f(0,0),
                 DisplayedString = sb.ToString(),
                 CharacterSize = 20,
-                Font = GameContent.GetFont("Content.Fonts.arial.ttf"),
+                //Font = GameContent.Instance.Textures.Get("Content.Fonts.arial.ttf"),
             };
 
             window.Draw(fpsText);

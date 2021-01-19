@@ -4,6 +4,7 @@ using SFML.Window;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using TheForestWaiter.Content;
 using TheForestWaiter.Debugging;
 using TheForestWaiter.Entites;
 using TheForestWaiter.Environment;
@@ -29,7 +30,7 @@ namespace TheForestWaiter.Objects
  
         public Player(GameData game) : base(game)
         {
-            AnimatedSprite = new AnimatedSprite(new SpriteSheet(GameContent.GetTexture("Content.Textures.Player.player_running.png"), 17, 36), 12);
+            AnimatedSprite = new AnimatedSprite(GameContent.Textures.Get("Textures\\Player\\player_running.png"), 17, 36, 12);
             Gun = new SmallGun(game);
             Size = new Vector2f(17, 36);
             Gravity = 1000;

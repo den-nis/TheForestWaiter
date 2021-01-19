@@ -55,6 +55,7 @@ namespace TheForestWaiter.Graphics
         public bool MirrorX { get; set; } = false;
         public bool MirrorY { get; set; } = false;
 
+        //TODO: should be tile not cell
         public SpriteSheet(Texture texture, int cellWidth, int cellHeight) 
         {
             Sprite = new Sprite(texture);

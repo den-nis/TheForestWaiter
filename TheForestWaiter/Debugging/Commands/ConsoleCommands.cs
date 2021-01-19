@@ -49,7 +49,14 @@ namespace TheForestWaiter.Debugging
         [Command("set", "Set a variable", "set {name} {value}")]
         public static void SetVar(string[] args)
         {
-            GameDebug.Variables[args[0]] = Convert.ChangeType(args[1], GameDebug.Variables[args[0]].GetType());
+            if (GameDebug.Variables.ContainsKey(args[0]))
+            {
+                GameDebug.Variables[args[0]] = Convert.ChangeType(args[1], GameDebug.Variables[args[0]].GetType());
+            }
+            else
+            {
+                Console.WriteLine($"Unknown var \"{args[0]}\"");
+            }
         }
 
         [Command("getvars", "Get current variables")]

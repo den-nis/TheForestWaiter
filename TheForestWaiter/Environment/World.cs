@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using TheForestWaiter.Content;
 using TheForestWaiter.Essentials;
 using TheForestWaiter.Graphics;
 
@@ -20,11 +21,7 @@ namespace TheForestWaiter.Environment
 
         private World()
         {
-            Sheet = new SpriteSheet(GameContent.GetTexture("Content.Textures.World.world.png"), TILE_SIZE, TILE_SIZE)
-            {
-                Spacing = new Vector2i(2, 2),
-                Margin = new Vector2i(1, 1)
-            };
+            Sheet = GameContent.Textures.CreateSpriteSheet("Textures\\world.png");
         }
 
         public static World LoadFromMap(Map map)

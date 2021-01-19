@@ -11,7 +11,7 @@ namespace TheForestWaiter.Particles
     class ParticleSystem
     {
         private static RectangleShape ParticleShape { get; set; } = new RectangleShape();
-        public bool Active { get; private set; }
+        public bool IsActive { get; private set; }
 
         private struct Particle
         {
@@ -86,17 +86,26 @@ namespace TheForestWaiter.Particles
 
         public void Update(float time)
         {
-            Active = false;
+            IsActive = false;
             for (int i = 0; i < ParticlePool.Length; i++)
             {
                 ref Particle p = ref ParticlePool[i];
                 if (p.RemainingLife > 0)
                 {
-                    Active = true;
+                    IsActive = true;
                     p.Position += p.Velocity * time;
                     p.Rotation += p.RotationSpeed * time;
                     p.RemainingLife -= time;
                 }
+            }
+        }
+
+        public void Clear()
+        {
+            for (int i = 0; i < ParticlePool.Length; i++)
+            {
+                ref Particle p = ref ParticlePool[i];
+                p.RemainingLife = 0;
             }
         }
 

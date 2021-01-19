@@ -58,6 +58,10 @@ namespace TheForestWaiter.Content
         private void AddFile(ZipArchive archive, string file, ContentMeta info)
         {
             var entryName = GetEntry(file);
+
+            if (entryName == ContentSettings.CONTENT_CONFIG_ENTRY)
+                return; //Exception for content config (else it will be written two times)
+
             byte[] rawContent = File.ReadAllBytes(file);
             CompressionLevel level = DEFAULT_COMPRESSION;
 

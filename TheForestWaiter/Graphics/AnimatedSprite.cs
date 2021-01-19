@@ -32,6 +32,13 @@ namespace TheForestWaiter.Graphics
             Sheet = sheet;
         }
 
+        public AnimatedSprite(Texture texture, int cellWidth, int cellHeight, int fps)
+        {
+            Sheet = new SpriteSheet(texture, cellWidth, cellHeight);
+            Framerate = fps;
+            AnimationEnd = Sheet.TotatlCells;
+        }
+
         public void Update(float time)
         {
             if (!Reversed)

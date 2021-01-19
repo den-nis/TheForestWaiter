@@ -11,6 +11,7 @@ using System.Linq;
 using TheForestWaiter.Environment;
 using TheForestWaiter.States;
 using TheForestWaiter.Debugging;
+using TheForestWaiter.Content;
 
 namespace TheForestWaiter
 {
@@ -25,7 +26,7 @@ namespace TheForestWaiter
             window.SetKeyRepeatEnabled(false);
             window.Clear(Color.Black); window.Display();
 
-            GameContent.LoadAllContent();
+            GameContent.Initialize();
 
             StateManager manager = new StateManager();
             manager.SetState(new GameState(window));

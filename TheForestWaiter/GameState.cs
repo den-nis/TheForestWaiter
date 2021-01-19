@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TheForestWaiter.Content;
 using TheForestWaiter.Debugging;
 using TheForestWaiter.Environment;
 using TheForestWaiter.Objects;
@@ -45,8 +46,7 @@ namespace TheForestWaiter
 
         private static Map LoadMap()
         {
-            using StreamReader reader = new StreamReader(GameContent.LoadContentStream(@"Content.Worlds.main.json"));
-            return JsonConvert.DeserializeObject<Map>(reader.ReadToEnd());
+            return JsonConvert.DeserializeObject<Map>(GameContent.Source.GetString("Worlds\\main.json"));
         }
 
         private void SetupCamera()

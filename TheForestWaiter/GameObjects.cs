@@ -12,11 +12,11 @@ namespace TheForestWaiter.Environment
 {
     class GameObjects : IUpdateDraw
     {
-        public Player Player { get; set; }
+        public Player Player { get; set; } = null;
+        public Chunks Chunks { get; set; } = null;
         public GameObjectContainer<DynamicObject> Enemies { get; set; } = new GameObjectContainer<DynamicObject>();
         public GameObjectContainer<DynamicObject> Npcs { get; set; } = new GameObjectContainer<DynamicObject>();
         public GameObjectContainer<DynamicObject> Bullets { get; set; } = new GameObjectContainer<DynamicObject>();
-        public Chunks Chunks { get; set; } = null;
         public ParticleSystem WorldParticles { get; set; } = new ParticleSystem(GameSettings.Current.MaxWorldParticles);
 
         public void ClearAll()
@@ -26,6 +26,7 @@ namespace TheForestWaiter.Environment
             Enemies.Clear();
             Bullets.Clear();
             Npcs.Clear();
+            WorldParticles.Clear();
         }
 
         public void CleanUp()
@@ -59,6 +60,7 @@ namespace TheForestWaiter.Environment
 
         public void LoadAllFromMap(Map map, World world, GameData data)
         {
+            Player = null;
             Chunks = new Chunks(world);
 
             var objects = map.Layers.Where(l => l.Type == "objectgroup").SelectMany(l => l.Objects);

@@ -3,6 +3,7 @@ using SFML.System;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using TheForestWaiter.Content;
 using TheForestWaiter.Entites;
 using TheForestWaiter.Essentials;
 using TheForestWaiter.Particles;
@@ -31,11 +32,9 @@ namespace TheForestWaiter.Objects.Weapons.Bullets
             StartAngle = velocity.Angle();
             RespondToCollision = false;
 
-            BulletSprite = new Sprite(GameContent.GetTexture("Content.Textures.Bullets.bullet_generic.png"))
-            {
-                Origin = Size / 2,
-                Rotation = TrigHelper.ToDeg(StartAngle)
-            };
+            BulletSprite = GameContent.Textures.CreateSprite("Textures\\Bullets\\bullet_generic.png");
+            BulletSprite.Origin = Size / 2;
+            BulletSprite.Rotation = TrigHelper.ToDeg(StartAngle);
         }
 
         private void Explode()

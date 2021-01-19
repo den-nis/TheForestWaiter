@@ -11,37 +11,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Content\Fonts\arial.ttf" />
-    <None Remove="Content\Textures\Bullets\bullet_generic.png" />
-    <None Remove="Content\Textures\Player\player_gun.png" />
-    <None Remove="Content\Textures\Player\player_idle.png" />
-    <None Remove="Content\Textures\Player\player_running.png" />
-    <None Remove="Content\Textures\Player\player_small_gun.png" />
-    <None Remove="Content\Textures\World\world.png" />
-    <None Remove="Content\Worlds\main.json" />
     <None Remove="Icon.ico" />
+    <None Remove="Objects\Player.cs~RFb9b1dd5.TMP" />
     <None Remove="TileSet.tsx" />
     <None Remove="~VC9AD2.tmp" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Content\Fonts\arial.ttf">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Content\Textures\Bullets\bullet_generic.png" />
-    <EmbeddedResource Include="Content\Textures\Player\player_gun.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Content\Textures\Player\player_running.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Content\Textures\Player\player_small_gun.png" />
-    <EmbeddedResource Include="Content\Textures\World\world.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Content\Worlds\main.json">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </EmbeddedResource>
     <EmbeddedResource Include="Icon.ico" />
   </ItemGroup>
 
@@ -50,16 +26,8 @@
     <PackageReference Include="SFML.Net" Version="2.5.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="Content\Player.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Content\PlayerRunning.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Content\Sheet.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="dotnet run --no-build --project $(SolutionDir)TheForestWaiter.Content\TheForestWaiter.Content.csproj $(SolutionDir)TheForestWaiter.Content\Content $(TargetDir)Content.zip" />
+  </Target>
 
 </Project>
