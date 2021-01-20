@@ -19,6 +19,7 @@ namespace TheForestWaiter
         public static ContentConfig Config { get; private set; }
 
         public static TextureCache Textures { get; private set; }
+        public static FontCache Fonts { get; private set; }
 
         public static void Initialize()
         {
@@ -34,6 +35,10 @@ namespace TheForestWaiter
             //Load textures
             Textures = new TextureCache(Config);
             Textures.LoadFromSource(Source);
+
+            //Load fonts
+            Fonts = new FontCache(Config);
+            Fonts.LoadFromSource(Source);
         }
 
 #pragma warning disable IDE0051 // Remove unused private members

@@ -28,7 +28,7 @@ namespace TheForestWaiter.Objects.Weapons
         //Helpers
         protected Vector2f OriginBarrelOffset => new Vector2f(GunSprite.Texture.Size.X - Origin.X, Origin.Y);
         public Vector2f BarrelPosition => AttachPoint + TrigHelper.FromAngleRad(LastAimAngle, GunSprite.Texture.Size.X - Origin.X);
-        public bool AimingRight { get; set; }
+        public bool AimingRight { get; set; } = true;
 
         //Variables
         public float LastShotFromAngle { get; private set; }

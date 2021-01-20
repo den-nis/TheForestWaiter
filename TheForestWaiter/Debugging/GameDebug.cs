@@ -228,7 +228,7 @@ namespace TheForestWaiter.Debugging
                 Position = new Vector2f(0,0),
                 DisplayedString = sb.ToString(),
                 CharacterSize = 20,
-                //Font = GameContent.Instance.Textures.Get("Content.Fonts.arial.ttf"),
+                Font = GameContent.Fonts.Get("Fonts\\OpenSans-Regular.ttf"),
             };
 
             window.Draw(fpsText);
