@@ -32,8 +32,4 @@
     </None>
   </ItemGroup>
 
-  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="dotnet run --no-build --project $(SolutionDir)TheForestWaiter.Content\TheForestWaiter.Content.csproj $(SolutionDir)TheForestWaiter.Content\Content $(ProjectDir)Content.zip" />
-  </Target>
-
 </Project>
