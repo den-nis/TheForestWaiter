@@ -11,6 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Content.zip" />
     <None Remove="Icon.ico" />
     <None Remove="Objects\Player.cs~RFb9b1dd5.TMP" />
     <None Remove="TileSet.tsx" />
@@ -18,6 +19,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Content.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Include="Icon.ico" />
   </ItemGroup>
 
@@ -26,10 +30,8 @@
     <PackageReference Include="SFML.Net" Version="2.5.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="Content.zip">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="build-content.bat" />
+  </Target>
 
 </Project>
