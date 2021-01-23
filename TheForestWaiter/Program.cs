@@ -12,6 +12,7 @@ using TheForestWaiter.Environment;
 using TheForestWaiter.States;
 using TheForestWaiter.Debugging;
 using TheForestWaiter.Content;
+using TheForestWaiter.Essentials;
 
 namespace TheForestWaiter
 {
@@ -20,7 +21,7 @@ namespace TheForestWaiter
         static void Main(string[] args)
         {
             var settings = GameSettings.Current;
-            RenderWindow window = new RenderWindow(new VideoMode((uint)settings.WindowWidth, (uint)settings.WindowHeight), settings.Title, Styles.Titlebar | Styles.Close);
+            RenderWindow window = new RenderWindow(new VideoMode((uint)settings.WindowWidth, (uint)settings.WindowHeight), settings.Title, Styles.Resize | Styles.Close);
             window.Closed += (x,y) => window.Close();
 
             window.SetKeyRepeatEnabled(false);
@@ -48,7 +49,7 @@ namespace TheForestWaiter
                 manager.Draw(window);
                 GameDebug.Draw(window);
 
-                window.SetView(new View(new FloatRect(0, 0, settings.WindowWidth, settings.WindowHeight)));
+                window.SetView(new View(new FloatRect(new Vector2f(0,0), window.Size.ToVector2f())));
                 GameDebug.DrawUI(window);
 
                 window.Display();

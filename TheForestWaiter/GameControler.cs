@@ -23,6 +23,12 @@ namespace TheForestWaiter
             Window.MouseMoved += WindowMouseMoved;
             Window.MouseButtonPressed += WindowMouseButtonPressed;
             Window.MouseButtonReleased += WindowMouseButtonReleased;
+            window.Resized += WindowResized;
+        }
+
+        private void WindowResized(object sender, SizeEventArgs e)
+        {
+            Camera.BaseSize = new Vector2f(e.Width, e.Height);
         }
 
         private void WindowMouseButtonReleased(object sender, MouseButtonEventArgs e)
@@ -48,7 +54,6 @@ namespace TheForestWaiter
 
             Camera.Scale = (float)Math.Round(Camera.Scale - (e.Delta/10), 1);
             Camera.Scale = Math.Max(Camera.Scale, settings.MaxZoomIn);
-            Camera.Scale = Math.Min(Camera.Scale, settings.MaxZoomOut);
         }
 
         private void WindowKeyReleased(object sender, KeyEventArgs e)

@@ -9,9 +9,33 @@ namespace TheForestWaiter
 {
     public static class Camera
     {
-        public static Vector2f BaseSize { get; set; }
+        private static Vector2f _baseSize = default;
+        public static Vector2f BaseSize 
+        {
+            get => _baseSize;
+            set
+            {
+                if (value != _baseSize)
+                {
+                    _baseSize = value;
+                    SizeChanged();
+                }
+            }
+        }
 
-        public static float Scale { get; set; } = 1;
+        private static float _scale = 1;
+        public static float Scale 
+        {
+            get => _scale;
+            set
+            {
+                if (value != _scale)
+                {
+                    _scale = value;
+                    SizeChanged();
+                }
+            }
+        } 
 
         public static Vector2f Size => BaseSize * Scale;
 
@@ -21,6 +45,15 @@ namespace TheForestWaiter
         }
 
         public static Vector2f Center { get; set; }
+
+        private static void SizeChanged()
+        {
+            if (Size.X > GameSettings.Current.MaxWorldView.X || Size.Y > GameSettings.Current.MaxWorldView.Y)
+            {
+                var zoom = Math.Min(GameSettings.Current.MaxWorldView.Y / Size.Y, GameSettings.Current.MaxWorldView.X / Size.X);
+                Scale *= zoom;
+            }
+        }
 
         public static Vector2f ToWorld(Vector2f view)
         {
