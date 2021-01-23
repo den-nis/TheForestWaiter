@@ -223,7 +223,7 @@ namespace TheForestWaiter.Debugging
             sb.AppendLine($"Bullets: {Game?.Objects?.Bullets?.Count()}");
             sb.AppendLine($"Zoom: {Camera.Scale}");
 
-            Text fpsText = new Text
+             Text fpsText = new Text
             {
                 Position = new Vector2f(0,0),
                 DisplayedString = sb.ToString(),

@@ -7,6 +7,11 @@ namespace TheForestWaiter.Essentials
 {
     public static class Vector2fExtensions
     {
+        public static Vector2f ToVector2f(this Vector2u vec)
+        {
+            return new Vector2f(vec.X, vec.Y);
+        }
+
         public static float Angle(this Vector2f vec)
         {
             return (float)Math.Atan2(vec.Y, vec.X);

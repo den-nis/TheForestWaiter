@@ -1,6 +1,17 @@
 ﻿{
   //Key path must contain backslash(es)
   "content": {
+
+    "Textures\\World\\tree.png": {
+      "type": "Texture",
+      "compression": "NoCompression",
+
+      "textureTileWidth": 36,
+      "textureTileHeight": 64,
+      "textureHasTileSpacing": true,
+      "textureStartFrame": 1,
+      "textureEndFrame": 5
+    },
     "Textures\\world.png": {
 
       "type": "Texture",

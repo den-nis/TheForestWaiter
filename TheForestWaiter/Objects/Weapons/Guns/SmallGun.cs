@@ -55,8 +55,8 @@ namespace TheForestWaiter.Objects.Weapons.Guns
                 SizeEnd = 4,
                 Velocity = TrigHelper.FromAngleRad(LastAimAngle, 400) + new Vector2f(Game.Objects.Player.RealSpeed.X, 0),
                 VelocityVariation = new Vector2f(200, 200),
-                Life = .2f,
-                LifeVariation = .2f,
+                Life = .1f,
+                LifeVariation = .1f,
                 Position = BarrelPosition,
             }, 10);
         }

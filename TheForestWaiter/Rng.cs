@@ -12,5 +12,10 @@ namespace TheForestWaiter
         {
             return (float)Random.NextDouble();
         }
+
+        public static float Range(float min, float max)
+        {
+            return min + Float() * (max - min);
+        }
     }
 }

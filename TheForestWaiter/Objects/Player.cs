@@ -108,7 +108,7 @@ namespace TheForestWaiter.Objects
             }
 
             if (!TouchingFloor)
-                AnimatedSprite.SetSingleFrame(4);
+                AnimatedSprite.SetStaticFrame(4);
             
             AnimatedSprite.Sprite.Position = Position;
             AnimatedSprite.Update(time);

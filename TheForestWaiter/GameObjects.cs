@@ -64,10 +64,17 @@ namespace TheForestWaiter.Environment
             Chunks = new Chunks(world);
 
             var objects = map.Layers.Where(l => l.Type == "objectgroup").SelectMany(l => l.Objects);
-            ObjectFactory factory = new ObjectFactory();
+            ObjectFactory factory = new ObjectFactory(data);
 
             foreach(MapObject inf in objects)
             {
+                if (inf.Type == "Spawn")
+                {
+                    Player = new Player(data);
+                    inf.SetSpawn(Player);
+                    continue;
+                }
+
                 StaticObject staticObject = factory.GetStaticObject(inf.Type);
                 if (staticObject != null)
                 {
@@ -78,12 +85,6 @@ namespace TheForestWaiter.Environment
                 else
                 {
                     Debugging.GameDebug.Log($"Missing StaticObject {inf.Type}");
-                }
-
-                if (inf.Type == "Spawn")
-                {
-                    Player = new Player(data);
-                    inf.SetSpawn(Player);
                 }
             }
         }

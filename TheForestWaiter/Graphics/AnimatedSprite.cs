@@ -13,8 +13,12 @@ namespace TheForestWaiter.Graphics
         public int Framerate { get; set; } = 15;
         public int AnimationStart { get; set; } = 1;
         public int AnimationEnd { get; set; }
-        public int CurrentFrame => AnimationStart + (int)Math.Abs(Frame);
-        public void SetSingleFrame(int frame)
+        public int CurrentFrame
+        {
+            get => AnimationStart + (int)Math.Abs(Frame);
+            set => Frame = value - AnimationStart;
+        }
+        public void SetStaticFrame(int frame)
         {
             AnimationStart = frame;
             AnimationEnd = frame;
@@ -30,6 +34,7 @@ namespace TheForestWaiter.Graphics
             AnimationEnd = sheet.TotatlCells;
             Framerate = fps;
             Sheet = sheet;
+            Sheet.Refresh();
         }
 
         public AnimatedSprite(Texture texture, int cellWidth, int cellHeight, int fps)
@@ -37,6 +42,7 @@ namespace TheForestWaiter.Graphics
             Sheet = new SpriteSheet(texture, cellWidth, cellHeight);
             Framerate = fps;
             AnimationEnd = Sheet.TotatlCells;
+            Sheet.Refresh();
         }
 
         public void Update(float time)
@@ -57,7 +63,7 @@ namespace TheForestWaiter.Graphics
 
         public void Draw(RenderTarget target, RenderStates states)
         {
-            Sprite.Draw(target, states);
+            Sheet.Draw(target, states);
         }
     }
 }

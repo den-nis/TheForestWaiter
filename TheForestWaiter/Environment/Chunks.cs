@@ -32,26 +32,27 @@ namespace TheForestWaiter.Environment
             }
         }
 
-        public const float CHUNK_WIDTH = 1000;
-        public const int LOAD_DISTANCE_CHUNKS = 1;
+        public const float CHUNK_WIDTH = 200;
+        public const int LOAD_DISTANCE_CHUNKS = 5;
         public int CurrentChunkId { get; private set; }
 
-        public int TotalChunks { get; private set; }
-        private Chunk[] ChunkArray { get; set; }
-        private Chunk[] ActiveChunks { get; set; }
+        public int TotalChunks => _totalChunks;
+        private readonly int _totalChunks;
+        private readonly Chunk[] _chunkArray;
+        private readonly Chunk[] _activeChunks;
 
         public Chunks(World world)
         {
             int worldSize = (world.Tiles.GetLength(0) * World.TILE_SIZE);
-            TotalChunks = (int)(worldSize / CHUNK_WIDTH);
-            ChunkArray = new Chunk[TotalChunks];
-            ActiveChunks = new Chunk[LOAD_DISTANCE_CHUNKS * 2 + 2];
+            _totalChunks = (int)(worldSize / CHUNK_WIDTH);
+            _chunkArray = new Chunk[TotalChunks];
+            _activeChunks = new Chunk[LOAD_DISTANCE_CHUNKS * 2 + 1];
 
-            for (int i = 0; i < ChunkArray.Length; i++)
-                ChunkArray[i] = new Chunk();
+            for (int i = 0; i < _chunkArray.Length; i++)
+                _chunkArray[i] = new Chunk();
 
-            for (int i = 0; i < ActiveChunks.Length; i++)
-                ActiveChunks[i] = ChunkArray[i];
+            for (int i = 0; i < _activeChunks.Length; i++)
+                _activeChunks[i] = _chunkArray[i];
             CurrentChunkId = LOAD_DISTANCE_CHUNKS;
         }
 
@@ -68,8 +69,8 @@ namespace TheForestWaiter.Environment
             {
                 var chunkId = chunk + i;
 
-                if (chunkId > -1 && chunkId < ChunkArray.Length) 
-                    ActiveChunks[i + LOAD_DISTANCE_CHUNKS] = ChunkArray[chunkId];
+                if (chunkId > -1 && chunkId < _chunkArray.Length) 
+                    _activeChunks[i + LOAD_DISTANCE_CHUNKS] = _chunkArray[chunkId];
             }
 
             CurrentChunkId = chunk;
@@ -77,7 +78,7 @@ namespace TheForestWaiter.Environment
 
         public void Update(float time)
         {
-            foreach(var i in ActiveChunks)
+            foreach(var i in _activeChunks)
             {
                 i?.Update(time);
             }
@@ -85,7 +86,7 @@ namespace TheForestWaiter.Environment
 
         public void Draw(RenderWindow win)
         {
-            foreach (var i in ActiveChunks)
+            foreach (var i in _activeChunks)
             {
                 i?.Draw(win);
             }
@@ -94,7 +95,12 @@ namespace TheForestWaiter.Environment
         public void Add(StaticObject obj)
         {
             var chunk = GetChunkIdAt(obj.Position);
-            ChunkArray[chunk].Objects.Add(obj);
+
+            if (chunk >= 0 && chunk < TotalChunks)
+            { 
+                _chunkArray[chunk].Objects.Add(obj);
+            }
+
         }
 
         public IEnumerable<int> GetActiveChunks()

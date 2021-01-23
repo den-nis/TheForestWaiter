@@ -10,6 +10,10 @@ namespace TheForestWaiter.Graphics
     {
         public Sprite Sprite { get; set; }
 
+        //TODO: replace this 
+        public Vector2f TileSize => new Vector2f(CellWidth, CellHeight);
+
+        //TODO: vectors?
         public int CellWidth { get; private set; }
         public int CellHeight { get; private set; }
 
@@ -61,7 +65,8 @@ namespace TheForestWaiter.Graphics
             Sprite = new Sprite(texture);
             CellWidth = cellWidth;
             CellHeight = cellHeight;
-            Refresh();
+            Refresh(); //TODO: call refresh when changing cellwidth / cellheight
+            SetRect(1);
         }
 
         public SpriteSheet(Sprite sheet, int cellWidth, int cellHeight)
@@ -69,7 +74,8 @@ namespace TheForestWaiter.Graphics
             Sprite = sheet;
             CellWidth = cellWidth;
             CellHeight = cellHeight;
-            Refresh();
+            Refresh(); //TODO: call refresh when changing cellwidth / cellheight
+            SetRect(1);
         }
 
         public void Draw(RenderTarget target, RenderStates states)
@@ -104,6 +110,10 @@ namespace TheForestWaiter.Graphics
             Sprite.TextureRect = rect;
         }
 
+        //TODO: start counting at 0
+        /// <summary>
+        /// First tile is at index 1
+        /// </summary>
         public void SetRect(int index)
         {
             int x = (index - 1) % CellsWidth;
