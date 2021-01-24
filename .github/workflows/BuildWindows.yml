@@ -22,12 +22,12 @@ jobs:
       run: dotnet restore
       
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet publish /p:Configuration=Release /p:PublishProfile=FolderProfile --no-restore
       
     - uses: thedoctor0/zip-release@master
       with:
         filename: 'release.zip'
-        directory: ./TheForestWaiter/TheForestWaiter/bin/Debug/net5.0/
+        directory: ./TheForestWaiter/bin/Release/net5.0/publish/
         exclusions: '*.pdb'
         
     - name: Publish-Artifacts
