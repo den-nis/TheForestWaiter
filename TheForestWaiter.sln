@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.30413.136
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheForestWaiter", "TheForestWaiter\TheForestWaiter.csproj", "{24983644-76D2-4027-B96F-8EB1C31BC7A1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{04CFD8D8-18FE-4B53-A363-70CCCCEC57E9} = {04CFD8D8-18FE-4B53-A363-70CCCCEC57E9}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheForestWaiter.Content", "TheForestWaiter.Content\TheForestWaiter.Content.csproj", "{04CFD8D8-18FE-4B53-A363-70CCCCEC57E9}"
 EndProject
