@@ -1,4 +1,4 @@
-name: Build windows v4
+name: Build for windows
 
 on:
   push:
@@ -13,7 +13,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET
-      
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.x
