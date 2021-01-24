@@ -1,4 +1,4 @@
-name: Build windows
+name: Build windows v2
 
 on:
   push:
