@@ -22,7 +22,7 @@ jobs:
       run: dotnet restore
       
     - name: Build
-      run: dotnet publish /p:Configuration=Release /p:PublishProfile=FolderProfile --no-restore
+      run: dotnet publish /p:Configuration=Release /p:PublishProfile=FolderProfile
       
     - uses: thedoctor0/zip-release@master
       with:
