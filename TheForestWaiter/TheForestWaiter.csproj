@@ -33,7 +33,7 @@
   </ItemGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="build-content.bat" />
+    <Exec Command="dotnet run --no-build --project ..\TheForestWaiter.Content\TheForestWaiter.Content.csproj ..\TheForestWaiter.Content\Content Content.zip" />
   </Target>
 
 </Project>
