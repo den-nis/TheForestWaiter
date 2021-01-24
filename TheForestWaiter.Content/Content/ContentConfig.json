@@ -2,6 +2,11 @@
   //Key path must contain backslash(es)
   "content": {
 
+    "Worlds\\main.json": {
+      "type": "Raw",
+      "compression": "Optimal"
+    },
+
     "Textures\\World\\tree.png": {
       "type": "Texture",
       "compression": "NoCompression",

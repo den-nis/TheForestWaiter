@@ -11,6 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Content.zip" />
     <None Remove="Icon.ico" />
     <None Remove="Objects\Player.cs~RFb9b1dd5.TMP" />
     <None Remove="TileSet.tsx" />
@@ -27,17 +28,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Content.zip">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="Config\" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\TheForestWaiter.Shared\TheForestWaiter.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Content.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
