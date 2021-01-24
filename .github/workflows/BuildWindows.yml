@@ -24,3 +24,15 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
       
+    - uses: thedoctor0/zip-release@master
+      with:
+        filename: 'release.zip'
+        directory: ./TheForestWaiter/TheForestWaiter/bin/Debug/net5.0/
+        exclusions: '*.pdb'
+        
+    - name: Publish-Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: release.zip
+        path:  release.zip
+        retention-days: 5
