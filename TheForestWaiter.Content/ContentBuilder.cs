@@ -113,12 +113,12 @@ namespace TheForestWaiter.Content
 
         private static string GetRelativePath(string absoluteBase, string absoluteSub)
         {
-            if (!absoluteBase.EndsWith('\\'))
-                absoluteBase += '\\';
+            if (!absoluteBase.EndsWith(Path.DirectorySeparatorChar))
+                absoluteBase += Path.DirectorySeparatorChar;
 
             if (absoluteSub.StartsWith(absoluteBase))
             {
-                var relative = absoluteSub[(absoluteBase.TrimEnd('\\').Length+1)..];
+                var relative = absoluteSub[(absoluteBase.TrimEnd(Path.DirectorySeparatorChar).Length+1)..];
                 return relative;
             }
             else
