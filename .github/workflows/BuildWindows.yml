@@ -24,15 +24,9 @@ jobs:
     - name: Build
       run: dotnet publish /p:Configuration=Release /p:PublishProfile=FolderProfile
       
-    - uses: thedoctor0/zip-release@master
-      with:
-        filename: 'release.zip'
-        directory: ./TheForestWaiter/bin/Release/net5.0/publish/
-        exclusions: '*.pdb'
-        
     - name: Publish-Artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: release.zip
-        path:  release.zip
+        name: release.exe
+        path:  ./TheForestWaiter/bin/Release/net5.0/publish/TheForestWaiter.exe
         retention-days: 5
