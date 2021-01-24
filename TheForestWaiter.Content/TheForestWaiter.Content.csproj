@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TheForestWaiter\TheForestWaiter.csproj" />
+    <ProjectReference Include="..\TheForestWaiter.Shared\TheForestWaiter.Shared.csproj" />
   </ItemGroup>
 
 </Project>

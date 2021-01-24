@@ -32,8 +32,16 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Config\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TheForestWaiter.Shared\TheForestWaiter.Shared.csproj" />
+  </ItemGroup>
+
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="dotnet run --no-build --project ../TheForestWaiter.Content/TheForestWaiter.Content.csproj ../TheForestWaiter.Content/Content Content.zip" />
+    <Exec Command="dotnet run --project ../TheForestWaiter.Content/TheForestWaiter.Content.csproj ../TheForestWaiter.Content/Content Content.zip" />
   </Target>
 
 </Project>

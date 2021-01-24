@@ -6,8 +6,8 @@ using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TheForestWaiter.Config;
 using TheForestWaiter.Content;
+using TheForestWaiter.Shared;
 
 namespace TheForestWaiter.Content
 {

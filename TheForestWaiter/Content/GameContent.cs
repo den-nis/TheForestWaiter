@@ -8,8 +8,8 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using TheForestWaiter.Config;
 using TheForestWaiter.Content;
+using TheForestWaiter.Shared;
 
 namespace TheForestWaiter
 {

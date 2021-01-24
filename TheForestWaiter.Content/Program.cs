@@ -6,7 +6,6 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
-using TheForestWaiter.Config;
 using TheForestWaiter.Content;
 
 namespace TheForestWaiter.Content
