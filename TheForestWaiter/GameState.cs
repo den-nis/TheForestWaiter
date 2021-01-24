@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using TheForestWaiter.Content;
 using TheForestWaiter.Debugging;
 using TheForestWaiter.Environment;
+using TheForestWaiter.Essentials;
 using TheForestWaiter.Objects;
 using TheForestWaiter.States;
 
@@ -18,21 +19,21 @@ namespace TheForestWaiter
 {
     class GameState : IState, IDisposable
     {
-        private RenderWindow Window { get; }
+        private GameWindow _gameWindow;
         private GameControler Controler { get; }
         private GameData Data { get; } = new GameData();
         private const float CLEAN_UP_INTERVAL = 10;
         private float CleanUpTimer { get; set; } = CLEAN_UP_INTERVAL;
 
-        public GameState(RenderWindow window)
+        public GameState(GameWindow gameWindow)
         {
-            Window = window;
-            Controler = new GameControler(Window, Data);
+            _gameWindow = gameWindow;
+            Controler = new GameControler(Data, gameWindow);
         }
 
         public void Dispose()
         {
-            Controler.UnsubscribeEvents();
+            Controler.Dispose();
         }
 
         public void Load()
@@ -51,16 +52,15 @@ namespace TheForestWaiter
 
         private void SetupCamera()
         {
-            var settings = GameSettings.Current;
-            Camera.BaseSize = new Vector2f(settings.WindowWidth, settings.WindowHeight);
+            Camera.BaseSize = _gameWindow.Window.Size.ToVector2f();
             Camera.Center = Data.Objects.Player.Center;
         }
 
         public void Draw()
         {    
-            Data.World.Draw(Window, new FloatRect(Camera.Position, Camera.Size), false);
-            Data.Objects.Draw(Window);
-            Data.World.Draw(Window, new FloatRect(Camera.Position, Camera.Size), true);
+            Data.World.Draw(_gameWindow.Window, new FloatRect(Camera.Position, Camera.Size), false);
+            Data.Objects.Draw(_gameWindow.Window);
+            Data.World.Draw(_gameWindow.Window, new FloatRect(Camera.Position, Camera.Size), true);
         }
 
         public void Update(float time)

@@ -20,39 +20,35 @@ namespace TheForestWaiter
     {
         static void Main(string[] args)
         {
-            var settings = GameSettings.Current;
-            RenderWindow window = new RenderWindow(new VideoMode((uint)settings.WindowWidth, (uint)settings.WindowHeight), settings.Title, Styles.Resize | Styles.Close);
-            window.Closed += (x,y) => window.Close();
-
-            window.SetKeyRepeatEnabled(false);
-            window.Clear(Color.Black); window.Display();
+            GameWindow gw = new GameWindow();
+            gw.InitializeWindow(false);
+            gw.Window.SetKeyRepeatEnabled(false);
 
             GameContent.Initialize();
-
             StateManager manager = new StateManager();
-            manager.SetState(new GameState(window));
+            manager.SetState(new GameState(gw));
             GameDebug.StartConsoleThread();
-            Stopwatch timer = Stopwatch.StartNew();
 
+            Stopwatch timer = Stopwatch.StartNew();
             float deltaTime = 0;
-            while (window.IsOpen)
+            while (gw.Window.IsOpen)
             {
                 timer.Restart();
 
-                window.DispatchEvents();
-                window.Clear(Color.Black);//new Color(46,36,115));
+                gw.Window.DispatchEvents();
+                gw.Window.Clear(Color.Black);//new Color(46,36,115));
 
                 manager.Update(deltaTime);
                 GameDebug.Update(deltaTime);
 
-                window.SetView(Camera.GetView());
-                manager.Draw(window);
-                GameDebug.Draw(window);
+                gw.Window.SetView(Camera.GetView());
+                manager.Draw(gw.Window);
+                GameDebug.Draw(gw.Window);
 
-                window.SetView(new View(new FloatRect(new Vector2f(0,0), window.Size.ToVector2f())));
-                GameDebug.DrawUI(window);
+                gw.Window.SetView(new View(new FloatRect(new Vector2f(0,0), gw.Window.Size.ToVector2f())));
+                GameDebug.DrawUI(gw.Window);
 
-                window.Display();
+                gw.Window.Display();
 
                 deltaTime = Math.Min(0.1f, (float)timer.Elapsed.TotalSeconds * GameDebug.GetVariable<float>("time_scale", 1));
             }
