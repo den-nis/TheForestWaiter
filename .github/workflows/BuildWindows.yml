@@ -1,0 +1,31 @@
+name: Build for windows
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+
+    - name: Restore dependencies
+      run: dotnet restore
+      
+    - name: Build
+      run: dotnet publish /p:Configuration=Release /p:PublishProfile=FolderProfile
+      
+    - name: Publish-Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: release.exe
+        path:  ./TheForestWaiter/bin/Release/net5.0/publish/TheForestWaiter.exe
+        retention-days: 5
