@@ -19,7 +19,7 @@ namespace TheForestWaiter.Objects.Weapons.Guns
             OnFire += OnFireEvent;
         }
 
-        protected override Vector2f AttachPoint => Game.Objects.Player.Center - new Vector2f(0, 3);
+        protected override Vector2f AttachPoint => Game.Objects.Player.Center - new Vector2f(0, 1);
         protected override float Range => 1500;
         protected override float FireRatePerSecond => 12f;
         protected override float RecoilPerShot => 0;
