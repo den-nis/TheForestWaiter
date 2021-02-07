@@ -115,7 +115,7 @@ namespace TheForestWaiter.Environment
                         {
                             if (Tiles[x, y].HasForeground)
                             {
-                                Sheet.SetRect(Tiles[x, y].ForegroundTileId);
+                                Sheet.SetRect(Tiles[x, y].ForegroundTileId - 1);
                                 win.Draw(Sheet.Sprite);
                             }
                         }
@@ -123,13 +123,13 @@ namespace TheForestWaiter.Environment
                         {
                             if (Tiles[x, y].HasBackground)
                             {
-                                Sheet.SetRect(Tiles[x, y].BackgroundTileId);
+                                Sheet.SetRect(Tiles[x, y].BackgroundTileId - 1);
                                 win.Draw(Sheet.Sprite);
                             }
 
                             if (Tiles[x, y].HasMiddleground)
                             {
-                                Sheet.SetRect(Tiles[x, y].MiddlegroundTileId);
+                                Sheet.SetRect(Tiles[x, y].MiddlegroundTileId - 1);
                                 win.Draw(Sheet.Sprite);
                             }
                         }

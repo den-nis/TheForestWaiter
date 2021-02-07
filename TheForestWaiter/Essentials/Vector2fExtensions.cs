@@ -12,6 +12,11 @@ namespace TheForestWaiter.Essentials
             return new Vector2f(vec.X, vec.Y);
         }
 
+        public static Vector2f ToVector2f(this Vector2i vec)
+        {
+            return new Vector2f(vec.X, vec.Y);
+        }
+
         public static float Angle(this Vector2f vec)
         {
             return (float)Math.Atan2(vec.Y, vec.X);

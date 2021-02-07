@@ -10,33 +10,15 @@ namespace TheForestWaiter.Graphics
     {
         public Sprite Sprite { get; set; }
 
-        //TODO: replace this 
-        public Vector2f TileSize => new Vector2f(CellWidth, CellHeight);
-
-        //TODO: vectors?
-        public int CellWidth { get; private set; }
-        public int CellHeight { get; private set; }
-
-        public int CellsWidth { get; private set; }
-        public int CellsHeight { get; private set; }
+        public Vector2i Tiles { get; private set; }
+        public Vector2i TileSize { get; }
 
         private Vector2f HalfMargin { get; set; }
 
-        public int TotatlCells => CellsWidth * CellsHeight;
+        public int TotatlTiles => Tiles.X * Tiles.Y;
 
         private Vector2i _margin = default;
         private Vector2i _spacing = default;
-
-        public void Refresh()
-        {
-            HalfMargin = new Vector2f(Margin.X/2f, Margin.Y/2f);
-
-            var widthWithoutMargin = Sprite.Texture.Size.X - Margin.X * 2;
-            var heightWithoutMargin = Sprite.Texture.Size.Y - Margin.Y * 2;
-
-            CellsWidth  = (int)((widthWithoutMargin - Spacing.X / 2f) / (CellWidth + Spacing.X / 2f));
-            CellsHeight = (int)((heightWithoutMargin - Spacing.Y / 2f) / (CellHeight + Spacing.Y / 2f));
-        }
 
         public Vector2i Spacing {
             get => _spacing;
@@ -59,22 +41,16 @@ namespace TheForestWaiter.Graphics
         public bool MirrorX { get; set; } = false;
         public bool MirrorY { get; set; } = false;
 
-        //TODO: should be tile not cell
-        public SpriteSheet(Texture texture, int cellWidth, int cellHeight) 
+        public SpriteSheet(Texture texture, int tileWidth, int tileHeight) : this(new Sprite(texture), tileWidth, tileHeight)
         {
-            Sprite = new Sprite(texture);
-            CellWidth = cellWidth;
-            CellHeight = cellHeight;
-            Refresh(); //TODO: call refresh when changing cellwidth / cellheight
-            SetRect(1);
+
         }
 
-        public SpriteSheet(Sprite sheet, int cellWidth, int cellHeight)
+        public SpriteSheet(Sprite sheet, int tileWidth, int tileHeight)
         {
             Sprite = sheet;
-            CellWidth = cellWidth;
-            CellHeight = cellHeight;
-            Refresh(); //TODO: call refresh when changing cellwidth / cellheight
+            TileSize = new Vector2i(tileWidth, tileHeight);
+            Refresh();
             SetRect(1);
         }
 
@@ -83,43 +59,53 @@ namespace TheForestWaiter.Graphics
             Sprite.Draw(target, states);
         }
 
-        public void SetRect(int cellX, int cellY)
+        public void SetRect(int tileX, int tileY)
         {
-            var left = (int)(HalfMargin.X + (cellX * (CellWidth  + Spacing.X)));
-            var top =  (int)(HalfMargin.Y + (cellY * (CellHeight + Spacing.Y)));
+            var left = (int)(HalfMargin.X + (tileX * (TileSize.X + Spacing.X)));
+            var top =  (int)(HalfMargin.Y + (tileY * (TileSize.Y + Spacing.Y)));
 
             var rect = new IntRect(
                 left,
                 top,
-                CellWidth, 
-                CellHeight
+                TileSize.X,
+                TileSize.Y 
                 );
 
             if (MirrorX)
             { 
-                rect.Left += CellWidth;
+                rect.Left += TileSize.X;
                 rect.Width = -rect.Width;
             }
 
             if (MirrorY)
             {
-                rect.Top += CellHeight;
+                rect.Top += TileSize.Y;
                 rect.Height = -rect.Height;
             }
 
             Sprite.TextureRect = rect;
         }
 
-        //TODO: start counting at 0
-        /// <summary>
-        /// First tile is at index 1
-        /// </summary>
         public void SetRect(int index)
         {
-            int x = (index - 1) % CellsWidth;
-            int y = (index - 1) / CellsWidth; 
+            int x = index % Tiles.X;
+            int y = index / Tiles.X; 
 
             SetRect(x, y);
+        }
+
+        private void Refresh()
+        {
+            HalfMargin = new Vector2f(Margin.X / 2f, Margin.Y / 2f);
+
+            var widthWithoutMargin = Sprite.Texture.Size.X - Margin.X * 2;
+            var heightWithoutMargin = Sprite.Texture.Size.Y - Margin.Y * 2;
+
+            Tiles = new Vector2i
+            (
+                 (int)((widthWithoutMargin - Spacing.X / 2f) / (TileSize.X + Spacing.X / 2f)),
+                 (int)((heightWithoutMargin - Spacing.Y / 2f) / (TileSize.Y + Spacing.Y / 2f))
+            );
         }
     }
 }

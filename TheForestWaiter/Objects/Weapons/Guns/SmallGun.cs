@@ -14,7 +14,7 @@ namespace TheForestWaiter.Objects.Weapons.Guns
     {
         ParticleSystem Particles { get; set; } = new ParticleSystem(1000);
 
-        public SmallGun(GameData game) : base(game, GameContent.Textures.CreateSprite("Textures\\Player\\player_small_gun.png"))
+        public SmallGun(GameData game) : base(game, GameContent.Textures.CreateSprite("Textures\\Player\\small_gun.png"))
         {
             OnFire += OnFireEvent;
         }

@@ -11,7 +11,7 @@ namespace TheForestWaiter.Graphics
 
         public bool Reversed { get; set; } = false;
         public int Framerate { get; set; } = 15;
-        public int AnimationStart { get; set; } = 1;
+        public int AnimationStart { get; set; } = 0;
         public int AnimationEnd { get; set; }
         public int CurrentFrame
         {
@@ -31,18 +31,16 @@ namespace TheForestWaiter.Graphics
 
         public AnimatedSprite(SpriteSheet sheet, int fps)
         {
-            AnimationEnd = sheet.TotatlCells;
+            AnimationEnd = sheet.TotatlTiles-1;
             Framerate = fps;
             Sheet = sheet;
-            Sheet.Refresh();
         }
 
         public AnimatedSprite(Texture texture, int cellWidth, int cellHeight, int fps)
         {
             Sheet = new SpriteSheet(texture, cellWidth, cellHeight);
             Framerate = fps;
-            AnimationEnd = Sheet.TotatlCells;
-            Sheet.Refresh();
+            AnimationEnd = Sheet.TotatlTiles-1;
         }
 
         public void Update(float time)
@@ -57,7 +55,6 @@ namespace TheForestWaiter.Graphics
             }
 
             Frame %= Frames;
-
             Sheet.SetRect(CurrentFrame);
         }
 

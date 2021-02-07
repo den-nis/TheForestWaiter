@@ -30,7 +30,7 @@ namespace TheForestWaiter.Objects
  
         public Player(GameData game) : base(game)
         {
-            AnimatedSprite = new AnimatedSprite(GameContent.Textures.Get("Textures\\Player\\player_running.png"), 17, 36, 12);
+            AnimatedSprite = GameContent.Textures.CreateAnimatedSprite("Textures\\Player\\sheet.png");
             Gun = new SmallGun(game);
             Size = new Vector2f(17, 36);
             Gravity = 1000;
@@ -89,8 +89,8 @@ namespace TheForestWaiter.Objects
             if ((Gun.AimingRight && isMovingRight) || (!Gun.AimingRight && isMovingLeft))
             {
                 //Forward walking
-                AnimatedSprite.AnimationStart = 1;
-                AnimatedSprite.AnimationEnd = 7;
+                AnimatedSprite.AnimationStart = 0;
+                AnimatedSprite.AnimationEnd = 6;
             }
             else
             {
@@ -103,12 +103,12 @@ namespace TheForestWaiter.Objects
             {
                 //Idle
                 AnimatedSprite.Framerate = 5;
-                AnimatedSprite.AnimationStart = 16;
-                AnimatedSprite.AnimationEnd = 20;
+                AnimatedSprite.AnimationStart = 14;
+                AnimatedSprite.AnimationEnd = 19;
             }
 
             if (!TouchingFloor)
-                AnimatedSprite.SetStaticFrame(4);
+                AnimatedSprite.SetStaticFrame(3);
             
             AnimatedSprite.Sprite.Position = Position;
             AnimatedSprite.Update(time);

@@ -14,22 +14,24 @@
       "textureTileWidth": 36,
       "textureTileHeight": 64,
       "textureHasTileSpacing": true,
-      "textureStartFrame": 1,
-      "textureEndFrame": 5
+      "textureStartFrame": 0,
+      "textureEndFrame": 4
     },
-    "Textures\\world.png": {
 
+    "Textures\\world.png": {
       "type": "Texture",
       "compression": "NoCompression",
 
       "textureTileWidth": 32,
       "textureTileHeight": 32,
-      "textureHasTileSpacing": true,
-      "textureFramerate": 0,
-      "textureStartFrame": 0,
-      "textureEndFrame": 0,
+      "textureHasTileSpacing": true
+    },
 
-      "soundLooping": true
+    "Textures\\Player\\sheet.png": {
+      "type": "Texture",
+      "textureHasTileSpacing": true,
+      "textureTileWidth": 17,
+      "textureTileHeight": 36
     }
   }
 }
