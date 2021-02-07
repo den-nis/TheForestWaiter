@@ -23,7 +23,7 @@ namespace TheForestWaiter
         private GameControler Controler { get; }
         private GameData Data { get; } = new GameData();
         private const float CLEAN_UP_INTERVAL = 10;
-        private float CleanUpTimer { get; set; } = CLEAN_UP_INTERVAL;
+        private float _cleanUpTimer = CLEAN_UP_INTERVAL;
 
         public GameState(GameWindow gameWindow)
         {
@@ -65,10 +65,10 @@ namespace TheForestWaiter
 
         public void Update(float time)
         {
-            CleanUpTimer -= time;
-            if (CleanUpTimer < 0)
+            _cleanUpTimer -= time;
+            if (_cleanUpTimer < 0)
             {
-                CleanUpTimer = CLEAN_UP_INTERVAL;
+                _cleanUpTimer = CLEAN_UP_INTERVAL;
                 Data.Objects.CleanUp();
             }
 
