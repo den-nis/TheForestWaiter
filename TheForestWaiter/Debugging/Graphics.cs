@@ -46,7 +46,7 @@ namespace TheForestWaiter.Debugging
         [Conditional("DEBUG")]
         public static void DrawHitBox(Vector2f position, Vector2f size, Color color)
         {
-            if (GetVariable("show_hitboxes", false))
+            if (GetVariable("draw_hitboxes", false))
                 DrawQueue.Enqueue((win) =>
                 {
                     Box.OutlineColor = color;
@@ -59,7 +59,7 @@ namespace TheForestWaiter.Debugging
         [Conditional("DEBUG")]
         public static void DrawCircle(Vector2f position, float radius, Color color)
         {
-            if (GetVariable("show_hitboxes", false))
+            if (GetVariable("draw_hitboxes", false))
                 DrawQueue.Enqueue((win) =>
                 {
                     Circle.OutlineColor = color;

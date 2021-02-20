@@ -77,6 +77,7 @@ namespace TheForestWaiter.Debugging
             while(PendingCommands.Count > 0)
             {
                 var command = PendingCommands.Take();
+
                 try
                 {
                     var parts = command.Split(' ');

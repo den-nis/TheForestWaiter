@@ -65,8 +65,15 @@ namespace TheForestWaiter.Debugging
         {
             foreach(var i in GameDebug.Variables)
             {
-                Console.WriteLine($"{i.Key} = {i.Value} : {i.Value.GetType().Name}");
+                Console.WriteLine($"\t- {i.Key} = {i.Value} : {i.Value.GetType().Name}");
             }
+        }
+
+        [Command("nl", "no logging")]
+        public static void NoLogging()
+        {
+            GameDebug.Variables["output_log"] = false;
+			Console.WriteLine("turned off logging");
         }
     }
 }

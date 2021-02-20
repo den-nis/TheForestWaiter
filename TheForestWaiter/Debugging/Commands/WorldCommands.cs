@@ -1,6 +1,7 @@
 ﻿using SFML.System;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using TheForestWaiter.Objects;
@@ -48,6 +49,44 @@ namespace TheForestWaiter.Debugging
             var gw = (GameWindow)typeof(Program).GetField("_window", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
             sm.SetState(new GameState(gw));
         }
+
+        [Command("spawn", "Spawns a creature", "spawn {name} ?{count} ?{x} ?{y}")]
+        public static void Spawn(string[] args)
+        {
+            var creatures = GetCreatures();
+            var spawn = creatures.First(x => x.Name == args[0]);
+
+            for (int i = 0; i < (args.Length > 1 ? int.Parse(args[1]) : 1); i++)
+            {
+                Creature creature = (Creature)Activator.CreateInstance(spawn, new[] { GameDebug.Game });
+                if (args.Length > 3)
+                {
+                    creature.Position = new Vector2f(float.Parse(args[2]), float.Parse(args[3]));
+                }
+                else
+                {
+                    creature.Position = GameDebug.Game.Objects.Player.Position + new Vector2f(0, -100);
+                }
+
+                GameDebug.Game.Objects.Enemies.Add(creature);
+            }
+        }
+
+        [Command("creatures", "Shows a list of creatures")]
+        public static void Creatures()
+        {
+            foreach(var i in GetCreatures())
+			{
+				Console.WriteLine($"\t- {i.Name}");
+			}
+        }
+
+        private static Type[] GetCreatures()
+		{
+			var assembly = Assembly.GetExecutingAssembly();
+            return assembly.GetTypes().Where(t => typeof(Creature).IsAssignableFrom(t) && !t.IsAbstract).ToArray();
+		}
+
 
         [Command("disarm", "No more shooting")]
         public static void Disarm()

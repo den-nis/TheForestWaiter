@@ -30,7 +30,7 @@ namespace TheForestWaiter.Objects
 
         public Player(GameData game) : base(game)
         {
-            Health = 10000;
+            Health = 100;
             AnimatedSprite = GameContent.Textures.CreateAnimatedSprite("Textures\\Player\\sheet.png");
             Gun = new SmallGun(game);
             Size = AnimatedSprite.Sheet.TileSize.ToVector2f();
