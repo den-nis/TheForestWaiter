@@ -7,6 +7,7 @@ using System.Text;
 using TheForestWaiter.Debugging;
 using TheForestWaiter.Environment;
 using TheForestWaiter.Essentials;
+using TheForestWaiter.Objects;
 
 namespace TheForestWaiter.Entites
 {
@@ -15,18 +16,23 @@ namespace TheForestWaiter.Entites
     /// </summary>
     abstract class DynamicObject : GameObject
     {
+        public bool ReceiveDynamicCollisions { get; set; } = true;
+        public bool EmitDynamicCollisions { get; set; } = true;
+
+        public int TERMINAL_VELOCITY = 500; 
+
         public DynamicObject(GameData game) : base(game) { }
 
         private float LastDelta { get; set; }
         private Vector2f LastFramePosition { get; set; }
 
         //Physics
-        public float CollisionRadius { get; set; } = 200;
+        public float CollisionRadius { get; set; } = 50;
         public float Gravity { get; set; } = 0;
         public Vector2f velocity;
-        public Vector2f Drag { get; set; } = new Vector2f(0, 0);
         public float Mass { get; set; } = 100;
-        public Vector2f RealSpeed => (Position - LastFramePosition) / LastDelta;
+        public Vector2f RealSpeed { get; set; }
+        public Vector2f Drag { get; set; } = new Vector2f(0, 0);
 
         //Touching
         public bool TouchingHorizontal { get; private set; } = false;
@@ -38,20 +44,82 @@ namespace TheForestWaiter.Entites
 
         public override void Update(float time)
         {
+            RealSpeed = (Position - LastFramePosition) / LastDelta;
             LastFramePosition = Position;
             LastDelta = time;
+
+            GameDebug.DrawHitBox(Position, Size, Color.Blue);
 
             ApplyGravity(time);
             ApplyDrag(time);
 
             Move(velocity * time);
 
-            GameDebug.UpdateHitBox(Position, Size);
+            HandleDynamicCollisions(time);
+        }
+
+        public void Push(Vector2f force, float time)
+        {
+            velocity += force * time;
+        }
+
+        public void LimitPush(Vector2f force, float time)
+        {
+            velocity.X += LimitPush1D(velocity.X, force.X) * time;
+            velocity.Y += LimitPush1D(velocity.Y, force.Y) * time;
+        }
+
+        private static float LimitPush1D(float currentVelocity, float push)
+        {
+            if (Math.Sign(push) == Math.Sign(currentVelocity))
+            {
+                var aPush = Math.Abs(push);
+                var aSpeed = Math.Abs(currentVelocity);
+
+                if (aPush <= aSpeed)
+                    return 0;
+
+                var max = push - currentVelocity;
+                return aPush <= Math.Abs(currentVelocity + push) ? max : push;
+            }
+            else
+            {
+                return push;
+            }
+        }
+
+        protected virtual void OnTouch(DynamicObject obj) {}
+
+        private void HandleDynamicCollisions(float time)
+        {
+            if (!EmitDynamicCollisions)
+                return;
+
+            foreach(var obj in Game.Objects.Creatures)
+            {
+                if (Intersects(obj) && 
+                    obj.GameObjectId != GameObjectId && 
+                    obj.ReceiveDynamicCollisions)
+                {
+                    OnTouch(obj);
+                    PushAway(obj, time);
+                }
+            }
+        }
+
+        private void PushAway(DynamicObject obj, float time)
+        {
+            var push =  Center - obj.Center;
+
+            if (push.Len() < 0.05f)
+                push = new Vector2f(Rng.Float() * 2 - 1, Rng.Float() * 2 - 1);
+
+            Push(push * 100, time);
         }
 
         private void ApplyGravity(float time)
         {
-            if (velocity.Y < 500)
+            if (velocity.Y < TERMINAL_VELOCITY)
                 velocity.Y += Gravity * time;
         }
 
@@ -62,11 +130,11 @@ namespace TheForestWaiter.Entites
                 velocity.Y - (float)Math.CopySign(Drag.Y, velocity.Y) * time
             );
 
-            if (Math.Abs(velocity.X) <= Drag.X * time)
-                velocity.X = 0;
+            //if (Math.Abs(velocity.X) <= Drag.X * time) { }
+            //    //velocity.X = 0;
 
-            if (Math.Abs(velocity.Y) <= Drag.Y * time)
-                velocity.Y = 0;
+            //    if (Math.Abs(velocity.Y) <= Drag.Y * time) { }
+            //    //velocity.Y = 0;
         }
 
         private void Move(Vector2f move)
@@ -121,16 +189,18 @@ namespace TheForestWaiter.Entites
             float nearestTime = 1;
             Vector2f nearestNormal = default;
 
-            var tiles = Game.World.GetTilesInArea(
-                new Vector2f(
-                    Math.Abs(RealSpeed.X) + CollisionRadius,
-                    Math.Abs(RealSpeed.Y) + CollisionRadius
-                ),
-                Center);
+            var area = new Vector2f(
+                    CollisionRadius + Math.Abs(move.X),
+                    CollisionRadius + Math.Abs(move.Y)
+                );
+            var center = Center + move/2;
 
+            var tiles = Game.World.GetTilesInArea(area, center);
+
+            GameDebug.DrawHitBox(center - (area / 2), area, Color.Green);
             foreach (var tile in tiles)
             {
-                GameDebug.RegisterWorldCollisonCheck(tile.Position);
+                GameDebug.DrawWorldCollison(tile.Position);
 
                 float time = Collisions.SweptAABB(
                     new FloatRect(tile.Position, new Vector2f(World.TILE_SIZE, World.TILE_SIZE)), 

@@ -32,6 +32,16 @@
       "textureHasTileSpacing": true,
       "textureTileWidth": 17,
       "textureTileHeight": 36
+    },
+
+    "Textures\\Enemies\\minirusher.png": {
+      "type": "Texture",
+      "textureHasTileSpacing": true,
+      "textureTileWidth": 22,
+      "textureTileHeight": 19,
+      "textureStartFrame": 0,
+      "textureEndFrame": 7,
+      "textureFramerate":  12
     }
   }
 }

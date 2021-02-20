@@ -61,8 +61,8 @@ namespace TheForestWaiter.Graphics
 
         public void SetRect(int tileX, int tileY)
         {
-            var left = (int)(HalfMargin.X + (tileX * (TileSize.X + Spacing.X)));
-            var top =  (int)(HalfMargin.Y + (tileY * (TileSize.Y + Spacing.Y)));
+            var left = (int)(Margin.X + (tileX * (TileSize.X + Spacing.X)));
+            var top =  (int)(Margin.Y + (tileY * (TileSize.Y + Spacing.Y)));
 
             var rect = new IntRect(
                 left,

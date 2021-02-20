@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace TheForestWaiter.Essentials
+namespace TheForestWaiter
 {
     public static class Vector2fExtensions
     {
@@ -39,6 +39,12 @@ namespace TheForestWaiter.Essentials
         public static float Len(this Vector2f vec)
         {
             return (float)Math.Sqrt(vec.X * vec.X + vec.Y * vec.Y);
+        }
+
+        public static Vector2f Norm(this Vector2f vec)
+        {
+            var l = Len(vec);
+            return new Vector2f(vec.X / l, vec.Y / l);
         }
     }
 }

@@ -7,6 +7,7 @@ using SFML.Graphics;
 using TheForestWaiter.Entites;
 using SFML.System;
 using TheForestWaiter.Particles;
+using TheForestWaiter.Objects.Enemies;
 
 namespace TheForestWaiter.Environment
 {
@@ -14,10 +15,11 @@ namespace TheForestWaiter.Environment
     {
         public Player Player { get; set; } = null;
         public Chunks Chunks { get; set; } = null;
-        public GameObjectContainer<DynamicObject> Enemies { get; set; } = new GameObjectContainer<DynamicObject>();
-        public GameObjectContainer<DynamicObject> Npcs { get; set; } = new GameObjectContainer<DynamicObject>();
+        public GameObjectContainer<Creature> Enemies { get; set; } = new GameObjectContainer<Creature>();
         public GameObjectContainer<DynamicObject> Bullets { get; set; } = new GameObjectContainer<DynamicObject>();
         public ParticleSystem WorldParticles { get; set; } = new ParticleSystem(GameSettings.Current.MaxWorldParticles);
+
+        public IEnumerable<Creature> Creatures => Enemies.Concat(new[] { Player });
 
         public void ClearAll()
         {
@@ -25,13 +27,11 @@ namespace TheForestWaiter.Environment
             Player = null;
             Enemies.Clear();
             Bullets.Clear();
-            Npcs.Clear();
             WorldParticles.Clear();
         }
 
         public void CleanUp()
         {
-            Npcs.CleanupMarkedForDeletion();
             Enemies.CleanupMarkedForDeletion();
             Bullets.CleanupMarkedForDeletion();
         }
@@ -39,7 +39,6 @@ namespace TheForestWaiter.Environment
         public void Draw(RenderWindow window)
         {
             Chunks.Draw(window);
-            Npcs.Draw(window);
             Enemies.Draw(window);
             Player.Draw(window);
             Bullets.Draw(window);
@@ -49,7 +48,6 @@ namespace TheForestWaiter.Environment
         public void Update(float time)
         {
             Chunks.Update(time);
-            Npcs.Update(time);
             Enemies.Update(time);
             Player.Update(time);
             Bullets.Update(time);

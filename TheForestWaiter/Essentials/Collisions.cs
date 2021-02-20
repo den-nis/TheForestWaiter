@@ -22,6 +22,8 @@ namespace TheForestWaiter.Essentials
             return start + move * t;
         }
 
+
+
         // Sources:
         // Parts of this method are from : https://www.gamedev.net/articles/programming/general-and-gameplay-programming/swept-aabb-collision-detection-and-response-r3084/
         public static float SweptAABB(FloatRect sBox, FloatRect mover, Vector2f move, out Vector2f normal)

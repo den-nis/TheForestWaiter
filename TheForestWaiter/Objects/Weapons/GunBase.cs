@@ -10,6 +10,8 @@ namespace TheForestWaiter.Objects.Weapons
 {
     abstract class GunBase
     {
+        public bool Enabled { get; set; } = true;
+
         //Public options
         public bool Firing { get; set; }
 
@@ -40,7 +42,7 @@ namespace TheForestWaiter.Objects.Weapons
         
         //Storage
         protected GameData Game { get; set; }
-        private Sprite GunSprite { get; set; }
+        public Sprite GunSprite { get; private set; }
 
         //Events
         public event Action OnFire = delegate { };
@@ -61,11 +63,15 @@ namespace TheForestWaiter.Objects.Weapons
 
         public virtual void Draw(RenderWindow window)
         {
-            window.Draw(GunSprite);
+            if (Enabled)
+                window.Draw(GunSprite);
         }
 
         private void Fire()
         {
+            if (!Enabled)
+                return;
+
             LastShotFromAngle = LastAimAngle + (Cone * (Rng.Float() - 0.5f)); 
 
             if (Game.World.TouchingSolid(BarrelPosition + TrigHelper.FromAngleRad(LastShotFromAngle, 8)))  //8 is margin for big bullets
@@ -90,6 +96,9 @@ namespace TheForestWaiter.Objects.Weapons
         {
             if (FireTimer > 0)
                 FireTimer -= FireRatePerSecond * time;
+
+            if (!Enabled)
+                return;
 
             if (Firing)
             {

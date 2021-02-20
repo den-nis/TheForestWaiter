@@ -9,6 +9,7 @@ namespace TheForestWaiter.Graphics
     {
         public Sprite Sprite => Sheet.Sprite;
 
+        public bool Paused { get; set; } = false;
         public bool Reversed { get; set; } = false;
         public int Framerate { get; set; } = 15;
         public int AnimationStart { get; set; } = 0;
@@ -45,13 +46,16 @@ namespace TheForestWaiter.Graphics
 
         public void Update(float time)
         {
-            if (!Reversed)
+            if (!Paused)
             {
-                Frame += time * Framerate;
-            }
-            else
-            {
-                Frame -= time * Framerate;
+                if (!Reversed)
+                {
+                    Frame += time * Framerate;
+                }
+                else
+                {
+                    Frame -= time * Framerate;
+                }
             }
 
             Frame %= Frames;

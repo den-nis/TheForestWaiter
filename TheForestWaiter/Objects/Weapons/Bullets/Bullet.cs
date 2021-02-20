@@ -13,6 +13,8 @@ namespace TheForestWaiter.Objects.Weapons.Bullets
 {
     class Bullet : DynamicObject
     {
+        private const int DAMAGE = 5;
+
         private Sprite BulletSprite { get; set; }
         private float StartAngle { get; }
         private bool HasHit { get; set; } = false;
@@ -23,6 +25,8 @@ namespace TheForestWaiter.Objects.Weapons.Bullets
 
         public Bullet(GameData game, Vector2f spawn, Vector2f speed, float range) : base(game)
         {
+            CollisionRadius = 10;
+
             Range = range;
             Gravity = 0;
             Size = new Vector2f(5, 5);
@@ -52,6 +56,15 @@ namespace TheForestWaiter.Objects.Weapons.Bullets
 
         public override void Update(float time)
         {
+            foreach(var enemy in Game.Objects.Enemies)
+            {
+                if (Collisions.SweptAABB(enemy.FloatRect, FloatRect, velocity * time, out _) < 1)
+                {
+                    enemy.Damage(this, DAMAGE);
+                    Explode();
+                }
+            }
+
             Traveled = (Center - Spawn).Len();
             if (Traveled > Range)
             {
@@ -69,7 +82,7 @@ namespace TheForestWaiter.Objects.Weapons.Bullets
             base.Update(time);
         }
 
-        public override void Draw(RenderWindow window)
+		public override void Draw(RenderWindow window)
         {
             if (!HasHit)
                 window.Draw(BulletSprite);

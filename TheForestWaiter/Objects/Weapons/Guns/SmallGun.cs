@@ -12,8 +12,6 @@ namespace TheForestWaiter.Objects.Weapons.Guns
 { 
     class SmallGun : GunBase
     {
-        ParticleSystem Particles { get; set; } = new ParticleSystem(1000);
-
         public SmallGun(GameData game) : base(game, GameContent.Textures.CreateSprite("Textures\\Player\\small_gun.png"))
         {
             OnFire += OnFireEvent;
@@ -32,13 +30,11 @@ namespace TheForestWaiter.Objects.Weapons.Guns
 
         public override void Draw(RenderWindow win)
         {
-            Particles.Draw(win);
             base.Draw(win);
         }
 
         public override void Update(float time)
         {
-            Particles.Update(time);
             base.Update(time);
         }
 
@@ -46,7 +42,7 @@ namespace TheForestWaiter.Objects.Weapons.Guns
         {
             Game.Objects.Player.velocity += TrigHelper.FromAngleRad(LastAimAngle + (float)Math.PI, RecoilPerShot);
 
-            Particles.Emit(new ParticleProp
+            Game.Objects.WorldParticles.Emit(new ParticleProp
             {
                 ColorEnd = new Color(20, 20, 20, 0),
                 ColorStart = new Color(200, 200, 200),

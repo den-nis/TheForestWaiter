@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <None Remove="Content.zip" />
+    <None Remove="Entities\DynamicObject.cs~RF14b49e0.TMP" />
     <None Remove="Icon.ico" />
     <None Remove="Objects\Player.cs~RFb9b1dd5.TMP" />
     <None Remove="TileSet.tsx" />

@@ -16,30 +16,37 @@ using TheForestWaiter.Particles;
 
 namespace TheForestWaiter.Objects
 {
-    class Player : DynamicObject
+    class Player : Creature
     {
         public AnimatedSprite AnimatedSprite { get; set; } 
-        private GunBase Gun { get; set; }
+        public GunBase Gun { get; set; }
 
-        public TimeSpan EarlyJumpTime { get; set; } = TimeSpan.FromSeconds(0.1f);
+        private float EarlyJumpTime { get; set; } = (float)TimeSpan.FromSeconds(0.1f).TotalSeconds;
 
         private bool Jumping { get; set; } = false;
         private float EarlyJumpTimer { get; set; } = 0;
         private bool MovingRight { get; set; } = false;
         private bool MovingLeft { get; set; } = false;
- 
+
         public Player(GameData game) : base(game)
         {
+            Health = 10000;
             AnimatedSprite = GameContent.Textures.CreateAnimatedSprite("Textures\\Player\\sheet.png");
             Gun = new SmallGun(game);
-            Size = new Vector2f(17, 36);
+            Size = AnimatedSprite.Sheet.TileSize.ToVector2f();
+            CollisionRadius = Size.Y;
+            ReceiveDynamicCollisions = true;
+            EmitDynamicCollisions = false;
             Gravity = 1000;
         }
 
         public override void Draw(RenderWindow window)
         {
-            Gun.Draw(window);
-            window.Draw(AnimatedSprite.Sheet.Sprite);
+            if (!Dead)
+            {
+                Gun.Draw(window);
+                window.Draw(AnimatedSprite.Sheet.Sprite);
+            }
         }
 
         public void StartFire() => Gun.Firing = true;
@@ -52,7 +59,7 @@ namespace TheForestWaiter.Objects
         public void StartJump()
         {
             Jumping = true;
-            EarlyJumpTimer = (float)EarlyJumpTime.TotalSeconds;
+            EarlyJumpTimer = EarlyJumpTime;
         }
         public void StopJump() => Jumping = false;
 
@@ -63,6 +70,15 @@ namespace TheForestWaiter.Objects
 
         private void HandleMovement(float time)
         {
+            if (Dead)
+            {
+                velocity = default;
+                return;
+            }
+
+            if (IsStunned)
+                return;
+
             if (EarlyJumpTimer > 0 && TouchingFloor)
                 velocity.Y = -350;
             EarlyJumpTimer -= time;
@@ -80,6 +96,17 @@ namespace TheForestWaiter.Objects
 
         public void HandleAnimations(float time)
         {
+            if (IsStunned)
+            {
+                AnimatedSprite.Sprite.Color = new Color(255, 200, 200);
+                Gun.GunSprite.Color = new Color(255, 200, 200);
+            }
+            else
+            {
+                Gun.GunSprite.Color = Color.White;
+                AnimatedSprite.Sprite.Color = Color.White;
+            }
+
             var isMovingRight = RealSpeed.X > 1;
             var isMovingLeft = RealSpeed.X < -1;
 
@@ -120,6 +147,17 @@ namespace TheForestWaiter.Objects
             HandleMovement(time);
             HandleAnimations(time);
             base.Update(time);
+        }
+
+        protected override void OnDeath()
+        {
+            Gun.Enabled = false;
+        }
+
+        protected override void OnDamage(DynamicObject by)
+        {
+            if (by != null) { }
+                ApplyKnockback(by);
         }
     }
 }

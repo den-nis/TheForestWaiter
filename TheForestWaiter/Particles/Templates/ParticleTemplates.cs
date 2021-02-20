@@ -31,5 +31,17 @@ namespace TheForestWaiter.Particles.Templates
             LifeVariation = 1,
             VelocityVariation = new Vector2f(20, 20)
         };
+
+        public static ParticleProp Blood => new ParticleProp
+        {
+            ColorEnd = Color.Transparent,
+            ColorStart = new Color(150,0,0),
+            Life = 1,
+            RotationSpeedVariation = 10,
+            SizeStart = 2,
+            SizeEnd = 5,
+            LifeVariation = 1,
+            VelocityVariation = new Vector2f(10, 10)
+        };
     }
 }

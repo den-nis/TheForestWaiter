@@ -35,6 +35,7 @@ namespace TheForestWaiter.Particles
 
         private Particle[] ParticlePool { get; set; }
 
+        public int Index => PoolIndex;
         private int PoolIndex { get; set; } = 0;
 
         public ParticleSystem(int poolSize)

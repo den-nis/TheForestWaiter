@@ -15,8 +15,7 @@ namespace TheForestWaiter.Debugging
 {
     static partial class GameDebug
     {
-        public static List<Vector2f> WorldCollisionChecks { get; set; } = new List<Vector2f>();
-        public static List<(Vector2f position, Vector2f size)> HitBoxes { get; set; } = new List<(Vector2f, Vector2f)>();
+        public static Queue<Action<RenderWindow>> DrawQueue { get; set; } = new Queue<Action<RenderWindow>>();
         public static Dictionary<string, object> Variables { get; set; } = new Dictionary<string, object>();
 
         public static GameData Game { get; set; } = null;
@@ -24,7 +23,6 @@ namespace TheForestWaiter.Debugging
         private const BindingFlags COMMAND_BINDINGS = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static;
 
         private static float Fps { get; set; }
-
 
         public static List<string> Logs { get; set; } = new List<string>();
 
@@ -132,106 +130,6 @@ namespace TheForestWaiter.Debugging
         {
             if (objects.Any())
                 Log($"Clearing {typeof(T).Name} {string.Join(',', objects.Select(x => x.GetType().Name).Distinct())}");
-        }
-
-        [Conditional("DEBUG")]
-        public static void RegisterWorldCollisonCheck(Vector2f collision)
-        {
-            if (GetVariable("world_col_checks", false))
-                WorldCollisionChecks.Add(collision);     
-        }
-
-        [Conditional("DEBUG")]
-        public static void UpdateHitBox(Vector2f position, Vector2f size)
-        {
-            if (GetVariable("show_hitboxes", false))
-                HitBoxes.Add((position, size));
-        }
-
-        [Conditional("DEBUG")]
-        public static void Draw(RenderWindow window)
-        {
-            if (GetVariable("show_hitboxes", false))
-            {
-                RectangleShape r = new RectangleShape
-                {
-                    FillColor = Color.Transparent,
-                    OutlineThickness = 1,
-                    OutlineColor = Color.Green,
-                };
-
-                foreach (var (position, size) in HitBoxes)
-                {
-                    r.Position = position;
-                    r.Size = size;
-                    window.Draw(r);
-                }
-
-                HitBoxes.Clear();
-            }
-
-            if (GetVariable("world_col_checks", false))
-            {
-                RectangleShape r = new RectangleShape
-                {
-                    FillColor = new Color(255, 0, 0, 10),
-                    Size = new Vector2f(World.TILE_SIZE, World.TILE_SIZE),
-                };
-
-                foreach (var c in WorldCollisionChecks)
-                {
-                    r.Position = c;
-                    window.Draw(r);
-                }
-                WorldCollisionChecks.Clear();
-            }
-        }
-
-        public static void DrawChunksUI(RenderWindow win)
-        {
-            var active = Game.Objects.Chunks.GetActiveChunks();
-
-            RectangleShape chunkShape = new RectangleShape
-            {
-                Size = new Vector2f(Chunks.CHUNK_WIDTH / Camera.Scale, Game.World.Tiles.GetLength(1) * World.TILE_SIZE / Camera.Scale),
-                FillColor = Color.Transparent,
-                OutlineThickness = -1,
-            };
-
-            for (int i = 0; i < Game.Objects.Chunks.TotalChunks; i++)
-            {
-                chunkShape.OutlineColor = Color.Green;
-                if (active.Contains(i))
-                {
-                    chunkShape.OutlineColor = Color.Red;
-                }
-
-                chunkShape.Position = Camera.ToCamera(new Vector2f(i * Chunks.CHUNK_WIDTH, 0));
-                win.Draw(chunkShape);
-            }
-        }
-
-
-        [Conditional("DEBUG")]
-        public static void DrawUI(RenderWindow window)
-        {
-            if (GetVariable("draw_chunks", false))
-                DrawChunksUI(window);
-
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine($"Fps: {Math.Round(Fps)}");
-            sb.AppendLine($"Bullets: {Game?.Objects?.Bullets?.Count()}");
-            sb.AppendLine($"Zoom: {Camera.Scale}");
-
-             Text fpsText = new Text
-            {
-                Position = new Vector2f(0,0),
-                DisplayedString = sb.ToString(),
-                CharacterSize = 20,
-                Font = GameContent.Fonts.Get("Fonts\\OpenSans-Regular.ttf"),
-            };
-
-            window.Draw(fpsText);
         }
     }
 }
