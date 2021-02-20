@@ -19,15 +19,20 @@ namespace TheForestWaiter
     class Program
     {
         static readonly StateManager _manager = new StateManager();
-        static readonly GameWindow _window = new GameWindow();
+        static GameWindow _window;
 
         static void Main(string[] args)
         {
+            UserSettings.Load();
+
+            _window = new GameWindow();
             _window.InitializeWindow(false);
             _window.Window.SetKeyRepeatEnabled(false);
 
             GameContent.Initialize();
             _manager.SetState(new GameState(_window));
+
+            GameDebug.ProvideWindow(_window);
             GameDebug.StartConsoleThread();
 
             Stopwatch timer = Stopwatch.StartNew();

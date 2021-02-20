@@ -17,7 +17,7 @@ namespace TheForestWaiter.Environment
         public Chunks Chunks { get; set; } = null;
         public GameObjectContainer<Creature> Enemies { get; set; } = new GameObjectContainer<Creature>();
         public GameObjectContainer<DynamicObject> Bullets { get; set; } = new GameObjectContainer<DynamicObject>();
-        public ParticleSystem WorldParticles { get; set; } = new ParticleSystem(GameSettings.Current.MaxWorldParticles);
+        public ParticleSystem WorldParticles { get; set; } = new ParticleSystem(UserSettings.GetInt("Game", "MaxParticles"));
 
         public IEnumerable<Creature> Creatures => Enemies.Concat(new[] { Player });
 

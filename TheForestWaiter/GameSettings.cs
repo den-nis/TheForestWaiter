@@ -5,6 +5,7 @@ using System.Text;
 
 namespace TheForestWaiter
 {
+    //TODO: can this whole class be removed?
     class GameSettings
     {
         //TODO: load from json?

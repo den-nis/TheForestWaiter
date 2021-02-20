@@ -10,10 +10,6 @@ namespace TheForestWaiter
 {
     class GameWindow
     {
-        private const int DEFAULT_MINIMIZED_WIDTH = 800;
-        private const int DEFAULT_MINIMIZED_HEIGHT = 600;
-        private const string TITLE = "The forest waiter";
-
         public event EventHandler OnWindowChanged = delegate { };
 
         public RenderWindow Window { get; private set; }
@@ -24,18 +20,24 @@ namespace TheForestWaiter
             if (Window != null)
                 Window.Close();
 
+            var title = UserSettings.Get("Window", "Title");
+            var maxFps = uint.Parse(UserSettings.Get("Window", "MaxFramerate"));
+
             if (fullscreen)
             {
-                Window = new RenderWindow(VideoMode.DesktopMode, TITLE, Styles.Fullscreen);
+                Window = new RenderWindow(VideoMode.DesktopMode, title, Styles.Fullscreen);
                 IsFullscreen = true;
             }
             else
             {
-                Window = new RenderWindow(new VideoMode(DEFAULT_MINIMIZED_WIDTH, DEFAULT_MINIMIZED_HEIGHT), TITLE, Styles.Close | Styles.Resize);
+                var width = uint.Parse(UserSettings.Get("Window", "Width"));
+                var height = uint.Parse(UserSettings.Get("Window", "Height"));
+
+                Window = new RenderWindow(new VideoMode(width, height), title, Styles.Close | Styles.Resize);
                 IsFullscreen = false;
             }
 
-            Window.SetFramerateLimit(150);
+            Window.SetFramerateLimit(maxFps);
 
             OnWindowChanged(this, EventArgs.Empty);
         }

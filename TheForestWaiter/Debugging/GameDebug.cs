@@ -18,7 +18,9 @@ namespace TheForestWaiter.Debugging
         public static Queue<Action<RenderWindow>> DrawQueue { get; set; } = new Queue<Action<RenderWindow>>();
         public static Dictionary<string, object> Variables { get; set; } = new Dictionary<string, object>();
 
-        public static GameData Game { get; set; } = null;
+        public static GameData Game { get; set; }
+        public static GameWindow Window { get; set; }
+
         private static BlockingCollection<string> PendingCommands { get; set; } = new BlockingCollection<string>();
         private const BindingFlags COMMAND_BINDINGS = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static;
 
@@ -41,6 +43,12 @@ namespace TheForestWaiter.Debugging
         public static void ProvideGameData(GameData game)
         {
             Game = game;
+        }
+
+        [Conditional("DEBUG")]
+        public static void ProvideWindow(GameWindow window)
+		{
+            Window = window;
         }
 
         [Conditional("DEBUG")]

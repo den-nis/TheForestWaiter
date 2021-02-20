@@ -45,9 +45,9 @@ namespace TheForestWaiter.Debugging
         [Command("reboot", "Restart the game state")]
         public static void Reboot()
         {
+            //TODO: make this less ulgy
             var sm = (StateManager)typeof(Program).GetField("_manager", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
-            var gw = (GameWindow)typeof(Program).GetField("_window", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
-            sm.SetState(new GameState(gw));
+            sm.SetState(new GameState(GameDebug.Window));
         }
 
         [Command("spawn", "Spawns a creature", "spawn {name} ?{count} ?{x} ?{y}")]

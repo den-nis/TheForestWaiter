@@ -34,7 +34,7 @@ namespace TheForestWaiter.Objects
             AnimatedSprite = GameContent.Textures.CreateAnimatedSprite("Textures\\Player\\sheet.png");
             Gun = new SmallGun(game);
             Size = AnimatedSprite.Sheet.TileSize.ToVector2f();
-            CollisionRadius = Size.Y;
+            CollisionRadius = Size.Y + 5;
             ReceiveDynamicCollisions = true;
             EmitDynamicCollisions = false;
             Gravity = 1000;

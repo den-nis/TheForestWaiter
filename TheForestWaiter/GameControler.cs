@@ -43,7 +43,6 @@ namespace TheForestWaiter
             window.Closed += WindowClosed;
         }
 
-
         private void Detach()
         {
             _attached.KeyPressed -= WindowKeyPressed;
@@ -74,13 +73,13 @@ namespace TheForestWaiter
 
         private void WindowMouseButtonReleased(object sender, MouseButtonEventArgs e)
         {
-            if (e.Button == Mouse.Button.Left)
+            if (e.Button == UserSettings.Shoot)
                 _data.Objects.Player.StopFire();
         }
 
         private void WindowMouseButtonPressed(object sender, MouseButtonEventArgs e)
         {
-            if (e.Button == Mouse.Button.Left)
+            if (e.Button == UserSettings.Shoot)
                 _data.Objects.Player.StartFire();
         }
 
@@ -99,23 +98,19 @@ namespace TheForestWaiter
 
         private void WindowKeyReleased(object sender, KeyEventArgs e)
         {
-            switch (e.Code)
-            {
-                case Keyboard.Key.Space: _data.Objects.Player.StopJump(); break;
-                case Keyboard.Key.D: _data.Objects.Player.StopMoveRight(); break;
-                case Keyboard.Key.A: _data.Objects.Player.StopMoveLeft(); break;
-                case Keyboard.Key.F11: ToggleFullscreen(); break;
-            }
+            var c = e.Code;
+            if (c == UserSettings.Jump)  _data.Objects.Player.StopJump();
+            if (c == UserSettings.Right) _data.Objects.Player.StopMoveRight();
+            if (c == UserSettings.Left)  _data.Objects.Player.StopMoveLeft();
+            if (c == UserSettings.Fullscreen) ToggleFullscreen();
         }
 
         private void WindowKeyPressed(object sender, KeyEventArgs e)
         {
-            switch (e.Code)
-            {
-                case Keyboard.Key.Space: _data.Objects.Player.StartJump(); break;
-                case Keyboard.Key.D: _data.Objects.Player.StartMoveRight(); break;
-                case Keyboard.Key.A: _data.Objects.Player.StartMoveLeft(); break;
-            }
+            var c = e.Code;
+            if (c == UserSettings.Jump)  _data.Objects.Player.StartJump();
+            if (c == UserSettings.Right) _data.Objects.Player.StartMoveRight();
+            if (c == UserSettings.Left)  _data.Objects.Player.StartMoveLeft();
         }
 
         public void Dispose()

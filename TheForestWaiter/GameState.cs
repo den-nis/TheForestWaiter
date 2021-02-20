@@ -19,7 +19,7 @@ namespace TheForestWaiter
 {
     class GameState : IState, IDisposable
     {
-        private GameWindow _gameWindow;
+        private readonly GameWindow _gameWindow;
         private GameControler Controler { get; }
         private GameData Data { get; } = new GameData();
         private const float CLEAN_UP_INTERVAL = 10;
@@ -28,7 +28,7 @@ namespace TheForestWaiter
         public GameState(GameWindow gameWindow)
         {
             _gameWindow = gameWindow;
-            Controler = new GameControler(Data, gameWindow);
+            Controler = new GameControler(Data, _gameWindow);
         }
 
         public void Dispose()
