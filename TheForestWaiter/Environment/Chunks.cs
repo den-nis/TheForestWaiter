@@ -10,9 +10,9 @@ using TheForestWaiter.Entites;
 
 namespace TheForestWaiter.Environment
 {
-    class Chunks : IUpdateDraw
+    class Chunks
     { 
-        class Chunk : IUpdateDraw
+        class Chunk
         {
             public GameObjectContainer<StaticObject> Objects { get; } = new GameObjectContainer<StaticObject>();
 

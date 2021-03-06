@@ -13,5 +13,5 @@ namespace TheForestWaiter.States
         void Update(float time);
 
         void Load();
-    }
+	}
 }

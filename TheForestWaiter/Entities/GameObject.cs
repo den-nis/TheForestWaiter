@@ -7,7 +7,7 @@ using TheForestWaiter.Environment;
 
 namespace TheForestWaiter.Entites
 {
-    abstract class GameObject : IUpdateDraw
+    abstract class GameObject 
     {
         protected GameData Game { get; set; }
 

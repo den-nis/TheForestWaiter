@@ -50,6 +50,7 @@ namespace TheForestWaiter.Debugging
                 DrawQueue.Enqueue((win) =>
                 {
                     Box.OutlineColor = color;
+                    Box.OutlineThickness = Camera.Scale;
                     Box.Position = position;
                     Box.Size = size;
                     win.Draw(Box);
@@ -65,6 +66,7 @@ namespace TheForestWaiter.Debugging
                     Circle.OutlineColor = color;
                     Circle.Position = position - new Vector2f(radius,radius);
                     Circle.Radius = radius;
+                    Circle.OutlineThickness = Camera.Scale;
                     win.Draw(Circle);
                 });
         }
@@ -76,14 +78,17 @@ namespace TheForestWaiter.Debugging
             {
                 DrawQueue.Dequeue()(window);
             }
+
+            DrawUI(window);
         }
 
-
         [Conditional("DEBUG")]
-        public static void DrawUI(RenderWindow window)
+        private static void DrawUI(RenderWindow window)
         {
+            window.SetView(Camera.GetWindowView(window));
+
             if (GetVariable("draw_chunks", false))
-                DrawChunksUI(window);
+                DrawChunks(window);
 
             StringBuilder sb = new StringBuilder();
             sb.AppendLine($"Fps: {Math.Round(Fps)}");
@@ -104,9 +109,10 @@ namespace TheForestWaiter.Debugging
             };
 
             window.Draw(fpsText);
+            window.SetView(Camera.GetView());
         }
 
-        private static void DrawChunksUI(RenderWindow win)
+        private static void DrawChunks(RenderWindow win)
         {
             var active = Game.Objects.Chunks.GetActiveChunks();
 
@@ -121,9 +127,7 @@ namespace TheForestWaiter.Debugging
             {
                 chunkShape.OutlineColor = Color.Green;
                 if (active.Contains(i))
-                {
                     chunkShape.OutlineColor = Color.Red;
-                }
 
                 chunkShape.Position = Camera.ToCamera(new Vector2f(i * Chunks.CHUNK_WIDTH, 0));
                 win.Draw(chunkShape);

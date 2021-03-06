@@ -11,7 +11,7 @@ using TheForestWaiter.Objects.Enemies;
 
 namespace TheForestWaiter.Environment
 {
-    class GameObjects : IUpdateDraw
+    class GameObjects
     {
         public Player Player { get; set; } = null;
         public Chunks Chunks { get; set; } = null;

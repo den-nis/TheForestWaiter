@@ -4,6 +4,7 @@ using SFML.Window;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using TheForestWaiter.Debugging;
 
 namespace TheForestWaiter
 {
@@ -48,6 +49,9 @@ namespace TheForestWaiter
 
         private static void SizeChanged()
         {
+            if (!GameDebug.GetVariable("limit_view", true))
+                return;
+
             if (Size.X > GameSettings.Current.MaxWorldView.X || Size.Y > GameSettings.Current.MaxWorldView.Y)
             {
                 var zoom = Math.Min(GameSettings.Current.MaxWorldView.Y / Size.Y, GameSettings.Current.MaxWorldView.X / Size.X);
@@ -65,9 +69,14 @@ namespace TheForestWaiter
             return (world - Position) / Scale;
         }
 
-        public static View GetView()
-        {
-            return new View(Center, Size);
+		public static View GetView()
+		{
+			return new View(Center, Size);
+		}
+
+        public static View GetWindowView(RenderWindow window)
+		{
+            return new View(new FloatRect(new Vector2f(0, 0), window.Size.ToVector2f()));
         }
     }
 }

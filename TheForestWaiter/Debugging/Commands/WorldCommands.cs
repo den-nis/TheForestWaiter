@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using TheForestWaiter.Environment;
 using TheForestWaiter.Objects;
 using TheForestWaiter.States;
 
@@ -98,6 +99,20 @@ namespace TheForestWaiter.Debugging
         public static void Arm()
         {
             GameDebug.Game.Objects.Player.Gun.Enabled = true;
+        }
+
+
+        [Command("mine", "minecraft?", "mine {radius}")]
+        public static void Mine(string[] args)
+        {
+            var r = int.Parse(args[0]);
+            var tiles = GameDebug.Game.World.GetTilesInArea(new Vector2f(r, r), GameDebug.Game.Objects.Player.Position);
+
+            foreach(var i in tiles)
+			{
+                GameDebug.Game.World.Tiles[(int)i.Position.X / World.TILE_SIZE, (int)i.Position.Y].Solid = false;
+                GameDebug.Game.World.Tiles[(int)i.Position.X / World.TILE_SIZE, (int)i.Position.Y / World.TILE_SIZE].Air = true;
+			}
         }
     }
 }

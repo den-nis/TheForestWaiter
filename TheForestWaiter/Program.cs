@@ -13,6 +13,7 @@ using TheForestWaiter.States;
 using TheForestWaiter.Debugging;
 using TheForestWaiter.Content;
 using TheForestWaiter.Essentials;
+using System.Globalization;
 
 namespace TheForestWaiter
 {
@@ -21,8 +22,9 @@ namespace TheForestWaiter
         static readonly StateManager _manager = new StateManager();
         static GameWindow _window;
 
-        static void Main(string[] args)
+        static void Main()
         {
+            SetEnglishCultureInfo();
             Stopwatch startupTimer = Stopwatch.StartNew();
 
             UserSettings.Load();
@@ -47,22 +49,29 @@ namespace TheForestWaiter
                 timer.Restart();
 
                 _window.Window.DispatchEvents();
-                _window.Window.Clear(new Color(46, 36, 115));
 
                 _manager.Update(deltaTime);
                 GameDebug.Update(deltaTime);
 
                 _window.Window.SetView(Camera.GetView());
-                _manager.Draw(_window.Window);
+                _manager.Draw();
                 GameDebug.Draw(_window.Window);
-
-                _window.Window.SetView(new View(new FloatRect(new Vector2f(0,0), _window.Window.Size.ToVector2f())));
-                GameDebug.DrawUI(_window.Window);
 
                 _window.Window.Display();
 
                 deltaTime = (float)timer.Elapsed.TotalSeconds * GameDebug.GetVariable("time_scale", 1f);
+
+                if (GameDebug.GetVariable("lag_limit", true))
+                    deltaTime = Math.Min(deltaTime, 1);
             }
+        }
+
+        static void SetEnglishCultureInfo()
+		{
+            var cInfo = new CultureInfo("en");
+            CultureInfo.DefaultThreadCurrentCulture = cInfo;
+            CultureInfo.DefaultThreadCurrentUICulture = cInfo;
+            CultureInfo.CurrentCulture = cInfo;
         }
     }
 }

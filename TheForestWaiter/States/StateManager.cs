@@ -7,7 +7,7 @@ using TheForestWaiter.Entites;
 
 namespace TheForestWaiter.States
 {
-    class StateManager : IUpdateDraw
+    class StateManager
     {
         public bool Loading { get; set; } = false;
 
@@ -21,7 +21,7 @@ namespace TheForestWaiter.States
             CurrentState = state;
         }
 
-        public void Draw(RenderWindow window) => CurrentState.Draw();
+        public void Draw() => CurrentState.Draw();
 
         public void Update(float time) => CurrentState.Update(time);
         

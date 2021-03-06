@@ -46,5 +46,10 @@ namespace TheForestWaiter
             var l = Len(vec);
             return new Vector2f(vec.X / l, vec.Y / l);
         }
+
+        public static Vector2f Multiply(this Vector2f vec1, Vector2f vec2)
+		{
+            return new Vector2f(vec1.X * vec2.X, vec1.Y * vec2.Y);
+		}
     }
 }
