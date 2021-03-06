@@ -21,7 +21,7 @@ namespace TheForestWaiter.Debugging
             Description = description;
         }
 
-        public CommandAttribute(string command, string description, string usage) : this(command, usage)
+        public CommandAttribute(string command, string description, string usage) : this(command, description)
         {
             Usage = usage;
         }
