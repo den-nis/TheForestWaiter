@@ -3,6 +3,7 @@ using SFML.System;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using TheForestWaiter.Environment;
 
 namespace TheForestWaiter.Entites
 {
@@ -22,9 +23,16 @@ namespace TheForestWaiter.Entites
             set => _MarkedForDeletion |= value;
         }
 
-        public void SetSpawn(Vector2f at)
+        /// <summary>
+        /// Can be used for setup logic that needs the tiled object data
+        /// </summary>
+        public virtual void PrepareSpawn(MapObject mapObject)
         {
-            Position = at;
+        }
+
+        public virtual void SetSpawn(Vector2f position)
+		{
+            Position = position;
             Position += new Vector2f(0, -Size.Y);
         }
 

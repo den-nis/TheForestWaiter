@@ -78,6 +78,7 @@ namespace TheForestWaiter.Environment
                 if (staticObject != null)
                 {
                     staticObject.SetSpawn(inf.Position);
+                    staticObject.PrepareSpawn(inf);
                     Chunks.Add(staticObject);
                     continue;
                 }

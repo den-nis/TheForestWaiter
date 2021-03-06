@@ -18,6 +18,17 @@
       "textureEndFrame": 4
     },
 
+    "Textures\\World\\grass.png": {
+      "type": "Texture",
+      "compression": "NoCompression",
+
+      "textureTileWidth": 32,
+      "textureTileHeight": 6,
+      "textureHasTileSpacing": true,
+      "textureStartFrame": 0,
+      "textureEndFrame": 1
+    },
+
     "Textures\\world.png": {
       "type": "Texture",
       "compression": "NoCompression",
@@ -41,7 +52,7 @@
       "textureTileHeight": 19,
       "textureStartFrame": 0,
       "textureEndFrame": 7,
-      "textureFramerate":  12
+      "textureFramerate": 12
     }
   }
 }

@@ -101,10 +101,13 @@ namespace TheForestWaiter.Graphics
             var widthWithoutMargin = Sprite.Texture.Size.X - Margin.X * 2;
             var heightWithoutMargin = Sprite.Texture.Size.Y - Margin.Y * 2;
 
+            var tileWidthWithSpacing = TileSize.X + Spacing.X;
+			var tileHeightWithSpacing = TileSize.Y + Spacing.Y;
+            
             Tiles = new Vector2i
             (
-                 (int)((widthWithoutMargin - Spacing.X / 2f) / (TileSize.X + Spacing.X / 2f)),
-                 (int)((heightWithoutMargin - Spacing.Y / 2f) / (TileSize.Y + Spacing.Y / 2f))
+                 (int)((widthWithoutMargin + Spacing.X) / tileWidthWithSpacing),
+                 (int)((heightWithoutMargin + Spacing.Y) / tileHeightWithSpacing)
             );
         }
     }
