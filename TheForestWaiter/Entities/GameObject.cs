@@ -22,6 +22,12 @@ namespace TheForestWaiter.Entites
             set => _MarkedForDeletion |= value;
         }
 
+        public void SetSpawn(Vector2f at)
+        {
+            Position = at;
+            Position += new Vector2f(0, -Size.Y);
+        }
+
         private static long IdCounter { get; set; } = 0;
         public long GameObjectId { get; } = IdCounter++;
 

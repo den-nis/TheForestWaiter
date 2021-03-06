@@ -63,20 +63,21 @@ namespace TheForestWaiter.Environment
 
             var objects = map.Layers.Where(l => l.Type == "objectgroup").SelectMany(l => l.Objects);
             ObjectFactory factory = new ObjectFactory(data);
+            factory.Index();
 
             foreach(MapObject inf in objects)
             {
                 if (inf.Type == "Spawn")
                 {
                     Player = new Player(data);
-                    inf.SetSpawn(Player);
+                    Player.SetSpawn(inf.Position);
                     continue;
                 }
 
                 StaticObject staticObject = factory.GetStaticObject(inf.Type);
                 if (staticObject != null)
                 {
-                    inf.SetSpawn(staticObject);
+                    staticObject.SetSpawn(inf.Position);
                     Chunks.Add(staticObject);
                     continue;
                 }

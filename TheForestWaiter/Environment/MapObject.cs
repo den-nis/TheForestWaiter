@@ -18,9 +18,6 @@ namespace TheForestWaiter.Environment
         public float X { get; set; }
         public float Y { get; set; }
 
-        public void SetSpawn(GameObject obj)
-        {
-            obj.Position = new Vector2f(X - obj.Size.X / 2, Y - obj.Size.Y);
-        }
+        public Vector2f Position => new Vector2f(X, Y);
     }
 }

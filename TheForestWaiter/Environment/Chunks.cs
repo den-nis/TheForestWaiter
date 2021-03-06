@@ -60,20 +60,20 @@ namespace TheForestWaiter.Environment
         
         public void LoadChunksAt(Vector2f location)
         {
-            var lastChunk = CurrentChunkId;
-            var chunk = GetChunkIdAt(location);
-            if (chunk == lastChunk)
+            var lastChunkId = CurrentChunkId;
+            var loadChunkId = GetChunkIdAt(location);
+            if (loadChunkId == lastChunkId)
                 return;
 
             for (int i = -LOAD_DISTANCE_CHUNKS; i <= LOAD_DISTANCE_CHUNKS; i++)
             {
-                var chunkId = chunk + i;
+                var chunkId = loadChunkId + i;
 
                 if (chunkId > -1 && chunkId < _chunkArray.Length) 
                     _activeChunks[i + LOAD_DISTANCE_CHUNKS] = _chunkArray[chunkId];
             }
 
-            CurrentChunkId = chunk;
+            CurrentChunkId = loadChunkId;
         }
 
         public void Update(float time)

@@ -23,6 +23,8 @@ namespace TheForestWaiter
 
         static void Main(string[] args)
         {
+            Stopwatch startupTimer = Stopwatch.StartNew();
+
             UserSettings.Load();
 
             _window = new GameWindow();
@@ -37,6 +39,8 @@ namespace TheForestWaiter
 
             Stopwatch timer = Stopwatch.StartNew();
             float deltaTime = 0;
+
+            GameDebug.Log($"Finished startup in {startupTimer.Elapsed.TotalSeconds} seconds");
 
             while (_window.Window.IsOpen)
             {
