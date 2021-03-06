@@ -120,9 +120,6 @@ namespace TheForestWaiter.Particles
 
         public void Emit(ParticleProp prop)
         {
-            if (GameSettings.Current.DisabledParticles)
-                return;
-
             ref Particle p = ref ParticlePool[PoolIndex];
 
             p.ColorStart = prop.ColorStart;
