@@ -42,5 +42,10 @@ namespace TheForestWaiter
 		{
 			return int.Parse(_data[category][name]);
 		}
+
+		public static bool GetBool(string category, string name)
+		{
+			return bool.Parse(_data[category][name]);
+		}
 	}
 }

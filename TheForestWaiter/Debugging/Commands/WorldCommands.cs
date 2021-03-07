@@ -101,7 +101,6 @@ namespace TheForestWaiter.Debugging
             GameDebug.Game.Objects.Player.Gun.Enabled = true;
         }
 
-
         [Command("mine", "minecraft?", "mine {radius}")]
         public static void Mine(string[] args)
         {
@@ -110,7 +109,7 @@ namespace TheForestWaiter.Debugging
 
             foreach(var i in tiles)
 			{
-                GameDebug.Game.World.Tiles[(int)i.Position.X / World.TILE_SIZE, (int)i.Position.Y].Solid = false;
+                GameDebug.Game.World.Tiles[(int)i.Position.X / World.TILE_SIZE, (int)i.Position.Y / World.TILE_SIZE].Solid = false;
                 GameDebug.Game.World.Tiles[(int)i.Position.X / World.TILE_SIZE, (int)i.Position.Y / World.TILE_SIZE].Air = true;
 			}
         }

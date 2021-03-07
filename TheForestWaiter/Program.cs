@@ -24,6 +24,18 @@ namespace TheForestWaiter
 
         static void Main()
         {
+            try
+            {
+                Run();
+            }
+            catch(Exception e)
+			{
+                Crash.Now(e);
+			}
+        }
+
+        static void Run()
+        {
             SetEnglishCultureInfo();
             Stopwatch startupTimer = Stopwatch.StartNew();
 
@@ -65,6 +77,7 @@ namespace TheForestWaiter
                     deltaTime = Math.Min(deltaTime, 1);
             }
         }
+
 
         static void SetEnglishCultureInfo()
 		{

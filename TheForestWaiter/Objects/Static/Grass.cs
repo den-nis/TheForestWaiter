@@ -17,50 +17,26 @@ namespace TheForestWaiter.Objects.Static
         const int FRAME_RATE_MIN = 2;
         const int FRAME_RATE_MAX = 5;
 
-        private int _cellsWide;
-
-        AnimatedSprite[] Animations { get; set; }
+        AnimatedSprite Animation { get; set; }
 
         public Grass(GameData game) : base(game)
         {
-
-        }
-       
-        private void SetupGrassFields()
-		{
-            Animations = new AnimatedSprite[_cellsWide];
-            for (int i = 0; i < _cellsWide; i++)
-            {
-                Animations[i] = GameContent.Textures.CreateAnimatedSprite("Textures\\World\\grass.png");
-                Animations[i].Framerate = (int)Rng.Range(FRAME_RATE_MIN, FRAME_RATE_MAX);
-                Animations[i].CurrentFrame = (int)Rng.Range(Animations[i].AnimationStart, Animations[i].AnimationEnd);
-            }
+            Animation = GameContent.Textures.CreateAnimatedSprite("Textures\\World\\grass.png");
+            Animation.Framerate = (int)Rng.Range(FRAME_RATE_MIN, FRAME_RATE_MAX);
+            Animation.CurrentFrame = (int)Rng.Range(Animation.AnimationStart, Animation.AnimationEnd);
+            Size = Animation.Sheet.TileSize.ToVector2f();
         }
 
         public override void Update(float time)
         {
-            for (int i = 0; i < _cellsWide; i++)
-            {
-                Animations[i].Sheet.Sprite.Position = Position + new Vector2f(i * World.TILE_SIZE, -Animations[i].Sheet.TileSize.Y);
-                Animations[i].Update(time);
-            }
-
+            Animation.Sheet.Sprite.Position = Position;
+            Animation.Update(time);
             base.Update(time);
         }
 
-		public override void PrepareSpawn(MapObject obj)
-		{
-            _cellsWide = obj.Width / World.TILE_SIZE;
-            Position = new Vector2f(obj.X, obj.Y);
-            SetupGrassFields();
-        }
-
 		public override void Draw(RenderWindow window)
-        {
-            foreach (var animation in Animations)
-            {
-                window.Draw(animation);
-            }
+        { 
+            window.Draw(Animation);
         }
     }
 }
