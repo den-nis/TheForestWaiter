@@ -24,12 +24,12 @@ namespace TheForestWaiter.Environment
 		private const float MOUNTAIN_SPEED = 0.2f;
 		private const float TREES_SPEED = 0.5f;
 
-		private Sprite _spriteSky;
-		private Sprite _spriteStars;
-		private Sprite _spriteMountain;
-		private Sprite _spriteTrees;
+		private readonly Sprite _spriteSky;
+		private readonly Sprite _spriteStars;
+		private readonly Sprite _spriteMountain;
+		private readonly Sprite _spriteTrees;
 
-		private Sprite[] _all;
+		private readonly Sprite[] _all;
 
 		private Vector2f _offset;
 		private Vector2f _windowSize;
@@ -75,10 +75,10 @@ namespace TheForestWaiter.Environment
 		{
 			window.SetView(Camera.GetWindowView(window));
 
-			window.Draw(_spriteSky);
-			window.Draw(_spriteStars);
-			window.Draw(_spriteMountain);
-			window.Draw(_spriteTrees);
+			foreach (var i in _all)
+			{
+				window.Draw(i);
+			}
 
 			window.SetView(Camera.GetView());
 		}
