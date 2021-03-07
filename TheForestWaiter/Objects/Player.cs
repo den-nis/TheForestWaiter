@@ -32,7 +32,7 @@ namespace TheForestWaiter.Objects
         {
             Health = 100;
             AnimatedSprite = GameContent.Textures.CreateAnimatedSprite("Textures\\Player\\sheet.png");
-            Gun = new SmallGun(game);
+            Gun = new Sniper(game);
             Size = AnimatedSprite.Sheet.TileSize.ToVector2f();
             CollisionRadius = Size.Y + 5;
             ReceiveDynamicCollisions = true;
@@ -151,12 +151,13 @@ namespace TheForestWaiter.Objects
 
         protected override void OnDeath()
         {
+            Gravity = 0;
             Gun.Enabled = false;
         }
 
         protected override void OnDamage(DynamicObject by)
         {
-            if (by != null) { }
+            if (by != null) 
                 ApplyKnockback(by);
         }
     }

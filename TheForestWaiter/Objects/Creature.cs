@@ -34,12 +34,14 @@ namespace TheForestWaiter.Objects
             base.Update(time);
         }
 
-        public void Damage(DynamicObject by, float amount)
+        public void Damage(DynamicObject by, float amount) => Damage(by, amount, StunTime);
+
+        public void Damage(DynamicObject by, float amount, float stunTime)
         {
             if (IsStunned)
                 return;
 
-            _stunTimer = StunTime;
+            _stunTimer = stunTime;
 
             Health -= amount;
             Health = Math.Max(0, Health);

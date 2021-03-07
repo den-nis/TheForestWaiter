@@ -12,7 +12,7 @@ namespace TheForestWaiter.Particles.Templates
         {
             ColorEnd = Color.Black,
             ColorStart = new Color(100, 100, 100),
-            Life = 1,
+            Life = 2,
             RotationSpeedVariation = 10,
             SizeStart = 2,
             SizeEnd = 5,
@@ -20,16 +20,30 @@ namespace TheForestWaiter.Particles.Templates
             VelocityVariation = new Vector2f(20, 20)
         };
 
+        public static ParticleProp SniperSmoke => new ParticleProp
+        {
+            ColorEnd = new Color(255,255,255,0),
+            ColorStart = new Color(100, 100, 100),
+            Life = 2,
+            RotationSpeedVariation = 10,
+            SizeStart = 2,
+            SizeEnd = 2,
+            LifeVariation = 1,
+            Velocity = new Vector2f(0, -10),
+            VelocityVariation = new Vector2f(3, 12)
+        };
+
+
         public static ParticleProp Spark => new ParticleProp
         {
-            ColorEnd = new Color(77,77,77,0),
-            ColorStart = new Color(255, 238, 77),
+            ColorStart = new Color(255, 220, 198),
+            ColorEnd = new Color(255,178,0,0),
             Life = 1,
             RotationSpeedVariation = 10,
             SizeStart = 2,
             SizeEnd = 5,
             LifeVariation = 1,
-            VelocityVariation = new Vector2f(20, 20)
+            VelocityVariation = new Vector2f(150, 150)
         };
 
         public static ParticleProp Blood => new ParticleProp

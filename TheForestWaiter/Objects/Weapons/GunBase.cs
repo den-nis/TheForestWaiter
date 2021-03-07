@@ -18,8 +18,6 @@ namespace TheForestWaiter.Objects.Weapons
         //Protected options
         protected abstract float Range { get; }
         protected abstract float FireRatePerSecond { get; } 
-        protected abstract float RecoilPerShot { get; }
-        protected abstract float Damage { get; } 
         protected abstract bool AutoFire { get; }
         protected abstract Vector2f Origin { get; }
         protected abstract Vector2f AttachPoint { get; }

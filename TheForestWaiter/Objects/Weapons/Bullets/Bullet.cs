@@ -13,10 +13,10 @@ namespace TheForestWaiter.Objects.Weapons.Bullets
 {
     class Bullet : DynamicObject
     {
-        private const int DAMAGE = 5;
+        protected int Damage { get; set; } = 5;
 
-        private Sprite BulletSprite { get; set; }
-        private float StartAngle { get; }
+        protected Sprite BulletSprite { get; set; }
+        protected float StartAngle { get; }
         private bool HasHit { get; set; } = false;
         
         private Vector2f Spawn { get; }
@@ -60,7 +60,7 @@ namespace TheForestWaiter.Objects.Weapons.Bullets
             {
                 if (Collisions.SweptAABB(enemy.FloatRect, FloatRect, velocity * time, out _) < 1)
                 {
-                    enemy.Damage(this, DAMAGE);
+                    enemy.Damage(this, Damage);
                     Explode();
                 }
             }
