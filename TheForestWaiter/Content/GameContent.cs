@@ -1,17 +1,11 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using TheForestWaiter.Content;
 using TheForestWaiter.Shared;
 
-namespace TheForestWaiter
+namespace TheForestWaiter.Content
 {
     static class GameContent
     {
@@ -32,11 +26,9 @@ namespace TheForestWaiter
             var configJson = Source.GetString(ContentSettings.CONTENT_CONFIG_ENTRY);
             Config = JsonConvert.DeserializeObject<ContentConfig>(configJson);
 
-            //Load textures
             Textures = new TextureCache(Config);
             Textures.LoadFromSource(Source);
 
-            //Load fonts
             Fonts = new FontCache(Config);
             Fonts.LoadFromSource(Source);
         }
@@ -58,7 +50,7 @@ namespace TheForestWaiter
 
         private static IContentSource GetContentSourceFromStream(Stream stream)
         {
-            ZipArchive zip = new ZipArchive(stream);
+            ZipArchive zip = new(stream);
             return new ZipContentSource(zip);
         }
     }

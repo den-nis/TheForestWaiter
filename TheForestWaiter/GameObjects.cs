@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Linq;
 using TheForestWaiter.Objects;
 using SFML.Graphics;
-using TheForestWaiter.Entites;
-using SFML.System;
+using TheForestWaiter.Entities;
 using TheForestWaiter.Particles;
-using TheForestWaiter.Objects.Enemies;
 
 namespace TheForestWaiter.Environment
 {
-    class GameObjects
+	class GameObjects
     {
         public Player Player { get; set; } = null;
         public Chunks Chunks { get; set; } = null;
@@ -62,7 +58,7 @@ namespace TheForestWaiter.Environment
             Chunks = new Chunks(world);
 
             var objects = map.Layers.Where(l => l.Type == "objectgroup").SelectMany(l => l.Objects);
-            ObjectFactory factory = new ObjectFactory(data);
+            ObjectFactory factory = new(data);
             factory.Index();
 
             foreach(MapObject inf in objects)

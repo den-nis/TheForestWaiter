@@ -13,8 +13,6 @@ namespace TheForestWaiter.Graphics
         public Vector2i Tiles { get; private set; }
         public Vector2i TileSize { get; }
 
-        private Vector2f HalfMargin { get; set; }
-
         public int TotatlTiles => Tiles.X * Tiles.Y;
 
         private Vector2i _margin = default;
@@ -96,8 +94,6 @@ namespace TheForestWaiter.Graphics
 
         private void Refresh()
         {
-            HalfMargin = new Vector2f(Margin.X / 2f, Margin.Y / 2f);
-
             var widthWithoutMargin = Sprite.Texture.Size.X - Margin.X * 2;
             var heightWithoutMargin = Sprite.Texture.Size.Y - Margin.Y * 2;
 

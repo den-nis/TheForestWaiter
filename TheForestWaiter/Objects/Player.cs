@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 using TheForestWaiter.Content;
 using TheForestWaiter.Debugging;
-using TheForestWaiter.Entites;
+using TheForestWaiter.Entities;
 using TheForestWaiter.Environment;
 using TheForestWaiter.Essentials;
 using TheForestWaiter.Graphics;

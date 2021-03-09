@@ -1,17 +1,15 @@
 ﻿using SFML.Graphics;
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
-using TheForestWaiter.Entites;
+using TheForestWaiter.Entities;
 using TheForestWaiter.Debugging;
 
 namespace TheForestWaiter
 {
     class GameObjectContainer<G> : IEnumerable<G> where G : GameObject
     {
-        List<G> Objects { get; set; } = new List<G>();
+        private readonly List<G> _objects = new();
 
         public void Draw(RenderWindow window)
         {
@@ -31,19 +29,19 @@ namespace TheForestWaiter
 
         public void Add(G obj)
         {
-            Objects.Add(obj);
+            _objects.Add(obj);
         }
 
-        public void Clear() => Objects.Clear();
+        public void Clear() => _objects.Clear();
 
         public void CleanupMarkedForDeletion()
         {
-            GameDebug.LogDeletions<G>(Objects.Where(o => o.MarkedForDeletion));
+            GameDebug.LogDeletions<G>(_objects.Where(o => o.MarkedForDeletion));
 
-            Objects.RemoveAll(o => o.MarkedForDeletion);
+            _objects.RemoveAll(o => o.MarkedForDeletion);
         }
 
-        public IEnumerator<G> GetEnumerator() => Objects.Where(o => !o.MarkedForDeletion).GetEnumerator();
+        public IEnumerator<G> GetEnumerator() => _objects.Where(o => !o.MarkedForDeletion).GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }

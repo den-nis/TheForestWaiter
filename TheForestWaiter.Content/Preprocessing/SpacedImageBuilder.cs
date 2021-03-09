@@ -1,9 +1,6 @@
 ﻿using ImageMagick;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TheForestWaiter.Content
 {
@@ -27,7 +24,7 @@ namespace TheForestWaiter.Content
             int newImageHeight = source.Height + 1 * tilesHigh * 2;
 
 
-            MagickImage result = new MagickImage(MagickColors.Transparent, newImageWidth, newImageHeight);
+            MagickImage result = new(MagickColors.Transparent, newImageWidth, newImageHeight);
 
             IMagickImage<ushort>[] tiles = source.CropToTiles(TileWidth, TileHeight).ToArray();
 

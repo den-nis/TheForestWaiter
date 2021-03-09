@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using TheForestWaiter.Content;
-using TheForestWaiter.Entites;
+using TheForestWaiter.Entities;
 using TheForestWaiter.Essentials;
 using TheForestWaiter.Particles;
 using TheForestWaiter.Particles.Templates;

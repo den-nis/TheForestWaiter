@@ -27,7 +27,7 @@ namespace TheForestWaiter.Content
             var contentConfig = GetConfig();
 
             using var fileStream = File.Create(output);
-            using ZipArchive contentZip = new ZipArchive(fileStream, ZipArchiveMode.Create);
+            using ZipArchive contentZip = new(fileStream, ZipArchiveMode.Create);
 
             string[] files = Directory.GetFiles(BasePath, "*.*", SearchOption.AllDirectories);
             foreach (var file in files)
@@ -48,7 +48,7 @@ namespace TheForestWaiter.Content
                 ContentSettings.CONTENT_CONFIG_ENTRY.Contains(Path.AltDirectorySeparatorChar)
                 )
             {
-                throw new InvalidOperationException("Content config entry name contains directory seperator");
+                throw new InvalidOperationException("Content config entry name contains directory separator");
             }
 
             var path = Path.Join(BasePath, ContentSettings.CONTENT_CONFIG_ENTRY);
@@ -104,7 +104,7 @@ namespace TheForestWaiter.Content
 
             var entry = contentZip.CreateEntry(ContentSettings.CONTENT_CONFIG_ENTRY, CompressionLevel.Optimal);
             using var stream = entry.Open();
-            using StreamWriter writer = new StreamWriter(stream);
+            using StreamWriter writer = new(stream);
             writer.Write(JsonConvert.SerializeObject(config, ContentConfig.SerializerSettings));
             writer.Flush();
         }

@@ -1,8 +1,4 @@
 ﻿using SFML.System;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using TheForestWaiter.Entites;
 
 namespace TheForestWaiter.Environment
 {
@@ -18,6 +14,6 @@ namespace TheForestWaiter.Environment
         public float X { get; set; }
         public float Y { get; set; }
 
-        public Vector2f Position => new Vector2f(X, Y);
+        public Vector2f Position => new(X, Y);
     }
 }

@@ -1,15 +1,12 @@
 ﻿using SFML.Graphics;
-using SFML.System;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using TheForestWaiter.Environment;
 
 namespace TheForestWaiter.Debugging
 {
@@ -17,16 +14,38 @@ namespace TheForestWaiter.Debugging
     {
         public static Queue<Action<RenderWindow>> DrawQueue { get; set; } = new Queue<Action<RenderWindow>>();
         public static Dictionary<string, object> Variables { get; set; } = new Dictionary<string, object>();
+        public static List<string> Logs { get; set; } = new List<string>();
 
-        public static GameData Game { get; set; }
-        public static GameWindow Window { get; set; }
+        private static GameData _game;
+        private static GameWindow _window;
 
-        private static BlockingCollection<string> PendingCommands { get; set; } = new BlockingCollection<string>();
+        public static GameData Game 
+        {
+            get
+			{
+#if !DEBUG
+                throw new InvalidOperationException("Cannot use debug resources in release");
+#endif
+                return _game;
+            }
+            set => _game = value;
+        }
+        public static GameWindow Window
+        {
+            get
+            {
+#if !DEBUG
+                throw new InvalidOperationException("Cannot use debug resources in release");
+#endif
+                return _window;
+            }
+            set => _window = value;
+        }
+
+        private static readonly BlockingCollection<string> _pendingCommands = new();
         private const BindingFlags COMMAND_BINDINGS = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static;
 
-        private static float Fps { get; set; }
-
-        public static List<string> Logs { get; set; } = new List<string>();
+        private static float _fps;
 
         public static T GetVariable<T>(string name, T defaultValue)
         {
@@ -68,7 +87,7 @@ namespace TheForestWaiter.Debugging
             {
                 while (true)
                 {
-                    PendingCommands.Add(Console.ReadLine());
+                    _pendingCommands.Add(Console.ReadLine());
                 }
             });
         }
@@ -76,15 +95,15 @@ namespace TheForestWaiter.Debugging
         [Conditional("DEBUG")]
         public static void Update(float time)
         {
-            Fps = 1 / time;
+            _fps = 1 / time;
 
             var lag = GetVariable("simulate_lag", 0);
             if (lag > 0)
                 Thread.Sleep(lag);
 
-            while(PendingCommands.Count > 0)
+            while(_pendingCommands.Count > 0)
             {
-                var command = PendingCommands.Take();
+                var command = _pendingCommands.Take();
 
                 try
                 {
@@ -104,7 +123,7 @@ namespace TheForestWaiter.Debugging
 
             if (com == null)
             {
-                Console.WriteLine($"Unknown command {command} try help");
+                Console.WriteLine($"Unknown command {command}, use \"help\" to get a list of commands");
                 return;
             }
 
@@ -120,10 +139,14 @@ namespace TheForestWaiter.Debugging
 
         public static CommandInfo GetCommandInfo(string name)
         {
-            return GetAllCommandInfo().FirstOrDefault(c => c.Attribute.Name == name);
+#if !DEBUG
+            throw new InvalidOperationException("Cannot use debug resources in release");
+#endif
+
+            return GetAllCommandInfos().FirstOrDefault(c => c.Attribute.Name == name);
         }
 
-        public static IEnumerable<CommandInfo> GetAllCommandInfo()
+        public static IEnumerable<CommandInfo> GetAllCommandInfos()
         {
             return typeof(Commands).GetMethods(COMMAND_BINDINGS).Select(m => 
                 new CommandInfo

@@ -15,40 +15,18 @@ namespace TheForestWaiter.Debugging
         [Command("setpos", "sets the player position", "setpos {x} {y}")]
         public static void SetPosition(string[] args)
         {  
-            if (GameDebug.Game?.Objects?.Player != null)
-            {
-                GameDebug.Game.Objects.Player.Position = new Vector2f
-                (
-                    float.Parse(args[0]),
-                    float.Parse(args[1])
-                );
-            }
-            else
-            {
-                Console.WriteLine("There is no player");
-            }
+            GameDebug.Game.Objects.Player.Position = new Vector2f
+            (
+                float.Parse(args[0]),
+                float.Parse(args[1])
+            );
         }
 
         [Command("getpos", "gets the player position")]
-        public static void GetPosition(string[] args)
+        public static void GetPosition()
         {
-            if (GameDebug.Game?.Objects?.Player != null)
-            {
-                var pos = GameDebug.Game.Objects.Player.Position;
-                Console.WriteLine($"x:{pos.X} y:{pos.Y}");
-            }
-            else
-            {
-                Console.WriteLine("There is no player");
-            }
-        }
-
-        [Command("reboot", "Restart the game state")]
-        public static void Reboot()
-        {
-            //TODO: make this less ulgy
-            var sm = (StateManager)typeof(Program).GetField("_manager", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
-            sm.SetState(new GameState(GameDebug.Window));
+            var pos = GameDebug.Game.Objects.Player.Position;
+            Console.WriteLine($"x:{pos.X} y:{pos.Y}");
         }
 
         [Command("spawn", "Spawns a creature", "spawn {name} ?{count} ?{x} ?{y}")]
@@ -88,7 +66,6 @@ namespace TheForestWaiter.Debugging
             return assembly.GetTypes().Where(t => typeof(Creature).IsAssignableFrom(t) && !t.IsAbstract).ToArray();
 		}
 
-
         [Command("disarm", "No more shooting")]
         public static void Disarm()
         {
@@ -99,19 +76,6 @@ namespace TheForestWaiter.Debugging
         public static void Arm()
         {
             GameDebug.Game.Objects.Player.Gun.Enabled = true;
-        }
-
-        [Command("mine", "minecraft?", "mine {radius}")]
-        public static void Mine(string[] args)
-        {
-            var r = int.Parse(args[0]);
-            var tiles = GameDebug.Game.World.GetTilesInArea(new Vector2f(r, r), GameDebug.Game.Objects.Player.Position);
-
-            foreach(var i in tiles)
-			{
-                GameDebug.Game.World.Tiles[(int)i.Position.X / World.TILE_SIZE, (int)i.Position.Y / World.TILE_SIZE].Solid = false;
-                GameDebug.Game.World.Tiles[(int)i.Position.X / World.TILE_SIZE, (int)i.Position.Y / World.TILE_SIZE].Air = true;
-			}
         }
     }
 }

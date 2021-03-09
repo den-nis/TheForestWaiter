@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TheForestWaiter.Entites;
+using TheForestWaiter.Entities;
 using TheForestWaiter.Environment;
 using TheForestWaiter.Essentials;
 using TheForestWaiter.Graphics;
@@ -18,7 +18,6 @@ namespace TheForestWaiter.Objects.Static
 
         public GrassField(GameData game) : base(game)
         {
-
         }
        
         private void SetupGrassFields()
@@ -42,5 +41,13 @@ namespace TheForestWaiter.Objects.Static
             Position = new Vector2f(obj.X, obj.Y);
             SetupGrassFields();
         }
-    }
+
+		public override void Draw(RenderWindow window)
+		{
+		}
+
+		public override void Update(float time)
+		{
+		}
+	}
 }

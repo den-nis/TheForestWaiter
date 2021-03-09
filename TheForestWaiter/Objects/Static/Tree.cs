@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TheForestWaiter.Entites;
+using TheForestWaiter.Content;
+using TheForestWaiter.Entities;
 using TheForestWaiter.Essentials;
 using TheForestWaiter.Graphics;
 
@@ -29,7 +30,6 @@ namespace TheForestWaiter.Objects.Static
         {
             Animation.Sheet.Sprite.Position = Position;
             Animation.Update(time);
-            base.Update(time);
         }
 
         public override void Draw(RenderWindow window)

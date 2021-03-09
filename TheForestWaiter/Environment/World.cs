@@ -31,7 +31,6 @@ namespace TheForestWaiter.Environment
                 Tiles = new Tile[map.Layers.First().Width, map.Layers.First().Height],
             };
 
-
             var layerLookup = map.Layers.ToDictionary(l => l.Name);
 
             world.LoadTileLayers
