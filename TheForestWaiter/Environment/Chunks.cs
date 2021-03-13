@@ -44,8 +44,14 @@ namespace TheForestWaiter.Environment
             {
                 var chunkId = loadChunkId + i;
 
-                if (chunkId > -1 && chunkId < _chunkArray.Length) 
+                if (chunkId > -1 && chunkId < _chunkArray.Length)
+                {
                     _activeChunks[i + LOAD_DISTANCE_CHUNKS] = _chunkArray[chunkId];
+                }
+                else
+				{
+                    _activeChunks[i + LOAD_DISTANCE_CHUNKS] = null;
+				}
             }
 
             CurrentChunkId = loadChunkId;
