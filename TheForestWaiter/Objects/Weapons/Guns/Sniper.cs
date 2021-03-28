@@ -19,19 +19,19 @@ namespace TheForestWaiter.Objects.Weapons.Guns
         private const float SMOKE_TIME_BETWEEN_EMIT = 0.005f;
         private const float SMOKE_TIME = 0.2f;
 
-        public Sniper(GameData game) : base(game, GameContent.Textures.CreateSprite("Textures\\Guns\\sniper.png"))
-        {
-            OnFire += OnFireEvent;
-        }
-
         protected override Vector2f AttachPoint => Game.Objects.Player.Center - new Vector2f(0, 1);
         protected override float Range => 5000;
         protected override float FireRatePerSecond => 0.6f;
         protected override bool AutoFire => false;
-        protected override Vector2f Origin => new Vector2f(0f,3f);
+        protected override Vector2f Origin => new(0f, 3f);
         protected override float FireSpeed => 2000;
         protected override float FireSpeedVariation => 0;
         protected override float Cone => 0;
+
+        public Sniper(GameData game) : base(game, GameContent.Textures.CreateSprite("Textures\\Guns\\sniper.png"))
+        {
+            OnFire += OnFireEvent;
+        }
 
         public override void Draw(RenderWindow win)
         {

@@ -19,7 +19,7 @@ namespace TheForestWaiter
 {
     class Program
     {
-        static readonly StateManager _manager = new StateManager();
+        static readonly StateManager _manager = new();
         static GameWindow _window;
 
         static void Main()

@@ -23,7 +23,7 @@ namespace TheForestWaiter
 
 		public static void Load()
 		{
-			FileIniDataParser parser = new FileIniDataParser();
+			FileIniDataParser parser = new();
 			_data = parser.ReadFile(SETTINGS_PATH);
 
 			Left = Enum.Parse<Key>(Get("Controls", "Left"));
