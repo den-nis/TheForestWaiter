@@ -5,7 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TheForestWaiter.Entites;
+using TheForestWaiter.Content;
+using TheForestWaiter.Entities;
 using TheForestWaiter.Essentials;
 using TheForestWaiter.Graphics;
 

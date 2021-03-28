@@ -20,7 +20,7 @@ namespace TheForestWaiter.Content
             Console.WriteLine($"Content output: {output}");
 
             Stopwatch timer = Stopwatch.StartNew();
-            ContentBuilder builder = new ContentBuilder(source);
+            ContentBuilder builder = new(source);
             builder.Build(output);
             Console.WriteLine($"Exported to {output}");
             Console.WriteLine($"Content build finished in {timer.Elapsed.Minutes} minutes and {timer.Elapsed.TotalSeconds} seconds");

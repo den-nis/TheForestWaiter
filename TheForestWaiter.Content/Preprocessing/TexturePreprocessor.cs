@@ -21,7 +21,7 @@ namespace TheForestWaiter.Content
             if (meta.TextureHasTileSpacing)
             {
                 Console.WriteLine("Resizing texture...");
-                SpacedImageBuilder builder = new SpacedImageBuilder(meta.TextureTileWidth, meta.TextureTileHeight);
+                SpacedImageBuilder builder = new(meta.TextureTileWidth, meta.TextureTileHeight);
                 var result = builder.BuildSpacedImage(new MagickImage(input));
                 return result.ToByteArray(MagickFormat.Png);
             }

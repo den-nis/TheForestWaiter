@@ -1,37 +1,12 @@
 ﻿using SFML.Graphics;
 using SFML.System;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TheForestWaiter.Entites;
+using TheForestWaiter.Entities;
 
 namespace TheForestWaiter.Environment
 {
     class Chunks
     { 
-        class Chunk
-        {
-            public GameObjectContainer<StaticObject> Objects { get; } = new GameObjectContainer<StaticObject>();
-
-            public void Draw(RenderWindow window)
-            {
-                Objects.Draw(window);
-            }
-
-            public void Update(float time)
-            {
-                Objects.Update(time);
-            }
-
-            public void Unloaded()
-            {
-                Objects.CleanupMarkedForDeletion();
-            }
-        }
-
         public const float CHUNK_WIDTH = 200;
         public const int LOAD_DISTANCE_CHUNKS = 5;
         public int CurrentChunkId { get; private set; }
@@ -69,8 +44,14 @@ namespace TheForestWaiter.Environment
             {
                 var chunkId = loadChunkId + i;
 
-                if (chunkId > -1 && chunkId < _chunkArray.Length) 
+                if (chunkId > -1 && chunkId < _chunkArray.Length)
+                {
                     _activeChunks[i + LOAD_DISTANCE_CHUNKS] = _chunkArray[chunkId];
+                }
+                else
+				{
+                    _activeChunks[i + LOAD_DISTANCE_CHUNKS] = null;
+				}
             }
 
             CurrentChunkId = loadChunkId;
@@ -100,7 +81,6 @@ namespace TheForestWaiter.Environment
             { 
                 _chunkArray[chunk].Objects.Add(obj);
             }
-
         }
 
         public IEnumerable<int> GetActiveChunks()

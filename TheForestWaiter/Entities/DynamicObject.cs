@@ -9,7 +9,7 @@ using TheForestWaiter.Environment;
 using TheForestWaiter.Essentials;
 using TheForestWaiter.Objects;
 
-namespace TheForestWaiter.Entites
+namespace TheForestWaiter.Entities
 {
     /// <summary>
     /// Dynamic objects have physics and can interact with the world
@@ -123,6 +123,7 @@ namespace TheForestWaiter.Entites
                 velocity.Y += Gravity * time;
         }
 
+        //TODO: some objects are slowly moving, I think it's because of this code
         private void ApplyDrag(float time)
         {
             velocity = new Vector2f(

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using TheForestWaiter.Entites;
+using TheForestWaiter.Entities;
 using TheForestWaiter.Objects.Static;
 
 namespace TheForestWaiter

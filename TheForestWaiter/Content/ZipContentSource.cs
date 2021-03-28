@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TheForestWaiter.Content
 {
@@ -23,9 +19,9 @@ namespace TheForestWaiter.Content
             return ReadBytesFromStream(stream);
         }
         
-        // I only added this because deflate stream does not support .Length...
         private static byte[] ReadBytesFromStream(Stream stream)
         {
+            //Added this because deflate stream does have .Length
             using var mStream = new MemoryStream();
             stream.CopyTo(mStream);
             return mStream.ToArray();
@@ -40,7 +36,7 @@ namespace TheForestWaiter.Content
         public string GetString(string name)
         {
             using Stream stream = GetStream(name);
-            StreamReader reader = new StreamReader(stream);
+            StreamReader reader = new(stream);
             return reader.ReadToEnd();
         }
 

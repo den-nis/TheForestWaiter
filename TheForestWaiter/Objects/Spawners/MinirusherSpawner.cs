@@ -1,10 +1,5 @@
-﻿using SFML.System;
+﻿using SFML.Graphics;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TheForestWaiter.Entites;
 using TheForestWaiter.Objects.Enemies;
 
 namespace TheForestWaiter.Objects.Spawners
@@ -14,6 +9,10 @@ namespace TheForestWaiter.Objects.Spawners
 		public MinirusherSpawner(GameData game) : base(game)
 		{
 
+		}
+
+		public override void Draw(RenderWindow window)
+		{
 		}
 
 		protected override void OnFirstUpdate()

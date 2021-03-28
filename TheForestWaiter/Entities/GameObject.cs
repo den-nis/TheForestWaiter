@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using TheForestWaiter.Environment;
 
-namespace TheForestWaiter.Entites
+namespace TheForestWaiter.Entities
 {
     abstract class GameObject 
     {
@@ -43,8 +43,8 @@ namespace TheForestWaiter.Entites
         public Vector2f Size { get; set; }
 
         public Vector2f Center { get => Position + Size / 2; set => Position = value - Size / 2; }
-        public IntRect IntRect => new IntRect(new Vector2i((int)Position.X, (int)Position.Y), new Vector2i((int)Size.X, (int)Size.Y));
-        public FloatRect FloatRect => new FloatRect(Position, Size);
+        public IntRect IntRect => new(new Vector2i((int)Position.X, (int)Position.Y), new Vector2i((int)Size.X, (int)Size.Y));
+        public FloatRect FloatRect => new(Position, Size);
 
         public bool Intersects(GameObject other) => FloatRect.Intersects(other.FloatRect);
 

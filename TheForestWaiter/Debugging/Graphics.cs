@@ -6,25 +6,26 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TheForestWaiter.Content;
 using TheForestWaiter.Environment;
 
 namespace TheForestWaiter.Debugging
 {
 	static partial class GameDebug
 	{
-        static RectangleShape Box { get; } = new RectangleShape
-        {
+        private static readonly RectangleShape _box = new()
+		{
             FillColor = Color.Transparent,
             OutlineThickness = 1,
         };
 
-        static RectangleShape RedTileBox { get; } = new RectangleShape
-        {
+        private static readonly RectangleShape _redTileBox = new()
+		{
             FillColor = new Color(255, 0, 0, 10),
             Size = new Vector2f(World.TILE_SIZE, World.TILE_SIZE),
         };
 
-        static CircleShape Circle { get; } = new CircleShape 
+        private static readonly CircleShape _circle = new() 
         {
             FillColor = Color.Transparent,
             OutlineThickness = 1,
@@ -37,8 +38,8 @@ namespace TheForestWaiter.Debugging
             {
                 DrawQueue.Enqueue((win) =>
                 {
-                    RedTileBox.Position = pos;
-                    win.Draw(RedTileBox);
+                    _redTileBox.Position = pos;
+                    win.Draw(_redTileBox);
                 });
             }
         }
@@ -49,11 +50,11 @@ namespace TheForestWaiter.Debugging
             if (GetVariable("draw_hitboxes", false))
                 DrawQueue.Enqueue((win) =>
                 {
-                    Box.OutlineColor = color;
-                    Box.OutlineThickness = Camera.Scale;
-                    Box.Position = position;
-                    Box.Size = size;
-                    win.Draw(Box);
+                    _box.OutlineColor = color;
+                    _box.OutlineThickness = Camera.Scale;
+                    _box.Position = position;
+                    _box.Size = size;
+                    win.Draw(_box);
                 });
         }
 
@@ -63,11 +64,11 @@ namespace TheForestWaiter.Debugging
             if (GetVariable("draw_hitboxes", false))
                 DrawQueue.Enqueue((win) =>
                 {
-                    Circle.OutlineColor = color;
-                    Circle.Position = position - new Vector2f(radius,radius);
-                    Circle.Radius = radius;
-                    Circle.OutlineThickness = Camera.Scale;
-                    win.Draw(Circle);
+                    _circle.OutlineColor = color;
+                    _circle.Position = position - new Vector2f(radius,radius);
+                    _circle.Radius = radius;
+                    _circle.OutlineThickness = Camera.Scale;
+                    win.Draw(_circle);
                 });
         }
 
@@ -79,19 +80,19 @@ namespace TheForestWaiter.Debugging
                 DrawQueue.Dequeue()(window);
             }
 
-            DrawUI(window);
+            DrawHud(window);
         }
 
         [Conditional("DEBUG")]
-        private static void DrawUI(RenderWindow window)
+        private static void DrawHud(RenderWindow window)
         {
             window.SetView(Camera.GetWindowView(window));
 
             if (GetVariable("draw_chunks", false))
                 DrawChunks(window);
 
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine($"Fps: {Math.Round(Fps)}");
+            StringBuilder sb = new();
+            sb.AppendLine($"Fps: {Math.Round(_fps)}");
             sb.AppendLine($"Zoom: {Camera.Scale}");
             sb.AppendLine($"Bullets: {Game?.Objects?.Bullets?.Count()}");
             sb.AppendLine($"Health: {Game?.Objects?.Player?.Health}");
@@ -100,8 +101,8 @@ namespace TheForestWaiter.Debugging
             sb.AppendLine($"Speed X: {Game?.Objects?.Player?.RealSpeed.X}");
             sb.AppendLine($"Speed Y: {Game?.Objects?.Player?.RealSpeed.Y}");
 
-            Text fpsText = new Text
-            {
+            Text fpsText = new()
+			{
                 Position = new Vector2f(0, 0),
                 DisplayedString = sb.ToString(),
                 CharacterSize = 20,
@@ -116,8 +117,8 @@ namespace TheForestWaiter.Debugging
         {
             var active = Game.Objects.Chunks.GetActiveChunks();
 
-            RectangleShape chunkShape = new RectangleShape
-            {
+            RectangleShape chunkShape = new()
+			{
                 Size = new Vector2f(Chunks.CHUNK_WIDTH / Camera.Scale, Game.World.Tiles.GetLength(1) * World.TILE_SIZE / Camera.Scale),
                 FillColor = Color.Transparent,
                 OutlineThickness = -1,

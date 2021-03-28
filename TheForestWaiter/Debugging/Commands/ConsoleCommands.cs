@@ -12,27 +12,23 @@ namespace TheForestWaiter.Debugging
         [Command("help", "Shows commands")]
         public static void Help()
         {
-            var commands = GameDebug.GetAllCommandInfo();
+            var commands = GameDebug.GetAllCommandInfos();
 
             foreach (var m in commands)
             {
-                if (string.IsNullOrWhiteSpace(m.Attribute.Usage))
-                    Console.WriteLine($"\t- {m.Attribute.Name}");
-                else
-                    Console.WriteLine($"\t- {m.Attribute.Name} : {m.Attribute.Usage}");
+                Console.Write($"\t- {ClipStr(m.Attribute.Name, 15, ' ')}");
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.WriteLine($"|{ClipStr(m.Attribute.Description, 40, ' ')}|");
+                Console.ResetColor();
             }
+		    Console.WriteLine("use \"usage {command}\" to get info about parameters");
         }
 
-        [Command("info", "shows more info about command", "info {command}")]
-        public static void Info(string[] args)
+        [Command("usage", "Shows how to use a command", "usage {command}")]
+        public static void Usage(string[] args)
         {
-            var command = GameDebug.GetCommandInfo(args[0]);
-
-            if (!string.IsNullOrWhiteSpace(command.Attribute.Usage))
-                Console.WriteLine($"\tUsage       : {command.Attribute.Usage}");
-
-            if (!string.IsNullOrWhiteSpace(command.Attribute.Description))
-                Console.WriteLine($"\tDescription : {command.Attribute.Description}");
+            var commands = GameDebug.GetCommandInfo(args[0]);
+			Console.WriteLine(commands.Attribute.Usage ?? "command has no parameters");
         }
 
         [Command("clear", "Clears the console")]
@@ -75,5 +71,18 @@ namespace TheForestWaiter.Debugging
             GameDebug.Variables["output_log"] = false;
 			Console.WriteLine("turned off logging");
         }
+
+        private static string ClipStr(string value, int length, char pad)
+		{
+            value ??= string.Empty;
+
+            if (value.Length > length)
+                return value.Substring(0, length);
+
+            if (value.Length < length)
+                return value + new string(pad, length - value.Length);
+
+            return value;
+		}
     }
 }

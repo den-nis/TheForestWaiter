@@ -8,6 +8,7 @@ namespace TheForestWaiter.Essentials
 {
     class Collisions
     {
+        //TODO: maybe use something else than SweptAABB
         public static Vector2f RayCast(FloatRect sBox, Vector2f start, Vector2f end)
         {
             var move = end - start;
@@ -21,8 +22,6 @@ namespace TheForestWaiter.Essentials
 
             return start + move * t;
         }
-
-
 
         // Sources:
         // Parts of this method are from : https://www.gamedev.net/articles/programming/general-and-gameplay-programming/swept-aabb-collision-detection-and-response-r3084/
@@ -113,6 +112,5 @@ namespace TheForestWaiter.Essentials
 
             return entryTime;
         }
-
     }
 }
