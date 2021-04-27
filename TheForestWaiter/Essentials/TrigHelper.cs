@@ -7,6 +7,9 @@ namespace TheForestWaiter.Essentials
 {
     public static class TrigHelper
     {
+        public static float Up => -(float)Math.PI / 2;
+        public static float Down => (float)Math.PI / 2;
+
         public static Vector2f FromAngleDeg(float degrees, float distance) => FromAngleRad(ToRad(degrees), distance);
         
         public static Vector2f FromAngleRad(float radians, float distance)

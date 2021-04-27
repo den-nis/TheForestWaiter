@@ -31,7 +31,8 @@ namespace TheForestWaiter
             catch(Exception e)
 			{
                 Crash.Now(e);
-			}
+                throw;
+            }
         }
 
         static void Run()

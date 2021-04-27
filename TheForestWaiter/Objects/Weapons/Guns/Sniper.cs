@@ -8,7 +8,6 @@ using TheForestWaiter.Environment;
 using TheForestWaiter.Essentials;
 using TheForestWaiter.Objects.Weapons.Bullets;
 using TheForestWaiter.Particles;
-using TheForestWaiter.Particles.Templates;
 
 namespace TheForestWaiter.Objects.Weapons.Guns
 { 
@@ -44,8 +43,7 @@ namespace TheForestWaiter.Objects.Weapons.Guns
             {
                 while (_smokeEmitTimer > SMOKE_TIME_BETWEEN_EMIT)
                 {
-                    var smoke = ParticleTemplates.SniperSmoke;
-                    smoke.Position = BarrelPosition;
+                    var smoke = GameContent.Particles.Get("Particles\\sniper_smoke.particle", BarrelPosition, TrigHelper.Up, 10);
                     Game.Objects.WorldParticles.Emit(smoke, 1);
                     _smokeEmitTimer -= SMOKE_TIME_BETWEEN_EMIT;
                 }
@@ -67,34 +65,8 @@ namespace TheForestWaiter.Objects.Weapons.Guns
 		private void OnFireEvent()
         {
             _smokeTimer = SMOKE_TIME;
-
-            Game.Objects.WorldParticles.Emit(new ParticleProp
-            {
-                ColorEnd = new Color(20, 20, 20, 0),
-                ColorStart = new Color(200, 200, 200),
-                RotationSpeedVariation = 20,
-                SizeStart = 2,
-                SizeEnd = 4,
-                Velocity = TrigHelper.FromAngleRad(LastAimAngle, 100) + new Vector2f(Game.Objects.Player.RealSpeed.X, 0),
-                VelocityVariation = new Vector2f(200, 200),
-                Life = .1f,
-                LifeVariation = .1f,
-                Position = BarrelPosition,
-            }, 30);
-
-            Game.Objects.WorldParticles.Emit(new ParticleProp
-            {
-                ColorEnd = new Color(255, 216, 0, 0),
-                ColorStart = new Color(200, 200, 200),
-                RotationSpeedVariation = 20,
-                SizeStart = 2,
-                SizeEnd = 4,
-                Velocity = TrigHelper.FromAngleRad(LastAimAngle, 200) + new Vector2f(Game.Objects.Player.RealSpeed.X, 0),
-                VelocityVariation = new Vector2f(50, 50),
-                Life = .8f,
-                LifeVariation = .1f,
-                Position = BarrelPosition,
-            }, 10);
+            var prop = GameContent.Particles.Get("Particles\\sniper_muzzle_flash.particle", BarrelPosition, LastAimAngle, 320);
+            Game.Objects.WorldParticles.Emit(prop, 20);
         }
     }
 }

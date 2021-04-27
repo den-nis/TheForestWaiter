@@ -6,7 +6,7 @@ using System.Text;
 
 namespace TheForestWaiter.Particles
 {
-    class ParticleProp
+    class ParticleProp : ICloneable
     {
         public Color ColorStart { get; set; }
         public Color ColorEnd { get; set; }
@@ -25,5 +25,24 @@ namespace TheForestWaiter.Particles
 
         public float LifeVariation { get; set; }
         public float Life { get; set; } = 1;
+
+		public object Clone()
+		{
+            return new ParticleProp
+            {
+                ColorStart = ColorStart,
+                ColorEnd = ColorEnd,
+                VelocityVariation = VelocityVariation,
+                Velocity = Velocity,
+                Position = Position,
+                SizeVariation = SizeVariation,
+                SizeStart = SizeStart,
+                SizeEnd = SizeEnd,
+                RotationSpeed = RotationSpeed,
+                RotationSpeedVariation = RotationSpeedVariation,
+                LifeVariation = LifeVariation,
+                Life = Life,
+            };
+        }
     }
 }

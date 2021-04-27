@@ -14,7 +14,6 @@ namespace TheForestWaiter.Debugging
 		public static void Now(Exception e)
 		{
 			Now(e.ToString());
-			System.Environment.Exit(1);
 		}
 	}
 }

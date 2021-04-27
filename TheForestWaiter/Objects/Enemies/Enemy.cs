@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using TheForestWaiter.Entities;
 using TheForestWaiter.Essentials;
-using TheForestWaiter.Particles.Templates;
 
 namespace TheForestWaiter.Objects.Enemies
 {

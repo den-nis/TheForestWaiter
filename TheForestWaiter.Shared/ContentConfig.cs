@@ -10,6 +10,7 @@ namespace TheForestWaiter.Shared
         Raw = 0,
         Texture,
         Font,
+        Particle,
     }
 
     public class ContentConfig

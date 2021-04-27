@@ -17,6 +17,7 @@ namespace TheForestWaiter.Content
             {
                 ".png" or ".jpg" => ContentType.Texture,
                 ".ttf" => ContentType.Font,
+                ".particle" => ContentType.Particle,
                 _ => ContentType.Raw,
             };
         }

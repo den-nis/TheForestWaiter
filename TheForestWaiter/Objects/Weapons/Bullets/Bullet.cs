@@ -7,7 +7,6 @@ using TheForestWaiter.Content;
 using TheForestWaiter.Entities;
 using TheForestWaiter.Essentials;
 using TheForestWaiter.Particles;
-using TheForestWaiter.Particles.Templates;
 
 namespace TheForestWaiter.Objects.Weapons.Bullets
 {
@@ -47,8 +46,7 @@ namespace TheForestWaiter.Objects.Weapons.Bullets
             HasHit = true;
             velocity = default;
 
-            var prop = ParticleTemplates.Spark;
-            prop.Position = Center;
+            var prop = GameContent.Particles.Get("Particles\\spark.particle", Center);
             prop.Life = 0.2f;
 
             Game.Objects.WorldParticles.Emit(prop, 10);

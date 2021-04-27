@@ -7,7 +7,6 @@ using TheForestWaiter.Content;
 using TheForestWaiter.Environment;
 using TheForestWaiter.Essentials;
 using TheForestWaiter.Particles;
-using TheForestWaiter.Particles.Templates;
 
 namespace TheForestWaiter.Objects.Weapons.Guns
 { 
@@ -39,7 +38,7 @@ namespace TheForestWaiter.Objects.Weapons.Guns
 
         private void OnFireEvent()
         {
-            Game.Objects.WorldParticles.Emit(ParticleTemplates.Spark, 10);
+            Game.Objects.WorldParticles.Emit(GameContent.Particles.Get("Particles\\handgun_smoke.particle", BarrelPosition, LastShotFromAngle, 120), 10);
         }
     }
 }

@@ -14,6 +14,7 @@ namespace TheForestWaiter.Content
 
         public static TextureCache Textures { get; private set; }
         public static FontCache Fonts { get; private set; }
+        public static ParticleCache Particles { get; private set; }
 
         public static void Initialize()
         {
@@ -31,6 +32,9 @@ namespace TheForestWaiter.Content
 
             Fonts = new FontCache(Config);
             Fonts.LoadFromSource(Source);
+
+            Particles = new ParticleCache(Config);
+            Particles.LoadFromSource(Source);
         }
 
 #pragma warning disable IDE0051 // Remove unused private members

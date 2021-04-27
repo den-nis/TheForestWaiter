@@ -7,7 +7,6 @@ using TheForestWaiter.Content;
 using TheForestWaiter.Entities;
 using TheForestWaiter.Essentials;
 using TheForestWaiter.Particles;
-using TheForestWaiter.Particles.Templates;
 
 namespace TheForestWaiter.Objects.Weapons.Bullets
 {
