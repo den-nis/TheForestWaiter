@@ -123,19 +123,20 @@ namespace TheForestWaiter.Entities
                 velocity.Y += Gravity * time;
         }
 
-        //TODO: some objects are slowly moving, I think it's because of this code
         private void ApplyDrag(float time)
         {
-            velocity = new Vector2f(
+            var newVelocity = new Vector2f(
                 velocity.X - (float)Math.CopySign(Drag.X, velocity.X) * time,
                 velocity.Y - (float)Math.CopySign(Drag.Y, velocity.Y) * time
             );
 
-            //if (Math.Abs(velocity.X) <= Drag.X * time) { }
-            //    //velocity.X = 0;
+            if (Math.Sign(newVelocity.X) != Math.Sign(velocity.X))
+                newVelocity.X = 0;
 
-            //    if (Math.Abs(velocity.Y) <= Drag.Y * time) { }
-            //    //velocity.Y = 0;
+            if (Math.Sign(newVelocity.Y) != Math.Sign(velocity.Y))
+                newVelocity.Y = 0;
+
+            velocity = newVelocity;
         }
 
         private void Move(Vector2f move)
