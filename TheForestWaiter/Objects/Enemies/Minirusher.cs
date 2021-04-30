@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using TheForestWaiter.Content;
 using TheForestWaiter.Entities;
 using TheForestWaiter.Essentials;
+using TheForestWaiter.Gibs;
 using TheForestWaiter.Graphics;
 
 namespace TheForestWaiter.Objects.Enemies
@@ -17,6 +18,7 @@ namespace TheForestWaiter.Objects.Enemies
         private const float ATTACK_DAMAGE = 10;
         private readonly AnimatedSprite _animation;
         private readonly RandomTrigger _jumpTrigger;
+        private readonly GibSpawner _gibSpawner;
         private int _targetDirection = 0;
 
         public Minirusher(GameData game) : base(game)
@@ -30,6 +32,7 @@ namespace TheForestWaiter.Objects.Enemies
             JumpVelocity = 450;
 
             _jumpTrigger = new RandomTrigger(Jump, 70, 1);
+            _gibSpawner = new GibSpawner(game, GameContent.Textures.CreateSpriteSheet("Textures\\Enemies\\minirusher_gibs.png"));
             CollisionRadius = 42;
             Health = 10;
         }
@@ -114,6 +117,7 @@ namespace TheForestWaiter.Objects.Enemies
 
         protected override void OnDeath() 
         {
+            _gibSpawner.SpawnComplete(Center);
             MarkedForDeletion = true;
         }
 

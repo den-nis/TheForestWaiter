@@ -53,6 +53,12 @@
       "textureStartFrame": 0,
       "textureEndFrame": 7,
       "textureFramerate": 12
+    },
+    "Textures\\Enemies\\minirusher_gibs.png": {
+      "type": "Texture",
+      "textureHasTileSpacing": true,
+      "textureTileWidth": 11,
+      "textureTileHeight": 8
     }
   }
 }

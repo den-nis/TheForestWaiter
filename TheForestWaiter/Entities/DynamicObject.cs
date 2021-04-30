@@ -19,7 +19,7 @@ namespace TheForestWaiter.Entities
         public bool ReceiveDynamicCollisions { get; set; } = true;
         public bool EmitDynamicCollisions { get; set; } = true;
 
-        public int TERMINAL_VELOCITY = 500; 
+        private const int TERMINAL_VELOCITY = 500; 
 
         public DynamicObject(GameData game) : base(game) { }
 
@@ -29,8 +29,8 @@ namespace TheForestWaiter.Entities
         //Physics
         public float CollisionRadius { get; set; } = 50;
         public float Gravity { get; set; } = 0;
-        public Vector2f velocity;
         public float Mass { get; set; } = 100;
+        public Vector2f velocity;
         public Vector2f RealSpeed { get; set; }
         public Vector2f Drag { get; set; } = new Vector2f(0, 0);
 

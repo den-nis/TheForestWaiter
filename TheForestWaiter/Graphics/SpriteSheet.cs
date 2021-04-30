@@ -39,6 +39,7 @@ namespace TheForestWaiter.Graphics
         public bool MirrorX { get; set; } = false;
         public bool MirrorY { get; set; } = false;
 
+        //TODO: Why not use Vector2i
         public SpriteSheet(Texture texture, int tileWidth, int tileHeight) : this(new Sprite(texture), tileWidth, tileHeight)
         {
 

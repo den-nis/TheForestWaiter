@@ -13,6 +13,7 @@ namespace TheForestWaiter.Environment
         public Chunks Chunks { get; set; } = null;
         public GameObjectContainer<Creature> Enemies { get; set; } = new GameObjectContainer<Creature>();
         public GameObjectContainer<DynamicObject> Bullets { get; set; } = new GameObjectContainer<DynamicObject>();
+        public GameObjectContainer<DynamicObject> Other { get; set; } = new GameObjectContainer<DynamicObject>();
         public ParticleSystem WorldParticles { get; set; } = new ParticleSystem(UserSettings.GetInt("Game", "MaxParticles"));
 
         public IEnumerable<Creature> Creatures => Enemies.Concat(new[] { Player });
@@ -22,6 +23,7 @@ namespace TheForestWaiter.Environment
             Chunks = null;
             Player = null;
             Enemies.Clear();
+            Other.Clear();
             Bullets.Clear();
             WorldParticles.Clear();
         }
@@ -30,11 +32,13 @@ namespace TheForestWaiter.Environment
         {
             Enemies.CleanupMarkedForDeletion();
             Bullets.CleanupMarkedForDeletion();
+            Other.CleanupMarkedForDeletion();
         }
 
         public void Draw(RenderWindow window)
         {
             Chunks.Draw(window);
+            Other.Draw(window);
             Enemies.Draw(window);
             Player.Draw(window);
             Bullets.Draw(window);
@@ -44,6 +48,7 @@ namespace TheForestWaiter.Environment
         public void Update(float time)
         {
             Chunks.Update(time);
+            Other.Update(time);
             Enemies.Update(time);
             Player.Update(time);
             Bullets.Update(time);
