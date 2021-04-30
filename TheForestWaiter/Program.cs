@@ -24,6 +24,7 @@ namespace TheForestWaiter
 
         static void Main()
         {
+            //TODO: make this easier to debug
             try
             {
                 Run();
@@ -73,6 +74,9 @@ namespace TheForestWaiter
                 _window.Window.Display();
 
                 deltaTime = (float)timer.Elapsed.TotalSeconds * GameDebug.GetVariable("time_scale", 1f);
+
+                if (GameDebug.GetVariable("lock_framerate", false))
+                    deltaTime = 0.01f;
 
                 if (GameDebug.GetVariable("lag_limit", true))
                     deltaTime = Math.Min(deltaTime, 1);

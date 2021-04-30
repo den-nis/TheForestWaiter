@@ -18,6 +18,8 @@ namespace TheForestWaiter.Objects
 {
     class Player : Creature
     {
+        private readonly Color _stunColor = new(255,200,200);
+
         public AnimatedSprite AnimatedSprite { get; set; } 
 
         private GunBase Gun { get; set; }
@@ -28,7 +30,7 @@ namespace TheForestWaiter.Objects
         private bool MovingRight { get; set; } = false;
         private bool MovingLeft { get; set; } = false;
         private Vector2f _aim;
-        private bool _aimingRight = false;
+        private bool _aimingRight = true;
 
         public Player(GameData game) : base(game)
         {
@@ -113,14 +115,12 @@ namespace TheForestWaiter.Objects
         {
             if (IsStunned)
             {
-                AnimatedSprite.Sprite.Color = new Color(255, 200, 200);
-                Gun.GunSprite.Color = new Color(255, 200, 200);
+                AnimatedSprite.Sprite.Color = _stunColor;
+                if (Gun != null) Gun.GunSprite.Color = _stunColor;
             }
             else
             {
-                if (Gun != null)
-                    Gun.GunSprite.Color = Color.White;
-
+                if (Gun != null) Gun.GunSprite.Color = Color.White;
                 AnimatedSprite.Sprite.Color = Color.White;
             }
 
@@ -180,6 +180,7 @@ namespace TheForestWaiter.Objects
 
         protected override void OnDeath()
         {
+            RemoveGun();
             Gravity = 0;
         }
 

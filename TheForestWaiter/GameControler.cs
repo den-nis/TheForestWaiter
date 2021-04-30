@@ -102,7 +102,7 @@ namespace TheForestWaiter
             if (c == UserSettings.Jump)  _data.Objects.Player.StopJump();
             if (c == UserSettings.Right) _data.Objects.Player.StopMoveRight();
             if (c == UserSettings.Left)  _data.Objects.Player.StopMoveLeft();
-            if (c == UserSettings.Fullscreen) ToggleFullscreen();
+            if (c == UserSettings.FullScreen) ToggleFullscreen();
         }
 
         private void WindowKeyPressed(object sender, KeyEventArgs e)

@@ -18,7 +18,7 @@ namespace TheForestWaiter
 		public static Key Left { get; private set; }
 		public static Key Right { get; private set; }
 		public static Key Jump { get; private set; }
-		public static Key Fullscreen { get; private set; }
+		public static Key FullScreen { get; private set; }
 		public static Button Shoot { get; private set; }
 
 		public static void Load()
@@ -29,13 +29,18 @@ namespace TheForestWaiter
 			Left = Enum.Parse<Key>(Get("Controls", "Left"));
 			Right = Enum.Parse<Key>(Get("Controls", "Right"));
 			Jump = Enum.Parse<Key>(Get("Controls", "Jump"));
-			Fullscreen = Enum.Parse<Key>(Get("Controls", "Fullscreen"));
+			FullScreen = Enum.Parse<Key>(Get("Controls", "FullScreen"));
 			Shoot = Enum.Parse<Button>(Get("Controls", "Shoot"));
 		}
 
 		public static string Get(string category, string name)
 		{
 			return _data[category][name];
+		}
+
+		public static float GetFloat(string category, string name)
+		{
+			return float.Parse(_data[category][name]);
 		}
 
 		public static int GetInt(string category, string name)

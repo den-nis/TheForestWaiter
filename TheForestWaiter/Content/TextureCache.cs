@@ -1,5 +1,6 @@
 ﻿using SFML.Graphics;
 using SFML.System;
+using System.Diagnostics;
 using TheForestWaiter.Graphics;
 using TheForestWaiter.Shared;
 
@@ -26,6 +27,10 @@ namespace TheForestWaiter.Content
         public SpriteSheet CreateSpriteSheet(string name)
         {
             var meta = Config.Content[name];
+
+            Debug.Assert(meta.TextureTileWidth != 0);
+            Debug.Assert(meta.TextureTileHeight != 0);
+
             var sheet = new SpriteSheet(Get(name), meta.TextureTileWidth, meta.TextureTileHeight);
 
             if (meta.TextureHasTileSpacing)
