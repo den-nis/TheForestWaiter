@@ -10,6 +10,14 @@ namespace TheForestWaiter
 {
     public static class Camera
     {
+        private static readonly GameSettings _settings = GameSettings.Current;
+
+        private const float MOVE_STRENGTH = 50;
+        private const float ZOOM_STRENGTH = 10;
+
+        public static Vector2f TargetPosition { get; set; }
+        public static float TargetScale { get; set; } = 1;
+
         private static Vector2f _baseSize = default;
         public static Vector2f BaseSize 
         {
@@ -28,7 +36,7 @@ namespace TheForestWaiter
         public static float Scale 
         {
             get => _scale;
-            set
+            private set
             {
                 if (value != _scale)
                 {
@@ -54,9 +62,21 @@ namespace TheForestWaiter
 
             if (Size.X > GameSettings.Current.MaxWorldView.X || Size.Y > GameSettings.Current.MaxWorldView.Y)
             {
-                var zoom = Math.Min(GameSettings.Current.MaxWorldView.Y / Size.Y, GameSettings.Current.MaxWorldView.X / Size.X);
+				var zoom = Math.Min(GameSettings.Current.MaxWorldView.Y / Size.Y, GameSettings.Current.MaxWorldView.X / Size.X);
                 Scale *= zoom;
             }
+
+            Scale = Math.Max(Scale, _settings.MaxZoomIn);
+        }
+
+        public static void Update(float time)
+		{
+            Center = new Vector2f(
+                Center.X + (TargetPosition.X - Center.X) * time * MOVE_STRENGTH,
+                Center.Y + (TargetPosition.Y - Center.Y) * time * MOVE_STRENGTH
+            );
+
+            Scale += (TargetScale - Scale) * time * ZOOM_STRENGTH;
         }
 
         public static Vector2f ToWorld(Vector2f view)

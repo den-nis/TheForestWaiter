@@ -93,7 +93,8 @@ namespace TheForestWaiter.Debugging
 
             StringBuilder sb = new();
             sb.AppendLine($"Fps: {Math.Round(_fps)}");
-            sb.AppendLine($"Zoom: {Camera.Scale}");
+            sb.AppendLine($"Zoom: {Math.Round(Camera.Scale,2)}");
+            sb.AppendLine($"Target zoom: {Math.Round(Camera.TargetScale,2)}");
             sb.AppendLine($"Bullets: {Game?.Objects?.Bullets?.Count()}");
             sb.AppendLine($"Health: {Game?.Objects?.Player?.Health}");
             sb.AppendLine($"Enemies: {Game?.Objects?.Enemies.Count()}");

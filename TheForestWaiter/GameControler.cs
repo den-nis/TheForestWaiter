@@ -90,10 +90,7 @@ namespace TheForestWaiter
 
         private void WindowMouseWheelScrolled(object sender, MouseWheelScrollEventArgs e)
         {
-            var settings = GameSettings.Current;
-
-            Camera.Scale = (float)Math.Round(Camera.Scale - (e.Delta/10), 1);
-            Camera.Scale = Math.Max(Camera.Scale, settings.MaxZoomIn);
+            Camera.TargetScale = (Camera.Scale - Camera.Scale * (e.Delta / 3));
         }
 
         private void WindowKeyReleased(object sender, KeyEventArgs e)
