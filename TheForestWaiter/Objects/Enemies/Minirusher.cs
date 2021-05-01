@@ -27,9 +27,10 @@ namespace TheForestWaiter.Objects.Enemies
             Size = _animation.Sheet.TileSize.ToVector2f();
             
             StunTime = 0.1f;
-            Speed = 500;
+            Speed = 300;
             Drag = new Vector2f(253, 0);
             JumpVelocity = 450;
+            TriggeredRadius = 900;
 
             _jumpTrigger = new RandomTrigger(Jump, 70, 1);
             _gibSpawner = new GibSpawner(game, GameContent.Textures.CreateSpriteSheet("Textures\\Enemies\\minirusher_gibs.png"));
@@ -117,12 +118,18 @@ namespace TheForestWaiter.Objects.Enemies
 
         protected override void OnDeath() 
         {
+            var prop = GameContent.Particles.Get("Particles\\blood.particle", Center);
+            Game.Objects.WorldParticles.Emit(prop, 12);
+
             _gibSpawner.SpawnComplete(Center);
             MarkedForDeletion = true;
         }
 
         protected override void OnDamage(DynamicObject by)
         {
+            var prop = GameContent.Particles.Get("Particles\\blood.particle", Center);
+            Game.Objects.WorldParticles.Emit(prop, 5);
+
             ApplyKnockback(by);
             base.OnDamage(by);
         }

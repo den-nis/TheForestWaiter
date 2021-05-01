@@ -65,27 +65,23 @@ namespace TheForestWaiter.Entities
 
         public void LimitPush(Vector2f force, float time)
         {
-            velocity.X += LimitPush1D(velocity.X, force.X) * time;
-            velocity.Y += LimitPush1D(velocity.Y, force.Y) * time;
+            velocity.X = LimitPush1D(velocity.X, force.X, time);
+            velocity.Y = LimitPush1D(velocity.Y, force.Y, time);
         }
 
-        private static float LimitPush1D(float currentVelocity, float push)
+        private static float LimitPush1D(float speed, float push, float time)
         {
-            if (Math.Sign(push) == Math.Sign(currentVelocity))
+            if (Math.Sign(speed) == Math.Sign(push))
             {
-                var aPush = Math.Abs(push);
-                var aSpeed = Math.Abs(currentVelocity);
-
-                if (aPush <= aSpeed)
-                    return 0;
-
-                var max = push - currentVelocity;
-                return aPush <= Math.Abs(currentVelocity + push) ? max : push;
+                if (Math.Abs(speed) < Math.Abs(push))
+                {
+                    speed = Math.Min(
+                        Math.Abs(push),
+                        Math.Abs(speed) + Math.Abs(push) * time) * Math.Sign(speed);
+                }
+                return speed;
             }
-            else
-            {
-                return push;
-            }
+            return speed + push * time;
         }
 
         protected virtual void OnTouch(DynamicObject obj) {}

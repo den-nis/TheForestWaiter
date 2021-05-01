@@ -71,12 +71,19 @@ namespace TheForestWaiter
 
         public static void Update(float time)
 		{
-            Center = new Vector2f(
-                Center.X + (TargetPosition.X - Center.X) * time * MOVE_STRENGTH,
-                Center.Y + (TargetPosition.Y - Center.Y) * time * MOVE_STRENGTH
-            );
-
-            Scale += (TargetScale - Scale) * time * ZOOM_STRENGTH;
+            if (UserSettings.GetBool("Game", "SmoothCam"))
+            {
+                Center = new Vector2f(
+                    Center.X + (TargetPosition.X - Center.X) * time * MOVE_STRENGTH,
+                    Center.Y + (TargetPosition.Y - Center.Y) * time * MOVE_STRENGTH
+                );
+                Scale += (TargetScale - Scale) * time * ZOOM_STRENGTH;
+            }
+            else
+			{
+                Center = TargetPosition;
+                Scale = TargetScale;
+			}
         }
 
         public static Vector2f ToWorld(Vector2f view)

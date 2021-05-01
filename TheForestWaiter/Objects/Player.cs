@@ -20,7 +20,9 @@ namespace TheForestWaiter.Objects
     {
         private readonly Color _stunColor = new(255,200,200);
 
-        public AnimatedSprite AnimatedSprite { get; set; } 
+        public AnimatedSprite AnimatedSprite { get; set; }
+
+        private const float MAX_NORMAL_SPEED = 200;
 
         private GunBase Gun { get; set; }
         private float EarlyJumpTime { get; set; } = (float)TimeSpan.FromSeconds(0.1f).TotalSeconds;
@@ -31,6 +33,10 @@ namespace TheForestWaiter.Objects
         private bool MovingLeft { get; set; } = false;
         private Vector2f _aim;
         private bool _aimingRight = true;
+
+        private float _speedBuildUp = 0;
+        private const float SPEED_UP_PER_SECOND = 50;
+        private const float SECONDS_OF_SPEED_UP = 4;
 
         public Player(GameData game) : base(game)
         {
@@ -93,25 +99,41 @@ namespace TheForestWaiter.Objects
                 return;
             }
 
-            if (IsStunned)
-                return;
+            if (TouchingFloor)
+            {
+                HandleSpeedBuildUp(time);
 
-            if (EarlyJumpTimer > 0 && TouchingFloor)
-                velocity.Y = -350;
+                if (EarlyJumpTimer > 0)
+                    velocity.Y = -350;
+            }
             EarlyJumpTimer -= time;
 
             if (Jumping)
                 velocity.Y -= time * 300;
 
-            velocity.X = 0;
             if (MovingRight && !MovingLeft)
-                velocity.X = 200;
+                LimitPush(new Vector2f(MAX_NORMAL_SPEED + _speedBuildUp * SPEED_UP_PER_SECOND, 0), 1);
 
             if (MovingLeft && !MovingRight)
-                velocity.X = -200;
+                LimitPush(new Vector2f(-MAX_NORMAL_SPEED + _speedBuildUp * SPEED_UP_PER_SECOND, 0), 1);
+
+            Drag = (!MovingLeft && !MovingRight || Math.Abs(RealSpeed.X) > MAX_NORMAL_SPEED) ? new Vector2f(700, 0) : new Vector2f(0, 0);
         }
 
-        public void HandleAnimations(float time)
+        private void HandleSpeedBuildUp(float time)
+		{
+            if (RealSpeed.X > -1 && RealSpeed.X < 1)
+                _speedBuildUp = 0;
+
+            if (RealSpeed.X > 1 || MovingRight)
+                _speedBuildUp = Math.Min(SECONDS_OF_SPEED_UP, Math.Max(0, _speedBuildUp + time));
+            
+            if (RealSpeed.X < -1 || MovingLeft)
+                _speedBuildUp = Math.Max(-SECONDS_OF_SPEED_UP, Math.Min(0, _speedBuildUp - time));
+
+        }
+
+        private void HandleAnimations(float time)
         {
             if (IsStunned)
             {

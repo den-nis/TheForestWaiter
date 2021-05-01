@@ -20,7 +20,7 @@ namespace TheForestWaiter.Objects.Weapons.Guns
 
         protected override Vector2f AttachPoint => Game.Objects.Player.Center - new Vector2f(0, 1);
         protected override float Range => 5000;
-        protected override float FireRatePerSecond => 0.6f;
+        protected override float FireRatePerSecond => 1f;
         protected override bool AutoFire => false;
         protected override Vector2f Origin => new(0f, 3f);
         protected override float FireSpeed => 2000;
@@ -64,6 +64,7 @@ namespace TheForestWaiter.Objects.Weapons.Guns
 
 		private void OnFireEvent()
         {
+            Game.Objects.Player.velocity += TrigHelper.FromAngleRad((float)(LastAimAngle - Math.PI), 100);
             _smokeTimer = SMOKE_TIME;
             var prop = GameContent.Particles.Get("Particles\\sniper_muzzle_flash.particle", BarrelPosition, LastAimAngle, 320);
             Game.Objects.WorldParticles.Emit(prop, 20);

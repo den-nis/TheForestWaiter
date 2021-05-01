@@ -1,31 +1,31 @@
 ﻿{
 	"colorStart": {
-		"R": 100,
-		"G": 100,
-		"B": 100,
+		"R": 255,
+		"G": 12,
+		"B": 35,
 		"A": 100
 	},
 
 	"colorEnd": {
-		"R": 100,
-		"G": 100,
-		"B": 100,
-		"A": 100
+		"R": 255,
+		"G": 53,
+		"B": 12,
+		"A": 0
 	},
 
 	"velocityVariation": {
-		"X": 10,
-		"Y": 10
+		"X": 200,
+		"Y": 200
 	},
 	"velocity": {
-		"X": 10,
-		"Y": 10
+		"X": 0,
+		"Y": 0
 	},
-	"sizeVariation": 1,
-	"sizeStart": 10,
-	"sizeEnd": 20,
+	"sizeVariation": 5,
+	"sizeStart": 5,
+	"sizeEnd": 12,
 	"rotationSpeed": 1,
 	"rotationSpeedVariation": 10,
-	"lifeVariation": 10,
-	"life": 12
+	"lifeVariation": 1,
+	"life": 0.5
 }
