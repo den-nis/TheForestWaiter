@@ -9,6 +9,7 @@ namespace TheForestWaiter.Essentials
     {
         public static float Up => -(float)Math.PI / 2;
         public static float Down => (float)Math.PI / 2;
+        public static float Right => (float)Math.PI * 2;
 
         public static Vector2f FromAngleDeg(float degrees, float distance) => FromAngleRad(ToRad(degrees), distance);
         

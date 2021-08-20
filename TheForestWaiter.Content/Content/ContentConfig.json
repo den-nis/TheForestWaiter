@@ -1,5 +1,5 @@
 ﻿{
-  //Key path must contain backslash(es)
+  //Key path must contain backslashes instead of forward ones
   "content": {
 
     "Worlds\\main.json": {
