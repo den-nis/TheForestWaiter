@@ -18,6 +18,7 @@ namespace TheForestWaiter.Entities
     {
         public bool ReceiveDynamicCollisions { get; set; } = true;
         public bool EmitDynamicCollisions { get; set; } = true;
+        public bool EnableWorldCollisions { get; set; } = true;
 
         private const int TERMINAL_VELOCITY = 500; 
 
@@ -105,12 +106,12 @@ namespace TheForestWaiter.Entities
 
         private void PushAway(DynamicObject obj, float time)
         {
-            var push =  Center - obj.Center;
+            var push = obj.Center - Center;
 
             if (push.Len() < 0.05f)
                 push = new Vector2f(Rng.Float() * 2 - 1, Rng.Float() * 2 - 1);
 
-            Push(push * 100, time);
+            obj.Push(push * 100, time);
         }
 
         private void ApplyGravity(float time)
@@ -137,6 +138,12 @@ namespace TheForestWaiter.Entities
 
         private void Move(Vector2f move)
         {
+            if (!EnableWorldCollisions)
+			{
+                Position += move;
+                return;
+			}
+
             float remainingTime = float.MaxValue;
 
             ResetStaticBoxTouching();
