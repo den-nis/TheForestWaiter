@@ -65,13 +65,6 @@ namespace TheForestWaiter.Debugging
             }
         }
 
-        [Command("nl", "no logging")]
-        public static void NoLogging()
-        {
-            GameDebug.Variables["output_log"] = false;
-			Console.WriteLine("turned off logging");
-        }
-
         private static string ClipStr(string value, int length, char pad)
 		{
             value ??= string.Empty;

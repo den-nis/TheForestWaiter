@@ -102,6 +102,14 @@ namespace TheForestWaiter.Debugging
             sb.AppendLine($"Speed X: {Game?.Objects?.Player?.RealSpeed.X}");
             sb.AppendLine($"Speed Y: {Game?.Objects?.Player?.RealSpeed.Y}");
 
+            if (GetVariable("output_logs", true))
+			{
+                foreach(var log in Logs.TakeLast(10))
+				{
+                    sb.AppendLine(log);
+				}
+			}
+
             Text fpsText = new()
 			{
                 Position = new Vector2f(0, 0),

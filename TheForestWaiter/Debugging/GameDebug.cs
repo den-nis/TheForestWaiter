@@ -73,10 +73,7 @@ namespace TheForestWaiter.Debugging
         [Conditional("DEBUG")]
         public static void Log(string message)
         {
-            var msg = $"{DateTime.Now} {message}";
-            if (GetVariable("output_log", true))
-                Console.WriteLine(msg);
-            
+            var msg = $"{DateTime.Now.ToShortTimeString()} {message}";
             Logs.Add(msg);
         }
 
