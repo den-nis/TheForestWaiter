@@ -21,7 +21,7 @@ namespace TheForestWaiter.Content
         
         private static byte[] ReadBytesFromStream(Stream stream)
         {
-            //Added this because deflate stream does have .Length
+            //Added this because deflate stream does not have .Length
             using var mStream = new MemoryStream();
             stream.CopyTo(mStream);
             return mStream.ToArray();
