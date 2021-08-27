@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace TheForestWaiter.Debugging
+namespace TheForestWaiter.Debugging.Command
 {
-    [AttributeUsage(AttributeTargets.Method)]
+    [AttributeUsage(AttributeTargets.Class)]
     class CommandAttribute : Attribute
     {
         public string Name { get; private set; }

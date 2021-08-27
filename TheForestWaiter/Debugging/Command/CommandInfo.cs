@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 
-namespace TheForestWaiter.Debugging
+namespace TheForestWaiter.Debugging.Command
 {
     class CommandInfo
     {
-        public MethodInfo Method { get; set; }
+        public ICommand Command { get; set; }
         public CommandAttribute Attribute { get; set; }
     }
 }
