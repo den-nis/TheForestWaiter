@@ -1,95 +1,34 @@
-﻿using Newtonsoft.Json;
-using SFML.Graphics;
-using SFML.System;
-using SFML.Window;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using TheForestWaiter.Objects;
-using System.Linq;
-using TheForestWaiter.Environment;
-using TheForestWaiter.States;
-using TheForestWaiter.Debugging;
-using TheForestWaiter.Content;
-using TheForestWaiter.Essentials;
-using System.Globalization;
+﻿using System.Globalization;
+using TheForestWaiter.Game;
+using LightInject;
+using TheForestWaiter.Services;
 
 namespace TheForestWaiter
 {
     class Program
     {
-        static readonly StateManager _manager = new();
-        static GameWindow _window;
-
         static void Main()
         {
-            //TODO: make this easier to debug
-            try
+            SetCulture("en");
+            using ServiceContainer services = new()
             {
-                Run();
-            }
-            catch(Exception e)
-			{
-                Crash.Now(e);
-                throw;
-            }
+                PropertyDependencySelector = new DisablePropertyDependencies()
+            };
+
+            GlobalServices startup = new(services);
+
+            startup.Register();
+            startup.Setup();
+
+            services.GetInstance<Entry>().Run();        
         }
 
-        static void Run()
+        static void SetCulture(string culture)
         {
-            SetEnglishCultureInfo();
-            Stopwatch startupTimer = Stopwatch.StartNew();
-
-            UserSettings.Load();
-
-            _window = new GameWindow();
-            _window.InitializeWindow(false);
-            _window.Window.SetKeyRepeatEnabled(false);
-
-            GameContent.Initialize();
-            _manager.SetState(new GameState(_window));
-
-            GameDebug.ProvideWindow(_window);
-            GameDebug.StartConsoleThread();
-
-            Stopwatch timer = Stopwatch.StartNew();
-            float deltaTime = 0;
-
-            GameDebug.Log($"Finished startup in {startupTimer.Elapsed.TotalSeconds} seconds");
-
-            while (_window.Window.IsOpen)
-            {
-                timer.Restart();
-
-                _window.Window.DispatchEvents();
-
-                _manager.Update(deltaTime);
-                GameDebug.Update(deltaTime);
-
-                _window.Window.SetView(Camera.GetView());
-                _manager.Draw();
-                GameDebug.Draw(_window.Window);
-
-                _window.Window.Display();
-
-                deltaTime = (float)timer.Elapsed.TotalSeconds * GameDebug.GetVariable("time_scale", 1f);
-
-                if (GameDebug.GetVariable("lock_framerate", false))
-                    deltaTime = 0.01f;
-
-                if (GameDebug.GetVariable("lag_limit", true))
-                    deltaTime = Math.Min(deltaTime, 1);
-            }
-        }
-
-
-        static void SetEnglishCultureInfo()
-		{
-            var cInfo = new CultureInfo("en");
-            CultureInfo.DefaultThreadCurrentCulture = cInfo;
-            CultureInfo.DefaultThreadCurrentUICulture = cInfo;
-            CultureInfo.CurrentCulture = cInfo;
+            var cultureInfo = new CultureInfo(culture);
+            CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+            CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+            CultureInfo.CurrentCulture = cultureInfo;
         }
     }
 }

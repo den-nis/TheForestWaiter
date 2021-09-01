@@ -5,22 +5,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TheForestWaiter.Entities;
+using TheForestWaiter.Debugging.Variables;
+using TheForestWaiter.Game.Entities;
+using TheForestWaiter.Game;
 
-namespace TheForestWaiter.Debugging
+namespace TheForestWaiter.Game.Debugging
 {
-	interface IGameDebug
+	interface IGameDebug : IDisposable
 	{
 		void Setup();
 
-		void Update(string command);
+		void Update(float time);
 
 		void Draw(RenderWindow window);
 
-		T GetVariable<T>(Variables name, T defaultValue);
-
-		void DrawHitBox(DynamicObject obj);
+		void DrawHitBox(Vector2f position, Vector2f size, Color color);
 
 		void DrawWorldCollision(Vector2f pos);
+
+		void ProvideGameData(GameData game);
+
+		void Log(string message);
 	}
 }

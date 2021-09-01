@@ -5,22 +5,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TheForestWaiter.Entities;
+using TheForestWaiter.Game;
+using TheForestWaiter.Game.Debugging;
 
 namespace TheForestWaiter.Debugging
 {
 	class DisableDebug : IGameDebug
 	{
+        public void Update(float time) { }
+
 		public void Draw(RenderWindow window) { }
 
-		public void DrawHitBox(DynamicObject obj) { }
+		public void DrawHitBox(Vector2f position, Vector2f size, Color color) { }
 
 		public void DrawWorldCollision(Vector2f pos) { }
 
-		public T GetVariable<T>(Variables name, T defaultValue) => defaultValue;
-
 		public void Setup() { }
 
-		public void Update(string command) { }
-	}
+        public void ProvideGameData(GameData game) { }
+
+        public void Dispose() { }
+
+		public void Log(string message) { }
+    }
 }

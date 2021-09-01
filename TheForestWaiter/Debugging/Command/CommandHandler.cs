@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using TheForestWaiter.Game;
 
 namespace TheForestWaiter.Debugging.Command
 {
@@ -13,16 +14,18 @@ namespace TheForestWaiter.Debugging.Command
 	{
         private Task _consoleThread;
 
+        public IReadOnlyDictionary<string, CommandInfo> CommandInfo => _commands;
         private readonly BlockingCollection<string> _pendingCommands = new();
         private readonly Dictionary<string, CommandInfo> _commands = new();
-		private readonly GameData _game;
+        private readonly Dictionary<string, ICommand> _commandCache = new();
+		private GameData _game;
 
-		public CommandHandler(GameData game)
-		{
-			_game = game;
-		}
+        public void ProvideGameData(GameData game)
+        {
+            _game = game;
+        }
 
-        public void Setup()
+        public void IndexAndStartConsoleThread()
 		{
             IndexCommands();
             _consoleThread = StartConsoleThread();
@@ -65,26 +68,52 @@ namespace TheForestWaiter.Debugging.Command
                 return;
             }
 
-            _commands[command].Command.Execute(args);
+            if (_commandCache.TryGetValue(command, out var instance))
+            {
+                instance.Execute(this, args);
+            }
+            else
+            {
+                instance = CreateCommand(command);
+                _commandCache.Add(command, instance);
+
+                instance.Execute(this, args);
+            }
+        }
+
+        private ICommand CreateCommand(string name)
+        {
+            Type command = _commands[name].Command;
+            ICommand instance;
+
+            if (command.GetConstructor(Array.Empty<Type>()) != null)
+            {
+                instance = (ICommand)Activator.CreateInstance(command);
+            }
+            else
+            {
+                if (_game == null)
+                    throw new InvalidOperationException("Cannot create this command without gameData");
+
+                instance = (ICommand)Activator.CreateInstance(command, _game);
+            }
+
+            return instance;
         }
 
         private void IndexCommands()
         {
             var assembly = Assembly.GetExecutingAssembly();
             var types = assembly.GetTypes();
-            var commandTypes = types.Where(t => t.IsSubclassOf(typeof(ICommand)));
+            var commandTypes = types.Where(t => t.IsAssignableTo(typeof(ICommand)) && t != typeof(ICommand));
 
             foreach (var command in commandTypes)
             {
-                ICommand instance = (command.GetConstructor(Array.Empty<Type>()) != null) ?
-                    (ICommand)Activator.CreateInstance(command) :
-                    (ICommand)Activator.CreateInstance(command, _game);
-
-                var attribute = instance.GetType().GetCustomAttribute<CommandAttribute>();
+                var attribute = command.GetCustomAttribute<CommandAttribute>();
 
                 _commands.Add(attribute.Name, new CommandInfo
                 {
-                    Command = instance,
+                    Command = command,
                     Attribute = attribute
                 });
             }

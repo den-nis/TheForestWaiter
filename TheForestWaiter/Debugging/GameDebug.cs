@@ -2,43 +2,58 @@
 using SFML.System;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TheForestWaiter.Entities;
+using TheForestWaiter.Debugging.Command;
+using TheForestWaiter.Game;
+using TheForestWaiter.Game.Debugging;
 
 namespace TheForestWaiter.Debugging
 {
 	class GameDebug : IGameDebug
 	{
-		public void Draw(RenderWindow window)
+        private GameData _game;
+		private CommandHandler _commandHandler;
+
+        public void Draw(RenderWindow window)
 		{
-			throw new NotImplementedException();
 		}
 
-		public void DrawHitBox(DynamicObject obj)
+		public void DrawHitBox(Vector2f position, Vector2f size, Color color)
 		{
-			throw new NotImplementedException();
 		}
 
 		public void DrawWorldCollision(Vector2f pos)
 		{
-			throw new NotImplementedException();
-		}
-
-		public T GetVariable<T>(Variables name, T defaultValue)
-		{
-			throw new NotImplementedException();
 		}
 
 		public void Setup()
+        {
+            _commandHandler = new CommandHandler();
+			_commandHandler.IndexAndStartConsoleThread();
+        }
+
+        public void Update(float time)
 		{
-			throw new NotImplementedException();
+			_commandHandler.Update();
 		}
 
-		public void Update(string command)
-		{
-			throw new NotImplementedException();
+        public void ProvideGameData(GameData game)
+        {
+			_game = game;
+			_commandHandler.ProvideGameData(game);
 		}
-	}
+
+        public void Dispose()
+        {
+            
+        }
+
+        public void Log(string message)
+        {
+            Console.WriteLine(message);
+        }
+    }
 }

@@ -1,22 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using TheForestWaiter.Environment;
-using TheForestWaiter.Particles;
+using TheForestWaiter.Game.Environment;
 
-namespace TheForestWaiter
+namespace TheForestWaiter.Game
 {
     class GameData
     {
-        public World World { get; private set; }
-        public GameObjects Objects { get; private set; } = new GameObjects();
-
-        public void LoadFromMap(Map map, IProgress<string> progress = null)
+        public GameData(World world, GameObjects objects)
         {
-            progress?.Report("Loading map...");
-            World = World.LoadFromMap(map);
+            World = world;
+            Objects = objects;
+        }
 
-            progress?.Report("Loading objects...");
+        public World World { get; private set; }
+        public GameObjects Objects { get; private set; }
+
+        public void LoadFromMap(Map map)
+        {
+            World.LoadFromMap(map);
             Objects.ClearAll();
             Objects.LoadAllFromMap(map, World, this);
         }

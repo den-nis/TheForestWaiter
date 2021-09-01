@@ -1,27 +1,23 @@
 ﻿using IniParser;
 using IniParser.Model;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static SFML.Window.Keyboard;
 using static SFML.Window.Mouse;
 
 namespace TheForestWaiter
 {
-	static class UserSettings
+	class UserSettings : ISetup
 	{
 		private const string SETTINGS_PATH = "Settings.ini";
-		private static IniData _data;
+		private IniData _data;
 
-		public static Key Left { get; private set; }
-		public static Key Right { get; private set; }
-		public static Key Jump { get; private set; }
-		public static Key FullScreen { get; private set; }
-		public static Button Shoot { get; private set; }
+		public Key Left { get; private set; }
+		public Key Right { get; private set; }
+		public Key Jump { get; private set; }
+		public Key FullScreen { get; private set; }
+		public Button Shoot { get; private set; }
 
-		public static void Load()
+        public void Setup()
 		{
 			FileIniDataParser parser = new();
 			_data = parser.ReadFile(SETTINGS_PATH);
@@ -33,22 +29,22 @@ namespace TheForestWaiter
 			Shoot = Enum.Parse<Button>(Get("Controls", "Shoot"));
 		}
 
-		public static string Get(string category, string name)
+		public string Get(string category, string name)
 		{
 			return _data[category][name];
 		}
 
-		public static float GetFloat(string category, string name)
+		public float GetFloat(string category, string name)
 		{
 			return float.Parse(_data[category][name]);
 		}
 
-		public static int GetInt(string category, string name)
+		public int GetInt(string category, string name)
 		{
 			return int.Parse(_data[category][name]);
 		}
 
-		public static bool GetBool(string category, string name)
+		public bool GetBool(string category, string name)
 		{
 			return bool.Parse(_data[category][name]);
 		}

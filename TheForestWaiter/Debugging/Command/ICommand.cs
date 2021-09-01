@@ -8,6 +8,6 @@ namespace TheForestWaiter.Debugging.Command
 {
 	interface ICommand
 	{
-		void Execute(string[] args);
+		void Execute(object sender, string[] args);
 	}
 }
