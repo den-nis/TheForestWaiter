@@ -46,7 +46,7 @@ namespace TheForestWaiter.Game.Entities
         public bool TouchingFloor { get; private set; } = false;
         public bool TouchingCeiling { get; private set; } = false;
 
-        public bool RespondToCollision { get; set; } = true;
+        public bool RespondToWorldCollision { get; set; } = true;
 
         public override void Update(float time)
         {
@@ -163,7 +163,7 @@ namespace TheForestWaiter.Game.Entities
                 {
                     HandleStaticBoxTouching(normal);
 
-                    if (!RespondToCollision)
+                    if (!RespondToWorldCollision)
                         break;
 
                     float dotprod = (move.X * normal.Y + move.Y * normal.X) * remainingTime;

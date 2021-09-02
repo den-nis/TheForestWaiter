@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LightInject;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,12 +18,11 @@ namespace TheForestWaiter.Debugging.Command
         public IReadOnlyDictionary<string, CommandInfo> CommandInfo => _commands;
         private readonly BlockingCollection<string> _pendingCommands = new();
         private readonly Dictionary<string, CommandInfo> _commands = new();
-        private readonly Dictionary<string, ICommand> _commandCache = new();
-		private GameData _game;
+        private readonly IServiceContainer _container;
 
-        public void ProvideGameData(GameData game)
+        public CommandHandler(IServiceContainer container)
         {
-            _game = game;
+            _container = container;
         }
 
         public void IndexAndStartConsoleThread()
@@ -39,8 +39,8 @@ namespace TheForestWaiter.Debugging.Command
 
                 try
                 {
-                    var parts = command.Split(' ');
-                    ExecuteCommand(parts[0], parts[1..]);
+                  var parts = command.Split(' ');
+                  ExecuteCommand(parts[0], parts[1..]);
                 }
                 catch (Exception e)
                 {
@@ -68,37 +68,14 @@ namespace TheForestWaiter.Debugging.Command
                 return;
             }
 
-            if (_commandCache.TryGetValue(command, out var instance))
-            {
-                instance.Execute(this, args);
-            }
-            else
-            {
-                instance = CreateCommand(command);
-                _commandCache.Add(command, instance);
-
-                instance.Execute(this, args);
-            }
+            var instance = CreateCommand(command);
+            instance.Execute(this, args);
         }
 
         private ICommand CreateCommand(string name)
         {
             Type command = _commands[name].Command;
-            ICommand instance;
-
-            if (command.GetConstructor(Array.Empty<Type>()) != null)
-            {
-                instance = (ICommand)Activator.CreateInstance(command);
-            }
-            else
-            {
-                if (_game == null)
-                    throw new InvalidOperationException("Cannot create this command without gameData");
-
-                instance = (ICommand)Activator.CreateInstance(command, _game);
-            }
-
-            return instance;
+            return (ICommand)_container.GetInstance(command);
         }
 
         private void IndexCommands()
@@ -106,7 +83,7 @@ namespace TheForestWaiter.Debugging.Command
             var assembly = Assembly.GetExecutingAssembly();
             var types = assembly.GetTypes();
             var commandTypes = types.Where(t => t.IsAssignableTo(typeof(ICommand)) && t != typeof(ICommand));
-
+            
             foreach (var command in commandTypes)
             {
                 var attribute = command.GetCustomAttribute<CommandAttribute>();

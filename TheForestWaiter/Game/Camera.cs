@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using TheForestWaiter.Debugging;
-using TheForestWaiter.Debugging.Variables;
 using TheForestWaiter.Game.Essentials;
 
 namespace TheForestWaiter.Game
@@ -15,11 +14,8 @@ namespace TheForestWaiter.Game
         private const float MAX_ZOOM_IN = 0.1f;
         private const float ZOOM_STRENGTH = 10;
         private const float MOVE_STRENGTH = 50;
-        private readonly UserSettings _settings;
-        private readonly GameVariables _gvars;
 
         public Vector2f MaxWorldView { get; } = new Vector2f(1920, 1080);
-
         public Vector2f TargetPosition { get; set; }
         public float TargetScale { get; set; } = 1;
 
@@ -60,15 +56,18 @@ namespace TheForestWaiter.Game
 
         public Vector2f Center { get; set; }
 
-        public Camera(UserSettings settings, GameVariables variables)
+        public bool LockView { get; set; } = true;
+
+        private readonly UserSettings _settings;
+
+        public Camera(UserSettings settings)
         {
             _settings = settings;
-            _gvars = variables;
         }
 
         private void SizeChanged()
         {
-            if (!_gvars.LimitView)
+            if (!LockView)
                 return;
 
             if (Size.X > MaxWorldView.X || Size.Y > MaxWorldView.Y)

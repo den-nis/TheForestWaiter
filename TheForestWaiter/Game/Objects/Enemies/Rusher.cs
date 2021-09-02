@@ -32,7 +32,7 @@ namespace TheForestWaiter.Game.Objects.Enemies
             Size = _sprite.Texture.Size.ToVector2f();
 
             EnableWorldCollisions = false;
-            RespondToCollision = true;
+            RespondToWorldCollision = true;
             EmitDynamicCollisions = true;
             ReceiveDynamicCollisions = false;
 

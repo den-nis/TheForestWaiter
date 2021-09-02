@@ -1,4 +1,5 @@
-﻿using SFML.Graphics;
+﻿using LightInject;
+using SFML.Graphics;
 using SFML.System;
 using System;
 using System.Collections.Generic;
@@ -14,36 +15,38 @@ namespace TheForestWaiter.Debugging
 {
 	class GameDebug : IGameDebug
 	{
-        private GameData _game;
-		private CommandHandler _commandHandler;
+        private readonly IServiceContainer _serviceContainer;
+        private CommandHandler _commandHandler;
+
+        public GameDebug(IServiceContainer serviceContainer)
+        {
+            _serviceContainer = serviceContainer;
+        }
 
         public void Draw(RenderWindow window)
 		{
+            //TODO: call debug graphics
 		}
 
 		public void DrawHitBox(Vector2f position, Vector2f size, Color color)
 		{
-		}
+            //TODO: call debug graphics
+        }
 
-		public void DrawWorldCollision(Vector2f pos)
+        public void DrawWorldCollision(Vector2f pos)
 		{
-		}
+            //TODO: call debug graphics
+        }
 
-		public void Setup()
+        public void Setup()
         {
-            _commandHandler = new CommandHandler();
-			_commandHandler.IndexAndStartConsoleThread();
+            _commandHandler = new CommandHandler(_serviceContainer);
+            _commandHandler.IndexAndStartConsoleThread();
         }
 
         public void Update(float time)
 		{
 			_commandHandler.Update();
-		}
-
-        public void ProvideGameData(GameData game)
-        {
-			_game = game;
-			_commandHandler.ProvideGameData(game);
 		}
 
         public void Dispose()

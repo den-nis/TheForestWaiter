@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TheForestWaiter.Debugging.Variables;
 using TheForestWaiter.Game.Entities;
 using TheForestWaiter.Game;
 
@@ -22,8 +21,6 @@ namespace TheForestWaiter.Game.Debugging
 		void DrawHitBox(Vector2f position, Vector2f size, Color color);
 
 		void DrawWorldCollision(Vector2f pos);
-
-		void ProvideGameData(GameData game);
 
 		void Log(string message);
 	}

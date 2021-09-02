@@ -9,7 +9,7 @@ namespace TheForestWaiter.Debugging.Command.Commands
     [Command("clear", "Clears the console")]
     class Clear : ICommand
     {
-        public void Execute(object sender, string[] args)
+        public void Execute(CommandHandler handler, string[] args)
         {
             Console.Clear();
         }

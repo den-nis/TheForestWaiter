@@ -22,8 +22,6 @@ namespace TheForestWaiter.Debugging
 
 		public void Setup() { }
 
-        public void ProvideGameData(GameData game) { }
-
         public void Dispose() { }
 
 		public void Log(string message) { }

@@ -8,6 +8,6 @@ namespace TheForestWaiter.Debugging
 {
 	class DebugGraphics
 	{
-
+		//TODO hitboxes etc
 	}
 }

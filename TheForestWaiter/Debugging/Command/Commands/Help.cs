@@ -3,38 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TheForestWaiter.Debugging.DebugConsole;
 
 namespace TheForestWaiter.Debugging.Command.Commands
 {
     [Command("help", "Shows commands")]
     class Help : ICommand
     {
-        public void Execute(object sender, string[] args)
+        public void Execute(CommandHandler handler, string[] args)
         {
-            if (sender is CommandHandler handler)
+            var tb = new TableBuilder();
+
+            tb.WriteRow("Name", "Description", "Usage");
+            foreach (var m in handler.CommandInfo.Values)
             {
-                foreach (var m in handler.CommandInfo.Values)
-                {
-                    Console.Write($"\t- {ClipStr(m.Attribute.Name, 15, ' ')}");
-                    Console.ForegroundColor = ConsoleColor.DarkGray;
-                    Console.WriteLine($"|{ClipStr(m.Attribute.Description, 40, ' ')}|");
-                    Console.ResetColor();
-                }
-                Console.WriteLine("use \"usage {command}\" to get info about parameters");
+                tb.WriteRow(m.Attribute.Name, m.Attribute.Description, m.Attribute.Usage);
             }
-        }
 
-        private static string ClipStr(string value, int length, char pad)
-        {
-            value ??= string.Empty;
-
-            if (value.Length > length)
-                return value.Substring(0, length);
-
-            if (value.Length < length)
-                return value + new string(pad, length - value.Length);
-
-            return value;
+            Console.WriteLine(tb);
+            Console.WriteLine("use \"usage {command}\" to get info about parameters");
         }
     }
 }

@@ -5,11 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using TheForestWaiter.Content;
 using TheForestWaiter.Debugging;
-using TheForestWaiter.Debugging.Variables;
 using TheForestWaiter.Game;
 using TheForestWaiter.Game.Debugging;
 using LightInject;
 using TheForestWaiter.States;
+using System.Diagnostics;
+using TheForestWaiter.Debugging.Command;
+using System.Reflection;
 
 namespace TheForestWaiter.Services
 {
@@ -28,20 +30,19 @@ namespace TheForestWaiter.Services
                 .RegisterInstance(_container)
                 .RegisterInstance<IServiceContainer>(_container)
 
-                .Register<Entry>()
                 .Register<GameState>()
 
+                .RegisterSingleton<Entry>()
                 .RegisterSingleton<GameContent>()
-                .RegisterSingleton<GameVariables>()
                 .RegisterSingleton<StateManager>()
                 .RegisterSingleton<UserSettings>()
                 .RegisterSingleton<WindowHandle>()
 #if DEBUG
-                .RegisterSingleton<IGameDebug, GameDebug>()
+                .RegisterSingleton<IGameDebug, GameDebug>();
+            RegisterCommands();
 #else
-                .RegisterSingleton<IGameDebug, DisableDebug>()
+                .RegisterSingleton<IGameDebug, DisableDebug>();
 #endif
-            ;
         }
 
         public void Setup()
@@ -50,6 +51,17 @@ namespace TheForestWaiter.Services
             _container.GetInstance<WindowHandle>().Setup();
             _container.GetInstance<IGameDebug>().Setup();
             _container.GetInstance<GameContent>().Setup();
+        }
+
+        private void RegisterCommands()
+        {
+            var asm = Assembly.GetExecutingAssembly();
+            var commands = asm.GetTypes().Where(t => t.IsAssignableTo(typeof(ICommand)));
+
+            foreach (var command in commands)
+            {
+                _container.Register(command);
+            }
         }
     }
 }

@@ -34,7 +34,7 @@ namespace TheForestWaiter.Game.Objects.Weapons.Bullets
             Gravity = 0;
             Size = new Vector2f(5, 5);
             StartAngle = velocity.Angle();
-            RespondToCollision = false;
+            RespondToWorldCollision = false;
 
             BulletSprite = content.Textures.CreateSprite("Textures\\Bullets\\bullet_generic.png");
             BulletSprite.Origin = Size / 2;

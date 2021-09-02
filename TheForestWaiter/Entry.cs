@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TheForestWaiter.Debugging;
-using TheForestWaiter.Debugging.Variables;
 using TheForestWaiter.Game;
 using TheForestWaiter.Game.Debugging;
 using TheForestWaiter.States;
@@ -15,23 +14,24 @@ namespace TheForestWaiter
 {
     class Entry
     {
+        public bool LockDelta { get; set; } = false;
+        public bool LagLimit { get; set; } = true;
+        public float TimeScale { get; set; } = 1; 
+
         private readonly WindowHandle _window;
         private readonly IGameDebug _debug;
         private readonly StateManager _stateManager;
-        private readonly GameVariables _gvar;
         private readonly GameState _gameState;
 
         public Entry(
             WindowHandle window, 
             IGameDebug debug, 
             StateManager stateManager,
-            GameVariables variables,
             GameState gameState)
         {
             _window = window;
             _debug = debug;
             _stateManager = stateManager;
-            _gvar = variables;
             _gameState = gameState;
         }
 
@@ -56,12 +56,12 @@ namespace TheForestWaiter
 
                 _window.SfmlWindow.Display();
 
-                deltaTime = (float)timer.Elapsed.TotalSeconds * _gvar.TimeScale;
+                deltaTime = (float)timer.Elapsed.TotalSeconds * TimeScale;
 
-                if (_gvar.LockFramerate)
+                if (LockDelta)
                     deltaTime = 0.01f;
 
-                if (_gvar.LagLimit)
+                if (LagLimit)
                     deltaTime = Math.Min(deltaTime, 1);
             }
         }

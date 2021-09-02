@@ -33,6 +33,11 @@ namespace TheForestWaiter.Game
         public GameObjectContainer<DynamicObject> Other { get; set; } = new GameObjectContainer<DynamicObject>();
         public ParticleSystem WorldParticles { get; set; }
 
+        public IEnumerable<GameObject> Everything => Enemies
+            .Concat(new[] { Player })
+            .Concat(Bullets)
+            .Concat(Other);
+
         public IEnumerable<Creature> Creatures => Enemies.Concat(new[] { Player });
 
         public void ClearAll()
