@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using TheForestWaiter.Entities;
 
 namespace TheForestWaiter.States
 {
@@ -24,6 +23,5 @@ namespace TheForestWaiter.States
         public void Draw() => CurrentState.Draw();
 
         public void Update(float time) => CurrentState.Update(time);
-        
     }
 }

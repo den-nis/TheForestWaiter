@@ -5,8 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TheForestWaiter.Essentials;
-using TheForestWaiter.Particles;
+using TheForestWaiter.Game.Essentials;
+using TheForestWaiter.Game.Particles;
 using TheForestWaiter.Shared;
 
 namespace TheForestWaiter.Content

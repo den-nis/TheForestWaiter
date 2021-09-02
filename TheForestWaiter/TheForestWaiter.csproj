@@ -12,9 +12,9 @@
 
   <ItemGroup>
     <None Remove="Content.zip" />
-    <None Remove="Entities\DynamicObject.cs~RF14b49e0.TMP" />
+    <None Remove="Game\Entities\DynamicObject.cs~RF14b49e0.TMP" />
     <None Remove="Icon.ico" />
-    <None Remove="Objects\Player.cs~RFb9b1dd5.TMP" />
+    <None Remove="Game\Objects\Player.cs~RFb9b1dd5.TMP" />
     <None Remove="TileSet.tsx" />
     <None Remove="~VC9AD2.tmp" />
   </ItemGroup>
@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <PackageReference Include="ini-parser-netstandard" Version="2.5.2" />
+    <PackageReference Include="LightInject" Version="6.4.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="SFML.Net" Version="2.5.0" />
   </ItemGroup>

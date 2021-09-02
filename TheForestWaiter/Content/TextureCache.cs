@@ -1,7 +1,7 @@
 ﻿using SFML.Graphics;
 using SFML.System;
 using System.Diagnostics;
-using TheForestWaiter.Graphics;
+using TheForestWaiter.Game.Graphics;
 using TheForestWaiter.Shared;
 
 namespace TheForestWaiter.Content
