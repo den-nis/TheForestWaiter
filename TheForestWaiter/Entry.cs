@@ -14,18 +14,18 @@ namespace TheForestWaiter
 {
     class Entry
     {
-        public bool LockDelta { get; set; } = false;
-        public bool LagLimit { get; set; } = true;
+        public float LockDelta { get; set; } = -1;
+        public bool LagLimit { get; set; } = false;
         public float TimeScale { get; set; } = 1; 
 
         private readonly WindowHandle _window;
-        private readonly IGameDebug _debug;
+        private readonly IDebug _debug;
         private readonly StateManager _stateManager;
         private readonly GameState _gameState;
 
         public Entry(
             WindowHandle window, 
-            IGameDebug debug, 
+            IDebug debug, 
             StateManager stateManager,
             GameState gameState)
         {
@@ -58,8 +58,8 @@ namespace TheForestWaiter
 
                 deltaTime = (float)timer.Elapsed.TotalSeconds * TimeScale;
 
-                if (LockDelta)
-                    deltaTime = 0.01f;
+                if (LockDelta > 0)
+                    deltaTime = LockDelta;
 
                 if (LagLimit)
                     deltaTime = Math.Min(deltaTime, 1);

@@ -11,7 +11,7 @@ using TheForestWaiter.Game.Essentials;
 
 namespace TheForestWaiter.Game.Objects
 {
-    abstract class Creature : DynamicObject
+    abstract class Creature : PhysicsObject
     {
         public bool Dead { get; private set; }
         public float Health { get; protected set; } = 100;
@@ -24,7 +24,7 @@ namespace TheForestWaiter.Game.Objects
 
         private float _stunTimer = 0;
 
-        public Creature(GameData game, IGameDebug debug) : base(game, debug)
+        public Creature(GameData game) : base(game)
         {
 
         }
@@ -33,13 +33,11 @@ namespace TheForestWaiter.Game.Objects
         {
             if (_stunTimer > 0)
                 _stunTimer -= time;
-
-            base.Update(time);
         }
 
-        public void Damage(DynamicObject by, float amount) => Damage(by, amount, StunTime);
+        public void Damage(PhysicsObject by, float amount) => Damage(by, amount, StunTime);
 
-        public void Damage(DynamicObject by, float amount, float stunTime)
+        public void Damage(PhysicsObject by, float amount, float stunTime)
         {
             if (IsStunned)
                 return;
@@ -58,7 +56,7 @@ namespace TheForestWaiter.Game.Objects
             OnDamage(by);
         }
 
-        protected void ApplyKnockback(DynamicObject by)
+        protected void ApplyKnockback(PhysicsObject by)
         {
             var delta = (Center - by.Center).Norm() * Knockback;
             velocity = delta;
@@ -66,6 +64,6 @@ namespace TheForestWaiter.Game.Objects
 
         protected abstract void OnDeath();
 
-        protected abstract void OnDamage(DynamicObject by);
+        protected abstract void OnDamage(PhysicsObject by);
     }
 }

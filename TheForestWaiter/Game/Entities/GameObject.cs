@@ -24,11 +24,10 @@ namespace TheForestWaiter.Game.Entities
             set => _MarkedForDeletion |= value;
         }
 
-        //TODO: is this method used properly? I think the name is wrong
         /// <summary>
         /// Can be used for setup logic that needs the tiled object data
         /// </summary>
-        public virtual void PrepareSpawn(MapObject mapObject)
+        public virtual void MapSetup(MapObject mapObject)
         {
         }
 
@@ -47,5 +46,10 @@ namespace TheForestWaiter.Game.Entities
         public abstract void Draw(RenderWindow window);
 
         public abstract void Update(float time);
+
+        public virtual void DrawHitbox(RenderWindow window, float lineThickness)
+        {
+            window.DrawHitBox(Position, Size, Color.Green, lineThickness);
+        }
     }
 }

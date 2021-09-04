@@ -38,7 +38,7 @@ namespace TheForestWaiter.Game.Objects
         private const float SPEED_UP_PER_SECOND = 50;
         private const float SECONDS_OF_SPEED_UP = 4;
 
-        public Player(GameData game, GameContent content, IGameDebug debug, ObjectCreator creator, Camera camera) : base(game, debug)
+        public Player(GameData game, GameContent content, ObjectCreator creator, Camera camera) : base(game)
         {
             Health = 100;
             AnimatedSprite = content.Textures.CreateAnimatedSprite("Textures\\Player\\sheet.png");
@@ -46,8 +46,8 @@ namespace TheForestWaiter.Game.Objects
 
             Size = AnimatedSprite.Sheet.TileSize.ToVector2f();
             CollisionRadius = Size.Y + 5;
-            ReceiveDynamicCollisions = true;
-            EmitDynamicCollisions = false;
+            ReceivePhysicsCollisions = true;
+            EmitPhysicsCollisions = false;
             Gravity = 1000;
             _camera = camera;
         }
@@ -184,8 +184,11 @@ namespace TheForestWaiter.Game.Objects
 
         public override void Update(float time)
         {
-            Gun?.Update(time);
             HandleMovement(time);
+            PhysicsTick(time);
+
+            //Gun needs to updated after physics tick since it needs the latest player position
+            Gun?.Update(time);
             HandleAnimations(time);
             base.Update(time);
         }
@@ -208,7 +211,7 @@ namespace TheForestWaiter.Game.Objects
             Gravity = 0;
         }
 
-        protected override void OnDamage(DynamicObject by)
+        protected override void OnDamage(PhysicsObject by)
         {
             if (by != null) 
                 ApplyKnockback(by);

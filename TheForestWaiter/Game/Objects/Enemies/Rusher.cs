@@ -25,7 +25,7 @@ namespace TheForestWaiter.Game.Objects.Enemies
         private readonly GameContent _content;
         private float _speed = 200;
 
-        public Rusher(GameData game, GameDebug debug, GameContent content) : base(game, debug)
+        public Rusher(GameData game, GameContent content) : base(game)
         {
             _content = content;
             _sprite = content.Textures.CreateSprite("Textures\\Enemies\\rusher.png");
@@ -33,8 +33,8 @@ namespace TheForestWaiter.Game.Objects.Enemies
 
             EnableWorldCollisions = false;
             RespondToWorldCollision = true;
-            EmitDynamicCollisions = true;
-            ReceiveDynamicCollisions = false;
+            EmitPhysicsCollisions = true;
+            ReceivePhysicsCollisions = false;
 
             Gravity = 0;
         }
@@ -54,6 +54,8 @@ namespace TheForestWaiter.Game.Objects.Enemies
 
             var direction = (Game.Objects.Player.Center - Center).Norm();
             LimitPush(new Vector2f(1, direction.Y) * _speed, time * 5);
+
+            PhysicsTick(time);
 
             HandleParticles(time);
             HandleAnimations();
@@ -80,7 +82,7 @@ namespace TheForestWaiter.Game.Objects.Enemies
             _sprite.Position = Position;
         }
 
-        protected override void OnTouch(DynamicObject obj)
+        protected override void OnTouch(PhysicsObject obj)
         {
             if (obj is Player p)
                 p.Damage(this, ATTACK_DAMAGE);
@@ -90,7 +92,7 @@ namespace TheForestWaiter.Game.Objects.Enemies
 		{
 		}
 
-		protected override void OnDamage(DynamicObject by)
+		protected override void OnDamage(PhysicsObject by)
 		{
 		}
 	}

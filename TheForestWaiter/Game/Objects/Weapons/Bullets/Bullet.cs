@@ -11,14 +11,13 @@ using TheForestWaiter.Game.Essentials;
 
 namespace TheForestWaiter.Game.Objects.Weapons.Bullets
 {
-    class Bullet : DynamicObject
+    class Bullet : PhysicsObject
     {
         public float Range { get; set; }
 
         protected int Damage { get; set; } = 5;
 
         protected Sprite BulletSprite { get; set; }
-        protected float StartAngle { get; }
         private bool HasHit { get; set; } = false;
 
         private Vector2f? _spawn = null;
@@ -27,19 +26,27 @@ namespace TheForestWaiter.Game.Objects.Weapons.Bullets
 
         private float Traveled { get; set; } = 0;
 
-        public Bullet(GameData game, IGameDebug debug, GameContent content) : base(game, debug)
-        {
-            CollisionRadius = 10;
 
+        public Bullet(GameData game, GameContent content) : this(game, content, "Textures\\Bullets\\bullet_generic.png")
+        {
+            
+        }
+
+        public Bullet(GameData game, GameContent content, string texture) : base(game)
+        {
+            SetBulletSprite(content.Textures.CreateSprite(texture));
+
+            CollisionRadius = 10;
             Gravity = 0;
             Size = new Vector2f(5, 5);
-            StartAngle = velocity.Angle();
             RespondToWorldCollision = false;
-
-            BulletSprite = content.Textures.CreateSprite("Textures\\Bullets\\bullet_generic.png");
-            BulletSprite.Origin = Size / 2;
-            BulletSprite.Rotation = TrigHelper.ToDeg(StartAngle);
             _content = content;
+        }
+
+        protected void SetBulletSprite(Sprite bulletSprite)
+        {
+            BulletSprite = bulletSprite;
+            BulletSprite.Origin = bulletSprite.Texture.Size.ToVector2f() / 2;
         }
 
         private void Explode()
@@ -56,12 +63,14 @@ namespace TheForestWaiter.Game.Objects.Weapons.Bullets
 
         public override void Update(float time)
         {
+            PhysicsTick(time);
+
             _spawn ??= Center;
             _startAngle ??= velocity.Angle();
 
             foreach (var enemy in Game.Objects.Enemies)
             {
-                if (Collisions.SweptAABB(enemy.FloatRect, FloatRect, velocity * time, out _) < 1)
+                if (Collisions.SweptAABB(enemy.FloatRect, FloatRect, velocity * time, out _) < 1 || Intersects(enemy))
                 {
                     enemy.Damage(this, Damage);
                     Explode();
@@ -75,14 +84,13 @@ namespace TheForestWaiter.Game.Objects.Weapons.Bullets
                 return;
             }
 
+            BulletSprite.Rotation = TrigHelper.ToDeg(_startAngle.Value);
             BulletSprite.Position = Center;
 
             if (TouchingHorizontal || TouchingVertical)
             {
                 Explode();
-            } 
-
-            base.Update(time);
+            }
         }
 
 		public override void Draw(RenderWindow window)

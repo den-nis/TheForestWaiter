@@ -13,29 +13,18 @@ using TheForestWaiter.Game.Debugging;
 
 namespace TheForestWaiter.Debugging
 {
-	class GameDebug : IGameDebug
+	class ActiveDebug : IDebug
 	{
         private readonly IServiceContainer _serviceContainer;
         private CommandHandler _commandHandler;
 
-        public GameDebug(IServiceContainer serviceContainer)
+        public ActiveDebug(IServiceContainer serviceContainer)
         {
             _serviceContainer = serviceContainer;
         }
 
         public void Draw(RenderWindow window)
 		{
-            //TODO: call debug graphics
-		}
-
-		public void DrawHitBox(Vector2f position, Vector2f size, Color color)
-		{
-            //TODO: call debug graphics
-        }
-
-        public void DrawWorldCollision(Vector2f pos)
-		{
-            //TODO: call debug graphics
         }
 
         public void Setup()

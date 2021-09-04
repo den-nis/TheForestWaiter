@@ -24,7 +24,7 @@ namespace TheForestWaiter.Game.Objects.Enemies
         private readonly GibSpawner _gibSpawner;
         private int _targetDirection = 0;
 
-        public Minirusher(GameData game, GameContent content, GibSpawner gibSpawner, IGameDebug debug) : base(game, debug)
+        public Minirusher(GameData game, GameContent content, GibSpawner gibSpawner) : base(game)
         {
             _animation = content.Textures.CreateAnimatedSprite("Textures\\Enemies\\minirusher.png");
             Size = _animation.Sheet.TileSize.ToVector2f();
@@ -87,8 +87,9 @@ namespace TheForestWaiter.Game.Objects.Enemies
 
         public override void Update(float time)
         {
-            HandleAnimations(time);
             base.Update(time);
+            PhysicsTick(time);
+            HandleAnimations(time);
         }
 
         private void Jump()
@@ -101,7 +102,7 @@ namespace TheForestWaiter.Game.Objects.Enemies
         {
             _jumpTrigger.TryTrigger(time);
 
-            if (Math.Abs(RealSpeed.X) < 10)
+            if (Math.Abs(RealSpeed.X) < 1)
                 Jump();
 
             var direction = (Game.Objects.Player.Center - Center).X;
@@ -111,7 +112,7 @@ namespace TheForestWaiter.Game.Objects.Enemies
             LimitPush(new Vector2f(direction, 0) * 500, time);
         }
 
-        protected override void OnTouch(DynamicObject obj)
+        protected override void OnTouch(PhysicsObject obj)
         {
             if (obj is Player p)
                 p.Damage(this, ATTACK_DAMAGE);
@@ -131,7 +132,7 @@ namespace TheForestWaiter.Game.Objects.Enemies
             MarkedForDeletion = true;
         }
 
-        protected override void OnDamage(DynamicObject by)
+        protected override void OnDamage(PhysicsObject by)
         {
             var prop = _content.Particles.Get("Particles\\blood.particle", Center);
             Game.Objects.WorldParticles.Emit(prop, 5);

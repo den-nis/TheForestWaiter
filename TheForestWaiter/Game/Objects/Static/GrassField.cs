@@ -38,7 +38,7 @@ namespace TheForestWaiter.Game.Objects.Static
             MarkedForDeletion = true;
         }
 
-		public override void PrepareSpawn(MapObject obj)
+		public override void MapSetup(MapObject obj)
 		{
             _cellsWide = obj.Width / World.TILE_SIZE;
             Position = new Vector2f(obj.X, obj.Y);

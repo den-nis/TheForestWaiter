@@ -14,6 +14,7 @@ using TheForestWaiter.Game.Objects.Weapons.Bullets;
 using TheForestWaiter.Game.Entities;
 using System.Reflection;
 using TheForestWaiter.Game.Gibs;
+using TheForestWaiter.Debugging;
 
 namespace TheForestWaiter.Services
 {
@@ -49,10 +50,7 @@ namespace TheForestWaiter.Services
 
         public void RegisterAllGameObjects()
         {
-            var asm = Assembly.GetExecutingAssembly();
-            var objects = asm.GetTypes().Where(t => t.IsAssignableTo(typeof(GameObject)));
-
-            foreach(var obj in objects)
+            foreach(var obj in Types.GameObjects)
             {
                 _container.Register(obj);
             }

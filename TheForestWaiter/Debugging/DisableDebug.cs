@@ -10,15 +10,11 @@ using TheForestWaiter.Game.Debugging;
 
 namespace TheForestWaiter.Debugging
 {
-	class DisableDebug : IGameDebug
+	class DisableDebug : IDebug
 	{
         public void Update(float time) { }
 
 		public void Draw(RenderWindow window) { }
-
-		public void DrawHitBox(Vector2f position, Vector2f size, Color color) { }
-
-		public void DrawWorldCollision(Vector2f pos) { }
 
 		public void Setup() { }
 

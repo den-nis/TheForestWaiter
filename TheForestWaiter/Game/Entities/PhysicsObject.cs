@@ -8,32 +8,36 @@ using TheForestWaiter.Debugging;
 using TheForestWaiter.Game.Debugging;
 using TheForestWaiter.Game.Environment;
 using TheForestWaiter.Game.Essentials;
+using LightInject;
+using System.Linq;
 
 namespace TheForestWaiter.Game.Entities
 {
     /// <summary>
-    /// Dynamic objects have physics and can interact with the world
+    /// Physics objects have physics and can interact with the world
     /// </summary>
-    abstract class DynamicObject : GameObject
+    abstract class PhysicsObject : GameObject
     {
-        private readonly IGameDebug _debug;
+        public static bool DrawHitBox { get; set; } = false;
+        public static bool DrawWorldCollisionBox { get; set; } = false;
 
-        public bool ReceiveDynamicCollisions { get; set; } = true;
-        public bool EmitDynamicCollisions { get; set; } = true;
+        public bool ReceivePhysicsCollisions { get; set; } = true;
+        public bool EmitPhysicsCollisions { get; set; } = true;
         public bool EnableWorldCollisions { get; set; } = true;
 
+        private const int MAX_PHYSICS_TOUCHES = 10;
         private const int TERMINAL_VELOCITY = 500; 
 
-        public DynamicObject(GameData game, IGameDebug debug) : base(game) 
+        public PhysicsObject(GameData game) : base(game) 
         {
-            _debug = debug;
+            
         }
 
-        private float LastDelta { get; set; }
-        private Vector2f LastFramePosition { get; set; }
+        private Vector2f _lastWorldCheckArea;
+        private Vector2f _lastWorldCheckCenter;
 
         //Physics
-        public float CollisionRadius { get; set; } = 50;
+        public float CollisionRadius { get; set; }
         public float Gravity { get; set; } = 0;
         public float Mass { get; set; } = 100;
         public Vector2f velocity;
@@ -48,20 +52,18 @@ namespace TheForestWaiter.Game.Entities
 
         public bool RespondToWorldCollision { get; set; } = true;
 
-        public override void Update(float time)
+        public void PhysicsTick(float time)
         {
-            RealSpeed = (Position - LastFramePosition) / LastDelta;
-            LastFramePosition = Position;
-            LastDelta = time;
 
-            _debug.DrawHitBox(Position, Size, Color.Blue);
+            var previousPosition = Position; 
 
             ApplyGravity(time);
             ApplyDrag(time);
 
             Move(velocity * time);
+            HandlePhysicsCollisions(time);
 
-            HandleDynamicCollisions(time);
+            RealSpeed = Position - previousPosition;
         }
 
         public void Push(Vector2f force, float time)
@@ -90,26 +92,31 @@ namespace TheForestWaiter.Game.Entities
             return speed + push * time;
         }
 
-        protected virtual void OnTouch(DynamicObject obj) {}
+        protected virtual void OnTouch(PhysicsObject obj) {}
 
-        private void HandleDynamicCollisions(float time)
+        private void HandlePhysicsCollisions(float time)
         {
-            if (!EmitDynamicCollisions)
+            if (!EmitPhysicsCollisions)
                 return;
 
+            int touch = 0;
             foreach(var obj in Game.Objects.Creatures)
             {
+                if (touch >= MAX_PHYSICS_TOUCHES)
+                    break;
+                
                 if (Intersects(obj) && 
                     obj.GameObjectId != GameObjectId && 
-                    obj.ReceiveDynamicCollisions)
+                    obj.ReceivePhysicsCollisions)
                 {
                     OnTouch(obj);
                     PushAway(obj, time);
+                    touch++;
                 }
             }
         }
 
-        private void PushAway(DynamicObject obj, float time)
+        private void PushAway(PhysicsObject obj, float time)
         {
             var push = obj.Center - Center;
 
@@ -207,11 +214,11 @@ namespace TheForestWaiter.Game.Entities
 
             var tiles = Game.World.GetTilesInArea(area, center);
 
-            _debug.DrawHitBox(center - (area / 2), area, Color.Green);
+            _lastWorldCheckCenter = center;
+            _lastWorldCheckArea = area;
+
             foreach (var tile in tiles)
             {
-                _debug.DrawWorldCollision(tile.Position);
-
                 float time = Collisions.SweptAABB(
                     new FloatRect(tile.Position, new Vector2f(World.TILE_SIZE, World.TILE_SIZE)), 
                     new FloatRect(Position, Size),
@@ -227,6 +234,13 @@ namespace TheForestWaiter.Game.Entities
 
             normal = nearestNormal;
             return nearestTime;
+        }
+
+        public override void DrawHitbox(RenderWindow window, float lineThickness)
+        {
+            base.DrawHitbox(window, lineThickness);
+            var position = _lastWorldCheckCenter - _lastWorldCheckArea / 2;
+            window.DrawHitBox(position, _lastWorldCheckArea, Color.Blue, lineThickness);
         }
     }
 }

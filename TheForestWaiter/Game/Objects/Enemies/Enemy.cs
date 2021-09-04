@@ -32,7 +32,7 @@ namespace TheForestWaiter.Game.Objects.Enemies
         private float _triggeredTimer = 0;
         private bool _triggered = false;
 
-        public Enemy(GameData game, IGameDebug debug) : base(game, debug)
+        public Enemy(GameData game) : base(game)
         {
             Gravity = 2000;
         }
@@ -70,7 +70,7 @@ namespace TheForestWaiter.Game.Objects.Enemies
             _triggeredTimer = CalmTime;
         }
 
-        protected override void OnDamage(DynamicObject by)
+        protected override void OnDamage(PhysicsObject by)
         {
             Trigger();
         }

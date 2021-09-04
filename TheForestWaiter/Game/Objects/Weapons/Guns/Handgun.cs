@@ -22,6 +22,7 @@ namespace TheForestWaiter.Game.Objects.Weapons.Guns
 
         public Handgun(GameData game, GameContent content, Camera camera, ObjectCreator creator) : base(game, camera, creator)
         {
+            GunSprite = content.Textures.CreateSprite("Textures\\Guns\\handgun.png");
             OnFire += OnFireEvent;
             _content = content;
         }

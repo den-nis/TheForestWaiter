@@ -12,15 +12,9 @@ namespace TheForestWaiter.Game.Objects.Weapons.Bullets
 {
     class SniperBullet : Bullet
     {
-        public SniperBullet(GameData game, GameContent content, IGameDebug debug) : base(game, debug, content)
+        public SniperBullet(GameData game, GameContent content) : base(game, content, "Textures\\Bullets\\bullet_sniper.png")
         {
             Damage = 100;
-
-            Size = new Vector2f(5, 3);
-
-            BulletSprite = content.Textures.CreateSprite("Textures\\Bullets\\bullet_sniper.png");
-            BulletSprite.Origin = Size / 2;
-            BulletSprite.Rotation = TrigHelper.ToDeg(StartAngle);
         }
 
         public override void Update(float time)

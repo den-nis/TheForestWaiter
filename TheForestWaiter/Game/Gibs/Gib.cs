@@ -17,7 +17,7 @@ namespace TheForestWaiter.Game.Gibs
 	/// <summary>
 	/// The sheet you give in the constructor will be changed (rotation/origin)
 	/// </summary>
-	class Gib : DynamicObject
+	class Gib : PhysicsObject
 	{
 		private const float _airRotationDrag = 0.5f;
 
@@ -29,10 +29,10 @@ namespace TheForestWaiter.Game.Gibs
 		private float _life;
 		private float _rotation;
 
-		public Gib(GameData game, IGameDebug debug) : base(game, debug)
+		public Gib(GameData game) : base(game)
 		{
-			ReceiveDynamicCollisions = false;
-			EmitDynamicCollisions = false;
+			ReceivePhysicsCollisions = false;
+			EmitPhysicsCollisions = false;
 			Drag = new Vector2f(100, 20);
 			Gravity = 500;
 		}
@@ -45,6 +45,9 @@ namespace TheForestWaiter.Game.Gibs
 
 		public override void Update(float time)
 		{
+			Size = Sheet.TileSize.ToVector2f();
+			CollisionRadius = Math.Max(Size.X, Size.Y);
+
 			_life -= time;
 
 			if (_life < 0)
@@ -64,7 +67,7 @@ namespace TheForestWaiter.Game.Gibs
 				AngularMomentum = ForestMath.MoveTowardsZero(AngularMomentum, _airRotationDrag * time);
 			}
 
-			base.Update(time);
+			PhysicsTick(time);
 		}
 
 		public override void Draw(RenderWindow window)

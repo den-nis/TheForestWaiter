@@ -33,7 +33,7 @@ namespace TheForestWaiter.Game
             return obj;
         }
 
-        public T CreateAndShoot<T>(Vector2f position, Vector2f speed) where T : DynamicObject
+        public T CreateAndShoot<T>(Vector2f position, Vector2f speed) where T : PhysicsObject
         {
             T obj = CreateAt<T>(position);
             obj.velocity = speed;

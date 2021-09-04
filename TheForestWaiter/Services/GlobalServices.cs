@@ -38,10 +38,10 @@ namespace TheForestWaiter.Services
                 .RegisterSingleton<UserSettings>()
                 .RegisterSingleton<WindowHandle>()
 #if DEBUG
-                .RegisterSingleton<IGameDebug, GameDebug>();
+                .RegisterSingleton<IDebug, ActiveDebug>();
             RegisterCommands();
 #else
-                .RegisterSingleton<IGameDebug, DisableDebug>();
+                .RegisterSingleton<IDebug, DisableDebug>();
 #endif
         }
 
@@ -49,7 +49,7 @@ namespace TheForestWaiter.Services
         {
             _container.GetInstance<UserSettings>().Setup();
             _container.GetInstance<WindowHandle>().Setup();
-            _container.GetInstance<IGameDebug>().Setup();
+            _container.GetInstance<IDebug>().Setup();
             _container.GetInstance<GameContent>().Setup();
         }
 

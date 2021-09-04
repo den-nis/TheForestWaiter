@@ -7,20 +7,17 @@ using System.Text;
 using System.Threading.Tasks;
 using TheForestWaiter.Game.Entities;
 using TheForestWaiter.Game;
+using TheForestWaiter.Debugging;
 
 namespace TheForestWaiter.Game.Debugging
 {
-	interface IGameDebug : IDisposable
+	interface IDebug : IDisposable
 	{
 		void Setup();
 
 		void Update(float time);
 
 		void Draw(RenderWindow window);
-
-		void DrawHitBox(Vector2f position, Vector2f size, Color color);
-
-		void DrawWorldCollision(Vector2f pos);
 
 		void Log(string message);
 	}

@@ -13,14 +13,18 @@ namespace TheForestWaiter.Game
 {
     class GameObjects
     {
+        public bool EnableDrawHitBoxes { get; set; } = true;
+
         private readonly UserSettings _settings;
         private readonly ObjectCreator _creator;
-        private readonly IGameDebug _debug;
+        private readonly Camera _camera;
+        private readonly IDebug _debug;
 
-        public GameObjects(UserSettings settings, ObjectCreator creator, IGameDebug debug)
+        public GameObjects(UserSettings settings, ObjectCreator creator, Camera camera, IDebug debug)
         {
             _settings = settings;
             _creator = creator;
+            _camera = camera;
             _debug = debug;
 
             WorldParticles = new ParticleSystem(_settings.GetInt("Game", "MaxParticles"));
@@ -29,11 +33,11 @@ namespace TheForestWaiter.Game
         public Player Player { get; private set; } = null;
         public Chunks Chunks { get; set; } = null;
         public GameObjectContainer<Creature> Enemies { get; set; } = new GameObjectContainer<Creature>();
-        public GameObjectContainer<DynamicObject> Bullets { get; set; } = new GameObjectContainer<DynamicObject>();
-        public GameObjectContainer<DynamicObject> Other { get; set; } = new GameObjectContainer<DynamicObject>();
+        public GameObjectContainer<PhysicsObject> Bullets { get; set; } = new GameObjectContainer<PhysicsObject>();
+        public GameObjectContainer<PhysicsObject> Other { get; set; } = new GameObjectContainer<PhysicsObject>();
         public ParticleSystem WorldParticles { get; set; }
 
-        public IEnumerable<GameObject> Everything => Enemies
+        public IEnumerable<PhysicsObject> PhysicsObjects => Enemies
             .Concat(new[] { Player })
             .Concat(Bullets)
             .Concat(Other);
@@ -65,6 +69,11 @@ namespace TheForestWaiter.Game
             Player.Draw(window);
             Bullets.Draw(window);
             WorldParticles.Draw(window);
+
+            if (EnableDrawHitBoxes) 
+            {
+                DrawHitBoxes(window);
+            }
         }
 
         public void Update(float time)
@@ -101,7 +110,7 @@ namespace TheForestWaiter.Game
                 if (staticObject != null)
                 {
                     staticObject.Position = new Vector2f(inf.Position.X, inf.Position.Y - staticObject.Size.Y);
-                    staticObject.PrepareSpawn(inf);
+                    staticObject.MapSetup(inf);
                     Chunks.Add(staticObject);
                     continue;
                 }
@@ -109,6 +118,14 @@ namespace TheForestWaiter.Game
                 {
                     _debug.Log($"Missing StaticObject {inf.Type}");
                 }
+            }
+        }
+
+        public void DrawHitBoxes(RenderWindow window)
+        {
+            foreach(var obj in PhysicsObjects)
+            {
+                obj.DrawHitbox(window, _camera.Scale);
             }
         }
     }
