@@ -8,6 +8,7 @@ using TheForestWaiter.Debugging.DebugConsole;
 using TheForestWaiter.Game;
 using TheForestWaiter.Game.Entities;
 using TheForestWaiter.Game.Objects;
+using TheForestWaiter.Game.Objects.Weapons.Bullets;
 
 namespace TheForestWaiter.Debugging.Command.Commands
 {
@@ -45,12 +46,21 @@ namespace TheForestWaiter.Debugging.Command.Commands
 
                 switch (instance)
                 {
+                    case Bullet bullet:
+                        _game.Objects.Bullets.Add(bullet);
+                        break;
+
                     case Creature enemy:
                         _game.Objects.Enemies.Add(enemy);
                         break;
 
                     case PhysicsObject pObj:
                         _game.Objects.Other.Add(pObj);
+                        break;
+
+                    case StaticObject sObj:
+                        var chunkId = _game.Objects.Chunks.CurrentChunkId;
+                        _game.Objects.Chunks.GetChunk(chunkId).Objects.Add(sObj);
                         break;
 
                     default:

@@ -13,7 +13,7 @@ namespace TheForestWaiter.Game
 {
     class GameObjects
     {
-        public bool EnableDrawHitBoxes { get; set; } = true;
+        public bool EnableDrawHitBoxes { get; set; } = false;
 
         private readonly UserSettings _settings;
         private readonly ObjectCreator _creator;

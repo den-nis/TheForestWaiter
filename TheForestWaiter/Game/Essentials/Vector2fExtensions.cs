@@ -43,6 +43,9 @@ namespace TheForestWaiter.Game.Essentials
 
         public static Vector2f Norm(this Vector2f vec)
         {
+            if (vec.X == 0 && vec.Y == 0)
+                return new Vector2f(0, 0);
+
             var l = Len(vec);
             return new Vector2f(vec.X / l, vec.Y / l);
         }

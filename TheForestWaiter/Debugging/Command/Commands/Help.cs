@@ -12,9 +12,9 @@ namespace TheForestWaiter.Debugging.Command.Commands
     {
         public void Execute(CommandHandler handler, string[] args)
         {
-            var tb = new TableBuilder();
+            var tb = new TableBuilder(true);
 
-            tb.WriteRow("Name", "Description", "Usage");
+            tb.WriteRow("Name", "Description", "Parameters");
             foreach (var m in handler.CommandInfo.Values)
             {
                 tb.WriteRow(m.Attribute.Name, m.Attribute.Description, m.Attribute.Usage);

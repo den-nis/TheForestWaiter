@@ -16,6 +16,7 @@ namespace TheForestWaiter.States
         
         public void SetState(IState state)
         {
+            CurrentState?.Dispose();
             state.Load();
             CurrentState = state;
         }

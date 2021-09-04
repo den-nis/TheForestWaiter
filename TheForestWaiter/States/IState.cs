@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TheForestWaiter.States
 {
-    public interface IState 
+    public interface IState : IDisposable
     {
         void Draw();
 

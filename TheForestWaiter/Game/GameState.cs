@@ -19,7 +19,7 @@ using TheForestWaiter.States;
 
 namespace TheForestWaiter.Game
 {
-    class GameState : IState, IDisposable
+    class GameState : IState
     {
         private readonly GameServices _services;
 
@@ -44,7 +44,6 @@ namespace TheForestWaiter.Game
             _window = window;
             _content = content;
         }
-
 
         public void Dispose()
         {

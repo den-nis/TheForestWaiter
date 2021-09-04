@@ -57,6 +57,8 @@ namespace TheForestWaiter.Game.Environment
             CurrentChunkId = loadChunkId;
         }
 
+        public Chunk GetChunk(int id) => _chunkArray[id];
+
         public void Update(float time)
         {
             foreach(var i in _activeChunks)

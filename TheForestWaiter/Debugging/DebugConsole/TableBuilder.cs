@@ -15,6 +15,12 @@ namespace TheForestWaiter.Debugging.DebugConsole
 
         private int _columns = -1;
         private readonly List<string[]> _rows = new();
+        private readonly bool _header;
+
+        public TableBuilder(bool header = false)
+        {
+            _header = header;
+        }
 
         public TableBuilder WriteRow(params string[] row)
         {
@@ -55,7 +61,7 @@ namespace TheForestWaiter.Debugging.DebugConsole
             sb.AppendLine(bar);
             for (int y = 0; y < table.GetLength(1); y++)
             {
-                if (y == 1)
+                if (y == 1 && _header)
                     sb.AppendLine(bar);
 
                 for (int x = 0; x < table.GetLength(0); x++)
