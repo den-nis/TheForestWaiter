@@ -1,22 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
+    <OutputType>Exe</OutputType>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <PlatformTarget>x64</PlatformTarget>
+	<OutputType>WinExe</OutputType>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="Content.zip" />
-    <None Remove="Game\Entities\DynamicObject.cs~RF14b49e0.TMP" />
     <None Remove="Icon.ico" />
-    <None Remove="Game\Objects\Player.cs~RFb9b1dd5.TMP" />
     <None Remove="TileSet.tsx" />
-    <None Remove="~VC9AD2.tmp" />
   </ItemGroup>
 
   <ItemGroup>
