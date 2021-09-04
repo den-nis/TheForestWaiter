@@ -23,9 +23,15 @@ jobs:
     - name: Build
       run: dotnet publish /p:Configuration=Release /p:PublishProfile=FolderProfile
       
+    - name: Remove debug files
+      run: del ./TheForestWaiter/bin/Release/net5.0/win-x64/publish/*.pdb
+      
+    - name: Remove jsons
+      run: del ./TheForestWaiter/bin/Release/net5.0/win-x64/publish/*.json
+      
     - name: Publish-Artifacts
       uses: actions/upload-artifact@v2
       with:
         name: release.exe
-        path:  ./TheForestWaiter/bin/Release/net5.0/
+        path:  ./TheForestWaiter/bin/Release/net5.0/win-x64/publish
         retention-days: 5
