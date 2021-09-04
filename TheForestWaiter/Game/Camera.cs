@@ -83,11 +83,15 @@ namespace TheForestWaiter.Game
 		{
             if (_settings.GetBool("Game", "SmoothCam")) //TODO: type safe
             {
+                float xDelta = TargetPosition.X - Center.X;
+                float yDelta = TargetPosition.Y - Center.Y;
+                float sDelta = TargetScale - Scale;
+
                 Center = new Vector2f(
-                    Center.X + (TargetPosition.X - Center.X) * time * MOVE_STRENGTH,
-                    Center.Y + (TargetPosition.Y - Center.Y) * time * MOVE_STRENGTH
+                    Center.X + xDelta * (time * MOVE_STRENGTH > 1 ? 1 : time * MOVE_STRENGTH),
+                    Center.Y + yDelta * (time * MOVE_STRENGTH > 1 ? 1 : time * MOVE_STRENGTH)
                 );
-                Scale += (TargetScale - Scale) * time * ZOOM_STRENGTH;
+                Scale += sDelta * (time * ZOOM_STRENGTH > 1 ? 1 : time * MOVE_STRENGTH);
             }
             else
 			{
