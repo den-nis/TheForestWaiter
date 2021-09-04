@@ -13,7 +13,9 @@ namespace TheForestWaiter.Game
     {
         private const float MAX_ZOOM_IN = 0.1f;
         private const float ZOOM_STRENGTH = 10;
-        private const float MOVE_STRENGTH = 50;
+
+        private const float HORIZONTAL_MOVE_STRENGTH = 100;
+        private const float VERTICAL_MOVE_STRENGTH = 20;
 
         public Vector2f MaxWorldView { get; } = new Vector2f(1920, 1080);
         public Vector2f TargetPosition { get; set; }
@@ -88,10 +90,10 @@ namespace TheForestWaiter.Game
                 float sDelta = TargetScale - Scale;
 
                 Center = new Vector2f(
-                    Center.X + xDelta * (time * MOVE_STRENGTH > 1 ? 1 : time * MOVE_STRENGTH),
-                    Center.Y + yDelta * (time * MOVE_STRENGTH > 1 ? 1 : time * MOVE_STRENGTH)
+                    Center.X + xDelta * (time * HORIZONTAL_MOVE_STRENGTH > 1 ? 1 : time * HORIZONTAL_MOVE_STRENGTH),
+                    Center.Y + yDelta * (time * VERTICAL_MOVE_STRENGTH > 1 ? 1 : time * VERTICAL_MOVE_STRENGTH)
                 );
-                Scale += sDelta * (time * ZOOM_STRENGTH > 1 ? 1 : time * MOVE_STRENGTH);
+                Scale += sDelta * (time * ZOOM_STRENGTH > 1 ? 1 : time * ZOOM_STRENGTH);
             }
             else
 			{

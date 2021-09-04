@@ -87,7 +87,6 @@ namespace TheForestWaiter.Game
 
         public void Update(float time)
         {
-            _camera.Update(time);
             _background.Update();
             _background.SetOffset(_camera.Center);
             _background.UpdateSize((int)_window.SfmlWindow.Size.X, (int)_window.SfmlWindow.Size.Y);
@@ -99,8 +98,9 @@ namespace TheForestWaiter.Game
                 _game.Objects.CleanUp();
             }
 
-            _camera.TargetPosition = _game.Objects.Player.Center;
             _game.Objects.Update(time);
+            _camera.TargetPosition = _game.Objects.Player.Center;
+            _camera.Update(time);
         }
     }
 }

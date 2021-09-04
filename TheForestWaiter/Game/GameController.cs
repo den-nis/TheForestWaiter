@@ -99,7 +99,7 @@ namespace TheForestWaiter.Game
 
         private void WindowMouseWheelScrolled(object sender, MouseWheelScrollEventArgs e)
         {
-            _camera.TargetScale = (_camera.Scale - _camera.Scale * (e.Delta / 3));
+            _camera.TargetScale = _camera.Scale - (_camera.Scale * (e.Delta / 3));
         }
 
         private void WindowKeyReleased(object sender, KeyEventArgs e)
