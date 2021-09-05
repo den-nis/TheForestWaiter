@@ -128,7 +128,8 @@ namespace TheForestWaiter.Game.Objects.Enemies
             var prop = _content.Particles.Get("Particles\\blood.particle", Center);
             Game.Objects.WorldParticles.Emit(prop, 12);
 
-            _gibSpawner.SpawnComplete(Center);
+            _gibSpawner.InitialVelocity = velocity;
+            _gibSpawner.SpawnAll(Center);
             MarkedForDeletion = true;
         }
 

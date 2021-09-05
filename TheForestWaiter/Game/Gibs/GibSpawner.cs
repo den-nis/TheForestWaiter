@@ -10,6 +10,7 @@ namespace TheForestWaiter.Game.Gibs
 		public float? GibRadius { get; set; }
 		public Vector2f MaxVelocity { get; set; } = new Vector2f(300, 0);
 		public Vector2f MinVelocity { get; set; } = new Vector2f(-300, -200);
+		public Vector2f InitialVelocity { get; set; } = new Vector2f(0, 0);
 
 		private readonly GameData _game;
         private readonly ObjectCreator _creator;
@@ -29,7 +30,7 @@ namespace TheForestWaiter.Game.Gibs
 				Rng.Range(MinVelocity.Y, MaxVelocity.Y)
 				);
 
-			var gib = _creator.CreateAndShoot<Gib>(at, velocity);
+			var gib = _creator.CreateAndShoot<Gib>(at, velocity + InitialVelocity);
             gib.SetLife(10);
 			gib.AngularMomentum = Math.Sign(velocity.X) * (float)Math.PI;
 			gib.TileIndex = index;
@@ -38,7 +39,7 @@ namespace TheForestWaiter.Game.Gibs
 			_game.Objects.Other.Add(gib);
 		}
 
-		public void SpawnComplete(Vector2f at)
+		public void SpawnAll(Vector2f at)
 		{
 			for (int i = 0; i < Sheet.TotatlTiles * _gibMultiplier; i++)
 			{
