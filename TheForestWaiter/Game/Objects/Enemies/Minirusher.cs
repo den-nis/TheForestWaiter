@@ -50,8 +50,8 @@ namespace TheForestWaiter.Game.Objects.Enemies
 
             _animation.Sprite.Position = Position;
 
-            var isMovingRight = RealSpeed.X > 50;
-            var isMovingLeft = RealSpeed.X < -50;
+            var isMovingRight = RealSpeed.X > 1;
+            var isMovingLeft = RealSpeed.X < -1;
 
             if (_targetDirection == 0)
             {
