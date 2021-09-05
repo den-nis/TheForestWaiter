@@ -17,6 +17,8 @@ namespace TheForestWaiter.Game
         private const float HORIZONTAL_MOVE_STRENGTH = 100;
         private const float VERTICAL_MOVE_STRENGTH = 20;
 
+        private const float HEIGHT_OFFSET = 100;
+
         public Vector2f MaxWorldView { get; } = new Vector2f(1920, 1080);
         public Vector2f TargetPosition { get; set; }
         public float TargetScale { get; set; } = 1;
@@ -65,6 +67,11 @@ namespace TheForestWaiter.Game
         public Camera(UserSettings settings)
         {
             _settings = settings;
+        }
+
+        public void FollowPlayer(Vector2f position)
+        {
+            TargetPosition = position - new Vector2f(0, HEIGHT_OFFSET * Scale);
         }
 
         private void SizeChanged()

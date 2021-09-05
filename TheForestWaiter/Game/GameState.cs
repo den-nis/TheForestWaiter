@@ -99,7 +99,7 @@ namespace TheForestWaiter.Game
             }
 
             _game.Objects.Update(time);
-            _camera.TargetPosition = _game.Objects.Player.Center;
+            _camera.FollowPlayer(_game.Objects.Player.Center);
             _camera.Update(time);
         }
     }
