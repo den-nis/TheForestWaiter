@@ -20,11 +20,11 @@ namespace TheForestWaiter.Game.Objects.Enemies
         private const float ATTACK_DAMAGE = 10;
         private readonly AnimatedSprite _animation;
         private readonly RandomTrigger _jumpTrigger;
-        private readonly GameContent _content;
+        private readonly ContentSource _content;
         private readonly GibSpawner _gibSpawner;
         private int _targetDirection = 0;
 
-        public Minirusher(GameData game, GameContent content, GibSpawner gibSpawner) : base(game)
+        public Minirusher(GameData game, ContentSource content, GibSpawner gibSpawner) : base(game)
         {
             _animation = content.Textures.CreateAnimatedSprite("Textures\\Enemies\\minirusher.png");
             Size = _animation.Sheet.TileSize.ToVector2f();

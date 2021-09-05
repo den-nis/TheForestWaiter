@@ -9,19 +9,14 @@ namespace TheForestWaiter.Game.Objects.Weapons.Guns
 { 
     class Handgun : GunBase
     {
-        private readonly GameContent _content;
+        private readonly ContentSource _content;
 
         protected override Vector2f AttachPoint => Game.Objects.Player.Center - new Vector2f(0, 1);
-        protected override float Range => 1500;
-        protected override float FireRatePerSecond => 3f;
-        protected override bool AutoFire => false;
         protected override Vector2f Origin => new(2.5f, 6.5f);
-        protected override float FireSpeed => 500;
-        protected override float FireSpeedVariation => 100;
-        protected override float Cone => 0;
 
-        public Handgun(GameData game, GameContent content, Camera camera, ObjectCreator creator) : base(game, camera, creator)
+        public Handgun(GameData game, ContentSource content, Camera camera, ObjectCreator creator) : base(game, camera, creator)
         {
+            AutoFire = false;
             GunSprite = content.Textures.CreateSprite("Textures\\Guns\\handgun.png");
             OnFire += OnFireEvent;
             _content = content;

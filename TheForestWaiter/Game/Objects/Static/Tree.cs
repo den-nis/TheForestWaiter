@@ -18,7 +18,7 @@ namespace TheForestWaiter.Game.Objects.Static
 
         AnimatedSprite Animation { get; set; }
 
-        public Tree(GameData game, GameContent content) : base(game)
+        public Tree(GameData game, ContentSource content) : base(game)
         {
             Animation = content.Textures.CreateAnimatedSprite("Textures\\World\\tree.png");
             Size = Animation.Sheet.TileSize.ToVector2f();

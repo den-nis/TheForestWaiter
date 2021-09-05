@@ -22,10 +22,10 @@ namespace TheForestWaiter.Game.Objects.Enemies
         private float _particleTimer = 0;
 
         private readonly Sprite _sprite;
-        private readonly GameContent _content;
+        private readonly ContentSource _content;
         private float _speed = 200;
 
-        public Rusher(GameData game, GameContent content) : base(game)
+        public Rusher(GameData game, ContentSource content) : base(game)
         {
             _content = content;
             _sprite = content.Textures.CreateSprite("Textures\\Enemies\\rusher.png");

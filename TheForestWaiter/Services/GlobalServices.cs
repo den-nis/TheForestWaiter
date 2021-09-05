@@ -33,7 +33,7 @@ namespace TheForestWaiter.Services
                 .Register<GameState>()
 
                 .RegisterSingleton<Entry>()
-                .RegisterSingleton<GameContent>()
+                .RegisterSingleton<ContentSource>()
                 .RegisterSingleton<StateManager>()
                 .RegisterSingleton<UserSettings>()
                 .RegisterSingleton<WindowHandle>()
@@ -50,7 +50,7 @@ namespace TheForestWaiter.Services
             _container.GetInstance<UserSettings>().Setup();
             _container.GetInstance<WindowHandle>().Setup();
             _container.GetInstance<IDebug>().Setup();
-            _container.GetInstance<GameContent>().Setup();
+            _container.GetInstance<ContentSource>().Setup();
         }
 
         private void RegisterCommands()

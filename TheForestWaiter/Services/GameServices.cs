@@ -15,6 +15,7 @@ using TheForestWaiter.Game.Entities;
 using System.Reflection;
 using TheForestWaiter.Game.Gibs;
 using TheForestWaiter.Debugging;
+using TheForestWaiter.Game.Hud;
 
 namespace TheForestWaiter.Services
 {
@@ -38,6 +39,7 @@ namespace TheForestWaiter.Services
                 .RegisterScoped<GameController>()
                 .RegisterScoped<Background>()
                 .RegisterScoped<Camera>()
+                .RegisterScoped<HudDrawer>()
                 .RegisterScoped<GameData>()
                 .RegisterScoped<GameObjects>()
                 .RegisterScoped<World>()

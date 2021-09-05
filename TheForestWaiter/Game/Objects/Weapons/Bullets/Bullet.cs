@@ -22,17 +22,17 @@ namespace TheForestWaiter.Game.Objects.Weapons.Bullets
 
         private Vector2f? _spawn = null;
         private float? _startAngle = null;
-        private readonly GameContent _content;
+        private readonly ContentSource _content;
 
         private float Traveled { get; set; } = 0;
 
 
-        public Bullet(GameData game, GameContent content) : this(game, content, "Textures\\Bullets\\bullet_generic.png")
+        public Bullet(GameData game, ContentSource content) : this(game, content, "Textures\\Bullets\\bullet_generic.png")
         {
             
         }
 
-        public Bullet(GameData game, GameContent content, string texture) : base(game)
+        public Bullet(GameData game, ContentSource content, string texture) : base(game)
         {
             SetBulletSprite(content.Textures.CreateSprite(texture));
 

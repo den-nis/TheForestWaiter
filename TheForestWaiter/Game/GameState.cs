@@ -16,6 +16,7 @@ using TheForestWaiter.Game.Essentials;
 using LightInject;
 using TheForestWaiter.Services;
 using TheForestWaiter.States;
+using TheForestWaiter.Game.Hud;
 
 namespace TheForestWaiter.Game
 {
@@ -25,7 +26,8 @@ namespace TheForestWaiter.Game
 
         private readonly WindowHandle _window;
         private readonly Camera _camera;
-        private readonly GameContent _content;
+        private readonly ContentSource _content;
+        private readonly HudDrawer _hud;
 
         private readonly GameData _game;
 
@@ -33,7 +35,7 @@ namespace TheForestWaiter.Game
         private float _cleanUpTimer = CLEAN_UP_INTERVAL;
         private readonly Background _background;
 
-        public GameState(WindowHandle window, GameContent content, ServiceContainer container)
+        public GameState(WindowHandle window, ContentSource content, ServiceContainer container)
         {
             _services = new GameServices(container);
             _services.Register();
@@ -41,6 +43,7 @@ namespace TheForestWaiter.Game
             _game = container.GetInstance<GameData>();
             _camera = container.GetInstance<Camera>();
             _background = container.GetInstance<Background>();
+            _hud = container.GetInstance<HudDrawer>();
             _window = window;
             _content = content;
         }
@@ -83,6 +86,7 @@ namespace TheForestWaiter.Game
             _game.Objects.Draw(_window.SfmlWindow);
             _game.World.Draw(_window.SfmlWindow, new FloatRect(_camera.Position, _camera.Size), true);
 
+            _hud.Draw(_window.SfmlWindow);
         }
 
         public void Update(float time)
@@ -101,6 +105,7 @@ namespace TheForestWaiter.Game
             _game.Objects.Update(time);
             _camera.FollowPlayer(_game.Objects.Player.Center);
             _camera.Update(time);
+            _hud.Update();
         }
     }
 }

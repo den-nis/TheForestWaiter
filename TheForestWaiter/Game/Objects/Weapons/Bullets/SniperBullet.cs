@@ -12,7 +12,7 @@ namespace TheForestWaiter.Game.Objects.Weapons.Bullets
 {
     class SniperBullet : Bullet
     {
-        public SniperBullet(GameData game, GameContent content) : base(game, content, "Textures\\Bullets\\bullet_sniper.png")
+        public SniperBullet(GameData game, ContentSource content) : base(game, content, "Textures\\Bullets\\bullet_sniper.png")
         {
             Damage = 100;
         }

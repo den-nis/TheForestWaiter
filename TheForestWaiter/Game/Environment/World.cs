@@ -20,7 +20,7 @@ namespace TheForestWaiter.Game.Environment
         private Tile[,] _tiles;
         private SpriteSheet Sheet { get; set; }
 
-        public World(GameContent content)
+        public World(ContentSource content)
         {
             Sheet = content.Textures.CreateSpriteSheet("Textures\\world.png");
         }

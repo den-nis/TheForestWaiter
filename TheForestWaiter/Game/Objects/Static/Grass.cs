@@ -19,7 +19,7 @@ namespace TheForestWaiter.Game.Objects.Static
 
         AnimatedSprite Animation { get; set; }
 
-        public Grass(GameData game, GameContent content) : base(game)
+        public Grass(GameData game, ContentSource content) : base(game)
         {
             Animation = content.Textures.CreateAnimatedSprite("Textures\\World\\grass.png");
             Animation.Framerate = (int)Rng.Range(FRAME_RATE_MIN, FRAME_RATE_MAX);

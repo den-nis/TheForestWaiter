@@ -35,7 +35,7 @@ namespace TheForestWaiter.Game.Environment
         private Vector2f _offset;
 		private Vector2f _windowSize;
 
-		public Background(GameContent content, Camera camera)
+		public Background(ContentSource content, Camera camera)
 		{
             _camera = camera;
 			_spriteSky = content.Textures.CreateSprite("Textures\\Background\\sky.png");

@@ -24,7 +24,7 @@ namespace TheForestWaiter.Game.Objects
 
         private const float MAX_NORMAL_SPEED = 200;
 
-        private GunBase Gun { get; set; }
+        public GunBase Gun { get; private set; }
         private float EarlyJumpTime { get; set; } = (float)TimeSpan.FromSeconds(0.1f).TotalSeconds;
 
         private bool Jumping { get; set; } = false;
@@ -38,7 +38,7 @@ namespace TheForestWaiter.Game.Objects
         private const float SPEED_UP_PER_SECOND = 50;
         private const float SECONDS_OF_SPEED_UP = 4;
 
-        public Player(GameData game, GameContent content, ObjectCreator creator, Camera camera) : base(game)
+        public Player(GameData game, ContentSource content, ObjectCreator creator, Camera camera) : base(game)
         {
             Health = 100;
             AnimatedSprite = content.Textures.CreateAnimatedSprite("Textures\\Player\\sheet.png");
