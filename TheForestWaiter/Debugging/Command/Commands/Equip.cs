@@ -24,7 +24,7 @@ namespace TheForestWaiter.Debugging.Command.Commands
         public void Execute(CommandHandler handler, string[] args)
         {
             _game.Objects.Player.SetGun((GunBase)_container
-                .GetInstance(Types.Guns.FirstOrDefault(t => t.Name.Equals(args[0], StringComparison.OrdinalIgnoreCase))));
+                .GetInstance(Types.Guns.Values.FirstOrDefault(t => t.Name.Equals(args[0], StringComparison.OrdinalIgnoreCase))));
         }
     }
 }

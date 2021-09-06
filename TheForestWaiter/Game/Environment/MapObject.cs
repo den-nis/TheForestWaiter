@@ -14,6 +14,8 @@ namespace TheForestWaiter.Game.Environment
         public float X { get; set; }
         public float Y { get; set; }
 
+        public MapProperties[] Properties { get; set; }
+
         public Vector2f Position => new(X, Y);
     }
 }

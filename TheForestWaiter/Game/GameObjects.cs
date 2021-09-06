@@ -96,14 +96,14 @@ namespace TheForestWaiter.Game
             Chunks = new Chunks(world);
 
             var objects = map.Layers.Where(l => l.Type == "objectgroup").SelectMany(l => l.Objects);
-            var lookup = Types.GameObjects.ToDictionary(k => k.Name, v => v);
             foreach (MapObject inf in objects)
             {
-                var type = lookup[inf.Type];
+                Types.GameObjects.TryGetValue(inf.Type, out Type type);
                 if (type != null)
                 {
                     var obj = _creator.CreateType(type);
                     obj.Position = new Vector2f(inf.X, inf.Y - obj.Size.Y);
+                    obj.MapSetup(inf);
                     AddAuto(obj);
                 }
                 else

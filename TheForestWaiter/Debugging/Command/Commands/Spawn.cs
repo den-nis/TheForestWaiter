@@ -36,7 +36,7 @@ namespace TheForestWaiter.Debugging.Command.Commands
             if (args.Length > 3)
                 pos.Y = int.Parse(args[3].Trim('*')) + (args[3].StartsWith('*') ? pos.Y : 0);
 
-            var type = Types.GameObjects.FirstOrDefault(t => t.Name.Equals(args[0], StringComparison.OrdinalIgnoreCase));
+            var type = Types.GameObjects.Values.FirstOrDefault(t => t.Name.Equals(args[0], StringComparison.OrdinalIgnoreCase));
 
             for (int i = 0; i < amount; i++)
             {

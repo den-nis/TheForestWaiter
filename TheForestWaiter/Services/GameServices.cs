@@ -9,7 +9,6 @@ using LightInject;
 using TheForestWaiter.Game.Objects.Static;
 using TheForestWaiter.Game.Objects;
 using TheForestWaiter.Game.Objects.Weapons.Guns;
-using TheForestWaiter.Game.Objects.Spawners;
 using TheForestWaiter.Game.Objects.Weapons.Bullets;
 using TheForestWaiter.Game.Entities;
 using System.Reflection;
@@ -52,7 +51,7 @@ namespace TheForestWaiter.Services
 
         public void RegisterAllGameObjects()
         {
-            foreach(var obj in Types.GameObjects)
+            foreach(var obj in Types.GameObjects.Values)
             {
                 _container.Register(obj);
             }

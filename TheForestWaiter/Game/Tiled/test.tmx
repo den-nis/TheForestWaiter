@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="117">
+<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="125">
  <editorsettings>
   <export target="../../../TheForestWaiter.Content/Content/Worlds/test.json" format="json"/>
  </editorsettings>
@@ -437,6 +437,34 @@
    <point/>
   </object>
   <object id="116" type="Minirusher" x="1600" y="2368">
+   <point/>
+  </object>
+  <object id="117" type="Spawner" x="192" y="128">
+   <properties>
+    <property name="Amount" value="2"/>
+    <property name="Interval" value="0"/>
+    <property name="Object" value="Minirusher"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="118" type="Spawner" x="224" y="128">
+   <properties>
+    <property name="Amount" value="2"/>
+    <property name="Interval" value="0"/>
+    <property name="Object" value="Minirusher"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="121" type="Tree" x="512" y="3072">
+   <point/>
+  </object>
+  <object id="122" type="Tree" x="544" y="3072">
+   <point/>
+  </object>
+  <object id="123" type="Tree" x="672" y="3040">
+   <point/>
+  </object>
+  <object id="124" type="Tree" x="896" y="2976">
    <point/>
   </object>
  </objectgroup>

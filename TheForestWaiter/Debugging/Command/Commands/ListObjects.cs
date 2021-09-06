@@ -13,7 +13,7 @@ namespace TheForestWaiter.Debugging.Command.Commands
         public void Execute(CommandHandler handler, string[] args)
         {
             var tb = new TableBuilder();
-            foreach(var obj in Types.GameObjects)
+            foreach(var obj in Types.GameObjects.Values)
             {
                 tb.WriteRow(obj.Name);
             }

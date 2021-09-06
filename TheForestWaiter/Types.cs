@@ -11,8 +11,8 @@ namespace TheForestWaiter
 {
     public static class Types
     {
-        public static IEnumerable<Type> GameObjects { get; private set; }
-        public static IEnumerable<Type> Guns { get; private set; }
+        public static IDictionary<string, Type> GameObjects { get; private set; }
+        public static IDictionary<string, Type> Guns { get; private set; }
 
         static Types()
         {
@@ -20,17 +20,18 @@ namespace TheForestWaiter
             Guns = GetGuns();
         }
 
-        private static IEnumerable<Type> GetGameObjects() => GetTypes<GameObject>();
+        private static IDictionary<string, Type> GetGameObjects() => GetTypes<GameObject>();
         
-        private static IEnumerable<Type> GetGuns() => GetTypes<GunBase>();
+        private static IDictionary<string, Type> GetGuns() => GetTypes<GunBase>();
         
-        private static IEnumerable<Type> GetTypes<T>()
+        private static IDictionary<string, Type> GetTypes<T>()
         {
             var asm = Assembly.GetExecutingAssembly();
             return asm.GetTypes().Where(t =>
                 t.IsAssignableTo(typeof(T)) &&
                 !t.IsAbstract &&
-                !t.IsInterface);
+                !t.IsInterface)
+                .ToDictionary(k => k.Name, v => v);
         }
     }
 }

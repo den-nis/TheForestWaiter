@@ -2,4 +2,10 @@
 <objecttypes>
  <objecttype name="Minirusher" color="#000000"/>
  <objecttype name="Player" color="#00ff15"/>
+ <objecttype name="Spawner" color="#00b99d">
+  <property name="Amount" type="string" default=""/>
+  <property name="Interval" type="string" default=""/>
+  <property name="Object" type="string" default=""/>
+ </objecttype>
+ <objecttype name="Tree" color="#00ff15"/>
 </objecttypes>
