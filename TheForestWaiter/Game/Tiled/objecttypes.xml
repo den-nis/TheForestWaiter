@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objecttypes>
+ <objecttype name="Minirusher" color="#000000"/>
+ <objecttype name="Player" color="#00ff15"/>
+</objecttypes>

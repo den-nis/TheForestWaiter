@@ -66,7 +66,7 @@ namespace TheForestWaiter.Game
 
         private Map LoadMap()
         {
-            return JsonConvert.DeserializeObject<Map>(_content.Source.GetString("Worlds\\main.json"));
+            return JsonConvert.DeserializeObject<Map>(_content.Source.GetString("Worlds\\test.json"));
         }
 
         private void SetupCamera()

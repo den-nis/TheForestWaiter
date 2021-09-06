@@ -44,6 +44,10 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Game\Tiled\" />
+  </ItemGroup>
+
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
     <Exec Command="dotnet run --project ../TheForestWaiter.Content/TheForestWaiter.Content.csproj ../TheForestWaiter.Content/Content Content.zip" />
   </Target>

@@ -41,32 +41,8 @@ namespace TheForestWaiter.Debugging.Command.Commands
             for (int i = 0; i < amount; i++)
             {
                 var instance = (GameObject)_container.GetInstance(type);
-
                 instance.Center = pos;
-
-                switch (instance)
-                {
-                    case Bullet bullet:
-                        _game.Objects.Bullets.Add(bullet);
-                        break;
-
-                    case Creature enemy:
-                        _game.Objects.Enemies.Add(enemy);
-                        break;
-
-                    case PhysicsObject pObj:
-                        _game.Objects.Other.Add(pObj);
-                        break;
-
-                    case StaticObject sObj:
-                        var chunkId = _game.Objects.Chunks.CurrentChunkId;
-                        _game.Objects.Chunks.GetChunk(chunkId).Objects.Add(sObj);
-                        break;
-
-                    default:
-                        Console.WriteLine($"Can't spawn {args[0]}");
-                        break;
-                }
+                _game.Objects.AddAuto(instance);
             }
         }
     }

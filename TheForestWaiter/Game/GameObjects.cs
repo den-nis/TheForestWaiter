@@ -8,6 +8,8 @@ using TheForestWaiter.Game.Objects;
 using TheForestWaiter.Game.Environment;
 using SFML.System;
 using TheForestWaiter.Game.Debugging;
+using System;
+using TheForestWaiter.Game.Objects.Weapons.Bullets;
 
 namespace TheForestWaiter.Game
 {
@@ -94,29 +96,19 @@ namespace TheForestWaiter.Game
             Chunks = new Chunks(world);
 
             var objects = map.Layers.Where(l => l.Type == "objectgroup").SelectMany(l => l.Objects);
-            ObjectFactory factory = new(data, _creator); //TODO: DI
-            factory.Index();
-
-            //TODO: refactor (no need for static objects in the world anymore)
-            foreach(MapObject inf in objects)
+            var lookup = Types.GameObjects.ToDictionary(k => k.Name, v => v);
+            foreach (MapObject inf in objects)
             {
-                if (inf.Type == "Spawn")
+                var type = lookup[inf.Type];
+                if (type != null)
                 {
-                    Player = _creator.CreateAbove<Player>(inf.Position);
-                    continue;
-                }
-
-                StaticObject staticObject = factory.GetStaticObject(inf.Type);
-                if (staticObject != null)
-                {
-                    staticObject.Position = new Vector2f(inf.Position.X, inf.Position.Y - staticObject.Size.Y);
-                    staticObject.MapSetup(inf);
-                    Chunks.Add(staticObject);
-                    continue;
+                    var obj = _creator.CreateType(type);
+                    obj.Position = new Vector2f(inf.X, inf.Y - obj.Size.Y);
+                    AddAuto(obj);
                 }
                 else
                 {
-                    _debug.Log($"Missing StaticObject {inf.Type}");
+                    _debug.Log($"Missing type {inf.Type}");
                 }
             }
         }
@@ -126,6 +118,38 @@ namespace TheForestWaiter.Game
             foreach(var obj in PhysicsObjects)
             {
                 obj.DrawHitbox(window, _camera.Scale);
+            }
+        }
+
+        /// <summary>
+        /// Adds the object to the correct object container
+        /// </summary>
+        public void AddAuto(GameObject obj)
+        {
+            switch (obj)
+            {
+                case Player player:
+                    Player = player;
+                    break;
+
+                case Bullet bullet:
+                    Bullets.Add(bullet);
+                    break;
+
+                case Creature enemy:
+                    Enemies.Add(enemy);
+                    break;
+
+                case PhysicsObject pObj:
+                    Other.Add(pObj);
+                    break;
+
+                case StaticObject sObj:
+                    Chunks.GetChunkAt(obj.Center).Objects.Add(sObj);
+                    break;
+
+                default:
+                    throw new KeyNotFoundException($"No container found for \"{obj.GetType().Name}\"");
             }
         }
     }

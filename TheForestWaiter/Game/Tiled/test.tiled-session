@@ -1,0 +1,28 @@
+{
+    "activeFile": "test.tmx",
+    "expandedProjectPaths": [
+    ],
+    "fileStates": {
+        "test.tmx": {
+            "scale": 2,
+            "selectedLayer": 4,
+            "viewCenter": {
+                "x": 1556.5,
+                "y": 2441
+            }
+        },
+        "world.tsx": {
+            "scaleInDock": 1
+        }
+    },
+    "last.exportedFilePath": "../../../TheForestWaiter.Content/Content/Worlds",
+    "last.objectTypesPath": "../../../TheForestWaiter/Game/Tiled/objecttypes.xml",
+    "map.lastUsedExportFilter": "JSON map files (*.json)",
+    "openFiles": [
+        "test.tmx"
+    ],
+    "project": "",
+    "recentFiles": [
+        "test.tmx"
+    ]
+}

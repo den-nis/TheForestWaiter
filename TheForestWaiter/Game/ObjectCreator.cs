@@ -19,8 +19,7 @@ namespace TheForestWaiter.Game
             _provider = provider;
         }
 
-        //TODO: remove this method
-        public object CreateType(Type type) => _provider.GetInstance(type);
+        public GameObject CreateType(Type type) => (GameObject)_provider.GetInstance(type);
 
         public T CreateGun<T>() where T : GunBase => _provider.GetInstance<T>();
         
@@ -37,14 +36,6 @@ namespace TheForestWaiter.Game
         {
             T obj = CreateAt<T>(position);
             obj.velocity = speed;
-            return obj;
-        }
-
-        //TODO: explain
-        public T CreateAbove<T>(Vector2f position) where T : GameObject
-        {
-            T obj = _provider.GetInstance<T>();
-            obj.Position = position + new Vector2f(0, -obj.Size.Y);
             return obj;
         }
     }

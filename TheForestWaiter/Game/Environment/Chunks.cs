@@ -59,6 +59,11 @@ namespace TheForestWaiter.Game.Environment
 
         public Chunk GetChunk(int id) => _chunkArray[id];
 
+        public Chunk GetChunkAt(Vector2f location)
+        {
+            return GetChunk((int)(location.X / CHUNK_WIDTH));
+        }
+
         public void Update(float time)
         {
             foreach(var i in _activeChunks)
