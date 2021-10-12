@@ -9,7 +9,8 @@ namespace TheForestWaiter
     {
         static void Main()
         {
-            SetCulture("en");
+            SetCulture();
+
             using ServiceContainer services = new()
             {
                 PropertyDependencySelector = new DisablePropertyDependencies()
@@ -19,16 +20,14 @@ namespace TheForestWaiter
 
             startup.Register();
             startup.Setup();
-
             services.GetInstance<Entry>().Run();        
         }
 
-        static void SetCulture(string culture)
+        static void SetCulture()
         {
-            var cultureInfo = new CultureInfo(culture);
-            CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
-            CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
-            CultureInfo.CurrentCulture = cultureInfo;
+            CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
+            CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
+            CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
         }
     }
 }
