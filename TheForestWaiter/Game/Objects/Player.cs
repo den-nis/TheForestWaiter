@@ -17,32 +17,31 @@ namespace TheForestWaiter.Game.Objects
 {
     class Player : Creature
     {
+        private const float SPEED_UP_PER_SECOND = 50;
+        private const float SECONDS_OF_SPEED_UP = 4;
+        private const float MAX_NORMAL_SPEED = 200;
+
         private readonly Color _stunColor = new(255,200,200);
         private readonly Camera _camera;
 
         public AnimatedSprite AnimatedSprite { get; set; }
-
-        private const float MAX_NORMAL_SPEED = 200;
-
         public GunBase Gun { get; private set; }
+
         private float EarlyJumpTime { get; set; } = (float)TimeSpan.FromSeconds(0.1f).TotalSeconds;
+        private float EarlyJumpTimer { get; set; }
 
         private bool Jumping { get; set; } = false;
-        private float EarlyJumpTimer { get; set; }
         private bool MovingRight { get; set; } = false;
         private bool MovingLeft { get; set; } = false;
         private Vector2f _aim;
         private bool _aimingRight = true;
-
         private float _speedBuildUp = 0;
-        private const float SPEED_UP_PER_SECOND = 50;
-        private const float SECONDS_OF_SPEED_UP = 4;
 
         public Player(GameData game, ContentSource content, ObjectCreator creator, Camera camera) : base(game)
         {
             Health = 100;
             AnimatedSprite = content.Textures.CreateAnimatedSprite("Textures\\Player\\sheet.png");
-            Gun = creator.CreateGun<Sniper>();
+            Gun = creator.CreateGun<Handgun>();
 
             Size = AnimatedSprite.Sheet.TileSize.ToVector2f();
             CollisionRadius = Size.Y + 5;

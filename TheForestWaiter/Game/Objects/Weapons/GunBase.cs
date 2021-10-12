@@ -11,23 +11,8 @@ namespace TheForestWaiter.Game.Objects.Weapons
     abstract class GunBase
     {
         public bool Firing { get; set; }
-        private int _ammo = 100;
-        public int Ammo
-        {
-            set => _ammo = (value > MaxAmmo) ? MaxAmmo : value;
-            get => _ammo;
-        }
-
-        private int _maxAmmo = 100;
-        public int MaxAmmo
-        {
-            set
-            {
-                _maxAmmo = value;
-                _ammo = Math.Min(_maxAmmo, _ammo);
-            }
-            get => _maxAmmo;
-        }
+        public int Ammo { get; set; }
+        public int MaxAmmo { get; set; }
 
         protected float Range { get; set; } = 2000;
         protected float FireRatePerSecond { get; set; } = 10;
@@ -47,14 +32,15 @@ namespace TheForestWaiter.Game.Objects.Weapons
         public Sprite GunSprite { get; set; }
         public event Action OnFire = delegate { };
 
-        private readonly Camera _camera;
-        private readonly ObjectCreator _creator;
-
         public float LastShotFromAngle { get; private set; }
         public Vector2f LastAim { get; private set; }
         public float LastAimAngle { get; private set; }
-        private bool FirstShot { get; set; }
-        private float FireTimer { get; set; }
+
+        private readonly Camera _camera;
+        private readonly ObjectCreator _creator;
+
+        private float _fireTimer;
+        private bool _firstShot;
 
         public GunBase(GameData game, Camera camera, ObjectCreator creator)
         {
@@ -106,21 +92,21 @@ namespace TheForestWaiter.Game.Objects.Weapons
 
         public virtual void Update(float time)
         {
-            if (FireTimer > 0)
-                FireTimer -= FireRatePerSecond * time;
+            if (_fireTimer > 0)
+                _fireTimer -= FireRatePerSecond * time;
 
             if (Firing)
             {
-                while((FirstShot || AutoFire) && FireTimer <= 0)
+                while((_firstShot || AutoFire) && _fireTimer <= 0)
                 {
-                    FireTimer += 1f;
+                    _fireTimer += 1f;
                     Fire();
                 }
-                FirstShot = false;
+                _firstShot = false;
             }
             else
             {
-                FirstShot = true;
+                _firstShot = true;
             }
 
             GunSprite.Scale = new Vector2f(1, AimingRight ? 1 : -1);

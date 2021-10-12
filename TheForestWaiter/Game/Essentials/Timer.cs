@@ -8,11 +8,12 @@ namespace TheForestWaiter.Game.Essentials
 {
 	public class Timer
 	{
-		private float _interval = 1;
-		public bool Enabled { get; set; } = true;
+		private float _interval = 0;
+		public bool Enabled { get; private set; } = true;
 
 		public TimeSpan Interval => TimeSpan.FromSeconds(_interval);
-		private float _time;
+
+		public float Time { get; private set; } 
 
 		public event Action OnTick;
 
@@ -25,6 +26,10 @@ namespace TheForestWaiter.Game.Essentials
 			
 		}
 
+		public void Start() => Enabled = true;
+
+		public void Stop() => Enabled = false;
+
 		public void SetInterval(float interval)
 		{
 			_interval = interval;
@@ -35,15 +40,17 @@ namespace TheForestWaiter.Game.Essentials
 			_interval = (float)interval.TotalSeconds;
 		}
 
+		public void Reset() => Time = 0;
+		
 		public void Update(float time)
 		{
-			if (OnTick != null && Enabled)
+			if (Enabled)
 			{
-				_time += time;
+				Time += time;
 
-				while (_time > _interval)
+				while (_interval != 0 && Time > _interval)
 				{
-					_time -= _interval;
+					Time -= _interval;
 					OnTick?.Invoke();
 				}
 			}
