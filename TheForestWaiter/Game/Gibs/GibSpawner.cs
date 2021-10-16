@@ -1,15 +1,18 @@
 ﻿using SFML.System;
 using System;
+using TheForestWaiter.Game.Essentials;
 using TheForestWaiter.Game.Graphics;
 
 namespace TheForestWaiter.Game.Gibs
 {
 	class GibSpawner
 	{
+		private const float PERCENTAGE_TAKE_INITIAL_VELOCITY = 0.3f;
+
 		public SpriteSheet Sheet { get; set; }
 		public float? GibRadius { get; set; }
-		public Vector2f MaxVelocity { get; set; } = new Vector2f(300, 0);
-		public Vector2f MinVelocity { get; set; } = new Vector2f(-300, -200);
+		public float MaxVelocity { get; set; } = 700;
+		public float MinVelocity { get; set; } = 200;
 		public Vector2f InitialVelocity { get; set; } = new Vector2f(0, 0);
 
 		private readonly GameData _game;
@@ -25,12 +28,9 @@ namespace TheForestWaiter.Game.Gibs
 
 		public void Spawn(Vector2f at, int index)
 		{
-			var velocity = new Vector2f(
-				Rng.Range(MinVelocity.X, MaxVelocity.X),
-				Rng.Range(MinVelocity.Y, MaxVelocity.Y)
-				);
+			var velocity = TrigHelper.FromAngleRad(Rng.Angle(), Rng.Range(MinVelocity, MaxVelocity));
 
-			var gib = _creator.CreateAndShoot<Gib>(at, velocity + InitialVelocity);
+			var gib = _creator.CreateAndShoot<Gib>(at, velocity + InitialVelocity * PERCENTAGE_TAKE_INITIAL_VELOCITY);
             gib.SetLife(10);
 			gib.AngularMomentum = Math.Sign(velocity.X) * (float)Math.PI;
 			gib.TileIndex = index;
