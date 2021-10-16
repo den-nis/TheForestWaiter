@@ -12,8 +12,35 @@ namespace TheForestWaiter.Game.Graphics
         public bool Paused { get; set; } = false;
         public bool Reversed { get; set; } = false;
         public int Framerate { get; set; } = 15;
-        public int AnimationStart { get; set; } = 0;
-        public int AnimationEnd { get; set; }
+
+        private int _animationStart;
+        public int AnimationStart
+        {
+            set
+            {
+                if (_animationStart != value)
+                {
+                    _animationStart = value;
+                    CurrentFrame = 0;
+				}
+			}
+            get => _animationStart;
+		}
+
+        private int _animationEnd;
+        public int AnimationEnd
+        {
+            set
+            {
+                if (_animationEnd != value)
+                {
+                    _animationEnd = value;
+                    CurrentFrame = 0;
+                }
+            }
+            get => _animationEnd;
+        }
+
         public int CurrentFrame
         {
             get => AnimationStart + (int)Math.Abs(Frame);
