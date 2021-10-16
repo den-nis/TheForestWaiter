@@ -31,10 +31,10 @@ namespace TheForestWaiter.Debugging.Command.Commands
             var pos = _game.Objects.Player.Center;
 
             if (args.Length > 2)
-                pos.X = int.Parse(args[2].Trim('*')) + (args[2].StartsWith('*') ? pos.X : 0); 
+                pos.X = args[2] == "*" ? pos.X : int.Parse(args[2]); 
 
             if (args.Length > 3)
-                pos.Y = int.Parse(args[3].Trim('*')) + (args[3].StartsWith('*') ? pos.Y : 0);
+                pos.Y = args[3] == "*" ? pos.Y : int.Parse(args[3]);
 
             var type = Types.GameObjects.Values.FirstOrDefault(t => t.Name.Equals(args[0], StringComparison.OrdinalIgnoreCase));
 
