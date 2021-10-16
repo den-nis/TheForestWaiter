@@ -17,5 +17,7 @@ namespace TheForestWaiter.Game
         {
             return min + Float() * (max - min);
         }
+
+        public static float Angle() => Range(0, (float)(Math.PI * 2));
     }
 }
