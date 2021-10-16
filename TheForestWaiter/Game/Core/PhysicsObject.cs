@@ -25,7 +25,6 @@ namespace TheForestWaiter.Game.Entities
         public bool EmitPhysicsCollisions { get; set; } = true;
         public bool EnableWorldCollisions { get; set; } = true;
 
-        private const int MAX_PHYSICS_TOUCHES = 10;
         private const int TERMINAL_VELOCITY = 500; 
 
         public PhysicsObject(GameData game) : base(game) 
@@ -38,11 +37,12 @@ namespace TheForestWaiter.Game.Entities
 
         //Physics
         public float CollisionRadius { get; set; }
-        public float Gravity { get; set; } = 0;
-        public float Mass { get; set; } = 100;
-        public Vector2f velocity;
+        public float Gravity { get; set; } = 1000;
+
+        public Vector2f Velocity { get; set; }
         public Vector2f RealSpeed { get; set; }
-        public Vector2f Drag { get; set; } = new Vector2f(0, 0);
+        public Vector2f Drag { get; set; } = new Vector2f(500, 0);
+        public bool EnableDrag { get; set; }
 
         //Touching
         public bool TouchingHorizontal { get; private set; } = false;
@@ -54,27 +54,37 @@ namespace TheForestWaiter.Game.Entities
 
         public void PhysicsTick(float time)
         {
-
             var previousPosition = Position; 
 
-            ApplyGravity(time);
-            ApplyDrag(time);
-
-            Move(velocity * time);
             HandlePhysicsCollisions(time);
 
-            RealSpeed = Position - previousPosition;
+            ApplyGravity(time);
+            ApplyFriction(time);
+
+            Move(Velocity * time);
+
+            RealSpeed = (Position - previousPosition) / time;
+        }
+
+        public void SetVelocityX(float velocity)
+        {
+            Velocity = new Vector2f(velocity, Velocity.Y);
+        }
+
+        public void SetVelocityY(float velocity)
+        {
+            Velocity = new Vector2f(Velocity.X, velocity);
         }
 
         public void Push(Vector2f force, float time)
         {
-            velocity += force * time;
+            Velocity += force * time;
         }
 
         public void LimitPush(Vector2f force, float time)
         {
-            velocity.X = LimitPush1D(velocity.X, force.X, time);
-            velocity.Y = LimitPush1D(velocity.Y, force.Y, time);
+            SetVelocityX(LimitPush1D(Velocity.X, force.X, time));
+            SetVelocityY(LimitPush1D(Velocity.Y, force.Y, time));
         }
 
         private static float LimitPush1D(float speed, float push, float time)
@@ -102,9 +112,6 @@ namespace TheForestWaiter.Game.Entities
             int touch = 0;
             foreach(var obj in Game.Objects.Creatures)
             {
-                if (touch >= MAX_PHYSICS_TOUCHES)
-                    break;
-                
                 if (Intersects(obj) && 
                     obj.GameObjectId != GameObjectId && 
                     obj.ReceivePhysicsCollisions)
@@ -116,36 +123,47 @@ namespace TheForestWaiter.Game.Entities
             }
         }
 
+        ////TODO: refactor. force can be a constant etc
         private void PushAway(PhysicsObject obj, float time)
         {
-            var push = obj.Center - Center;
+            var distance = (obj.Center - Center).Len();
+            var force = 300;
 
-            if (push.Len() < 0.05f)
-                push = new Vector2f(Rng.Float() * 2 - 1, Rng.Float() * 2 - 1);
-
-            obj.Push(push * 100, time);
+            if (distance < 1f)
+            {
+                Push(TrigHelper.FromAngleRad(Rng.Range(0, (float)Math.PI * 4f), force), time);
+            }
+            else
+            {
+                var angle = (Center - obj.Center).Angle();
+                var push = TrigHelper.FromAngleRad(angle, distance * force);
+                Push(push, time);
+            }
         }
 
         private void ApplyGravity(float time)
         {
-            if (velocity.Y < TERMINAL_VELOCITY)
-                velocity.Y += Gravity * time;
+            if (Velocity.Y < TERMINAL_VELOCITY)
+                Push(new Vector2f(0, Gravity), time);
         }
 
-        private void ApplyDrag(float time)
+        private void ApplyFriction(float time)
         {
-            var newVelocity = new Vector2f(
-                velocity.X - (float)Math.CopySign(Drag.X, velocity.X) * time,
-                velocity.Y - (float)Math.CopySign(Drag.Y, velocity.Y) * time
-            );
+            if (EnableDrag)
+            {
+                var newVelocity = new Vector2f(
+                    Velocity.X - (float)Math.CopySign(Drag.X, Velocity.X) * time,
+                    Velocity.Y - (float)Math.CopySign(Drag.Y, Velocity.Y) * time
+                );
 
-            if (Math.Sign(newVelocity.X) != Math.Sign(velocity.X))
-                newVelocity.X = 0;
+                if (Math.Sign(newVelocity.X) != Math.Sign(Velocity.X))
+                    newVelocity.X = 0;
 
-            if (Math.Sign(newVelocity.Y) != Math.Sign(velocity.Y))
-                newVelocity.Y = 0;
+                if (Math.Sign(newVelocity.Y) != Math.Sign(Velocity.Y))
+                    newVelocity.Y = 0;
 
-            velocity = newVelocity;
+                Velocity = newVelocity;
+            }
         }
 
         private void Move(Vector2f move)
@@ -195,10 +213,10 @@ namespace TheForestWaiter.Game.Entities
             TouchingFloor |= normal.Y < 0;
 
             if (TouchingHorizontal)
-                velocity.X = 0;
+                SetVelocityX(0);
 
             if (TouchingVertical)
-                velocity.Y = 0;
+                SetVelocityY(0);
         }
 
         private float GetNearestSweptAABB(Vector2f move, out Vector2f normal)
@@ -210,7 +228,7 @@ namespace TheForestWaiter.Game.Entities
                     CollisionRadius + Math.Abs(move.X),
                     CollisionRadius + Math.Abs(move.Y)
                 );
-            var center = Center + move/2;
+            var center = Center + move / 2;
 
             var tiles = Game.World.GetTilesInArea(area, center);
 
