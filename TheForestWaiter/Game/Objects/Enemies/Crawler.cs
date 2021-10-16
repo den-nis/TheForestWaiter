@@ -17,20 +17,23 @@ namespace TheForestWaiter.Game.Objects.Enemies
 {
     class Crawler : Enemy
     {
-        private const float ATTACK_STRIKE_TIME = .5f;
+        private const float ATTACK_STRIKE_TIME = .05f;
         private const float ATTACK_TOTAL_TIME = .7f;
+        private const float ATTACK_COOL_DOWN = 1f;
         private const float ATTACK_DAMAGE = 50;
+
         private readonly AnimatedSprite _animation;
         private readonly ContentSource _content;
         private readonly GibSpawner _gibSpawner;
+        private readonly int _jumpVelocity;
         private int _facingDirection = 0;
-        private int _jumpVelocity;
 
-        private Vector2f AttackPoint => Center + new Vector2f(_facingDirection * 20, 0);
+        private Vector2f AttackPoint => Center + new Vector2f(_facingDirection * 25, 0);
         private Vector2f ParticlePoint => Center + new Vector2f(_facingDirection * 15, 0);
         private bool _hasStriked;
         private bool _isAttacking;
         private float _attackTimer;
+        private float _cooldownTimer;
 
         public Crawler(GameData game, ContentSource content, GibSpawner gibSpawner) : base(game)
         {
@@ -39,14 +42,13 @@ namespace TheForestWaiter.Game.Objects.Enemies
             
             Speed = 200;
             _jumpVelocity = 400;
-            AngerRadius = 0;
-
             _content = content;
             _gibSpawner = gibSpawner;
-            _gibSpawner.Sheet = content.Textures.CreateSpriteSheet("Textures\\Enemies\\minirusher_gibs.png");
+            _gibSpawner.Sheet = content.Textures.CreateSpriteSheet("Textures\\Enemies\\crawler_gibs.png");
 
+            Knockback = 0;
             CollisionRadius = 42;
-            Health = 10;
+            Health = 50;
         }
 
         public void HandleAnimations(float time)
@@ -56,9 +58,9 @@ namespace TheForestWaiter.Game.Objects.Enemies
             _animation.Sheet.MirrorX = _facingDirection == 1;
 
 
-            if (_isAttacking)
+            if (_isAttacking && !_hasStriked)
             {
-                _animation.Framerate = 10;
+                _animation.Framerate = (int)(5f / ATTACK_STRIKE_TIME);
                 _animation.AnimationStart = 7;
                 _animation.AnimationEnd = 12;
                 _animation.Paused = false;
@@ -94,7 +96,12 @@ namespace TheForestWaiter.Game.Objects.Enemies
 
         public override void Update(float time)
         {
-            if (_isAttacking)
+            if (_cooldownTimer > 0)
+            {
+                _cooldownTimer -= time;
+            }
+
+			if (_isAttacking)
             {
                 SetVelocityX(0);
                 _attackTimer += time;
@@ -106,6 +113,7 @@ namespace TheForestWaiter.Game.Objects.Enemies
 
                 if (_attackTimer > ATTACK_TOTAL_TIME)
                 {
+                    _cooldownTimer = ATTACK_COOL_DOWN;
                     _attackTimer = 0;
                     _hasStriked = false;
                     _isAttacking = false;
@@ -135,7 +143,7 @@ namespace TheForestWaiter.Game.Objects.Enemies
 
 		protected override void OnTouch(PhysicsObject obj)
         {
-            if (obj is Player && _facingDirection != 0 && !_isAttacking)
+            if (obj is Player && !_isAttacking && _cooldownTimer <= 0)
             {
                 _isAttacking = true;
             }
@@ -145,7 +153,8 @@ namespace TheForestWaiter.Game.Objects.Enemies
 
         private void Attack()
         {
-            var rect = new FloatRect(AttackPoint, new Vector2f(1, 1));
+            var regionSize = new Vector2f(32, 32);
+            var rect = new FloatRect(AttackPoint - regionSize/2, regionSize);
             var smoke = _content.Particles.Get("Particles\\crawler_strike.particle", ParticlePoint);
             Game.Objects.WorldParticles.Emit(smoke, 15);
             if (Game.Objects.Player.FloatRect.Intersects(rect))
@@ -173,8 +182,6 @@ namespace TheForestWaiter.Game.Objects.Enemies
         {
             var prop = _content.Particles.Get("Particles\\blood.particle", Center);
             Game.Objects.WorldParticles.Emit(prop, 5);
-
-            ApplyStunMovement(by);
             base.OnDamage(by);
         }
     }

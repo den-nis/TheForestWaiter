@@ -14,8 +14,6 @@ namespace TheForestWaiter.Game.Objects.Enemies
 {
     abstract class Enemy : Creature
     {
-        public float TouchingDamage { get; set; } = 1;
-        public float TouchingKnockback { get; set; } = 100;
         public float Speed { get; set; } = 150;
 
         /// <summary>
