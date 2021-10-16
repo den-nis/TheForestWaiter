@@ -64,6 +64,12 @@
       "textureHasTileSpacing": true,
       "textureTileWidth": 26,
       "textureTileHeight": 23
+    },
+    "Textures\\Enemies\\crawler_gibs.png": {
+      "type": "Texture",
+      "textureHasTileSpacing": true,
+      "textureTileWidth": 15,
+      "textureTileHeight": 15
     }
   }
 }
