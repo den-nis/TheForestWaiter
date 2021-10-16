@@ -17,7 +17,7 @@ namespace TheForestWaiter.Game.Objects
         public float Health { get; protected set; } = 100;
         public bool IsStunned => _stunTimer > 0;
 
-        protected float StunTime { get; set; } = (float)TimeSpan.FromSeconds(0.5f).TotalSeconds;
+        protected float StunTime { get; set; } = 0.1f;
         protected float MaxHealth { get; set; } = 100;
         protected float Knockback { get; set; } = 400;
         protected float HealthPercentage => MaxHealth / Health;
@@ -56,10 +56,11 @@ namespace TheForestWaiter.Game.Objects
             OnDamage(by);
         }
 
-        protected void ApplyKnockback(PhysicsObject by)
+        protected void ApplyStunMovement(PhysicsObject by, float cone = (float)Math.PI/2)
         {
-            var delta = (Center - by.Center).Norm() * Knockback;
-            velocity = delta;
+            var angle = (Center - by.Center).Angle();
+            angle += Rng.Range(-cone, cone);
+            Velocity = TrigHelper.FromAngleRad(angle, Knockback);
         }
 
         protected abstract void OnDeath();

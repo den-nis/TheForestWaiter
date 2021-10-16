@@ -70,7 +70,7 @@ namespace TheForestWaiter.Game.Objects.Weapons.Guns
 
 		private void OnFireEvent()
         {
-            Game.Objects.Player.velocity += TrigHelper.FromAngleRad((float)(LastAimAngle - Math.PI), 100);
+            Game.Objects.Player.Velocity += TrigHelper.FromAngleRad((float)(LastAimAngle - Math.PI), 100);
             _smokeTimer = SMOKE_TIME;
             var prop = _content.Particles.Get("Particles\\sniper_muzzle_flash.particle", BarrelPosition, LastAimAngle, 320);
             Game.Objects.WorldParticles.Emit(prop, 20);

@@ -23,6 +23,7 @@ namespace TheForestWaiter.Game.Objects.Enemies
         private readonly ContentSource _content;
         private readonly GibSpawner _gibSpawner;
         private int _targetDirection = 0;
+        private int _jumpVelocity;
 
         public Minirusher(GameData game, ContentSource content, GibSpawner gibSpawner) : base(game)
         {
@@ -32,10 +33,10 @@ namespace TheForestWaiter.Game.Objects.Enemies
             StunTime = 0.1f;
             Speed = 300;
             Drag = new Vector2f(253, 0);
-            JumpVelocity = 450;
-            TriggeredRadius = 900;
+            AngerRadius = 900;
 
-            _jumpTrigger = new RandomTrigger(Jump, 70, 1);
+            _jumpVelocity = 450;
+            _jumpTrigger = new RandomTrigger(Jump, 70, 1, 2);
             _content = content;
             _gibSpawner = gibSpawner;
             _gibSpawner.Sheet = content.Textures.CreateSpriteSheet("Textures\\Enemies\\minirusher_gibs.png");
@@ -47,7 +48,6 @@ namespace TheForestWaiter.Game.Objects.Enemies
         public void HandleAnimations(float time)
         {
             _animation.Sprite.Color = IsStunned ? new Color(255, 0, 0) : Color.White;
-
             _animation.Sprite.Position = Position;
 
             var isMovingRight = RealSpeed.X > 1;
@@ -77,6 +77,7 @@ namespace TheForestWaiter.Game.Objects.Enemies
                 _animation.AnimationEnd = 7;
                 _animation.Paused = false;
             }
+
             _animation.Update(time);
         }
 
@@ -95,21 +96,16 @@ namespace TheForestWaiter.Game.Objects.Enemies
         private void Jump()
         {
             if (TouchingFloor)
-                velocity.Y = -JumpVelocity;
-        }
+            {
+                SetVelocityY(-_jumpVelocity);
+            }
+		}
 
-        public override void OnAngry(float time)
+		public override void OnAngry(float time)
         {
+            var moved = AdvanceToPlayerOnGround(time, Jump);
+            _targetDirection = moved;
             _jumpTrigger.TryTrigger(time);
-
-            if (Math.Abs(RealSpeed.X) < 1)
-                Jump();
-
-            var direction = (Game.Objects.Player.Center - Center).X;
-            direction = Math.Max(-1, Math.Min(1, direction));
-            _targetDirection = Math.Sign(direction);
-
-            LimitPush(new Vector2f(direction, 0) * 500, time);
         }
 
         protected override void OnTouch(PhysicsObject obj)
@@ -128,7 +124,7 @@ namespace TheForestWaiter.Game.Objects.Enemies
             var prop = _content.Particles.Get("Particles\\blood.particle", Center);
             Game.Objects.WorldParticles.Emit(prop, 12);
 
-            _gibSpawner.InitialVelocity = velocity;
+            _gibSpawner.InitialVelocity = Velocity;
             _gibSpawner.SpawnAll(Center);
             MarkedForDeletion = true;
         }
@@ -138,7 +134,7 @@ namespace TheForestWaiter.Game.Objects.Enemies
             var prop = _content.Particles.Get("Particles\\blood.particle", Center);
             Game.Objects.WorldParticles.Emit(prop, 5);
 
-            ApplyKnockback(by);
+            ApplyStunMovement(by);
             base.OnDamage(by);
         }
     }

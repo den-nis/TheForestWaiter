@@ -53,7 +53,7 @@ namespace TheForestWaiter.Game.Objects.Weapons.Bullets
         {
             MarkedForDeletion = true;
             HasHit = true;
-            velocity = default;
+            Velocity = default;
 
             var prop = _content.Particles.Get("Particles\\spark.particle", Center);
             prop.Life = 0.2f;
@@ -66,11 +66,11 @@ namespace TheForestWaiter.Game.Objects.Weapons.Bullets
             PhysicsTick(time);
 
             _spawn ??= Center;
-            _startAngle ??= velocity.Angle();
+            _startAngle ??= Velocity.Angle();
 
             foreach (var enemy in Game.Objects.Enemies)
             {
-                if (Collisions.SweptAABB(enemy.FloatRect, FloatRect, velocity * time, out _) < 1 || Intersects(enemy))
+                if (Collisions.SweptAABB(enemy.FloatRect, FloatRect, Velocity * time, out _) < 1 || Intersects(enemy))
                 {
                     enemy.Damage(this, Damage);
                     Explode();

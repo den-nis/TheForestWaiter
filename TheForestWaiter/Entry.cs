@@ -15,7 +15,7 @@ namespace TheForestWaiter
     class Entry
     {
         public float LockDelta { get; set; } = -1;
-        public bool LagLimit { get; set; } = false;
+        public bool LagLimit { get; set; } = true;
         public float TimeScale { get; set; } = 1; 
 
         private readonly WindowHandle _window;

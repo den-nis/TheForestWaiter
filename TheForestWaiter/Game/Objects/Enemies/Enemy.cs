@@ -8,6 +8,7 @@ using TheForestWaiter.Debugging;
 using TheForestWaiter.Game.Debugging;
 using TheForestWaiter.Game.Entities;
 using TheForestWaiter.Game.Essentials;
+using TheForestWaiter.Game.Objects.Weapons.Bullets;
 
 namespace TheForestWaiter.Game.Objects.Enemies
 {
@@ -16,7 +17,6 @@ namespace TheForestWaiter.Game.Objects.Enemies
         public float TouchingDamage { get; set; } = 1;
         public float TouchingKnockback { get; set; } = 100;
         public float Speed { get; set; } = 150;
-        public float JumpVelocity { get; set; } = 300;
 
         /// <summary>
         /// Time it takes for the enemy to become calm
@@ -26,33 +26,32 @@ namespace TheForestWaiter.Game.Objects.Enemies
         /// <summary>
         /// Radius where the enemy gets angry
         /// </summary>
-        public float TriggeredRadius { get; set; } = 200;
-        public bool IsTriggered => _triggered;
+        public float AngerRadius { get; set; } = 200;
+		public bool IsAngry { get; private set; } = false;
 
-        private float _triggeredTimer = 0;
-        private bool _triggered = false;
+		private float _angerTimer = 0;
 
-        public Enemy(GameData game) : base(game)
+		protected Enemy(GameData game) : base(game)
         {
             Gravity = 2000;
         }
 
         public override void Update(float time)
         {
-            _triggeredTimer -= time;
-            if (_triggeredTimer <= 0)
+            _angerTimer -= time;
+            if (_angerTimer <= 0)
             {
-                _triggered = false;
+                IsAngry = false;
                 var delta = Position - Game.Objects.Player.Position;
                 var distance = delta.Len();
 
-                if (distance < TriggeredRadius)
+                if (distance < AngerRadius)
                 {
                     Trigger();
                 }
             }
 
-            if (_triggered)
+            if (IsAngry)
             {
                 OnAngry(time);
             }
@@ -66,8 +65,8 @@ namespace TheForestWaiter.Game.Objects.Enemies
 
         private void Trigger()
         {
-            _triggered = true;
-            _triggeredTimer = CalmTime;
+            IsAngry = true;
+            _angerTimer = CalmTime;
         }
 
         protected override void OnDamage(PhysicsObject by)
@@ -75,7 +74,32 @@ namespace TheForestWaiter.Game.Objects.Enemies
             Trigger();
         }
 
-        public abstract void OnIdle(float time);
+		protected override void OnTouch(PhysicsObject obj)
+		{
+			if (obj is Player)
+            {
+                Trigger();
+			}
+		}
+
+		public abstract void OnIdle(float time);
         public abstract void OnAngry(float time);
+
+        /// <summary>
+        /// Returns the signed value (direction) which it has advanced to 
+        /// </summary>
+        /// <param name="time"></param>
+        /// <param name="jump"></param>
+        /// <returns></returns>
+        protected int AdvanceToPlayerOnGround(float time, Action jump)
+        {
+            if (Math.Abs(RealSpeed.X) < (Speed / 10) * time)
+                jump();
+
+            var direction = (Game.Objects.Player.Center - Center).X;
+            direction = Math.Max(-1, Math.Min(1, direction));
+            LimitPush(new Vector2f(direction, 0) * Speed, time);
+            return Math.Sign(direction);
+        }
     }
 }

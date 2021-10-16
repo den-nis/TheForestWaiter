@@ -49,7 +49,7 @@ namespace TheForestWaiter.Services
                 .Register<Sniper>();
         }
 
-        public void RegisterAllGameObjects()
+        private void RegisterAllGameObjects()
         {
             foreach(var obj in Types.GameObjects.Values)
             {

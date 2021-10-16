@@ -33,6 +33,7 @@ namespace TheForestWaiter.Game.Gibs
 		{
 			ReceivePhysicsCollisions = false;
 			EmitPhysicsCollisions = false;
+			EnableDrag = true;
 			Drag = new Vector2f(100, 20);
 			Gravity = 500;
 		}
@@ -56,7 +57,7 @@ namespace TheForestWaiter.Game.Gibs
 			if (TouchingFloor)
 			{ 
 				var c = (float)(Math.Min(Sheet.TileSize.X, Sheet.TileSize.Y) * Math.PI);
-				var rotate = velocity.X * time / c * (float)Math.PI * 2f;
+				var rotate = Velocity.X * time / c * (float)Math.PI * 2f;
 
 				_rotation += rotate;
 				AngularMomentum = rotate / time;

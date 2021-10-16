@@ -31,8 +31,8 @@ namespace TheForestWaiter.Game.Objects
         private float EarlyJumpTimer { get; set; }
 
         private bool Jumping { get; set; } = false;
-        private bool MovingRight { get; set; } = false;
-        private bool MovingLeft { get; set; } = false;
+        private bool MoveRight { get; set; } = false;
+        private bool MoveLeft { get; set; } = false;
         private Vector2f _aim;
         private bool _aimingRight = true;
         private float _speedBuildUp = 0;
@@ -47,7 +47,6 @@ namespace TheForestWaiter.Game.Objects
             CollisionRadius = Size.Y + 5;
             ReceivePhysicsCollisions = true;
             EmitPhysicsCollisions = false;
-            Gravity = 1000;
             _camera = camera;
         }
 
@@ -79,10 +78,10 @@ namespace TheForestWaiter.Game.Objects
             Gun?.Aim(mouse);
         }
 
-        public void StartMoveRight() => MovingRight = true;
-        public void StopMoveRight() => MovingRight = false;
-        public void StartMoveLeft() => MovingLeft = true;
-        public void StopMoveLeft() => MovingLeft = false;
+        public void StartMoveRight() => MoveRight = true;
+        public void StopMoveRight() => MoveRight = false;
+        public void StartMoveLeft() => MoveLeft = true;
+        public void StopMoveLeft() => MoveLeft = false;
 
         public void StartJump()
         {
@@ -96,7 +95,7 @@ namespace TheForestWaiter.Game.Objects
         {
             if (Dead)
             {
-                velocity = default;
+                Velocity = default;
                 return;
             }
 
@@ -105,20 +104,20 @@ namespace TheForestWaiter.Game.Objects
                 HandleSpeedBuildUp(time);
 
                 if (EarlyJumpTimer > 0)
-                    velocity.Y = -350;
+                    SetVelocityY(-350);
             }
             EarlyJumpTimer -= time;
 
             if (Jumping)
-                velocity.Y -= time * 300;
+                Push(new Vector2f(0, -300), time);
 
-            if (MovingRight && !MovingLeft)
+            if (MoveRight && !MoveLeft)
                 LimitPush(new Vector2f(MAX_NORMAL_SPEED + _speedBuildUp * SPEED_UP_PER_SECOND, 0), 1);
 
-            if (MovingLeft && !MovingRight)
+            if (MoveLeft && !MoveRight)
                 LimitPush(new Vector2f(-MAX_NORMAL_SPEED + _speedBuildUp * SPEED_UP_PER_SECOND, 0), 1);
 
-            Drag = (!MovingLeft && !MovingRight || Math.Abs(RealSpeed.X) > MAX_NORMAL_SPEED) ? new Vector2f(700, 0) : new Vector2f(0, 0);
+            EnableDrag = !MoveLeft && !MoveRight;
         }
 
         private void HandleSpeedBuildUp(float time)
@@ -126,10 +125,10 @@ namespace TheForestWaiter.Game.Objects
             if (RealSpeed.X > -1 && RealSpeed.X < 1)
                 _speedBuildUp = 0;
 
-            if (RealSpeed.X > 1 || MovingRight)
+            if (RealSpeed.X > 1 || MoveRight)
                 _speedBuildUp = Math.Min(SECONDS_OF_SPEED_UP, Math.Max(0, _speedBuildUp + time));
             
-            if (RealSpeed.X < -1 || MovingLeft)
+            if (RealSpeed.X < -1 || MoveLeft)
                 _speedBuildUp = Math.Max(-SECONDS_OF_SPEED_UP, Math.Min(0, _speedBuildUp - time));
 
         }
@@ -183,7 +182,7 @@ namespace TheForestWaiter.Game.Objects
 
         public override void Update(float time)
         {
-            HandleMovement(time);
+			HandleMovement(time);
             PhysicsTick(time);
 
             //Gun needs to updated after physics tick since it needs the latest player position
@@ -213,7 +212,7 @@ namespace TheForestWaiter.Game.Objects
         protected override void OnDamage(PhysicsObject by)
         {
             if (by != null) 
-                ApplyKnockback(by);
+                ApplyStunMovement(by);
         }
     }
 }

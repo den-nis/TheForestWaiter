@@ -35,7 +35,7 @@ namespace TheForestWaiter.Game
         public T CreateAndShoot<T>(Vector2f position, Vector2f speed) where T : PhysicsObject
         {
             T obj = CreateAt<T>(position);
-            obj.velocity = speed;
+            obj.Velocity = speed;
             return obj;
         }
     }
