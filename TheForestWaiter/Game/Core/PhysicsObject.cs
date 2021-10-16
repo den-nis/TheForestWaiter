@@ -107,7 +107,9 @@ namespace TheForestWaiter.Game.Entities
         private void HandlePhysicsCollisions(float time)
         {
             if (!EmitPhysicsCollisions)
+            {
                 return;
+            }
 
             int touch = 0;
             foreach(var obj in Game.Objects.Creatures)
@@ -127,24 +129,26 @@ namespace TheForestWaiter.Game.Entities
         private void PushAway(PhysicsObject obj, float time)
         {
             var distance = (obj.Center - Center).Len();
-            var force = 300;
+            var force = 500;
 
-            if (distance < 1f)
+            if (distance < 5f)
             {
-                Push(TrigHelper.FromAngleRad(Rng.Range(0, (float)Math.PI * 4f), force), time);
+                obj.LimitPush(TrigHelper.FromAngleRad(Rng.Angle(), force), time);
             }
             else
             {
-                var angle = (Center - obj.Center).Angle();
-                var push = TrigHelper.FromAngleRad(angle, distance * force);
-                Push(push, time);
+                var angle = (obj.Center - Center).Angle();
+                var push = TrigHelper.FromAngleRad(angle, force);
+                obj.LimitPush(push, time);
             }
         }
 
         private void ApplyGravity(float time)
         {
             if (Velocity.Y < TERMINAL_VELOCITY)
+            {
                 Push(new Vector2f(0, Gravity), time);
+            }
         }
 
         private void ApplyFriction(float time)
