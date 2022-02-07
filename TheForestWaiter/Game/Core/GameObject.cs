@@ -6,7 +6,7 @@ using System.Text;
 using TheForestWaiter.Debugging;
 using TheForestWaiter.Game.Environment;
 
-namespace TheForestWaiter.Game.Entities
+namespace TheForestWaiter.Game.Core
 {
     abstract class GameObject 
     {

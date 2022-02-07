@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using TheForestWaiter.Debugging;
 
-namespace TheForestWaiter.Game.Entities
+namespace TheForestWaiter.Game.Core
 {
     abstract class StaticObject : GameObject
     {

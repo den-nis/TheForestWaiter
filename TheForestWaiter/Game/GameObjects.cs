@@ -3,7 +3,7 @@ using System.Linq;
 using SFML.Graphics;
 using TheForestWaiter.Debugging;
 using TheForestWaiter.Game.Particles;
-using TheForestWaiter.Game.Entities;
+using TheForestWaiter.Game.Core;
 using TheForestWaiter.Game.Objects;
 using TheForestWaiter.Game.Environment;
 using SFML.System;

@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TheForestWaiter.Debugging.DebugConsole;
 using TheForestWaiter.Game;
-using TheForestWaiter.Game.Entities;
+using TheForestWaiter.Game.Core;
 using TheForestWaiter.Game.Objects;
 using TheForestWaiter.Game.Objects.Weapons.Bullets;
 

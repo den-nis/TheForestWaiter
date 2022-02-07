@@ -7,7 +7,7 @@ using System.Text;
 using TheForestWaiter.Content;
 using TheForestWaiter.Debugging;
 using TheForestWaiter.Game.Debugging;
-using TheForestWaiter.Game.Entities;
+using TheForestWaiter.Game.Core;
 using TheForestWaiter.Game.Essentials;
 using TheForestWaiter.Game.Graphics;
 using TheForestWaiter.Game.Objects.Weapons;

@@ -11,7 +11,7 @@ using TheForestWaiter.Game.Essentials;
 using LightInject;
 using System.Linq;
 
-namespace TheForestWaiter.Game.Entities
+namespace TheForestWaiter.Game.Core
 {
     /// <summary>
     /// Physics objects have physics and can interact with the world

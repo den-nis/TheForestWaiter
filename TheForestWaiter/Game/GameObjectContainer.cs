@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TheForestWaiter.Debugging;
-using TheForestWaiter.Game.Entities;
+using TheForestWaiter.Game.Core;
 
 namespace TheForestWaiter.Game
 {

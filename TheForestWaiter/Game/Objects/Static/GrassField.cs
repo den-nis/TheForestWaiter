@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TheForestWaiter.Game.Entities;
+using TheForestWaiter.Game.Core;
 using TheForestWaiter.Game.Environment;
 
 namespace TheForestWaiter.Game.Objects.Static

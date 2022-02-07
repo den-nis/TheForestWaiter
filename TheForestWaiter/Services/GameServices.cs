@@ -10,7 +10,7 @@ using TheForestWaiter.Game.Objects.Static;
 using TheForestWaiter.Game.Objects;
 using TheForestWaiter.Game.Objects.Weapons.Guns;
 using TheForestWaiter.Game.Objects.Weapons.Bullets;
-using TheForestWaiter.Game.Entities;
+using TheForestWaiter.Game.Core;
 using System.Reflection;
 using TheForestWaiter.Game.Gibs;
 using TheForestWaiter.Debugging;

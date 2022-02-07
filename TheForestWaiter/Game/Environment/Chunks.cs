@@ -1,7 +1,7 @@
 ﻿using SFML.Graphics;
 using SFML.System;
 using System.Collections.Generic;
-using TheForestWaiter.Game.Entities;
+using TheForestWaiter.Game.Core;
 
 namespace TheForestWaiter.Game.Environment
 {

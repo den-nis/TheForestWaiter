@@ -1,5 +1,5 @@
 ﻿using SFML.Graphics;
-using TheForestWaiter.Game.Entities;
+using TheForestWaiter.Game.Core;
 
 namespace TheForestWaiter.Game.Environment
 {

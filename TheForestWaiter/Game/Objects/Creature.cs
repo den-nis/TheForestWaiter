@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TheForestWaiter.Debugging;
 using TheForestWaiter.Game.Debugging;
-using TheForestWaiter.Game.Entities;
+using TheForestWaiter.Game.Core;
 using TheForestWaiter.Game.Essentials;
 
 namespace TheForestWaiter.Game.Objects
