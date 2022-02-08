@@ -26,8 +26,6 @@ namespace TheForestWaiter.Game.Objects.Weapons.Guns
         {
             Cone = 0;
             FireSpeed = 2000;
-            Ammo = 10;
-            MaxAmmo = 10;
             FireRatePerSecond = 1;
             AutoFire = false;
 

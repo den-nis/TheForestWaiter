@@ -8,11 +8,9 @@ using TheForestWaiter.Game.Objects.Weapons.Bullets;
 
 namespace TheForestWaiter.Game.Objects.Weapons
 {
-    abstract class GunBase
+    internal abstract class GunBase
     {
         public bool Firing { get; set; }
-        public int Ammo { get; set; }
-        public int MaxAmmo { get; set; }
 
         protected float Range { get; set; } = 2000;
         protected float FireRatePerSecond { get; set; } = 10;
@@ -66,19 +64,15 @@ namespace TheForestWaiter.Game.Objects.Weapons
         {
             LastShotFromAngle = LastAimAngle + (Cone * (Rng.Float() - 0.5f));
 
-            if (Ammo > 0)
+            if (Game.World.TouchingSolid(BarrelPosition + TrigHelper.FromAngleRad(LastShotFromAngle, 8)))  //8 is margin for big bullets
             {
-                if (Game.World.TouchingSolid(BarrelPosition + TrigHelper.FromAngleRad(LastShotFromAngle, 8)))  //8 is margin for big bullets
-                {
-                    //Gun is stuck in wall
-                    //TODO: play sound?
-                }
-                else
-                {
-                    FireBullet();
-                    Ammo--;
-                    OnFire();
-                }
+                //Gun is stuck in wall
+                //TODO: play sound?
+            }
+            else
+            {
+                FireBullet();
+                OnFire();
             }
         }
 
