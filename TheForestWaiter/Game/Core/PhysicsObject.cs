@@ -112,7 +112,7 @@ namespace TheForestWaiter.Game.Core
             }
 
             int touch = 0;
-            foreach(var obj in Game.Objects.Creatures)
+            foreach(var obj in Game.Objects.PhysicsObjects)
             {
                 if (Intersects(obj) && 
                     obj.GameObjectId != GameObjectId && 

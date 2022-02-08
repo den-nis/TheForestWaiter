@@ -5,7 +5,7 @@ using TheForestWaiter.Game.Graphics;
 
 namespace TheForestWaiter.Game.Gibs
 {
-	class GibSpawner
+	internal class GibSpawner
 	{
 		private const float PERCENTAGE_TAKE_INITIAL_VELOCITY = 0.3f;
 

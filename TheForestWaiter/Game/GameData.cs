@@ -5,7 +5,7 @@ using TheForestWaiter.Game.Environment;
 
 namespace TheForestWaiter.Game
 {
-    class GameData
+    internal class GameData
     {
         public GameData(World world, GameObjects objects)
         {
@@ -15,6 +15,7 @@ namespace TheForestWaiter.Game
 
         public World World { get; private set; }
         public GameObjects Objects { get; private set; }
+        public Session Session { get; private set; } = new();
 
         public void LoadFromMap(Map map)
         {

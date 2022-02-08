@@ -18,8 +18,6 @@ namespace TheForestWaiter.Game.Objects.Weapons.Guns
         {
             AutoFire = false;
             GunSprite = content.Textures.CreateSprite("Textures\\Guns\\handgun.png");
-            Ammo = 200;
-            MaxAmmo = 200;
             OnFire += OnFireEvent;
             _content = content;
         }

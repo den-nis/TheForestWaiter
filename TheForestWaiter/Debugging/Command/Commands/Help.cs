@@ -21,7 +21,6 @@ namespace TheForestWaiter.Debugging.Command.Commands
             }
 
             Console.WriteLine(tb);
-            Console.WriteLine("use \"usage {command}\" to get info about parameters");
         }
     }
 }

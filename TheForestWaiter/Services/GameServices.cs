@@ -15,10 +15,11 @@ using System.Reflection;
 using TheForestWaiter.Game.Gibs;
 using TheForestWaiter.Debugging;
 using TheForestWaiter.Game.Hud;
+using TheForestWaiter.Game.Objects.Items;
 
 namespace TheForestWaiter.Services
 {
-    class GameServices : IServices, IDisposable
+    internal class GameServices : IServices, IDisposable
     {
         private readonly ServiceContainer _container;
         private Scope _scope;
@@ -44,6 +45,7 @@ namespace TheForestWaiter.Services
                 .RegisterScoped<World>()
                 .RegisterScoped<ObjectCreator>()
                 .RegisterScoped<GibSpawner>()
+                .RegisterScoped<CoinSpawner>()
 
                 .Register<Handgun>()
                 .Register<Sniper>();

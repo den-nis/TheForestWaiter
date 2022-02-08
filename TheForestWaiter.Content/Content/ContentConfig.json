@@ -70,6 +70,12 @@
       "textureHasTileSpacing": true,
       "textureTileWidth": 7,
       "textureTileHeight": 7
+    },
+    "Textures\\Hud\\numbers.png": {
+      "type": "Texture",
+      "textureHasTileSpacing": true,
+      "textureTileWidth": 4,
+      "textureTileHeight": 7
     }
   }
 }
