@@ -42,7 +42,7 @@ namespace TheForestWaiter.Debugging.Command.Commands
             {
                 var instance = (GameObject)_container.GetInstance(type);
                 instance.Center = pos;
-                _game.Objects.AddAuto(instance);
+                _game.Objects.AddGameObject(instance);
             }
         }
     }

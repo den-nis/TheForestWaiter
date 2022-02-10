@@ -59,7 +59,7 @@ namespace TheForestWaiter.Game.Objects.Static
                 {
                     var obj = _creator.CreateType(_spawnType);
                     obj.Position = Position;
-                    Game.Objects.AddAuto(obj);
+                    Game.Objects.AddGameObject(obj);
                 }
             }
         }

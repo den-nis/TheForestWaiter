@@ -31,7 +31,7 @@ namespace TheForestWaiter.Game.Objects.Static
                 {
                     var grass = _creator.Create<Grass>();
                     grass.Position = Position + new Vector2f(i * World.TILE_SIZE, -grass.Size.Y);
-                    Game.Objects.Chunks.Add(grass);
+                    Game.Objects.Environment.Add(grass);
                 }
             }
 

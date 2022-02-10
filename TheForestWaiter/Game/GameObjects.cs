@@ -1,19 +1,18 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using SFML.Graphics;
-using TheForestWaiter.Debugging;
-using TheForestWaiter.Game.Particles;
-using TheForestWaiter.Game.Core;
-using TheForestWaiter.Game.Objects;
-using TheForestWaiter.Game.Environment;
+﻿using SFML.Graphics;
 using SFML.System;
-using TheForestWaiter.Game.Debugging;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using TheForestWaiter.Game.Core;
+using TheForestWaiter.Game.Debugging;
+using TheForestWaiter.Game.Environment;
+using TheForestWaiter.Game.Objects;
 using TheForestWaiter.Game.Objects.Weapons.Bullets;
+using TheForestWaiter.Game.Particles;
 
 namespace TheForestWaiter.Game
 {
-    class GameObjects
+    internal class GameObjects
     {
         public bool EnableDrawHitBoxes { get; set; } = false;
 
@@ -33,43 +32,51 @@ namespace TheForestWaiter.Game
         }
 
         public Player Player { get; private set; } = null;
-        public Chunks Chunks { get; set; } = null;
-        public GameObjectContainer<Creature> Enemies { get; set; } = new GameObjectContainer<Creature>();
-        public GameObjectContainer<PhysicsObject> Bullets { get; set; } = new GameObjectContainer<PhysicsObject>();
-        public GameObjectContainer<PhysicsObject> Other { get; set; } = new GameObjectContainer<PhysicsObject>();
+
+        public GameObjectContainer<StaticObject> Environment { get; set; } = new();
+        public GameObjectContainer<Creature> Actors { get; set; } = new();
+        public GameObjectContainer<PhysicsObject> Bullets { get; set; } = new();
+        public GameObjectContainer<PhysicsObject> Other { get; set; } = new();
+
         public ParticleSystem WorldParticles { get; set; }
 
-        public IEnumerable<PhysicsObject> PhysicsObjects => Enemies
-            .Concat(new[] { Player })
+        public IEnumerable<PhysicsObject> PhysicsObjects => Actors
+            .Concat(Actors)
             .Concat(Bullets)
             .Concat(Other);
 
-        public IEnumerable<Creature> Creatures => Enemies.Concat(new[] { Player });
+        private IEnumerable<IGameObjectContainer> GetAllContainers()
+        {
+            yield return Environment;
+            yield return Other;
+            yield return Actors;
+            yield return Bullets;
+        }
+
+        private void ForAllContainers(Action<IGameObjectContainer> func)
+        {
+            foreach (var container in GetAllContainers())
+            {
+                func(container);
+            }
+        }
+
+        public IEnumerable<Creature> Creatures => Actors.Concat(new[] { Player });
 
         public void ClearAll()
         {
-            Chunks = null;
             Player = null;
-            Enemies.Clear();
-            Other.Clear();
-            Bullets.Clear();
-            WorldParticles.Clear();
+            ForAllContainers(c => c.Clear());
         }
 
         public void CleanUp()
         {
-            Enemies.CleanupMarkedForDeletion();
-            Bullets.CleanupMarkedForDeletion();
-            Other.CleanupMarkedForDeletion();
+            ForAllContainers(c => c.CleanupMarkedForDeletion());
         }
 
         public void Draw(RenderWindow window)
         {
-            Chunks.Draw(window);
-            Other.Draw(window);
-            Enemies.Draw(window);
-            Player.Draw(window);
-            Bullets.Draw(window);
+            ForAllContainers(c => c.Draw(window));
             WorldParticles.Draw(window);
 
             if (EnableDrawHitBoxes) 
@@ -80,20 +87,13 @@ namespace TheForestWaiter.Game
 
         public void Update(float time)
         {
-            Chunks.Update(time);
-            Other.Update(time);
-            Enemies.Update(time);
-            Player.Update(time);
-            Bullets.Update(time);
+            ForAllContainers(c => c.Update(time));
             WorldParticles.Update(time);
-
-            Chunks.LoadChunksAt(Player.Center);
         }
 
         public void LoadAllFromMap(Map map, World world, GameData data)
         {
             Player = null;
-            Chunks = new Chunks(world);
 
             var objects = map.Layers.Where(l => l.Type == "objectgroup").SelectMany(l => l.Objects);
             foreach (MapObject inf in objects)
@@ -104,7 +104,7 @@ namespace TheForestWaiter.Game
                     var obj = _creator.CreateType(type);
                     obj.Position = new Vector2f(inf.X, inf.Y - obj.Size.Y);
                     obj.MapSetup(inf);
-                    AddAuto(obj);
+                    AddGameObject(obj);
                 }
                 else
                 {
@@ -124,29 +124,19 @@ namespace TheForestWaiter.Game
         /// <summary>
         /// Adds the object to the correct object container
         /// </summary>
-        public void AddAuto(GameObject obj)
+        public void AddGameObject(GameObject obj)
         {
             switch (obj)
             {
                 case Player player:
                     Player = player;
+                    Actors.Add(player);
                     break;
 
-                case Bullet bullet:
-                    Bullets.Add(bullet);
-                    break;
-
-                case Creature enemy:
-                    Enemies.Add(enemy);
-                    break;
-
-                case PhysicsObject pObj:
-                    Other.Add(pObj);
-                    break;
-
-                case StaticObject sObj:
-                    Chunks.GetChunkAt(obj.Center).Objects.Add(sObj);
-                    break;
+                case Bullet bullet:      Bullets.Add(bullet); break;
+                case Creature enemy:     Actors.Add(enemy); break;
+                case PhysicsObject pObj: Other.Add(pObj); break;
+                case StaticObject sObj:  Environment.Add(sObj); break;
 
                 default:
                     throw new KeyNotFoundException($"No container found for \"{obj.GetType().Name}\"");
