@@ -1,15 +1,11 @@
 ﻿using SFML.Graphics;
 using SFML.System;
-using SFML.Window;
 using System;
-using System.Collections.Generic;
-using System.Text;
-using TheForestWaiter.Debugging;
 using TheForestWaiter.Game.Essentials;
 
 namespace TheForestWaiter.Game
 {
-    class Camera
+	internal class Camera
     {
         private const float MAX_ZOOM_IN = 0.1f;
         private const float ZOOM_STRENGTH = 10;
@@ -24,7 +20,7 @@ namespace TheForestWaiter.Game
         public float TargetScale { get; set; } = 1;
 
         private Vector2f _baseSize = default;
-        public Vector2f BaseSize 
+        public Vector2f BaseSize
         {
             get => _baseSize;
             set
@@ -38,7 +34,7 @@ namespace TheForestWaiter.Game
         }
 
         private float _scale = 1;
-        public float Scale 
+        public float Scale
         {
             get => _scale;
             private set
@@ -49,11 +45,12 @@ namespace TheForestWaiter.Game
                     SizeChanged();
                 }
             }
-        } 
+        }
 
         public Vector2f Size => BaseSize * Scale;
 
-        public Vector2f Position {
+        public Vector2f Position
+        {
             get => Center - Size / 2;
             set => Center = value + Size / 2;
         }
@@ -71,7 +68,7 @@ namespace TheForestWaiter.Game
 
         public void FollowPlayer(Vector2f position)
         {
-            TargetPosition = position - new Vector2f(0, HEIGHT_OFFSET * Scale);
+            TargetPosition = position;
         }
 
         private void SizeChanged()
@@ -81,7 +78,7 @@ namespace TheForestWaiter.Game
 
             if (Size.X > MaxWorldView.X || Size.Y > MaxWorldView.Y)
             {
-				var zoom = Math.Min(MaxWorldView.Y / Size.Y, MaxWorldView.X / Size.X);
+                var zoom = Math.Min(MaxWorldView.Y / Size.Y, MaxWorldView.X / Size.X);
                 Scale *= zoom;
             }
 
@@ -89,24 +86,27 @@ namespace TheForestWaiter.Game
         }
 
         public void Update(float time)
-		{
+        {
             if (_settings.GetBool("Game", "SmoothCam")) //TODO: type safe
             {
-                float xDelta = TargetPosition.X - Center.X;
-                float yDelta = TargetPosition.Y - Center.Y;
                 float sDelta = TargetScale - Scale;
+                Scale += sDelta * (time * ZOOM_STRENGTH > 1 ? 1 : time * ZOOM_STRENGTH);
+
+                var offsetTarget = TargetPosition - new Vector2f(0, HEIGHT_OFFSET * Scale);
+
+                float xDelta = offsetTarget.X - Center.X;
+                float yDelta = offsetTarget.Y - Center.Y;
 
                 Center = new Vector2f(
                     Center.X + xDelta * (time * HORIZONTAL_MOVE_STRENGTH > 1 ? 1 : time * HORIZONTAL_MOVE_STRENGTH),
                     Center.Y + yDelta * (time * VERTICAL_MOVE_STRENGTH > 1 ? 1 : time * VERTICAL_MOVE_STRENGTH)
                 );
-                Scale += sDelta * (time * ZOOM_STRENGTH > 1 ? 1 : time * ZOOM_STRENGTH);
             }
             else
-			{
-                Center = TargetPosition;
+            {
                 Scale = TargetScale;
-			}
+                Center = TargetPosition - new Vector2f(0, HEIGHT_OFFSET * Scale);
+            }
         }
 
         public Vector2f ToWorld(Vector2f view)
@@ -119,13 +119,13 @@ namespace TheForestWaiter.Game
             return (world - Position) / Scale;
         }
 
-		public View GetView()
-		{
-			return new View(Center, Size);
-		}
+        public View GetView()
+        {
+            return new View(Center, Size);
+        }
 
         public static View GetWindowView(RenderWindow window)
-		{
+        {
             return new View(new FloatRect(new Vector2f(0, 0), window.Size.ToVector2f()));
         }
     }
