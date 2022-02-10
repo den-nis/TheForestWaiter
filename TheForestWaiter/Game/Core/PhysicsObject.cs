@@ -1,22 +1,15 @@
 ﻿using SFML.Graphics;
 using SFML.System;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
-using TheForestWaiter.Debugging;
-using TheForestWaiter.Game.Debugging;
 using TheForestWaiter.Game.Environment;
 using TheForestWaiter.Game.Essentials;
-using LightInject;
-using System.Linq;
 
 namespace TheForestWaiter.Game.Core
 {
-    /// <summary>
-    /// Physics objects have physics and can interact with the world
-    /// </summary>
-    abstract class PhysicsObject : GameObject
+	/// <summary>
+	/// Physics objects have physics and can interact with the world
+	/// </summary>
+	internal abstract class PhysicsObject : GameObject
     {
         public static bool DrawHitBox { get; set; } = false;
         public static bool DrawWorldCollisionBox { get; set; } = false;

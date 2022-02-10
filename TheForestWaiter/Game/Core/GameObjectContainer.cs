@@ -2,12 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using TheForestWaiter.Debugging;
-using TheForestWaiter.Game.Core;
 
-namespace TheForestWaiter.Game
+namespace TheForestWaiter.Game.Core
 {
-    class GameObjectContainer<G> : IEnumerable<G> where G : GameObject
+    internal class GameObjectContainer<G> : IGameObjectContainer, IEnumerable<G> where G : GameObject
     {
         private readonly List<G> _objects = new();
 

@@ -68,7 +68,7 @@ namespace TheForestWaiter.Game.Objects.Weapons.Bullets
             _spawn ??= Center;
             _startAngle ??= Velocity.Angle();
 
-            foreach (var enemy in Game.Objects.Enemies)
+            foreach (var enemy in Game.Objects.Actors)
             {
                 if (Collisions.SweptAABB(enemy.FloatRect, FloatRect, Velocity * time, out _) < 1 || Intersects(enemy))
                 {
