@@ -42,15 +42,11 @@ namespace TheForestWaiter.Content
         public AnimatedSprite CreateAnimatedSprite(string name)
         {
             var meta = Config.Content[name];
-            var animation = new AnimatedSprite(Get(name), meta.TextureTileWidth, meta.TextureTileHeight, meta.TextureFramerate)
-            {
-                AnimationStart = meta.TextureStartFrame,
-                AnimationEnd = meta.TextureEndFrame
-            };
-
+            var animation = new AnimatedSprite(Get(name), meta.TextureTileWidth, meta.TextureTileHeight, meta.TextureFramerate);
             if (meta.TextureHasTileSpacing)
                 ApplySpacing(animation.Sheet);
 
+            animation.AnimationEnd = animation.Sheet.TotatlTiles - 1;
             return animation;
         }
 

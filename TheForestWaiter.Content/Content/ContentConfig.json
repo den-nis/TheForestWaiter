@@ -13,9 +13,7 @@
 
       "textureTileWidth": 36,
       "textureTileHeight": 64,
-      "textureHasTileSpacing": true,
-      "textureStartFrame": 0,
-      "textureEndFrame": 4
+      "textureHasTileSpacing": true
     },
 
     "Textures\\World\\grass.png": {
@@ -24,9 +22,7 @@
 
       "textureTileWidth": 32,
       "textureTileHeight": 6,
-      "textureHasTileSpacing": true,
-      "textureStartFrame": 0,
-      "textureEndFrame": 1
+      "textureHasTileSpacing": true
     },
 
     "Textures\\world.png": {
@@ -49,8 +45,6 @@
       "textureHasTileSpacing": true,
       "textureTileWidth": 22,
       "textureTileHeight": 19,
-      "textureStartFrame": 0,
-      "textureEndFrame": 7,
       "textureFramerate": 12
     },
     "Textures\\Enemies\\minirusher_gibs.png": {
@@ -76,6 +70,20 @@
       "textureHasTileSpacing": true,
       "textureTileWidth": 4,
       "textureTileHeight": 7
+    },
+    "Textures\\Items\\coin.png": {
+      "type": "Texture",
+      "textureHasTileSpacing": true,
+      "textureTileWidth": 6,
+      "textureTileHeight": 6,
+      "textureFramerate": 5
+    },
+    "Textures\\Items\\apple.png": {
+      "type": "Texture",
+      "textureHasTileSpacing": true,
+      "textureTileWidth": 15,
+      "textureTileHeight": 17,
+      "textureFramerate": 7
     }
   }
 }

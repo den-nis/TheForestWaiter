@@ -17,6 +17,7 @@ namespace TheForestWaiter.Game.Objects
 {
     internal class Player : Creature
     {
+        private const int MAX_HEALTH = 100;
         private const float JUMP_VELOCITY = 380;
         private const float WALK_SPEED = 260;
         private const float EARLY_JUMP_TIME = 100 * Time.MILLISECONDS;
@@ -38,7 +39,7 @@ namespace TheForestWaiter.Game.Objects
 
         public Player(GameData game, ContentSource content, ObjectCreator creator, Camera camera) : base(game)
         {
-            Health = 100;
+            Health = MAX_HEALTH;
             _animatedSprite = content.Textures.CreateAnimatedSprite("Textures\\Player\\sheet.png");
             Gun = creator.CreateGun<Handgun>();
 
@@ -89,6 +90,12 @@ namespace TheForestWaiter.Game.Objects
         }
 
         public void StopJump() => _jumping = false;
+
+        public void Heal(int points)
+        {
+            Health += points;
+            Health = Math.Min(Health, MAX_HEALTH);
+		}
 
         private void HandleMovement(float time)
         {

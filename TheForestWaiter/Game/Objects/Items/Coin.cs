@@ -1,70 +1,24 @@
 ﻿using SFML.Graphics;
 using SFML.System;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TheForestWaiter.Content;
-using TheForestWaiter.Debugging;
-using TheForestWaiter.Game.Debugging;
 using TheForestWaiter.Game.Core;
 using TheForestWaiter.Game.Essentials;
-using TheForestWaiter.Game.Graphics;
 using TheForestWaiter.Game.Objects;
+using TheForestWaiter.Game.Objects.Items;
 
 namespace TheForestWaiter.Game.Gibs
 {
-	internal class Coin : PhysicsObject
+	internal class Coin : Pickup
 	{
-		private const float LIFESPAN = 20;
-		private float _life = LIFESPAN;
-
-		private readonly Sprite _sprite;
-
-		public Coin(GameData game, ContentSource content) : base(game)
+		public Coin(GameData game, ContentSource content) : 
+			base("Textures\\Items\\coin.png", game, content)
 		{
-			_sprite = content.Textures.CreateSprite("Textures\\Items\\coin.png");
-			Size = new Vector2i(_sprite.TextureRect.Width, _sprite.TextureRect.Height).ToVector2f();
-			CollisionRadius = 20;
-			ReceivePhysicsCollisions = true;
-			EmitPhysicsCollisions = true;
-			EnableDrag = true;
-			Drag = new Vector2f(100, 0);
-			Gravity = 200;
+
 		}
 
-		public override void Update(float time)
+		protected override void OnPickup(Player player)
 		{
-			_life -= time;
-
-			if (_life < 0)
-			{
-				MarkedForDeletion = true;
-				return;
-			}
-
-			if (TouchingFloor)
-			{
-				SetVelocityY(Rng.Range(-120, -90));
-			}
-
-			PhysicsTick(time);
-			_sprite.Position = Position;
-		}
-
-		protected override void OnTouch(PhysicsObject obj)
-		{
-			if (obj is Player)
-			{
-				MarkedForDeletion = true;
-				Game.Session.Coins++;
-			}
-		}
-
-		public override void Draw(RenderWindow window)
-		{
-			window.Draw(_sprite);
+			Game.Session.Coins++;
 		}
 	}
 }

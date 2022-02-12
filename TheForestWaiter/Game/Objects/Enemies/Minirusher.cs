@@ -18,20 +18,22 @@ namespace TheForestWaiter.Game.Objects.Enemies
 {
     internal class Minirusher : Enemy
     {
-        private const int MAX_COIN_DROP = 2;
-        private const int MIN_COIN_DROP = 3;
+        private const int MAX_DROP = 2;
+        private const int MIN_DROP = 0;
+        private const float DROP_PERCENTAGE_OF_COINS = 0.8f;
+
         private const float ATTACK_DAMAGE = 10;
 
         private readonly AnimatedSprite _animation;
         private readonly RandomTrigger _jumpTrigger;
         private readonly ContentSource _content;
         private readonly GibSpawner _gibSpawner;
-		private readonly CoinSpawner _coinSpawner;
+		private readonly PickupSpawner _coinSpawner;
 
         private readonly int _jumpVelocity;
 		private int _targetDirection = 0;
 
-        public Minirusher(GameData game, ContentSource content, GibSpawner gibSpawner, CoinSpawner coinSpawner) : base(game)
+        public Minirusher(GameData game, ContentSource content, GibSpawner gibSpawner, PickupSpawner pickupSpawner) : base(game)
         {
             _animation = content.Textures.CreateAnimatedSprite("Textures\\Enemies\\minirusher.png");
             Size = _animation.Sheet.TileSize.ToVector2f();
@@ -45,7 +47,7 @@ namespace TheForestWaiter.Game.Objects.Enemies
             _jumpTrigger = new RandomTrigger(Jump, 70, 1, 2);
             _content = content;
             _gibSpawner = gibSpawner;
-			_coinSpawner = coinSpawner;
+			_coinSpawner = pickupSpawner;
 			_gibSpawner.Sheet = content.Textures.CreateSpriteSheet("Textures\\Enemies\\minirusher_gibs.png");
 
             CollisionRadius = 42;
@@ -133,7 +135,7 @@ namespace TheForestWaiter.Game.Objects.Enemies
 
             _gibSpawner.InitialVelocity = Velocity;
             _gibSpawner.SpawnAll(Center);
-            _coinSpawner.SpawnAmount(Position, (int)Math.Round(Rng.Range(MIN_COIN_DROP, MAX_COIN_DROP)));
+            _coinSpawner.SpawnAmount(Center, (int)Math.Round(Rng.Range(MIN_DROP, MAX_DROP)), DROP_PERCENTAGE_OF_COINS);
 
             MarkedForDeletion = true;
         }

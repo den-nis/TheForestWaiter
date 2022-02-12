@@ -46,8 +46,6 @@ namespace TheForestWaiter.Shared
         public int  TextureTileWidth      { get; set; }
         public int  TextureTileHeight     { get; set; }
         public int  TextureFramerate      { get; set; }
-        public int  TextureStartFrame     { get; set; }
-        public int  TextureEndFrame       { get; set; }
         public bool TextureHasTileSpacing { get; set; }
 
         public bool SoundLooping { get; set; }
