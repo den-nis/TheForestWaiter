@@ -13,7 +13,8 @@ namespace TheForestWaiter.Game.Core
         {
             foreach(var i in this)
             {
-                i.Draw(window);
+                if (!i.DisableDraws)
+                    i.Draw(window);
             }
         }
 
@@ -21,7 +22,8 @@ namespace TheForestWaiter.Game.Core
         {
             foreach (var i in this)
             {
-                i.Update(time);
+                if (!i.DisableUpdates)
+                    i.Update(time);
             }
         }
 

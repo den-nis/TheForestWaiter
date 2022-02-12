@@ -53,7 +53,8 @@ namespace TheForestWaiter.Game.Objects.Items
 				SetVelocityY(Rng.Range(-MIN_BOUNCH_HEIGHT, -MAX_BOUNCH_HEIGHT));
 			}
 
-			if ((Game.Objects.Player.Center - Center).Len() < PLAYER_ATTRACT_DISTANCE)
+			var player = Game.Objects.Player;
+			if (!player.Dead && (player.Center - Center).Len() < PLAYER_ATTRACT_DISTANCE)
 			{
 				var direction = (Game.Objects.Player.Center - Center).Angle();
 				Velocity = TrigHelper.FromAngleRad(direction, PLAYER_ATTRACT_VELOCITY);
@@ -70,7 +71,7 @@ namespace TheForestWaiter.Game.Objects.Items
 
 		protected sealed override void OnTouch(PhysicsObject obj)
 		{
-			if (obj is Player player)
+			if (obj is Player player && !player.Dead)
 			{
 				OnPickup(player);
 				MarkedForDeletion = true;

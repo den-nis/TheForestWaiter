@@ -197,7 +197,10 @@ namespace TheForestWaiter.Game.Objects
         protected override void OnDeath()
         {
             RemoveGun();
-            Gravity = 0;
+
+            DisableDraws = true;
+            DisableUpdates = true;
+            ReceivePhysicsCollisions = false;
         }
 
         protected override void OnDamage(PhysicsObject by)

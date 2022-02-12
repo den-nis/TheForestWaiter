@@ -17,12 +17,15 @@ namespace TheForestWaiter.Game.Core
             Game = game;
         }
 
-        private bool _MarkedForDeletion = false;
+        private bool _markedForDeletion = false;
         public bool MarkedForDeletion
         {
-            get => _MarkedForDeletion;
-            set => _MarkedForDeletion |= value;
+            get => _markedForDeletion;
+            set => _markedForDeletion |= value;
         }
+
+        public bool DisableUpdates { get; set; }
+        public bool DisableDraws { get; set; }
 
         /// <summary>
         /// Can be used for setup logic that needs the tiled object data
