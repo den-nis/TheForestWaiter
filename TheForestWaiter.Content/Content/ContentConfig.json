@@ -1,89 +1,184 @@
 ﻿{
-  //Key path must contain backslashes instead of forward ones
-  "content": {
+	"content": [
+		{
+			"path": "Worlds/main.json",
+			"type": "Raw",
+			"compression": "Optimal"
+		},
+		{
+			"path": "Textures/World/tree.png",
+			"type": "Texture",
+			"compression": "NoCompression",
 
-    "Worlds\\main.json": {
-      "type": "Raw",
-      "compression": "Optimal"
-    },
+			"textureConfig": {
+				"tileWidth": 36,
+				"tileHeight": 64,
+				"hasTileSpacing": true
+			}
+		},
+		{
+			"path": "Textures/World/grass.png",
+			"type": "Texture",
+			"compression": "NoCompression",
 
-    "Textures\\World\\tree.png": {
-      "type": "Texture",
-      "compression": "NoCompression",
+			"textureConfig": {
+				"tileWidth": 32,
+				"tileHeight": 6,
+				"hasTileSpacing": true
+			}
+		},
+		{
+			"path": "Textures/world.png",
+			"type": "Texture",
+			"compression": "NoCompression",
 
-      "textureTileWidth": 36,
-      "textureTileHeight": 64,
-      "textureHasTileSpacing": true
-    },
+			"textureConfig": {
+				"tileWidth": 32,
+				"tileHeight": 32,
+				"hasTileSpacing": true
+			}
+		},
+		{
+			"path": "Textures/Player/sheet.png",
+			"type": "Texture",
 
-    "Textures\\World\\grass.png": {
-      "type": "Texture",
-      "compression": "NoCompression",
+			"textureConfig": {
+				"tileWidth": 17,
+				"tileHeight": 36,
+				"hasTileSpacing": true,
 
-      "textureTileWidth": 32,
-      "textureTileHeight": 6,
-      "textureHasTileSpacing": true
-    },
+				"sections": [
+					{
+						"name": "walking",
+						"fps": 12,
+						"start": 0,
+						"end": 6
+					},
+					{
+						"name": "backwards",
+						"fps": 12,
+						"start": 8,
+						"end": 15
+					},
+					{
+						"name": "idle",
+						"fps": 5,
+						"start": 14,
+						"end": 19
+					},
+					{
+						"name": "flying",
+						"fixedFrame": 3
+					}
+				]
+			}
+		},
+		{
+			"path": "Textures/Enemies/minirusher.png",
+			"type": "Texture",
 
-    "Textures\\world.png": {
-      "type": "Texture",
-      "compression": "NoCompression",
+			"textureConfig": {
 
-      "textureTileWidth": 32,
-      "textureTileHeight": 32,
-      "textureHasTileSpacing": true
-    },
+				"tileWidth": 22,
+				"tileHeight": 19,
+				"hasTileSpacing": true,
 
-    "Textures\\Player\\sheet.png": {
-      "type": "Texture",
-      "textureHasTileSpacing": true,
-      "textureTileWidth": 17,
-      "textureTileHeight": 36
-    },
-    "Textures\\Enemies\\minirusher.png": {
-      "type": "Texture",
-      "textureHasTileSpacing": true,
-      "textureTileWidth": 22,
-      "textureTileHeight": 19,
-      "textureFramerate": 12
-    },
-    "Textures\\Enemies\\minirusher_gibs.png": {
-      "type": "Texture",
-      "textureHasTileSpacing": true,
-      "textureTileWidth": 11,
-      "textureTileHeight": 8
-    },
-    "Textures\\Enemies\\crawler.png": {
-      "type": "Texture",
-      "textureHasTileSpacing": true,
-      "textureTileWidth": 26,
-      "textureTileHeight": 23
-    },
-    "Textures\\Enemies\\crawler_gibs.png": {
-      "type": "Texture",
-      "textureHasTileSpacing": true,
-      "textureTileWidth": 7,
-      "textureTileHeight": 7
-    },
-    "Textures\\Hud\\numbers.png": {
-      "type": "Texture",
-      "textureHasTileSpacing": true,
-      "textureTileWidth": 4,
-      "textureTileHeight": 7
-    },
-    "Textures\\Items\\coin.png": {
-      "type": "Texture",
-      "textureHasTileSpacing": true,
-      "textureTileWidth": 6,
-      "textureTileHeight": 6,
-      "textureFramerate": 5
-    },
-    "Textures\\Items\\apple.png": {
-      "type": "Texture",
-      "textureHasTileSpacing": true,
-      "textureTileWidth": 15,
-      "textureTileHeight": 17,
-      "textureFramerate": 7
-    }
-  }
+				"sections": [
+					{
+						"name": "walking",
+						"fps": 12,
+						"start": 0,
+						"end": 7
+					},
+					{
+						"name": "idle",
+						"fixedFrame": 0
+					}
+				]
+			}
+		},
+		{
+			"path": "Textures/Enemies/minirusher_gibs.png",
+			"type": "Texture",
+
+			"textureConfig": {
+				"tileWidth": 11,
+				"tileHeight": 8,
+				"hasTileSpacing": true
+			}
+		},
+		{
+			"path": "Textures/Enemies/crawler.png",
+			"type": "Texture",
+
+			"textureConfig": {
+				"tileWidth": 26,
+				"tileHeight": 23,
+				"hasTileSpacing": true,
+
+				"sections": [
+					{
+						"name": "walking",
+						"fps": 20,
+						"start": 14,
+						"end": 18
+					},
+					{
+						"name": "idle",
+						"fps": 7,
+						"start": 0,
+						"end": 6
+					},
+					{
+						"name": "attack",
+						"fps": 5,
+						"start": 7,
+						"end": 12
+					}
+				]
+			}
+		},
+		{
+			"path": "Textures/Enemies/crawler_gibs.png",
+			"type": "Texture",
+
+			"textureConfig": {
+				"tileWidth": 7,
+				"tileHeight": 7,
+				"hasTileSpacing": true
+			}
+		},
+		{
+			"path": "Textures/Hud/numbers.png",
+			"type": "Texture",
+
+			"textureConfig": {
+				"tileWidth": 4,
+				"tileHeight": 7,
+				"hasTileSpacing": true
+			}
+		},
+		{
+			"path": "Textures/Items/coin.png",
+			"type": "Texture",
+
+			"textureConfig": {
+				"tileWidth": 6,
+				"tileHeight": 6,
+				"framerate": 5,
+				"hasTileSpacing": true
+			}
+		},
+		{
+			"path": "Textures/Items/apple.png",
+			"type": "Texture",
+
+			"textureConfig": {
+				"tileWidth": 15,
+				"tileHeight": 17,
+				"framerate": 7,
+				"hasTileSpacing": true
+			}
+		}
+	]
 }
