@@ -14,7 +14,7 @@ namespace TheForestWaiter.Debugging.DebugConsole
         private const int CELL_MARGIN = 3;
 
         private int _columns = -1;
-        private readonly List<string[]> _rows = new();
+        private readonly List<object[]> _rows = new();
         private readonly bool _header;
 
         public TableBuilder(bool header = false)
@@ -22,7 +22,7 @@ namespace TheForestWaiter.Debugging.DebugConsole
             _header = header;
         }
 
-        public TableBuilder WriteRow(params string[] row)
+        public TableBuilder WriteRow(params object[] row)
         {
             _columns =
                 (_columns == row.Length || _columns == -1) ?
@@ -41,7 +41,7 @@ namespace TheForestWaiter.Debugging.DebugConsole
             {
                 for (int x = 0; x < _columns; x++)
                 {
-                    table[x, y] = _rows[y][x];
+                    table[x, y] = _rows[y][x]?.ToString();
                 }
             }
 

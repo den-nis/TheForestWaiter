@@ -1,212 +1,149 @@
 ﻿using SFML.Graphics;
-using SFML.System;
-using SFML.Window;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using TheForestWaiter.Content;
-using TheForestWaiter.Debugging;
-using TheForestWaiter.Game.Debugging;
+using TheForestWaiter.Game.Constants;
 using TheForestWaiter.Game.Core;
 using TheForestWaiter.Game.Essentials;
 using TheForestWaiter.Game.Graphics;
+using TheForestWaiter.Game.Logic;
 using TheForestWaiter.Game.Objects.Weapons;
 using TheForestWaiter.Game.Objects.Weapons.Guns;
 
 namespace TheForestWaiter.Game.Objects
 {
-    internal class Player : Creature
-    {
-        private const int MAX_HEALTH = 100;
-        private const float JUMP_VELOCITY = 380;
-        private const float WALK_SPEED = 260;
-        private const float EARLY_JUMP_TIME = 100 * Time.MILLISECONDS;
+	internal class Player : GroundCreature
+	{
+        public PlayerController Controller { get; } = new();
 
-        public GunBase Gun { get; private set; }
+		private readonly AnimatedSprite _sprite;
+		private GunBase _gun;
 
-        private readonly AnimatedSprite _animatedSprite;
         private readonly Color _stunColor = new(255, 200, 200);
-        private readonly Camera _camera;
+        private bool _justJumped = false;
 
-        private float _earlyJumpTimer;
+        public Player(GameData game, ContentSource content, ObjectCreator creator) : base(game)
+		{
+			_sprite = content.Textures.CreateAnimatedSprite("Textures\\Player\\sheet.png");
+			Size = _sprite.Sheet.TileSize.ToVector2f();
 
-        private bool _jumping = false;
-        private bool _moveRight = false;
-        private bool _moveLeft = false;
-        private bool _aimingRight = true;
+            StunTime = 1;
+            Friendly = true;
+            AirAcceleration = 1500;
+            AirSpeed = 100;
+            JumpForceVariation = 0;
 
-        private Vector2f _aim;
-
-        public Player(GameData game, ContentSource content, ObjectCreator creator, Camera camera) : base(game)
-        {
-            Health = MAX_HEALTH;
-            _animatedSprite = content.Textures.CreateAnimatedSprite("Textures\\Player\\sheet.png");
-            Gun = creator.CreateGun<Handgun>();
-
-            Size = _animatedSprite.Sheet.TileSize.ToVector2f();
-            CollisionRadius = Size.Y + 5;
-            ReceivePhysicsCollisions = true;
-            EmitPhysicsCollisions = false;
-            _camera = camera;
-        }
-
-        public override void Draw(RenderWindow window)
-        {
-            if (!Dead)
-            {
-                Gun?.Draw(window);
-                window.Draw(_animatedSprite.Sheet.Sprite);
-            }
-        }
-
-        public void StartFire()
-        {
-            if (Gun != null)
-                Gun.Firing = true;
-        }
-
-        public void StopFire()
-        {
-            if (Gun != null)
-                Gun.Firing = false;
-        }
-
-        public void Aim(Vector2f mouse)
-        {
-            _aim = mouse;
-            _aimingRight = mouse.X > _camera.ToCamera(Center).X;
-            Gun?.Aim(mouse);
-        }
-
-        public void StartMoveRight() => _moveRight = true;
-        public void StopMoveRight() => _moveRight = false;
-        public void StartMoveLeft() => _moveLeft = true;
-        public void StopMoveLeft() => _moveLeft = false;
-
-        public void StartJump()
-        {
-            _jumping = true;
-            _earlyJumpTimer = EARLY_JUMP_TIME;
-        }
-
-        public void StopJump() => _jumping = false;
-
-        public void Heal(int points)
-        {
-            Health += points;
-            Health = Math.Min(Health, MAX_HEALTH);
+			_gun = creator.CreateGun<Handgun>();
 		}
 
-        private void HandleMovement(float time)
-        {
-            if (Dead)
+		public override void Update(float time)
+		{
+			base.Update(time);
+
+			if (_gun != null)
+			{
+				_gun.Firing = Controller.IsActive(ActionTypes.PrimaryAttack);
+				_gun.Aim(Controller.GetAim());
+				_gun.Update(time);
+			}
+
+            if (Controller.IsActive(ActionTypes.Right) != Controller.IsActive(ActionTypes.Left))
             {
-                Velocity = default;
-                return;
+                if (Controller.IsActive(ActionTypes.Right))
+                    MoveRight();
+                if (Controller.IsActive(ActionTypes.Left))
+                    MoveLeft();
             }
 
-            if (TouchingFloor)
+            if (Controller.IsActive(ActionTypes.Up) && !_justJumped)
             {
-                if (_earlyJumpTimer > 0)
-                    SetVelocityY(-JUMP_VELOCITY);
-            }
-            _earlyJumpTimer -= time;
-
-            if (_jumping)
-                Push(new Vector2f(0, -300), time);
-
-            if (_moveRight && !_moveLeft)
-                LimitPush(new Vector2f(WALK_SPEED, 0), 1);
-
-            if (_moveLeft && !_moveRight)
-                LimitPush(new Vector2f(-WALK_SPEED, 0), 1);
-
-            EnableDrag = !_moveLeft && !_moveRight;
-        }
-
-        private void HandleAnimations(float time)
-        {
-            if (IsStunned)
-            {
-                _animatedSprite.Sprite.Color = _stunColor;
-                if (Gun != null) Gun.GunSprite.Color = _stunColor;
+                Jump();
+                _justJumped = true;
             }
             else
             {
-                if (Gun != null) Gun.GunSprite.Color = Color.White;
-                _animatedSprite.Sprite.Color = Color.White;
+                HoldJump();
+			}
+
+            if (!Controller.IsActive(ActionTypes.Up))
+            {
+                _justJumped = false;
+			}
+
+            HandleAnimations(time);
+        }
+
+		public override void Draw(RenderWindow window)
+		{
+            window.Draw(_gun);
+			window.Draw(_sprite);
+		}
+
+        public void Equip(GunBase gun)
+        {
+            _gun = gun;
+		}
+
+        public void God() => Invincible = true;
+
+        private void HandleAnimations(float time)
+        {
+            bool isMovingRight = MovingDirection > 0;
+            bool isMovingLeft = MovingDirection < 0;
+            bool aimingRight = TrigHelper.IsPointingRight(Controller.GetAim());
+
+            if (IsStunned)
+            {
+                _sprite.Sprite.Color = _stunColor;
+                if (_gun != null) _gun.GunSprite.Color = _stunColor;
+            }
+            else
+            {
+                if (_gun != null) _gun.GunSprite.Color = Color.White;
+                _sprite.Sprite.Color = Color.White;
             }
 
-            var isMovingRight = RealSpeed.X > 1;
-            var isMovingLeft = RealSpeed.X < -1;
+            _sprite.Sheet.MirrorX = !aimingRight;
+            _sprite.Framerate = 12;
 
-            _animatedSprite.Sheet.MirrorX = !_aimingRight;
-            _animatedSprite.Framerate = 12;
-
-            if ((_aimingRight && isMovingRight) || (!_aimingRight && isMovingLeft))
+            if ((aimingRight && isMovingRight) || (!aimingRight && isMovingLeft))
             {
                 //Forward walking
-                _animatedSprite.AnimationStart = 0;
-                _animatedSprite.AnimationEnd = 6;
+                _sprite.AnimationStart = 0;
+                _sprite.AnimationEnd = 6;
             }
             else
             {
                 //Backward walking
-                _animatedSprite.AnimationStart = 8;
-                _animatedSprite.AnimationEnd = 15;
+                _sprite.AnimationStart = 8;
+                _sprite.AnimationEnd = 15;
             }
 
-            if (Math.Abs(RealSpeed.X) < 1f)
+            if (Math.Abs(GetSpeed().X) < 1f)
             {
                 //Idle
-                _animatedSprite.Framerate = 5;
-                _animatedSprite.AnimationStart = 14;
-                _animatedSprite.AnimationEnd = 19;
+                _sprite.Framerate = 5;
+                _sprite.AnimationStart = 14;
+                _sprite.AnimationEnd = 19;
             }
 
-            if (!TouchingFloor)
-                _animatedSprite.SetStaticFrame(3);
+            if (!CollisionFlags.HasFlag(WorldCollisionFlags.Bottom))
+                _sprite.SetStaticFrame(3);
 
-            _animatedSprite.Sprite.Position = Position;
-            _animatedSprite.Update(time);
+            _sprite.Sprite.Position = Position;
+            _sprite.Update(time);
         }
 
-        public override void Update(float time)
-        {
-            PhysicsTick(time);
-            HandleMovement(time);
+        protected override void OnDamage(GameObject by)
+		{
+		}
 
-            //Gun needs to updated after physics tick since it needs the latest player position
-            Gun?.Update(time);
-            HandleAnimations(time);
-            base.Update(time);
-        }
-
-        public void RemoveGun() => SetGun(null);
-
-        public void SetGun(GunBase gun)
-        {
-            if (gun != null)
-            {
-                gun.Aim(_aim);
-            }
-
-            Gun = gun;
-        }
-
-        protected override void OnDeath()
-        {
-            RemoveGun();
+		protected override void OnDeath()
+		{
+            _gun = null;
 
             DisableDraws = true;
             DisableUpdates = true;
-            ReceivePhysicsCollisions = false;
+            EnableCollision = false;
         }
-
-        protected override void OnDamage(PhysicsObject by)
-        {
-            if (by != null)
-                ApplyStunMovement(by);
-        }
-    }
+	}
 }

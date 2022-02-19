@@ -1,15 +1,12 @@
 ﻿using LightInject;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TheForestWaiter.Game;
 using TheForestWaiter.Game.Objects.Weapons;
 
 namespace TheForestWaiter.Debugging.Command.Commands
 {
-    [Command("equip", "change current weapon", "{gun name}")]
+	[Command("equip", "change current weapon", "{gun name}")]
     class Equip : ICommand
     {
         private readonly GameData _game;
@@ -23,7 +20,7 @@ namespace TheForestWaiter.Debugging.Command.Commands
 
         public void Execute(CommandHandler handler, string[] args)
         {
-            _game.Objects.Player.SetGun((GunBase)_container
+            (_game.Objects.Player).Equip((GunBase)_container
                 .GetInstance(Types.Guns.Values.FirstOrDefault(t => t.Name.Equals(args[0], StringComparison.OrdinalIgnoreCase))));
         }
     }

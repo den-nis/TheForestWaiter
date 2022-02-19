@@ -8,7 +8,7 @@ using TheForestWaiter.Game.Essentials;
 namespace TheForestWaiter.Game.Particles
 {
     // Inspired by Cherno https://github.com/TheCherno/OneHourParticleSystem
-    class ParticleSystem
+    internal class ParticleSystem
     {
         private static RectangleShape ParticleShape { get; set; } = new RectangleShape();
         public bool IsActive { get; private set; }
@@ -19,7 +19,6 @@ namespace TheForestWaiter.Game.Particles
             public Color ColorEnd { get; set; }
 
             public Vector2f Velocity { get; set; }
-
             public Vector2f Position { get; set; }
 
             public float SizeStart { get; set; }

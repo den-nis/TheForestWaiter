@@ -8,7 +8,6 @@ using TheForestWaiter.Debugging.DebugConsole;
 using TheForestWaiter.Game;
 using TheForestWaiter.Game.Core;
 using TheForestWaiter.Game.Objects;
-using TheForestWaiter.Game.Objects.Weapons.Bullets;
 
 namespace TheForestWaiter.Debugging.Command.Commands
 {

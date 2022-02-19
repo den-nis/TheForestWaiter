@@ -3,7 +3,7 @@ using TheForestWaiter.Game;
 
 namespace TheForestWaiter.Debugging.Command.Commands
 {
-    [Command("god", "more HP")]
+    [Command("god", "")]
     class GodMode : ICommand
     {
         private readonly GameData _game;
@@ -15,7 +15,7 @@ namespace TheForestWaiter.Debugging.Command.Commands
 
         public void Execute(CommandHandler handler, string[] args)
         {
-            _game.Objects.Player.Damage(null, -int.MaxValue);
+            _game.Objects.Player.God();
         }
     }
 }

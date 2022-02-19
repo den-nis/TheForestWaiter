@@ -11,7 +11,7 @@ using TheForestWaiter.Game.Essentials;
 
 namespace TheForestWaiter.Game.Objects.Static
 {
-    class Spawner : StaticObject
+    internal class Spawner : Immovable
     {
 		private readonly GameData _game;
 		private readonly ObjectCreator _creator;

@@ -11,7 +11,7 @@ using TheForestWaiter.Game.Graphics;
 
 namespace TheForestWaiter.Game.Objects.Static
 {
-    class Tree : StaticObject
+    internal class Tree : Immovable
     {
         const int FRAME_RATE_MIN = 2;
         const int FRAME_RATE_MAX = 5;

@@ -1,10 +1,4 @@
 ﻿using SFML.Graphics;
-using SFML.System;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TheForestWaiter.Content;
 using TheForestWaiter.Game.Core;
 using TheForestWaiter.Game.Essentials;
@@ -12,7 +6,7 @@ using TheForestWaiter.Game.Graphics;
 
 namespace TheForestWaiter.Game.Objects.Static
 {
-    class Grass : StaticObject
+	internal class Grass : Immovable
     {
         const int FRAME_RATE_MIN = 2;
         const int FRAME_RATE_MAX = 5;

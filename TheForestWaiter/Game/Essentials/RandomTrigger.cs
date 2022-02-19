@@ -33,13 +33,13 @@ namespace TheForestWaiter.Game.Essentials
             SetInterval();
         }
 
-        public void TryTrigger(float time)
+        public void Update(float time)
         {
             _timer += time;
 
             while (_timer > _interval)
             {
-                if (Rng.Range(0, 100) <= _chance)
+                if (Rng.Range(0, 1) < _chance)
                     _trigger();
 
                 SetInterval();

@@ -37,6 +37,7 @@ namespace TheForestWaiter.Services
                 .RegisterSingleton<StateManager>()
                 .RegisterSingleton<UserSettings>()
                 .RegisterSingleton<WindowHandle>()
+                .RegisterSingleton<TimeProcessor>()
 #if DEBUG
                 .RegisterSingleton<IDebug, ActiveDebug>();
             RegisterCommands();

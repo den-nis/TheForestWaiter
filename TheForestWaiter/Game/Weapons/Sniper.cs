@@ -1,15 +1,13 @@
 ﻿using SFML.Graphics;
 using SFML.System;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using TheForestWaiter.Content;
 using TheForestWaiter.Game.Essentials;
-using TheForestWaiter.Game.Objects.Weapons.Bullets;
+using TheForestWaiter.Game.Objects.Projectiles;
 
 namespace TheForestWaiter.Game.Objects.Weapons.Guns
-{ 
-    class Sniper : GunBase
+{
+	class Sniper : GunBase
     {
         private float _smokeTimer = 0;
         private float _smokeEmitTimer = 0;
@@ -22,7 +20,7 @@ namespace TheForestWaiter.Game.Objects.Weapons.Guns
         protected override Vector2f AttachPoint => Game.Objects.Player.Center - new Vector2f(0, 1);
         protected override Vector2f Origin => new(0f, 3f);
 
-        public Sniper(GameData game, ContentSource content, Camera camera, ObjectCreator creator) : base(game, camera, creator)
+        public Sniper(GameData game, ContentSource content, Camera camera, ObjectCreator creator) : base(game, creator)
         {
             Cone = 0;
             FireSpeed = 2000;
@@ -62,7 +60,6 @@ namespace TheForestWaiter.Game.Objects.Weapons.Guns
 		protected override void FireBullet()
 		{
             var bullet = _creator.CreateAndShoot<SniperBullet>(BarrelPosition, TrigHelper.FromAngleRad(LastShotFromAngle, FireSpeed + (FireSpeedVariation * (Rng.Float() - 0.5f))));
-            bullet.Range = Range;
             Game.Objects.Bullets.Add(bullet);
         }
 

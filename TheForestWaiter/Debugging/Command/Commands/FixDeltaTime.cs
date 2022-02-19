@@ -6,16 +6,16 @@ namespace TheForestWaiter.Debugging.Command.Commands
     [Command("fixdelta", "Fix delta time to a specific amount", "{number}")]
     class FixDeltaTime : ICommand
     {
-        private readonly Entry _main;
+        private readonly TimeProcessor _time;
 
-        public FixDeltaTime(Entry main)
+        public FixDeltaTime(TimeProcessor time)
         {
-            _main = main;
+            _time = time;
         }
 
         public void Execute(CommandHandler handler, string[] args)
         {
-            _main.LockDelta = float.Parse(args[0]);
+            _time.LockDelta = float.Parse(args[0]);
         }
     }
 }

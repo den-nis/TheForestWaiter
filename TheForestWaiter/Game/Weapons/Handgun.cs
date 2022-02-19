@@ -14,9 +14,11 @@ namespace TheForestWaiter.Game.Objects.Weapons.Guns
         protected override Vector2f AttachPoint => Game.Objects.Player.Center - new Vector2f(0, 1);
         protected override Vector2f Origin => new(2.5f, 6.5f);
 
-        public Handgun(GameData game, ContentSource content, Camera camera, ObjectCreator creator) : base(game, camera, creator)
-        {
-            AutoFire = false;
+        public Handgun(GameData game, ContentSource content, ObjectCreator creator) : base(game, creator)
+        { 
+            AutoFire = true;
+            FireRatePerSecond = 100;
+            Cone = 1;
             GunSprite = content.Textures.CreateSprite("Textures\\Guns\\handgun.png");
             OnFire += OnFireEvent;
             _content = content;

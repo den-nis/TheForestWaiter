@@ -7,7 +7,7 @@ using TheForestWaiter.Game.Core;
 using TheForestWaiter.Game.Debugging;
 using TheForestWaiter.Game.Environment;
 using TheForestWaiter.Game.Objects;
-using TheForestWaiter.Game.Objects.Weapons.Bullets;
+using TheForestWaiter.Game.Objects.Projectiles;
 using TheForestWaiter.Game.Particles;
 
 namespace TheForestWaiter.Game
@@ -33,15 +33,15 @@ namespace TheForestWaiter.Game
 
         public Player Player { get; private set; } = null;
 
-        public GameObjectContainer<StaticObject> Environment { get; set; } = new();
-        public GameObjectContainer<Creature> Actors { get; set; } = new();
-        public GameObjectContainer<PhysicsObject> Bullets { get; set; } = new();
-        public GameObjectContainer<PhysicsObject> Other { get; set; } = new();
+        public GameObjectContainer<Immovable> Environment { get; set; } = new();
+        public GameObjectContainer<Creature> Creatures { get; set; } = new();
+        public GameObjectContainer<Movable> Bullets { get; set; } = new();
+        public GameObjectContainer<Movable> Other { get; set; } = new();
 
         public ParticleSystem WorldParticles { get; set; }
 
-        public IEnumerable<PhysicsObject> PhysicsObjects => Actors
-            .Concat(Actors)
+        public IEnumerable<Movable> PhysicsObjects => Creatures
+            .Concat(Creatures)
             .Concat(Bullets)
             .Concat(Other);
 
@@ -49,7 +49,7 @@ namespace TheForestWaiter.Game
         {
             yield return Environment;
             yield return Other;
-            yield return Actors;
+            yield return Creatures;
             yield return Bullets;
         }
 
@@ -60,8 +60,6 @@ namespace TheForestWaiter.Game
                 func(container);
             }
         }
-
-        public IEnumerable<Creature> Creatures => Actors.Concat(new[] { Player });
 
         public void ClearAll()
         {
@@ -130,13 +128,13 @@ namespace TheForestWaiter.Game
             {
                 case Player player:
                     Player = player;
-                    Actors.Add(player);
+                    Creatures.Add(player);
                     break;
 
-                case Bullet bullet:      Bullets.Add(bullet); break;
-                case Creature enemy:     Actors.Add(enemy); break;
-                case PhysicsObject pObj: Other.Add(pObj); break;
-                case StaticObject sObj:  Environment.Add(sObj); break;
+                case Bullet bullet:  Bullets.Add(bullet); break;
+                case Creature enemy: Creatures.Add(enemy); break;
+                case Movable pObj:   Other.Add(pObj); break;
+                case Immovable sObj: Environment.Add(sObj); break;
 
                 default:
                     throw new KeyNotFoundException($"No container found for \"{obj.GetType().Name}\"");

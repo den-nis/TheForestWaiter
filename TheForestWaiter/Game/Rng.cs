@@ -29,5 +29,10 @@ namespace TheForestWaiter.Game
         }
 
         public static float Angle() => Range(0, (float)(Math.PI * 2));
-    }
+
+		public static float Variation(float variation)
+		{
+            return Rng.Range(-variation, variation);
+		}
+	}
 }

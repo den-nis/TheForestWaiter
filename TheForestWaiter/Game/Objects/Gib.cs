@@ -11,13 +11,14 @@ using TheForestWaiter.Game.Debugging;
 using TheForestWaiter.Game.Core;
 using TheForestWaiter.Game.Essentials;
 using TheForestWaiter.Game.Graphics;
+using TheForestWaiter.Game.Constants;
 
-namespace TheForestWaiter.Game.Gibs
+namespace TheForestWaiter.Game.Objects
 {
 	/// <summary>
 	/// The sheet you give in the constructor will be changed (rotation/origin)
 	/// </summary>
-	class Gib : PhysicsObject
+	class Gib : Movable
 	{
 		private const float _airRotationDrag = 0.5f;
 
@@ -29,33 +30,35 @@ namespace TheForestWaiter.Game.Gibs
 		private float _life;
 		private float _rotation;
 
-		public Gib(GameData game) : base(game)
+		public Gib(GameData game, SpriteSheet sheet) : base(game)
 		{
-			ReceivePhysicsCollisions = false;
-			EmitPhysicsCollisions = false;
-			EnableDrag = true;
+			Sheet = sheet;
+			Size = Sheet.TileSize.ToVector2f();
+
 			Drag = new Vector2f(100, 20);
 			Gravity = 500;
 		}
 
 		public void SetLife(float life)
-        {
+		{
 			_lifeSpan = life;
 			_life = life;
 		}
 
 		public override void Update(float time)
 		{
-			Size = Sheet.TileSize.ToVector2f();
-			CollisionRadius = Math.Max(Size.X, Size.Y);
+			base.Update(time);
 
 			_life -= time;
 
 			if (_life < 0)
-				MarkedForDeletion = true;
+			{
+				Delete();
+				return;
+			}
 
-			if (TouchingFloor)
-			{ 
+			if (CollisionFlags.HasFlag(WorldCollisionFlags.Bottom))
+			{
 				var c = (float)(Math.Min(Sheet.TileSize.X, Sheet.TileSize.Y) * Math.PI);
 				var rotate = Velocity.X * time / c * (float)Math.PI * 2f;
 
@@ -67,8 +70,6 @@ namespace TheForestWaiter.Game.Gibs
 				_rotation += AngularMomentum * time;
 				AngularMomentum = ForestMath.MoveTowardsZero(AngularMomentum, _airRotationDrag * time);
 			}
-
-			PhysicsTick(time);
 		}
 
 		public override void Draw(RenderWindow window)

@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using TheForestWaiter.Game.Core;
 using TheForestWaiter.Game.Objects.Weapons;
 using LightInject;
+using TheForestWaiter.Game.Objects;
+using TheForestWaiter.Game.Objects.Projectiles;
 
 namespace TheForestWaiter.Game
 {
@@ -32,11 +34,19 @@ namespace TheForestWaiter.Game
             return obj;
         }
 
-        public T CreateAndShoot<T>(Vector2f position, Vector2f speed) where T : PhysicsObject
+        public T CreateAndShoot<T>(Vector2f position, Vector2f speed) where T : Movable
         {
             T obj = CreateAt<T>(position);
-            obj.Velocity = speed;
+            obj.SetVelocityX(speed.X);
+            obj.SetVelocityY(speed.Y);
             return obj;
         }
+
+        public T FireBullet<T>(Vector2f position, Vector2f speed, Creature owner) where T : Bullet
+        {
+            var bullet = CreateAndShoot<T>(position, speed);
+            bullet.Owner = owner;
+            return bullet;
+		}
     }
 }

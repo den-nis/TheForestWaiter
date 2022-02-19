@@ -1,25 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using LightInject;
+using System;
 using TheForestWaiter.Game;
 using TheForestWaiter.Game.Environment;
-using LightInject;
-using TheForestWaiter.Game.Objects.Static;
-using TheForestWaiter.Game.Objects;
-using TheForestWaiter.Game.Objects.Weapons.Guns;
-using TheForestWaiter.Game.Objects.Weapons.Bullets;
-using TheForestWaiter.Game.Core;
-using System.Reflection;
 using TheForestWaiter.Game.Gibs;
-using TheForestWaiter.Debugging;
 using TheForestWaiter.Game.Hud;
+using TheForestWaiter.Game.Logic;
 using TheForestWaiter.Game.Objects.Items;
+using TheForestWaiter.Game.Objects.Weapons.Guns;
 
 namespace TheForestWaiter.Services
 {
-    internal class GameServices : IServices, IDisposable
+	internal class GameServices : IServices, IDisposable
     {
         private readonly ServiceContainer _container;
         private Scope _scope;
@@ -46,6 +37,7 @@ namespace TheForestWaiter.Services
                 .RegisterScoped<ObjectCreator>()
                 .RegisterScoped<GibSpawner>()
                 .RegisterScoped<PickupSpawner>()
+                .RegisterScoped<DropSpawner>()
 
                 .Register<Handgun>()
                 .Register<Sniper>();

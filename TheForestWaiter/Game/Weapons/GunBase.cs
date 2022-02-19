@@ -4,15 +4,14 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using TheForestWaiter.Game.Essentials;
-using TheForestWaiter.Game.Objects.Weapons.Bullets;
+using TheForestWaiter.Game.Objects.Projectiles;
 
 namespace TheForestWaiter.Game.Objects.Weapons
 {
-    internal abstract class GunBase
+    internal abstract class GunBase : Drawable
     {
         public bool Firing { get; set; }
 
-        protected float Range { get; set; } = 2000;
         protected float FireRatePerSecond { get; set; } = 10;
         protected bool AutoFire { get; set; } = true;
         protected float FireSpeed { get; set; } = 1000;
@@ -34,25 +33,22 @@ namespace TheForestWaiter.Game.Objects.Weapons
         public Vector2f LastAim { get; private set; }
         public float LastAimAngle { get; private set; }
 
-        private readonly Camera _camera;
         private readonly ObjectCreator _creator;
 
         private float _fireTimer;
         private bool _firstShot;
 
-        public GunBase(GameData game, Camera camera, ObjectCreator creator)
+        public GunBase(GameData game, ObjectCreator creator)
         {
-            _camera = camera;
             _creator = creator;
             Game = game;
         }
 
-        public void Aim(Vector2f location)
+        public void Aim(float angle)
         {
-            LastAim = _camera.ToWorld(location);
             var delta = LastAim - AttachPoint;
-            AimingRight = delta.X > 0;
-            LastAimAngle = delta.Angle();
+            AimingRight = TrigHelper.IsPointingRight(angle);
+            LastAimAngle = angle;
         }
 
         public virtual void Draw(RenderWindow window)
@@ -78,9 +74,7 @@ namespace TheForestWaiter.Game.Objects.Weapons
 
         protected virtual void FireBullet()
         {
-            var bullet = _creator.CreateAndShoot<Bullet>(BarrelPosition, TrigHelper.FromAngleRad(LastShotFromAngle, FireSpeed + (FireSpeedVariation * (Rng.Float() - 0.5f))));
-            bullet.Range = Range;
-
+            var bullet = _creator.FireBullet<CorruptionBall>(BarrelPosition, TrigHelper.FromAngleRad(LastShotFromAngle, FireSpeed + (FireSpeedVariation * (Rng.Float() - 0.5f))), Game.Objects.Player);
             Game.Objects.Bullets.Add(bullet);
         }
 
@@ -108,5 +102,10 @@ namespace TheForestWaiter.Game.Objects.Weapons
             GunSprite.Origin = Origin;
             GunSprite.Rotation = TrigHelper.ToDeg(LastAimAngle);
         }
-    }
+
+		public void Draw(RenderTarget target, RenderStates states)
+		{
+            target.Draw(GunSprite);
+		}
+	}
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TheForestWaiter.Content;
+﻿using TheForestWaiter.Content;
 
 namespace TheForestWaiter.Game.Objects.Items
 {
@@ -12,12 +7,12 @@ namespace TheForestWaiter.Game.Objects.Items
 		private const int HEALING_POINTS = 10;
 
 		public Apple(GameData game, ContentSource content) :
-		base("Textures\\Items\\apple.png", game, content)
+			base("Textures\\Items\\apple.png", game, content)
 		{
 
 		}
 
-		protected override void OnPickup(Player player)
+		protected override void OnPickup(Creature player)
 		{
 			player.Heal(HEALING_POINTS);
 		}

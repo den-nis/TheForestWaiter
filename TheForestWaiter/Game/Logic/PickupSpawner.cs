@@ -1,12 +1,6 @@
 ﻿using SFML.System;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TheForestWaiter.Game.Core;
 using TheForestWaiter.Game.Essentials;
-using TheForestWaiter.Game.Gibs;
 
 namespace TheForestWaiter.Game.Objects.Items
 {
@@ -24,23 +18,18 @@ namespace TheForestWaiter.Game.Objects.Items
 			_creator = creator;
 		}
 
-		public void SpawnAmount(Vector2f at, int count, float percentageOfCoins)
+		public void SpawnAmount(Vector2f at, int coins, int hearts)
 		{
 			var velocity = TrigHelper.FromAngleRad(Rng.Angle(), Rng.Range(MIN_VELOCITY, MAX_VELOCITY));
 
-			for (int i = 0; i < count; i++)
+			for (int i = 0; i < coins; i++)
 			{
-				PhysicsObject obj;
-				if (Rng.Float() < percentageOfCoins)
-				{
-					obj = _creator.CreateAndShoot<Coin>(at, velocity);
-				}
-				else
-				{
-					obj = _creator.CreateAndShoot<Apple>(at, velocity);
-				}
+				_game.Objects.AddGameObject(_creator.CreateAndShoot<Coin>(at, velocity));
+			}
 
-				_game.Objects.AddGameObject(obj);
+			for (int i = 0; i < hearts; i++)
+			{
+				_game.Objects.AddGameObject(_creator.CreateAndShoot<Apple>(at, velocity));
 			}
 		}
 	}

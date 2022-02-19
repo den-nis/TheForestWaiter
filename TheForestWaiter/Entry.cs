@@ -14,26 +14,25 @@ namespace TheForestWaiter
 {
     class Entry
     {
-        public float LockDelta { get; set; } = -1;
-        public bool LagLimit { get; set; } = true;
-        public float TimeScale { get; set; } = 1; 
-
         private readonly WindowHandle _window;
         private readonly IDebug _debug;
         private readonly StateManager _stateManager;
         private readonly GameState _gameState;
+		private readonly TimeProcessor _time;
 
-        public Entry(
+		public Entry(
             WindowHandle window, 
             IDebug debug, 
             StateManager stateManager,
-            GameState gameState)
+            GameState gameState,
+            TimeProcessor manager)
         {
             _window = window;
             _debug = debug;
             _stateManager = stateManager;
             _gameState = gameState;
-        }
+			_time = manager;
+		}
 
         public void Run()
         {
@@ -56,13 +55,7 @@ namespace TheForestWaiter
 
                 _window.SfmlWindow.Display();
 
-                deltaTime = (float)timer.Elapsed.TotalSeconds * TimeScale;
-
-                if (LockDelta > 0)
-                    deltaTime = LockDelta;
-
-                if (LagLimit)
-                    deltaTime = Math.Min(deltaTime, 1);
+                deltaTime = _time.Process((float)timer.Elapsed.TotalSeconds);
             }
         }
     }

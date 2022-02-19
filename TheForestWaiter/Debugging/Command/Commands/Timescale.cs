@@ -9,16 +9,16 @@ namespace TheForestWaiter.Debugging.Command.Commands
     [Command("timescale", "Speed up or slow time", "{number}")]
     class Timescale : ICommand
     {
-        private readonly Entry gameEntry;
+        private readonly TimeProcessor _time;
 
-        public Timescale(Entry gameEntry)
+        public Timescale(TimeProcessor time)
         {
-            this.gameEntry = gameEntry;
+            _time = time;
         }
 
         public void Execute(CommandHandler handler, string[] args)
         {
-            gameEntry.TimeScale = float.Parse(args[0]);
+            _time.TimeScale = float.Parse(args[0]);
         }
     }
 }

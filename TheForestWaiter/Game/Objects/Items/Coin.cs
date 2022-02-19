@@ -1,22 +1,16 @@
-﻿using SFML.Graphics;
-using SFML.System;
-using TheForestWaiter.Content;
-using TheForestWaiter.Game.Core;
-using TheForestWaiter.Game.Essentials;
-using TheForestWaiter.Game.Objects;
-using TheForestWaiter.Game.Objects.Items;
+﻿using TheForestWaiter.Content;
 
-namespace TheForestWaiter.Game.Gibs
+namespace TheForestWaiter.Game.Objects.Items
 {
 	internal class Coin : Pickup
 	{
-		public Coin(GameData game, ContentSource content) : 
+		public Coin(GameData game, ContentSource content) :
 			base("Textures\\Items\\coin.png", game, content)
 		{
 
 		}
 
-		protected override void OnPickup(Player player)
+		protected override void OnPickup(Creature player)
 		{
 			Game.Session.Coins++;
 		}

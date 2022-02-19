@@ -4,6 +4,7 @@ using SFML.Window;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using TheForestWaiter.Game.Constants;
 using TheForestWaiter.Game.Essentials;
 
 namespace TheForestWaiter.Game
@@ -83,18 +84,20 @@ namespace TheForestWaiter.Game
         private void WindowMouseButtonReleased(object sender, MouseButtonEventArgs e)
         {
             if (e.Button == _settings.Shoot)
-                _data.Objects.Player.StopFire();
+                _data.Objects.Player.Controller.ToggleOff(ActionTypes.PrimaryAttack);
         }
 
         private void WindowMouseButtonPressed(object sender, MouseButtonEventArgs e)
         {
             if (e.Button == _settings.Shoot)
-                _data.Objects.Player.StartFire();
+                _data.Objects.Player.Controller.ToggleOn(ActionTypes.PrimaryAttack);
         }
 
         private void WindowMouseMoved(object sender, MouseMoveEventArgs e)
         {
-            _data.Objects.Player.Aim(new Vector2f(e.X, e.Y));
+            var mouse = new Vector2f(e.X, e.Y);
+            var angle = (_camera.ToWorld(mouse) - _data.Objects.Player.Center).Angle() + (float)Math.PI * 2;
+            _data.Objects.Player.Controller.Aim(angle);
         }
 
         private void WindowMouseWheelScrolled(object sender, MouseWheelScrollEventArgs e)
@@ -105,18 +108,18 @@ namespace TheForestWaiter.Game
         private void WindowKeyReleased(object sender, KeyEventArgs e)
         {
             var c = e.Code;
-            if (c == _settings.Jump)  _data.Objects.Player.StopJump();
-            if (c == _settings.Right) _data.Objects.Player.StopMoveRight();
-            if (c == _settings.Left)  _data.Objects.Player.StopMoveLeft();
+            if (c == _settings.Jump)  _data.Objects.Player.Controller.ToggleOff(ActionTypes.Up);
+            if (c == _settings.Right) _data.Objects.Player.Controller.ToggleOff(ActionTypes.Right);
+            if (c == _settings.Left)  _data.Objects.Player.Controller.ToggleOff(ActionTypes.Left);
             if (c == _settings.FullScreen) ToggleFullscreen();
         }
 
         private void WindowKeyPressed(object sender, KeyEventArgs e)
         {
             var c = e.Code;
-            if (c == _settings.Jump)  _data.Objects.Player.StartJump();
-            if (c == _settings.Right) _data.Objects.Player.StartMoveRight();
-            if (c == _settings.Left)  _data.Objects.Player.StartMoveLeft();
+            if (c == _settings.Jump)  _data.Objects.Player.Controller.ToggleOn(ActionTypes.Up);
+            if (c == _settings.Right) _data.Objects.Player.Controller.ToggleOn(ActionTypes.Right);
+            if (c == _settings.Left)  _data.Objects.Player.Controller.ToggleOn(ActionTypes.Left);
         }
 
         public void Dispose()
