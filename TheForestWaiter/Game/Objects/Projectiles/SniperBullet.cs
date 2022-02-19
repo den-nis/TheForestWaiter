@@ -8,7 +8,7 @@ namespace TheForestWaiter.Game.Objects.Projectiles
         {
             Damage = 100;
 
-            SetBulletSprite("Textures\\Bullets\\bullet_sniper.png");
+            SetBulletSprite("Textures/Bullets/bullet_sniper.png");
         }
 
         public override void Update(float time)

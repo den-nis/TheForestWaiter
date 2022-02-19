@@ -38,10 +38,10 @@ namespace TheForestWaiter.Game.Environment
 		public Background(ContentSource content, Camera camera)
 		{
             _camera = camera;
-			_spriteSky = content.Textures.CreateSprite("Textures\\Background\\sky.png");
-			_spriteStars = content.Textures.CreateSprite("Textures\\Background\\stars.png");
-			_spriteMountain = content.Textures.CreateSprite("Textures\\Background\\mountains.png");
-			_spriteTrees = content.Textures.CreateSprite("Textures\\Background\\trees.png");
+			_spriteSky = content.Textures.CreateSprite("Textures/Background/sky.png");
+			_spriteStars = content.Textures.CreateSprite("Textures/Background/stars.png");
+			_spriteMountain = content.Textures.CreateSprite("Textures/Background/mountains.png");
+			_spriteTrees = content.Textures.CreateSprite("Textures/Background/trees.png");
 
 			_all = new Sprite[] { 
 				_spriteSky, 

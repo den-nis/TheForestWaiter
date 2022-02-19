@@ -22,7 +22,7 @@ namespace TheForestWaiter.Game.Environment
 
         public World(ContentSource content)
         {
-            Sheet = content.Textures.CreateSpriteSheet("Textures\\world.png");
+            Sheet = content.Textures.CreateSpriteSheet("Textures/world.png");
         }
 
         public void LoadFromMap(Map map)

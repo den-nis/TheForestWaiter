@@ -41,7 +41,7 @@ namespace TheForestWaiter.Game.Objects.Enemies
 			_content = content;
 			_dropSpawner = dropSpawner;
 			_creator = creator;
-			_animation = content.Textures.CreateAnimatedSprite("Textures\\Enemies\\crawler.png");
+			_animation = content.Textures.CreateAnimatedSprite("Textures/Enemies/crawler.png");
 			Size = _animation.Sheet.TileSize.ToVector2f();
 
 			SetMaxHealth(50, true);
@@ -53,7 +53,7 @@ namespace TheForestWaiter.Game.Objects.Enemies
 
 			_attackTrigger = new RandomTrigger(PrepareAttack, 0.5f, 0.7f);
 
-			_dropSpawner.Setup("Textures\\Enemies\\crawler_gibs.png");
+			_dropSpawner.Setup("Textures/Enemies/crawler_gibs.png");
 		}
 
 		public override void Draw(RenderWindow window)
@@ -95,31 +95,19 @@ namespace TheForestWaiter.Game.Objects.Enemies
 			_animation.Sprite.Position = Position;
 			_animation.Sheet.MirrorX = PlayerDirection == 1;
 
-			if (_prepareAttackTime > 0)
+			if (_prepareAttackTime > 0 && false)
 			{
-				_animation.Framerate = (int)(5f / ATTACK_PREPARE_TIME);
-				_animation.AnimationStart = 7;
-				_animation.AnimationEnd = 12;
-				_animation.Paused = false;
+				_animation.SetSection("attack");
 			}
 			else
 			{
-				var isMovingRight = PlayerDirection > 1;
-				var isMovingLeft = PlayerDirection < -1;
-
-				if (isMovingLeft || isMovingRight)
+				if (Math.Abs(GetSpeed().X) > 0.5f)
 				{
-					_animation.Framerate = 20;
-					_animation.AnimationStart = 14;
-					_animation.AnimationEnd = 18;
-					_animation.Paused = false;
+					_animation.SetSection("walking");
 				}
 				else
 				{
-					_animation.Framerate = 7;
-					_animation.AnimationStart = 0;
-					_animation.AnimationEnd = 6;
-					_animation.Paused = false;
+					_animation.SetSection("idle");
 				}
 			}
 
@@ -149,7 +137,7 @@ namespace TheForestWaiter.Game.Objects.Enemies
 
 		protected override void OnDamage(GameObject by)
 		{
-			var prop = _content.Particles.Get("Particles\\blood.particle", Center);
+			var prop = _content.Particles.Get("Particles/blood.particle", Center);
 			Game.Objects.WorldParticles.Emit(prop, 5);
 		}
 	}

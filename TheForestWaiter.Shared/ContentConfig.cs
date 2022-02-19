@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Converters;
 using System.Collections.Generic;
 using System.IO.Compression;
+using System.Linq;
 
 namespace TheForestWaiter.Shared
 {
@@ -23,31 +24,61 @@ namespace TheForestWaiter.Shared
             DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate,
         };
 
-        public Dictionary<string, ContentMeta> Content { get; set; }
+        public List<ContentMeta> Content { get; set; }
 
         public IEnumerable<string> GetFilesOfType(ContentType type)
         {
-            foreach(var i in Content)
+            foreach (var i in Content)
             {
-                if (i.Value.Type == type)
-                    yield return i.Key;
+                if (i.Type == type)
+                    yield return i.Path;
             }
         }
-    }
 
+        public bool HasFile(string path)
+        {
+            return Content.Any(c => c.Path == path);
+        }
+
+        public ContentMeta TryGetByPath(string path)
+        {
+            return Content.FirstOrDefault(c => c.Path == path);
+        }
+
+        public ContentMeta GetByPath(string path)
+        {
+            return Content.First(c => c.Path == path);
+        }
+    }
+    
     public class ContentMeta
     {
+        public string Path { get; set; }
+
         [JsonConverter(typeof(StringEnumConverter))]
         public ContentType Type { get; set; }
         
         [JsonConverter(typeof(StringEnumConverter))]
         public CompressionLevel Compression { get; set; }
 
-        public int  TextureTileWidth      { get; set; }
-        public int  TextureTileHeight     { get; set; }
-        public int  TextureFramerate      { get; set; }
-        public bool TextureHasTileSpacing { get; set; }
+        public TextureConfig TextureConfig { get; set; } = new TextureConfig();
+    }
 
-        public bool SoundLooping { get; set; }
+    public class TextureConfig
+    {
+        public int TileWidth { get; set; }
+        public int Framerate { get; set; }
+        public int TileHeight { get; set; }
+        public bool HasTileSpacing { get; set; }
+        public List<SheetSection> Sections { get; set; }
+    }
+
+    public class SheetSection
+    {
+        public string Name { get; set; }
+        public int Fps { get; set; }
+        public int Start { get; set; }
+        public int End { get; set; }
+        public int? FixedFrame { get; set; }
     }
 }

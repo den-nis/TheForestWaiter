@@ -51,7 +51,7 @@ namespace TheForestWaiter.Content
             return GetContentSourceFromStream(stream);
         }
 
-        private IContentSource GetContentSourceFromStream(Stream stream)
+        private static IContentSource GetContentSourceFromStream(Stream stream)
         {
             ZipArchive zip = new(stream);
             return new ZipContentSource(zip);

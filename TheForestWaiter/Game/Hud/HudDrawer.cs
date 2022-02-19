@@ -28,9 +28,9 @@ namespace TheForestWaiter.Game.Hud
 
         public HudDrawer(GameData game, Camera camera, ContentSource content, UserSettings settings)
         {
-            _boxSprite = content.Textures.CreateSprite("Textures\\Hud\\box.png");
-            _healthSprite = content.Textures.CreateSprite("Textures\\Hud\\health.png");
-            _coinNumbers = content.Textures.CreateSpriteSheet("Textures\\Hud\\numbers.png");
+            _boxSprite = content.Textures.CreateSprite("Textures/Hud/box.png");
+            _healthSprite = content.Textures.CreateSprite("Textures/Hud/health.png");
+            _coinNumbers = content.Textures.CreateSpriteSheet("Textures/Hud/numbers.png");
        
             _game = game;
             _camera = camera;

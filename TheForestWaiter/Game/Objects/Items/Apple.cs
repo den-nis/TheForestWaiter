@@ -7,7 +7,7 @@ namespace TheForestWaiter.Game.Objects.Items
 		private const int HEALING_POINTS = 10;
 
 		public Apple(GameData game, ContentSource content) :
-			base("Textures\\Items\\apple.png", game, content)
+			base("Textures/Items/apple.png", game, content)
 		{
 
 		}

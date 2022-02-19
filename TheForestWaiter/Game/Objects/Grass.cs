@@ -15,7 +15,7 @@ namespace TheForestWaiter.Game.Objects.Static
 
         public Grass(GameData game, ContentSource content) : base(game)
         {
-            Animation = content.Textures.CreateAnimatedSprite("Textures\\World\\grass.png");
+            Animation = content.Textures.CreateAnimatedSprite("Textures/World/grass.png");
             Animation.Framerate = (int)Rng.Range(FRAME_RATE_MIN, FRAME_RATE_MAX);
             Animation.CurrentFrame = (int)Rng.Range(Animation.AnimationStart, Animation.AnimationEnd);
             Size = Animation.Sheet.TileSize.ToVector2f();

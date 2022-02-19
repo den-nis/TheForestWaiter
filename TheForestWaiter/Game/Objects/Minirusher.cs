@@ -21,10 +21,10 @@ namespace TheForestWaiter.Game.Objects.Enemies
 
 		public Minirusher(GameData game, ContentSource content, DropSpawner dropSpawner) : base(game)
 		{
-			_animation = content.Textures.CreateAnimatedSprite("Textures\\Enemies\\minirusher.png");
+			_animation = content.Textures.CreateAnimatedSprite("Textures/Enemies/minirusher.png");
 			Size = _animation.Sheet.TileSize.ToVector2f();
 
-			dropSpawner.Setup("Textures\\Enemies\\minirusher_gibs.png");
+			dropSpawner.Setup("Textures/Enemies/minirusher_gibs.png");
 			dropSpawner.ChanceOfHeartDrop = 0.01f;
 
 			SetMaxHealth(10, true);
@@ -62,10 +62,9 @@ namespace TheForestWaiter.Game.Objects.Enemies
 
 			var playerDirection = Math.Sign(Game.Objects.Player.Center.X - Center.X);
 
-			if (MovingDirection == 0)
+			if (FacingDirection == 0)
 			{
-				_animation.SetStaticFrame(0);
-				_animation.Paused = true;
+				_animation.SetSection("idle");
 			}
 			else
 			{
@@ -75,9 +74,7 @@ namespace TheForestWaiter.Game.Objects.Enemies
 				if (playerDirection < 0)
 					_animation.Sheet.MirrorX = false;
 
-				_animation.AnimationStart = 0;
-				_animation.AnimationEnd = 7;
-				_animation.Paused = false;
+				_animation.SetSection("walking");
 			}
 
 			_animation.Update(time);
@@ -96,7 +93,7 @@ namespace TheForestWaiter.Game.Objects.Enemies
 
 		protected override void OnDamage(GameObject by)
 		{
-			var prop = _content.Particles.Get("Particles\\blood.particle", Center);
+			var prop = _content.Particles.Get("Particles/blood.particle", Center);
 			Game.Objects.WorldParticles.Emit(prop, 5);
 		}
 	}

@@ -10,7 +10,7 @@ namespace TheForestWaiter.Game.Objects.Projectiles
 	{
 		public Creature Owner { get; set; }
 
-		protected string ExplosionParticleName { get; set; } = "Particles\\spark.particle";
+		protected string ExplosionParticleName { get; set; } = "Particles/spark.particle";
 		protected float Range { get; set; } = 1000;
 		protected float Damage { get; set; } = 10;
 		protected float Knockback { get; set; } = 150;
@@ -29,7 +29,7 @@ namespace TheForestWaiter.Game.Objects.Projectiles
 			Size = new Vector2f(5, 5);
 			Gravity = 0;
 
-			SetBulletSprite("Textures\\Bullets\\bullet_generic.png");
+			SetBulletSprite("Textures/Bullets/bullet_generic.png");
 		}
 
 		protected void SetBulletSprite(string textureName)

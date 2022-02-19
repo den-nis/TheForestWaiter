@@ -13,7 +13,7 @@ namespace TheForestWaiter.Game.Objects
 	internal abstract class Creature : Movable
     {
         private const float KNOCKBACK_VARIATION = 0.10f; 
-        private const float MOVING_DIRECTION_THRESHOLD = 0.01f;
+        private const float MOVING_DIRECTION_THRESHOLD = 0.1f;
         private const float STUN_CONE = (float)Math.PI / 16;
 
         public float Health { get; private set; }
@@ -25,7 +25,12 @@ namespace TheForestWaiter.Game.Objects
         protected bool Invincible { get; set; }
         protected float StunTime { get; set; } = 0.1f;
         protected float KnockbackResistance { get; set; } = 0;
-        protected int MovingDirection { get; set; } = 0;
+
+        /// <summary>
+        /// Direction creature is facing based on the last move direction
+        /// </summary>
+        protected int FacingDirection { get; private set; } = 1;
+        protected int MovingDirection { get; private set; } = 0;
 
         private float _maxHealth = 100;
         private float _stunTimer = 0;
@@ -91,13 +96,22 @@ namespace TheForestWaiter.Game.Objects
             var speed = GetSpeed();
             if (speed.X > MOVING_DIRECTION_THRESHOLD)
             {
-                MovingDirection = 1;
+                FacingDirection = 1;
             }
 
             if (speed.X < -MOVING_DIRECTION_THRESHOLD)
             {
-                MovingDirection = -1;
+                FacingDirection = -1;
             }
+
+            if (Math.Abs(speed.X) > MOVING_DIRECTION_THRESHOLD)
+            {
+                MovingDirection = Math.Sign(speed.X);
+			}
+            else
+            {
+                MovingDirection = 0;
+			}            
         }
 
         protected abstract void OnDeath();

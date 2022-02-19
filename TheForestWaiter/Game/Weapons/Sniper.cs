@@ -27,7 +27,7 @@ namespace TheForestWaiter.Game.Objects.Weapons.Guns
             FireRatePerSecond = 1;
             AutoFire = false;
 
-            GunSprite = content.Textures.CreateSprite("Textures\\Guns\\sniper.png");
+            GunSprite = content.Textures.CreateSprite("Textures/Guns/sniper.png");
             OnFire += OnFireEvent;
             _content = content;
             _creator = creator;
@@ -44,7 +44,7 @@ namespace TheForestWaiter.Game.Objects.Weapons.Guns
             {
                 while (_smokeEmitTimer > SMOKE_TIME_BETWEEN_EMIT)
                 {
-                    var smoke = _content.Particles.Get("Particles\\sniper_smoke.particle", BarrelPosition, TrigHelper.Up, 10);
+                    var smoke = _content.Particles.Get("Particles/sniper_smoke.particle", BarrelPosition, TrigHelper.Up, 10);
                     Game.Objects.WorldParticles.Emit(smoke, 1);
                     _smokeEmitTimer -= SMOKE_TIME_BETWEEN_EMIT;
                 }
@@ -67,7 +67,7 @@ namespace TheForestWaiter.Game.Objects.Weapons.Guns
         {
             Game.Objects.Player.Velocity += TrigHelper.FromAngleRad((float)(LastAimAngle - Math.PI), 100);
             _smokeTimer = SMOKE_TIME;
-            var prop = _content.Particles.Get("Particles\\sniper_muzzle_flash.particle", BarrelPosition, LastAimAngle, 320);
+            var prop = _content.Particles.Get("Particles/sniper_muzzle_flash.particle", BarrelPosition, LastAimAngle, 320);
             Game.Objects.WorldParticles.Emit(prop, 20);
         }
     }

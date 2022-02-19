@@ -14,10 +14,10 @@ namespace TheForestWaiter.Game.Objects.Projectiles
 		{
 			_content = content;
 
-			ExplosionParticleName = "Particles\\corruption_ball_smoke.particle";
+			ExplosionParticleName = "Particles/corruption_ball_smoke.particle";
 			Damage = 40;
 
-			SetBulletSprite("Textures\\Bullets\\bullet_corruption_ball.png");
+			SetBulletSprite("Textures/Bullets/bullet_corruption_ball.png");
 		}
 
 		public override void Update(float time)

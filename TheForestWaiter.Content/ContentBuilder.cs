@@ -13,6 +13,7 @@ namespace TheForestWaiter.Content
 {
     class ContentBuilder
     {
+        private const char PreferredDirectorySeparator = '/';
         private const CompressionLevel DEFAULT_COMPRESSION = CompressionLevel.NoCompression;
 
         private string BasePath { get; set; }
@@ -33,8 +34,8 @@ namespace TheForestWaiter.Content
             foreach (var file in files)
             {
                 Console.WriteLine($"Reading \"{file}\"");
-                var relative = GetRelativePath(BasePath, file);
-                contentConfig.Content.TryGetValue(relative, out ContentMeta info);
+                string entry = GetEntry(file);
+                var info = contentConfig.TryGetByPath(entry);
                 AddFile(contentZip, file, info);
             }
 
@@ -43,14 +44,6 @@ namespace TheForestWaiter.Content
 
         private ContentConfig GetConfig()
         {
-            if (
-                ContentSettings.CONTENT_CONFIG_ENTRY.Contains(Path.DirectorySeparatorChar) || 
-                ContentSettings.CONTENT_CONFIG_ENTRY.Contains(Path.AltDirectorySeparatorChar)
-                )
-            {
-                throw new InvalidOperationException("Content config entry name contains directory separator");
-            }
-
             var path = Path.Join(BasePath, ContentSettings.CONTENT_CONFIG_ENTRY);
             return JsonConvert.DeserializeObject<ContentConfig>(File.ReadAllText(path));
         }
@@ -90,13 +83,14 @@ namespace TheForestWaiter.Content
             //Add missing content meta
             foreach(var file in files)
             {
-                var entryName = GetEntry(file);
-                if (!config.Content.ContainsKey(entryName))
+                var entryName = ConvertPath(GetEntry(file));
+                if (!config.HasFile(entryName))
                 {
-                    config.Content.Add(entryName, new ContentMeta
+                    config.Content.Add(new ContentMeta
                     {
+                        Path = entryName,
+                        Type = ContentTypeDefinitions.FromFilename(entryName),
                         Compression = DEFAULT_COMPRESSION,
-                        Type = ContentTypeDefinitions.FromFilename(entryName)
                     });
                     Console.WriteLine($"Added default content meta for {entryName}");
                 }
@@ -109,16 +103,24 @@ namespace TheForestWaiter.Content
             writer.Flush();
         }
 
-        private string GetEntry(string file) => GetRelativePath(BasePath, file);
-
-        private static string GetRelativePath(string absoluteBase, string absoluteSub)
+        private string GetEntry(string file)
         {
-            if (!absoluteBase.EndsWith(Path.DirectorySeparatorChar))
-                absoluteBase += Path.DirectorySeparatorChar;
+            return ConvertPath(GetRelativePath(BasePath, file));
+        }
 
-            if (absoluteSub.StartsWith(absoluteBase))
+		private static string ConvertPath(string path)
+        {
+            return path.Replace(Path.DirectorySeparatorChar, PreferredDirectorySeparator);
+		}
+
+        private static string GetRelativePath(string absoluteBasePath, string absoluteSubPath)
+        {
+            if (!absoluteBasePath.EndsWith(Path.DirectorySeparatorChar))
+                absoluteBasePath += Path.DirectorySeparatorChar;
+
+            if (absoluteSubPath.StartsWith(absoluteBasePath))
             {
-                var relative = absoluteSub[(absoluteBase.TrimEnd(Path.DirectorySeparatorChar).Length+1)..];
+                var relative = absoluteSubPath[(absoluteBasePath.TrimEnd(Path.DirectorySeparatorChar).Length+1)..];
                 return relative;
             }
             else

@@ -19,7 +19,7 @@ namespace TheForestWaiter.Game.Objects.Weapons.Guns
             AutoFire = true;
             FireRatePerSecond = 100;
             Cone = 1;
-            GunSprite = content.Textures.CreateSprite("Textures\\Guns\\handgun.png");
+            GunSprite = content.Textures.CreateSprite("Textures/Guns/handgun.png");
             OnFire += OnFireEvent;
             _content = content;
         }
@@ -36,7 +36,7 @@ namespace TheForestWaiter.Game.Objects.Weapons.Guns
 
         private void OnFireEvent()
         {
-            Game.Objects.WorldParticles.Emit(_content.Particles.Get("Particles\\handgun_smoke.particle", BarrelPosition, LastShotFromAngle, 120), 10);
+            Game.Objects.WorldParticles.Emit(_content.Particles.Get("Particles/handgun_smoke.particle", BarrelPosition, LastShotFromAngle, 120), 10);
         }
     }
 }

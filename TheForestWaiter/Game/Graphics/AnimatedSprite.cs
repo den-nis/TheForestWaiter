@@ -1,7 +1,9 @@
 ﻿using SFML.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using TheForestWaiter.Shared;
 
 namespace TheForestWaiter.Game.Graphics
 {
@@ -12,6 +14,8 @@ namespace TheForestWaiter.Game.Graphics
         public bool Paused { get; set; } = false;
         public bool Reversed { get; set; } = false;
         public int Framerate { get; set; } = 15;
+
+        public List<SheetSection> Sections { get; set; } = new();
 
         private int _animationStart;
         public int AnimationStart
@@ -70,6 +74,24 @@ namespace TheForestWaiter.Game.Graphics
             Framerate = fps;
             AnimationEnd = Sheet.TotatlTiles-1;
         }
+
+        public void SetSection(string name)
+        {
+            var section = Sections.First(s => s.Name == name);
+
+            if (section.FixedFrame.HasValue)
+            {
+                Paused = true;
+                SetStaticFrame(section.FixedFrame.Value);
+			}
+            else
+            {
+                Paused = false;
+                AnimationStart = section.Start;
+                AnimationEnd = section.End;
+                Framerate = section.Fps;
+			}
+		}
 
         public void Update(float time)
         {

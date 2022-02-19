@@ -23,7 +23,7 @@ namespace TheForestWaiter.Game.Objects
 
         public Player(GameData game, ContentSource content, ObjectCreator creator) : base(game)
 		{
-			_sprite = content.Textures.CreateAnimatedSprite("Textures\\Player\\sheet.png");
+			_sprite = content.Textures.CreateAnimatedSprite("Textures/Player/sheet.png");
 			Size = _sprite.Sheet.TileSize.ToVector2f();
 
             StunTime = 1;
@@ -87,8 +87,8 @@ namespace TheForestWaiter.Game.Objects
 
         private void HandleAnimations(float time)
         {
-            bool isMovingRight = MovingDirection > 0;
-            bool isMovingLeft = MovingDirection < 0;
+            bool isMovingRight = FacingDirection > 0;
+            bool isMovingLeft = FacingDirection < 0;
             bool aimingRight = TrigHelper.IsPointingRight(Controller.GetAim());
 
             if (IsStunned)
@@ -103,31 +103,25 @@ namespace TheForestWaiter.Game.Objects
             }
 
             _sprite.Sheet.MirrorX = !aimingRight;
-            _sprite.Framerate = 12;
 
             if ((aimingRight && isMovingRight) || (!aimingRight && isMovingLeft))
             {
-                //Forward walking
-                _sprite.AnimationStart = 0;
-                _sprite.AnimationEnd = 6;
+                _sprite.SetSection("walking");
             }
             else
             {
-                //Backward walking
-                _sprite.AnimationStart = 8;
-                _sprite.AnimationEnd = 15;
+                _sprite.SetSection("backwards");
             }
 
             if (Math.Abs(GetSpeed().X) < 1f)
             {
-                //Idle
-                _sprite.Framerate = 5;
-                _sprite.AnimationStart = 14;
-                _sprite.AnimationEnd = 19;
+                _sprite.SetSection("idle");
             }
 
             if (!CollisionFlags.HasFlag(WorldCollisionFlags.Bottom))
-                _sprite.SetStaticFrame(3);
+            {
+                _sprite.SetSection("flying");
+			}
 
             _sprite.Sprite.Position = Position;
             _sprite.Update(time);

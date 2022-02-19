@@ -18,10 +18,10 @@ namespace TheForestWaiter.Content
 
         public byte[] Process(byte[] input, ContentMeta meta)
         {
-            if (meta.TextureHasTileSpacing)
+            if (meta.TextureConfig.HasTileSpacing)
             {
                 Console.WriteLine("Resizing texture...");
-                SpacedImageBuilder builder = new(meta.TextureTileWidth, meta.TextureTileHeight);
+                SpacedImageBuilder builder = new(meta.TextureConfig.TileWidth, meta.TextureConfig.TileHeight);
                 var result = builder.BuildSpacedImage(new MagickImage(input));
                 return result.ToByteArray(MagickFormat.Png);
             }
