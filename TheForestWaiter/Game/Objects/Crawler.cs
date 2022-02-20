@@ -1,12 +1,11 @@
 ﻿using SFML.Graphics;
 using SFML.System;
 using System;
-using System.Diagnostics;
 using TheForestWaiter.Content;
-using TheForestWaiter.Game.Core;
 using TheForestWaiter.Game.Essentials;
 using TheForestWaiter.Game.Graphics;
 using TheForestWaiter.Game.Logic;
+using TheForestWaiter.Game.Objects.Abstract;
 using TheForestWaiter.Game.Objects.Projectiles;
 
 namespace TheForestWaiter.Game.Objects.Enemies
@@ -17,7 +16,6 @@ namespace TheForestWaiter.Game.Objects.Enemies
 		private const float AVOID_DISTANCE = 100;
 		private const float AVOID_DISTANCE_VARIATION = 20;
 
-		private const float DEFAULT_WALK_SPEED = 120;
 		private const float BULLET_VELOCITY = 300;
 		private const float ATTACK_PREPARE_TIME = 1f;
 
@@ -45,15 +43,12 @@ namespace TheForestWaiter.Game.Objects.Enemies
 			Size = _animation.Sheet.TileSize.ToVector2f();
 
 			SetMaxHealth(50, true);
-			JumpForce = 400;
-			WalkSpeed = DEFAULT_WALK_SPEED;
+			JumpForce = Rng.Var(400, variation: 20);
+			WalkSpeed = Rng.Var(120, variation: 10);
 
-			_avoidDistance = AVOID_DISTANCE + Rng.Variation(AVOID_DISTANCE_VARIATION);
-			Debug.Assert(_avoidDistance < CHASE_DISTANCE, "Avoid distance should be less than chase distance");
-
-			_attackTrigger = new RandomTrigger(PrepareAttack, 0.5f, 0.7f);
-
-			_dropSpawner.Setup("Textures/Enemies/crawler_gibs.png");
+			_avoidDistance = Rng.Var(AVOID_DISTANCE, AVOID_DISTANCE_VARIATION);
+			_attackTrigger = new RandomTrigger(PrepareAttack, 0.1f, 0.1f);
+			_dropSpawner.Setup("Textures/Enemies/crawler_gibs.png");	
 		}
 
 		public override void Draw(RenderWindow window)
@@ -69,7 +64,6 @@ namespace TheForestWaiter.Game.Objects.Enemies
 			if (_prepareAttackTime > 0)
 			{
 				_prepareAttackTime -= time;
-
 				if (_prepareAttackTime <= 0)
 				{
 					Attack();
@@ -125,7 +119,7 @@ namespace TheForestWaiter.Game.Objects.Enemies
 		private void Attack()
 		{
 			var velocity = new Vector2f(BULLET_VELOCITY * PlayerDirection, 0);
-			var bullet = _creator.FireBullet<CorruptionBall>(AttackPoint, velocity, this);
+			var bullet = _creator.FireProjectile<CorruptionBall>(AttackPoint, velocity, this);
 			Game.Objects.AddGameObject(bullet);
 		}
 

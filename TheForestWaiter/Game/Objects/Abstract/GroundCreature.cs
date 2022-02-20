@@ -1,10 +1,8 @@
-﻿using SFML.Graphics;
-using SFML.System;
+﻿using SFML.System;
 using System;
 using TheForestWaiter.Game.Constants;
-using TheForestWaiter.Game.Core;
 
-namespace TheForestWaiter.Game.Objects
+namespace TheForestWaiter.Game.Objects.Abstract
 {
 	/// <summary>
 	/// Creature with movement logic
@@ -16,13 +14,20 @@ namespace TheForestWaiter.Game.Objects
 		protected float JumpForceVariation { get; set; } = 100;
 		protected float WalkSpeed { get; set; } = 250;
 		protected float Acceleration { get; set; } = 3000;
-		protected float Friction { get; set; } = 500;
 		protected float? AirSpeed { get; set; } = null;
 		protected float? AirAcceleration { get; set; } = null;
 		protected bool AllowAirMovement { get; set; } = true;
 		protected bool AutoJumpObstacles { get; set; } = true;
 		protected bool DisableDefaultMovementLogic { get; set; } = false;
 		protected bool UseHoldJumpWhenChase { get; set; } = false;
+		/// <summary>
+		/// The drag that gets applied when you stop moving
+		/// </summary>
+		protected float HorizontalStoppingDrag { get; set; } = 500;
+		/// <summary>
+		/// Drag that gets applied when the speed is above normal moving speeds
+		/// </summary>
+		protected float HorizontalOverflowDrag { get; set; } = 0;
 
 		private int _targetMovingDirection = 0;
 		private bool _wantsToJump = false;
@@ -82,11 +87,13 @@ namespace TheForestWaiter.Game.Objects
 
 			if (_targetMovingDirection == 0)
 			{
-				Drag = new Vector2f(Friction, Drag.Y);
+				Drag = new Vector2f(HorizontalStoppingDrag, Drag.Y);
 			}
 			else
 			{
-				Drag = new Vector2f(0, Drag.Y);
+				var dragX = Math.Abs(Velocity.X) > speed ? HorizontalOverflowDrag : 0;
+				Drag = new Vector2f(dragX, Drag.Y);
+
 				if (_targetMovingDirection > 0)
 				{
 					HorizontalSpeed(speed, acceleration, time);

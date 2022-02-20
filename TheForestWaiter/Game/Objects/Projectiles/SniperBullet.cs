@@ -1,19 +1,15 @@
 ﻿using TheForestWaiter.Content;
+using TheForestWaiter.Game.Objects.Abstract;
 
 namespace TheForestWaiter.Game.Objects.Projectiles
 {
-	class SniperBullet : Bullet
+	internal class SniperBullet : Projectile
     {
         public SniperBullet(GameData game, ContentSource content) : base(game, content)
         {
             Damage = 100;
-
-            SetBulletSprite("Textures/Bullets/bullet_sniper.png");
-        }
-
-        public override void Update(float time)
-        {
-            base.Update(time);
+            Penetration = 7;
+            SetTexture("Textures/Bullets/bullet_sniper.png");
         }
     }
 }

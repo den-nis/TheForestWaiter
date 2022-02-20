@@ -1,17 +1,12 @@
 ﻿using LightInject;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TheForestWaiter.Debugging.DebugConsole;
 using TheForestWaiter.Game;
-using TheForestWaiter.Game.Core;
-using TheForestWaiter.Game.Objects;
+using TheForestWaiter.Game.Objects.Abstract;
 
 namespace TheForestWaiter.Debugging.Command.Commands
 {
-    [Command("spawn", "Spawn an object", "{name} ?{amount} ?{x} ?{y}")]
+	[Command("spawn", "Spawn an object", "{name} ?{amount} ?{x} ?{y}")]
     class Spawn : ICommand
     {
         private readonly IServiceContainer _container;

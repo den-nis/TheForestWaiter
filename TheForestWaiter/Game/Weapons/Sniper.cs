@@ -4,10 +4,11 @@ using System;
 using TheForestWaiter.Content;
 using TheForestWaiter.Game.Essentials;
 using TheForestWaiter.Game.Objects.Projectiles;
+using TheForestWaiter.Game.Objects.Weapons.Abstract;
 
 namespace TheForestWaiter.Game.Objects.Weapons.Guns
 {
-	class Sniper : GunBase
+	class Sniper : ProjectileLauncher
     {
         private float _smokeTimer = 0;
         private float _smokeEmitTimer = 0;
@@ -15,22 +16,21 @@ namespace TheForestWaiter.Game.Objects.Weapons.Guns
         private const float SMOKE_TIME = 0.2f;
 
         private readonly ContentSource _content;
-        private readonly ObjectCreator _creator;
 
         protected override Vector2f AttachPoint => Game.Objects.Player.Center - new Vector2f(0, 1);
         protected override Vector2f Origin => new(0f, 3f);
 
-        public Sniper(GameData game, ContentSource content, Camera camera, ObjectCreator creator) : base(game, creator)
+        public Sniper(GameData game, ContentSource content, ObjectCreator creator) : base(game, creator)
         {
+            _content = content;
+
             Cone = 0;
             FireSpeed = 2000;
             FireRatePerSecond = 1;
+            KickbackForce = 120;
             AutoFire = false;
 
-            GunSprite = content.Textures.CreateSprite("Textures/Guns/sniper.png");
-            OnFire += OnFireEvent;
-            _content = content;
-            _creator = creator;
+            Sprite = content.Textures.CreateSprite("Textures/Guns/sniper.png");
         }
 
         public override void Draw(RenderWindow win)
@@ -57,18 +57,14 @@ namespace TheForestWaiter.Game.Objects.Weapons.Guns
             base.Update(time);
         }
 
-		protected override void FireBullet()
+		public override void OnFire()
 		{
-            var bullet = _creator.CreateAndShoot<SniperBullet>(BarrelPosition, TrigHelper.FromAngleRad(LastShotFromAngle, FireSpeed + (FireSpeedVariation * (Rng.Float() - 0.5f))));
-            Game.Objects.Bullets.Add(bullet);
-        }
-
-		private void OnFireEvent()
-        {
-            Game.Objects.Player.Velocity += TrigHelper.FromAngleRad((float)(LastAimAngle - Math.PI), 100);
             _smokeTimer = SMOKE_TIME;
+
             var prop = _content.Particles.Get("Particles/sniper_muzzle_flash.particle", BarrelPosition, LastAimAngle, 320);
             Game.Objects.WorldParticles.Emit(prop, 20);
+
+            FireProjectile<SniperBullet>();
         }
-    }
+	}
 }

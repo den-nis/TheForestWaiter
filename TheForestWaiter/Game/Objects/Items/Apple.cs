@@ -1,4 +1,5 @@
 ﻿using TheForestWaiter.Content;
+using TheForestWaiter.Game.Objects.Abstract;
 
 namespace TheForestWaiter.Game.Objects.Items
 {

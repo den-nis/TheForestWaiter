@@ -2,7 +2,7 @@
 using SFML.System;
 using TheForestWaiter.Game.Environment;
 
-namespace TheForestWaiter.Game.Core
+namespace TheForestWaiter.Game.Objects.Abstract
 {
 	internal abstract class GameObject 
     {

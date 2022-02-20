@@ -5,7 +5,7 @@ using TheForestWaiter.Game.Constants;
 using TheForestWaiter.Game.Environment;
 using TheForestWaiter.Game.Essentials;
 
-namespace TheForestWaiter.Game.Core
+namespace TheForestWaiter.Game.Objects.Abstract
 {
 	/// <summary>
 	/// Movable objects can move and can interact with the world

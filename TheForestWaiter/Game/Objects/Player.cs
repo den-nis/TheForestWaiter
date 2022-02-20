@@ -6,7 +6,9 @@ using TheForestWaiter.Game.Core;
 using TheForestWaiter.Game.Essentials;
 using TheForestWaiter.Game.Graphics;
 using TheForestWaiter.Game.Logic;
+using TheForestWaiter.Game.Objects.Abstract;
 using TheForestWaiter.Game.Objects.Weapons;
+using TheForestWaiter.Game.Objects.Weapons.Abstract;
 using TheForestWaiter.Game.Objects.Weapons.Guns;
 
 namespace TheForestWaiter.Game.Objects
@@ -16,7 +18,7 @@ namespace TheForestWaiter.Game.Objects
         public PlayerController Controller { get; } = new();
 
 		private readonly AnimatedSprite _sprite;
-		private GunBase _gun;
+		private ProjectileLauncher _gun;
 
         private readonly Color _stunColor = new(255, 200, 200);
         private bool _justJumped = false;
@@ -27,10 +29,12 @@ namespace TheForestWaiter.Game.Objects
 			Size = _sprite.Sheet.TileSize.ToVector2f();
 
             StunTime = 1;
+            AutoJumpObstacles = false;
             Friendly = true;
             AirAcceleration = 1500;
             AirSpeed = 100;
             JumpForceVariation = 0;
+            HorizontalOverflowDrag = 100;
 
 			_gun = creator.CreateGun<Handgun>();
 		}
@@ -78,7 +82,7 @@ namespace TheForestWaiter.Game.Objects
 			window.Draw(_sprite);
 		}
 
-        public void Equip(GunBase gun)
+        public void Equip(ProjectileLauncher gun)
         {
             _gun = gun;
 		}
@@ -94,11 +98,11 @@ namespace TheForestWaiter.Game.Objects
             if (IsStunned)
             {
                 _sprite.Sprite.Color = _stunColor;
-                if (_gun != null) _gun.GunSprite.Color = _stunColor;
+                if (_gun != null) _gun.Color = _stunColor;
             }
             else
             {
-                if (_gun != null) _gun.GunSprite.Color = Color.White;
+                if (_gun != null) _gun.Color = Color.White;
                 _sprite.Sprite.Color = Color.White;
             }
 

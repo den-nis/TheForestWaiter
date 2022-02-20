@@ -5,7 +5,9 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using TheForestWaiter.Game.Core;
+using TheForestWaiter.Game.Objects.Abstract;
 using TheForestWaiter.Game.Objects.Weapons;
+using TheForestWaiter.Game.Objects.Weapons.Abstract;
 
 namespace TheForestWaiter
 {
@@ -22,7 +24,7 @@ namespace TheForestWaiter
 
         private static IDictionary<string, Type> GetGameObjects() => GetTypes<GameObject>();
         
-        private static IDictionary<string, Type> GetGuns() => GetTypes<GunBase>();
+        private static IDictionary<string, Type> GetGuns() => GetTypes<ProjectileLauncher>();
         
         private static IDictionary<string, Type> GetTypes<T>()
         {

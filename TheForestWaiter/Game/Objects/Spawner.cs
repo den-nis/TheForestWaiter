@@ -1,17 +1,14 @@
 ﻿using SFML.Graphics;
 using SFML.System;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TheForestWaiter.Game.Core;
 using TheForestWaiter.Game.Environment;
 using TheForestWaiter.Game.Essentials;
+using TheForestWaiter.Game.Objects.Abstract;
 
 namespace TheForestWaiter.Game.Objects.Static
 {
-    internal class Spawner : Immovable
+	internal class Spawner : Immovable
     {
 		private readonly GameData _game;
 		private readonly ObjectCreator _creator;

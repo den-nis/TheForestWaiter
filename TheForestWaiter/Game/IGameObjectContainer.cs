@@ -1,6 +1,6 @@
 ﻿using SFML.Graphics;
 
-namespace TheForestWaiter.Game.Core
+namespace TheForestWaiter.Game
 {
 	internal interface IGameObjectContainer
     {

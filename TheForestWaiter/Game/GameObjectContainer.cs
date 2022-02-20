@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TheForestWaiter.Game.Objects.Abstract;
 
 namespace TheForestWaiter.Game.Core
 {

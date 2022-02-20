@@ -2,12 +2,11 @@
 
 namespace TheForestWaiter.Game.Objects.Projectiles
 {
-	internal class CorruptionBall : Bullet
+	internal class CorruptionBall : SmallBullet
 	{
 		private const float PARTICLE_SPAWN_INTERVAL = 0.01f;
 		private float _particleTimer = -1;
 		
-
 		private readonly ContentSource _content;
 
 		public CorruptionBall(GameData game, ContentSource content) : base(game, content)
@@ -17,7 +16,7 @@ namespace TheForestWaiter.Game.Objects.Projectiles
 			ExplosionParticleName = "Particles/corruption_ball_smoke.particle";
 			Damage = 40;
 
-			SetBulletSprite("Textures/Bullets/bullet_corruption_ball.png");
+			SetTexture("Textures/Bullets/bullet_corruption_ball.png");
 		}
 
 		public override void Update(float time)

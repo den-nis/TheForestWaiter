@@ -1,11 +1,7 @@
-﻿using SFML.System;
-using System;
-using TheForestWaiter.Game.Constants;
-using TheForestWaiter.Game.Core;
+﻿using System;
 using TheForestWaiter.Game.Essentials;
-using TheForestWaiter.Game.Logic;
 
-namespace TheForestWaiter.Game.Objects
+namespace TheForestWaiter.Game.Objects.Abstract
 {
 	/// <summary>
 	/// Creatures can move around and be damaged

@@ -8,6 +8,7 @@ using TheForestWaiter.Content;
 using TheForestWaiter.Game.Core;
 using TheForestWaiter.Game.Essentials;
 using TheForestWaiter.Game.Graphics;
+using TheForestWaiter.Game.Objects.Abstract;
 
 namespace TheForestWaiter.Game.Objects.Static
 {

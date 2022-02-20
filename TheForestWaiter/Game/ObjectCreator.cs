@@ -9,6 +9,8 @@ using TheForestWaiter.Game.Objects.Weapons;
 using LightInject;
 using TheForestWaiter.Game.Objects;
 using TheForestWaiter.Game.Objects.Projectiles;
+using TheForestWaiter.Game.Objects.Abstract;
+using TheForestWaiter.Game.Objects.Weapons.Abstract;
 
 namespace TheForestWaiter.Game
 {
@@ -23,7 +25,7 @@ namespace TheForestWaiter.Game
 
         public GameObject CreateType(Type type) => (GameObject)_provider.GetInstance(type);
 
-        public T CreateGun<T>() where T : GunBase => _provider.GetInstance<T>();
+        public T CreateGun<T>() where T : ProjectileLauncher => _provider.GetInstance<T>();
         
         public T Create<T>() where T : GameObject => _provider.GetInstance<T>();
         
@@ -42,10 +44,10 @@ namespace TheForestWaiter.Game
             return obj;
         }
 
-        public T FireBullet<T>(Vector2f position, Vector2f speed, Creature owner) where T : Bullet
+        public T FireProjectile<T>(Vector2f position, Vector2f speed, Creature owner) where T : Projectile
         {
             var bullet = CreateAndShoot<T>(position, speed);
-            bullet.Owner = owner;
+            bullet.Claim(owner);
             return bullet;
 		}
     }

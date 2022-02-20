@@ -12,6 +12,7 @@ using TheForestWaiter.Game.Core;
 using TheForestWaiter.Game.Essentials;
 using TheForestWaiter.Game.Graphics;
 using TheForestWaiter.Game.Constants;
+using TheForestWaiter.Game.Objects.Abstract;
 
 namespace TheForestWaiter.Game.Objects
 {

@@ -3,16 +3,18 @@ using SFML.System;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TheForestWaiter.Game;
 using TheForestWaiter.Game.Core;
 using TheForestWaiter.Game.Debugging;
 using TheForestWaiter.Game.Environment;
 using TheForestWaiter.Game.Objects;
+using TheForestWaiter.Game.Objects.Abstract;
 using TheForestWaiter.Game.Objects.Projectiles;
 using TheForestWaiter.Game.Particles;
 
-namespace TheForestWaiter.Game
+namespace TheForestWaiter
 {
-    internal class GameObjects
+	internal class GameObjects
     {
         public bool EnableDrawHitBoxes { get; set; } = false;
 
@@ -35,22 +37,22 @@ namespace TheForestWaiter.Game
 
         public GameObjectContainer<Immovable> Environment { get; set; } = new();
         public GameObjectContainer<Creature> Creatures { get; set; } = new();
-        public GameObjectContainer<Movable> Bullets { get; set; } = new();
+        public GameObjectContainer<Projectile> Projectiles { get; set; } = new();
         public GameObjectContainer<Movable> Other { get; set; } = new();
 
         public ParticleSystem WorldParticles { get; set; }
 
-        public IEnumerable<Movable> PhysicsObjects => Creatures
-            .Concat(Creatures)
-            .Concat(Bullets)
-            .Concat(Other);
+        public IEnumerable<Movable> PhysicsObjects => 
+             Creatures
+            .Concat(Other)
+            .Concat(Projectiles);
 
         private IEnumerable<IGameObjectContainer> GetAllContainers()
         {
             yield return Environment;
             yield return Other;
             yield return Creatures;
-            yield return Bullets;
+            yield return Projectiles;
         }
 
         private void ForAllContainers(Action<IGameObjectContainer> func)
@@ -131,7 +133,7 @@ namespace TheForestWaiter.Game
                     Creatures.Add(player);
                     break;
 
-                case Bullet bullet:  Bullets.Add(bullet); break;
+                case SmallBullet bullet:  Projectiles.Add(bullet); break;
                 case Creature enemy: Creatures.Add(enemy); break;
                 case Movable pObj:   Other.Add(pObj); break;
                 case Immovable sObj: Environment.Add(sObj); break;

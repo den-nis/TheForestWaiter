@@ -1,13 +1,12 @@
-﻿using SFML.Graphics;
-using SFML.System;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using SFML.System;
 using TheForestWaiter.Content;
+using TheForestWaiter.Game.Essentials;
+using TheForestWaiter.Game.Objects.Projectiles;
+using TheForestWaiter.Game.Objects.Weapons.Abstract;
 
 namespace TheForestWaiter.Game.Objects.Weapons.Guns
-{ 
-    class Handgun : GunBase
+{
+	internal class Handgun : ProjectileLauncher
     {
         private readonly ContentSource _content;
 
@@ -17,26 +16,17 @@ namespace TheForestWaiter.Game.Objects.Weapons.Guns
         public Handgun(GameData game, ContentSource content, ObjectCreator creator) : base(game, creator)
         { 
             AutoFire = true;
-            FireRatePerSecond = 100;
-            Cone = 1;
-            GunSprite = content.Textures.CreateSprite("Textures/Guns/handgun.png");
-            OnFire += OnFireEvent;
+            Cone = TrigHelper.ToRad(5);
+            FireRatePerSecond = 3;
+
+            Sprite = content.Textures.CreateSprite("Textures/Guns/handgun.png");
             _content = content;
         }
 
-        public override void Draw(RenderWindow win)
-        {
-            base.Draw(win);
-        }
-
-        public override void Update(float time)
-        {
-            base.Update(time);
-        }
-
-        private void OnFireEvent()
-        {
+		public override void OnFire()
+		{
             Game.Objects.WorldParticles.Emit(_content.Particles.Get("Particles/handgun_smoke.particle", BarrelPosition, LastShotFromAngle, 120), 10);
-        }
-    }
+            FireProjectile<SmallBullet>();
+		}
+	}
 }

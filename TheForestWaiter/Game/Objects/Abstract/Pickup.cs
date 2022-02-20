@@ -6,7 +6,7 @@ using TheForestWaiter.Game.Core;
 using TheForestWaiter.Game.Essentials;
 using TheForestWaiter.Game.Graphics;
 
-namespace TheForestWaiter.Game.Objects.Items
+namespace TheForestWaiter.Game.Objects.Abstract
 {
 	internal abstract class Pickup : Movable
 	{
