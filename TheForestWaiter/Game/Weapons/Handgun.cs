@@ -4,22 +4,24 @@ using TheForestWaiter.Game.Essentials;
 using TheForestWaiter.Game.Objects.Projectiles;
 using TheForestWaiter.Game.Objects.Weapons.Abstract;
 
-namespace TheForestWaiter.Game.Objects.Weapons.Guns
+namespace TheForestWaiter.Game.Objects.Weapons
 {
-	internal class Handgun : ProjectileLauncher
+	internal class Handgun : Weapon
     {
+		public override string IconTextureName => "Textures/Weapons/Icons/handgun.png";
+
         private readonly ContentSource _content;
 
         protected override Vector2f AttachPoint => Game.Objects.Player.Center - new Vector2f(0, 1);
         protected override Vector2f Origin => new(2.5f, 6.5f);
 
-        public Handgun(GameData game, ContentSource content, ObjectCreator creator) : base(game, creator)
+		public Handgun(GameData game, ContentSource content, ObjectCreator creator) : base(game, creator)
         { 
             AutoFire = true;
             Cone = TrigHelper.ToRad(5);
             FireRatePerSecond = 3;
 
-            Sprite = content.Textures.CreateSprite("Textures/Guns/handgun.png");
+            Sprite = content.Textures.CreateSprite("Textures/Weapons/handgun.png");
             _content = content;
         }
 

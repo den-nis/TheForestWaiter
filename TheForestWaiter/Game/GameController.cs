@@ -12,7 +12,7 @@ namespace TheForestWaiter.Game
     class GameController : IDisposable
     {
         private RenderWindow _attached;
-        private readonly GameData _data;
+        private readonly GameData _game;
         private readonly WindowHandle _gameWindow;
         private readonly UserSettings _settings;
         private readonly Camera _camera;
@@ -23,7 +23,7 @@ namespace TheForestWaiter.Game
             UserSettings settings,
             Camera camera)
         {
-            _data = data;
+            _game = data;
             _gameWindow = gameWindow;
             _settings = settings;
             _camera = camera;
@@ -84,20 +84,20 @@ namespace TheForestWaiter.Game
         private void WindowMouseButtonReleased(object sender, MouseButtonEventArgs e)
         {
             if (e.Button == _settings.Shoot)
-                _data.Objects.Player.Controller.ToggleOff(ActionTypes.PrimaryAttack);
+                _game.Objects.Player.Controller.ToggleOff(ActionTypes.PrimaryAttack);
         }
 
         private void WindowMouseButtonPressed(object sender, MouseButtonEventArgs e)
         {
             if (e.Button == _settings.Shoot)
-                _data.Objects.Player.Controller.ToggleOn(ActionTypes.PrimaryAttack);
+                _game.Objects.Player.Controller.ToggleOn(ActionTypes.PrimaryAttack);
         }
 
         private void WindowMouseMoved(object sender, MouseMoveEventArgs e)
         {
             var mouse = new Vector2f(e.X, e.Y);
-            var angle = (_camera.ToWorld(mouse) - _data.Objects.Player.Center).Angle() + (float)Math.PI * 2;
-            _data.Objects.Player.Controller.Aim(angle);
+            var angle = (_camera.ToWorld(mouse) - _game.Objects.Player.Center).Angle() + (float)Math.PI * 2;
+            _game.Objects.Player.Controller.Aim(angle);
         }
 
         private void WindowMouseWheelScrolled(object sender, MouseWheelScrollEventArgs e)
@@ -108,18 +108,23 @@ namespace TheForestWaiter.Game
         private void WindowKeyReleased(object sender, KeyEventArgs e)
         {
             var c = e.Code;
-            if (c == _settings.Jump)  _data.Objects.Player.Controller.ToggleOff(ActionTypes.Up);
-            if (c == _settings.Right) _data.Objects.Player.Controller.ToggleOff(ActionTypes.Right);
-            if (c == _settings.Left)  _data.Objects.Player.Controller.ToggleOff(ActionTypes.Left);
+            if (c == _settings.Jump)  _game.Objects.Player.Controller.ToggleOff(ActionTypes.Up);
+            if (c == _settings.Right) _game.Objects.Player.Controller.ToggleOff(ActionTypes.Right);
+            if (c == _settings.Left)  _game.Objects.Player.Controller.ToggleOff(ActionTypes.Left);
             if (c == _settings.FullScreen) ToggleFullscreen();
         }
 
         private void WindowKeyPressed(object sender, KeyEventArgs e)
         {
             var c = e.Code;
-            if (c == _settings.Jump)  _data.Objects.Player.Controller.ToggleOn(ActionTypes.Up);
-            if (c == _settings.Right) _data.Objects.Player.Controller.ToggleOn(ActionTypes.Right);
-            if (c == _settings.Left)  _data.Objects.Player.Controller.ToggleOn(ActionTypes.Left);
+            if (c == _settings.Jump)  _game.Objects.Player.Controller.ToggleOn(ActionTypes.Up);
+            if (c == _settings.Right) _game.Objects.Player.Controller.ToggleOn(ActionTypes.Right);
+            if (c == _settings.Left)  _game.Objects.Player.Controller.ToggleOn(ActionTypes.Left);
+
+            if (c >= Keyboard.Key.Num1 && c <= Keyboard.Key.Num9)
+            {
+                _game.Objects.Player.Weapons.Select(c - Keyboard.Key.Num1);
+			}
         }
 
         public void Dispose()

@@ -7,7 +7,7 @@ using TheForestWaiter.Game.Objects.Weapons.Abstract;
 
 namespace TheForestWaiter.Debugging.Command.Commands
 {
-	[Command("equip", "change current weapon", "{gun name}")]
+	[Command("give", "give a weapon", "{weapon name}")]
     class Equip : ICommand
     {
         private readonly GameData _game;
@@ -21,8 +21,8 @@ namespace TheForestWaiter.Debugging.Command.Commands
 
         public void Execute(CommandHandler handler, string[] args)
         {
-            (_game.Objects.Player).Equip((ProjectileLauncher)_container
-                .GetInstance(Types.Guns.Values.FirstOrDefault(t => t.Name.Equals(args[0], StringComparison.OrdinalIgnoreCase))));
+            var weapon = (Weapon)_container.GetInstance(Types.Weapons.Values.FirstOrDefault(t => t.Name.Equals(args[0], StringComparison.OrdinalIgnoreCase)));
+            _game.Objects.Player.Weapons.Add(weapon);
         }
     }
 }

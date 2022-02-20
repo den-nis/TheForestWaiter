@@ -2,26 +2,26 @@
 using System;
 using TheForestWaiter.Content;
 using TheForestWaiter.Game.Constants;
-using TheForestWaiter.Game.Core;
 using TheForestWaiter.Game.Essentials;
 using TheForestWaiter.Game.Graphics;
 using TheForestWaiter.Game.Logic;
 using TheForestWaiter.Game.Objects.Abstract;
 using TheForestWaiter.Game.Objects.Weapons;
 using TheForestWaiter.Game.Objects.Weapons.Abstract;
-using TheForestWaiter.Game.Objects.Weapons.Guns;
 
 namespace TheForestWaiter.Game.Objects
 {
 	internal class Player : GroundCreature
 	{
+        private const float SWITCH_COOLDOWN_TIME = 2f;
+        
         public PlayerController Controller { get; } = new();
+        public WeaponCollection Weapons { get; } = new();
 
 		private readonly AnimatedSprite _sprite;
-		private ProjectileLauncher _gun;
-
         private readonly Color _stunColor = new(255, 200, 200);
         private bool _justJumped = false;
+        private float _switchCooldown = 0;
 
         public Player(GameData game, ContentSource content, ObjectCreator creator) : base(game)
 		{
@@ -36,20 +36,28 @@ namespace TheForestWaiter.Game.Objects
             JumpForceVariation = 0;
             HorizontalOverflowDrag = 100;
 
-			_gun = creator.CreateGun<Handgun>();
-		}
+            Weapons.Add(creator.CreateWeapon<Handgun>());
+            Weapons.OnEquipedChanged += OnEquipmentChangedEventHandler;
+        }
 
 		public override void Update(float time)
 		{
 			base.Update(time);
 
-			if (_gun != null)
-			{
-				_gun.Firing = Controller.IsActive(ActionTypes.PrimaryAttack);
-				_gun.Aim(Controller.GetAim());
-				_gun.Update(time);
-			}
+            var gun = Weapons.GetEquiped();
 
+            _switchCooldown -= time;
+            
+            if (gun != null)
+			{
+                if (_switchCooldown <= 0)
+                {
+                    gun.Firing = Controller.IsActive(ActionTypes.PrimaryAttack);
+                    gun.Aim(Controller.GetAim());
+                }
+                gun.Update(time);
+			}
+            
             if (Controller.IsActive(ActionTypes.Right) != Controller.IsActive(ActionTypes.Left))
             {
                 if (Controller.IsActive(ActionTypes.Right))
@@ -78,13 +86,12 @@ namespace TheForestWaiter.Game.Objects
 
 		public override void Draw(RenderWindow window)
 		{
-            window.Draw(_gun);
-			window.Draw(_sprite);
-		}
+            if (_switchCooldown <= 0)
+            {
+                window.Draw(Weapons.GetEquiped());
+            }
 
-        public void Equip(ProjectileLauncher gun)
-        {
-            _gun = gun;
+			window.Draw(_sprite);
 		}
 
         public void God() => Invincible = true;
@@ -95,14 +102,16 @@ namespace TheForestWaiter.Game.Objects
             bool isMovingLeft = FacingDirection < 0;
             bool aimingRight = TrigHelper.IsPointingRight(Controller.GetAim());
 
+            var gun = Weapons.GetEquiped();
+
             if (IsStunned)
             {
                 _sprite.Sprite.Color = _stunColor;
-                if (_gun != null) _gun.Color = _stunColor;
+                if (gun != null) gun.Color = _stunColor;
             }
             else
             {
-                if (_gun != null) _gun.Color = Color.White;
+                if (gun != null) gun.Color = Color.White;
                 _sprite.Sprite.Color = Color.White;
             }
 
@@ -131,14 +140,19 @@ namespace TheForestWaiter.Game.Objects
             _sprite.Update(time);
         }
 
+        private void OnEquipmentChangedEventHandler()
+		{
+			var previousWeapon = Weapons.GetEquiped();
+            previousWeapon.Firing = false;
+			_switchCooldown = SWITCH_COOLDOWN_TIME;
+        }
+
         protected override void OnDamage(GameObject by)
 		{
 		}
 
 		protected override void OnDeath()
 		{
-            _gun = null;
-
             DisableDraws = true;
             DisableUpdates = true;
             EnableCollision = false;

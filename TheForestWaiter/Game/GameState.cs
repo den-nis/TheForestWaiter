@@ -27,7 +27,7 @@ namespace TheForestWaiter.Game
         private readonly WindowHandle _window;
         private readonly Camera _camera;
         private readonly ContentSource _content;
-        private readonly HudDrawer _hud;
+		private readonly HudDrawer _hud;
 
         private readonly GameData _game;
 
@@ -46,7 +46,7 @@ namespace TheForestWaiter.Game
             _hud = container.GetInstance<HudDrawer>();
             _window = window;
             _content = content;
-        }
+		}
 
         public void Dispose()
         {
@@ -105,7 +105,6 @@ namespace TheForestWaiter.Game
             _game.Objects.Update(time);
             _camera.FollowPlayer(_game.Objects.Player.Center);
             _camera.Update(time);
-            _hud.Update();
         }
     }
 }

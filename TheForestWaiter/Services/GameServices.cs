@@ -6,7 +6,7 @@ using TheForestWaiter.Game.Gibs;
 using TheForestWaiter.Game.Hud;
 using TheForestWaiter.Game.Logic;
 using TheForestWaiter.Game.Objects.Items;
-using TheForestWaiter.Game.Objects.Weapons.Guns;
+using TheForestWaiter.Game.Objects.Weapons;
 
 namespace TheForestWaiter.Services
 {
