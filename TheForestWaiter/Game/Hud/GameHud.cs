@@ -13,12 +13,12 @@ using TheForestWaiter.Game.Hud.Sections;
 
 namespace TheForestWaiter.Game.Hud
 {
-    internal class HudDrawer
+    internal class GameHud
     {
-        public readonly List<HudSection> _sections;
+        private readonly List<HudSection> _sections;
         private readonly Camera _camera;
 
-        public HudDrawer(GameData game, Camera camera, ContentSource content, UserSettings settings)
+        public GameHud(GameData game, Camera camera, ContentSource content, UserSettings settings, ItemShop shop)
         {
             _camera = camera;
 
@@ -36,15 +36,52 @@ namespace TheForestWaiter.Game.Hud
                 {
                     Region = HudRegion.BottomLeft,
                     Scale = scale
+                },
+                new ShopHud(content, shop)
+                {
+                    Region = HudRegion.TopRight,
+                    Scale = scale * 0.9f,
                 }
             };
+        }
+
+        public void PrimaryReleased()
+        {
+
+		}
+
+        public bool IsMouseCaptured()
+        {
+            bool captured = false;
+            foreach (var section in _sections)
+            {
+                if (section.IsMouseCaptured())
+                {
+                    captured = true;
+				}
+            }
+            return captured;
+		}
+
+        public void Hover(Vector2f mouse)
+        {
+            foreach (var section in _sections)
+            {
+                section.Hover(mouse);
+			}
+		}
+
+        public void ToggleShopVisibility()
+        {
+            var section = _sections.First(s => s is ShopHud);
+            section.Hidden = !section.Hidden;
         }
 
         public void Draw(RenderWindow window)
         {
             window.SetView(Camera.GetWindowView(window));
 
-            foreach(var section in _sections)
+            foreach(var section in _sections.Where(s => !s.Hidden))
             {
                 section.Draw(window);
 			}

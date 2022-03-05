@@ -10,11 +10,10 @@ namespace TheForestWaiter.Game.Hud.Sections
 	{
 		private const int HEALTH_START_X = 16;
 		private const int HEALTH_END_X = 50;
-		private const int COIN_NUMBER_SPACING = 1;
 
 		private readonly Sprite _boxSprite;
 		private readonly Sprite _healthSprite;
-		private readonly SpriteSheet _coinNumbers;
+		private readonly SpriteFont _coinText;
 		private readonly GameData _game;
 
 		public PlayerHud(GameData game, ContentSource content)
@@ -22,7 +21,7 @@ namespace TheForestWaiter.Game.Hud.Sections
 			_game = game;
 			_boxSprite = content.Textures.CreateSprite("Textures/Hud/box.png");
 			_healthSprite = content.Textures.CreateSprite("Textures/Hud/health.png");
-			_coinNumbers = content.Textures.CreateSpriteSheet("Textures/Hud/numbers.png");
+			_coinText = new SpriteFont(content.Textures.CreateSpriteSheet("Textures/Hud/numbers.png"));
 
 			Size = _boxSprite.Texture.Size.ToVector2f();
 		}
@@ -56,21 +55,18 @@ namespace TheForestWaiter.Game.Hud.Sections
 
 		private void DrawCoinText(RenderWindow window)
 		{
-			_coinNumbers.Sprite.Scale = ScaleVector;
+			_coinText.Position = GetPosition(window) + new Vector2f(20 * Scale, 15 * Scale);
+			_coinText.Scale = Scale;
+			_coinText.SetText(_game.Session.Coins.ToString());
 
-			var sectionPosition = GetPosition(window) + new Vector2f(20 * Scale, 15 * Scale);
-			string text = _game.Session.Coins.ToString();
+			_coinText.Draw(window);
+		}
 
-			for (int i = 0; i < text.ToString().Length; i++)
-			{
-				Vector2f position = sectionPosition + new Vector2f((_coinNumbers.TileSize.X + COIN_NUMBER_SPACING) * i * Scale, 0);
-				var number = int.Parse(text[i].ToString());
+		public override void Hover(Vector2f mouse) { }
+		public override bool IsMouseCaptured() => false;
 
-				_coinNumbers.Sprite.Position = position;
-				_coinNumbers.SetRect(number);
-
-				window.Draw(_coinNumbers);
-			}
+		public override void OnPrimaryReleased()
+		{ 
 		}
 	}
 }

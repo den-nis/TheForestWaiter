@@ -27,7 +27,7 @@ namespace TheForestWaiter.Game
         private readonly WindowHandle _window;
         private readonly Camera _camera;
         private readonly ContentSource _content;
-		private readonly HudDrawer _hud;
+		private readonly GameHud _hud;
 
         private readonly GameData _game;
 
@@ -43,7 +43,7 @@ namespace TheForestWaiter.Game
             _game = container.GetInstance<GameData>();
             _camera = container.GetInstance<Camera>();
             _background = container.GetInstance<Background>();
-            _hud = container.GetInstance<HudDrawer>();
+            _hud = container.GetInstance<GameHud>();
             _window = window;
             _content = content;
 		}

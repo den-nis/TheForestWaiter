@@ -30,7 +30,7 @@ namespace TheForestWaiter.Services
                 .RegisterScoped<GameController>()
                 .RegisterScoped<Background>()
                 .RegisterScoped<Camera>()
-                .RegisterScoped<HudDrawer>()
+                .RegisterScoped<GameHud>()
                 .RegisterScoped<GameData>()
                 .RegisterScoped<GameObjects>()
                 .RegisterScoped<World>()
@@ -38,6 +38,7 @@ namespace TheForestWaiter.Services
                 .RegisterScoped<GibSpawner>()
                 .RegisterScoped<PickupSpawner>()
                 .RegisterScoped<DropSpawner>()
+                .RegisterScoped<ItemShop>()
 
                 .Register<Handgun>()
                 .Register<Sniper>();

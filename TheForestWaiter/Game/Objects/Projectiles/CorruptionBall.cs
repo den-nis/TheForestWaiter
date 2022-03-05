@@ -16,7 +16,7 @@ namespace TheForestWaiter.Game.Objects.Projectiles
 			ExplosionParticleName = "Particles/corruption_ball_smoke.particle";
 			Damage = 40;
 
-			SetTexture("Textures/Bullets/bullet_corruption_ball.png");
+			SetTexture("Textures/Projectiles/corruption_ball.png");
 		}
 
 		public override void Update(float time)

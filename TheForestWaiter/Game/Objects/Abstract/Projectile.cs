@@ -27,7 +27,7 @@ namespace TheForestWaiter.Game.Objects.Abstract
 		private float _traveled = 0;
 		private int _penetrated = 0;
 
-		private Sprite _bulletSprite;
+		private Sprite _sprite;
 
 		public Projectile(GameData game, ContentSource content) : base(game)
 		{
@@ -45,9 +45,9 @@ namespace TheForestWaiter.Game.Objects.Abstract
 
 		protected void SetTexture(string textureName)
 		{
-			_bulletSprite = _content.Textures.CreateSprite(textureName);
-			_bulletSprite.Origin = _bulletSprite.Texture.Size.ToVector2f() / 2;
-			Size = _bulletSprite.Texture.Size.ToVector2f();
+			_sprite = _content.Textures.CreateSprite(textureName);
+			_sprite.Origin = _sprite.Texture.Size.ToVector2f() / 2;
+			Size = _sprite.Texture.Size.ToVector2f();
 		}
 
 		private void Explode()
@@ -91,13 +91,13 @@ namespace TheForestWaiter.Game.Objects.Abstract
 				}
 			}
 
-			_bulletSprite.Rotation = TrigHelper.ToDeg(_angle.Value);
-			_bulletSprite.Position = Center;
+			_sprite.Rotation = TrigHelper.ToDeg(_angle.Value);
+			_sprite.Position = Center;
 		}
 
 		public override void Draw(RenderWindow window)
 		{
-			window.Draw(_bulletSprite);
+			window.Draw(_sprite);
 		}
 	}
 }

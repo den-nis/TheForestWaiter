@@ -11,10 +11,17 @@ namespace TheForestWaiter.Game.Hud
 		public float Scale { get; set; } = 1;
 		public Vector2f Size { get; protected set; }
 		public Vector2f Offset { get; set; }
+		public bool Hidden { get; set; }
 
 		protected Vector2f ScaleVector => new(Scale, Scale);
 
 		public abstract void Draw(RenderWindow window);
+
+		public abstract void Hover(Vector2f mouse);
+
+		public abstract bool IsMouseCaptured();
+
+		public abstract void OnPrimaryReleased();
 
 		protected Vector2f GetPosition(RenderWindow window)
 		{

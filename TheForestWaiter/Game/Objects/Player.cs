@@ -13,7 +13,7 @@ namespace TheForestWaiter.Game.Objects
 {
 	internal class Player : GroundCreature
 	{
-        private const float SWITCH_COOLDOWN_TIME = 2f;
+        private const float SWITCH_COOLDOWN_TIME = 0.2f;
         
         public PlayerController Controller { get; } = new();
         public WeaponCollection Weapons { get; } = new();

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 using TheForestWaiter.Game.Constants;
 using TheForestWaiter.Game.Essentials;
+using TheForestWaiter.Game.Hud;
 
 namespace TheForestWaiter.Game
 {
@@ -15,18 +16,21 @@ namespace TheForestWaiter.Game
         private readonly GameData _game;
         private readonly WindowHandle _gameWindow;
         private readonly UserSettings _settings;
-        private readonly Camera _camera;
+		private readonly GameHud _hud;
+		private readonly Camera _camera;
 
         public GameController(
             GameData data, 
             WindowHandle gameWindow, 
             UserSettings settings,
+            GameHud hud,
             Camera camera)
         {
             _game = data;
             _gameWindow = gameWindow;
             _settings = settings;
-            _camera = camera;
+			_hud = hud;
+			_camera = camera;
             _gameWindow.OnWindowChanged += OnWindowChanged;
 
             Attach(_gameWindow.SfmlWindow);
@@ -83,14 +87,24 @@ namespace TheForestWaiter.Game
 
         private void WindowMouseButtonReleased(object sender, MouseButtonEventArgs e)
         {
-            if (e.Button == _settings.Shoot)
-                _game.Objects.Player.Controller.ToggleOff(ActionTypes.PrimaryAttack);
+            if (_hud.IsMouseCaptured())
+            {
+                _hud.PrimaryReleased();
+            }
+            else
+            {
+                if (e.Button == _settings.Primary)
+                    _game.Objects.Player.Controller.ToggleOff(ActionTypes.PrimaryAttack);
+            }
         }
 
         private void WindowMouseButtonPressed(object sender, MouseButtonEventArgs e)
         {
-            if (e.Button == _settings.Shoot)
-                _game.Objects.Player.Controller.ToggleOn(ActionTypes.PrimaryAttack);
+            if (!_hud.IsMouseCaptured())
+            {
+                if (e.Button == _settings.Primary)
+                    _game.Objects.Player.Controller.ToggleOn(ActionTypes.PrimaryAttack);
+            }
         }
 
         private void WindowMouseMoved(object sender, MouseMoveEventArgs e)
@@ -98,6 +112,7 @@ namespace TheForestWaiter.Game
             var mouse = new Vector2f(e.X, e.Y);
             var angle = (_camera.ToWorld(mouse) - _game.Objects.Player.Center).Angle() + (float)Math.PI * 2;
             _game.Objects.Player.Controller.Aim(angle);
+            _hud.Hover(mouse);
         }
 
         private void WindowMouseWheelScrolled(object sender, MouseWheelScrollEventArgs e)
@@ -111,6 +126,7 @@ namespace TheForestWaiter.Game
             if (c == _settings.Jump)  _game.Objects.Player.Controller.ToggleOff(ActionTypes.Up);
             if (c == _settings.Right) _game.Objects.Player.Controller.ToggleOff(ActionTypes.Right);
             if (c == _settings.Left)  _game.Objects.Player.Controller.ToggleOff(ActionTypes.Left);
+            if (c == _settings.ToggleShop) _hud.ToggleShopVisibility();
             if (c == _settings.FullScreen) ToggleFullscreen();
         }
 

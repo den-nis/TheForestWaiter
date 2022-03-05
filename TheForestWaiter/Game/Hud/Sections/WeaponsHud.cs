@@ -55,6 +55,10 @@ namespace TheForestWaiter.Game.Hud.Sections
 			}
 		}
 
+		public override bool IsMouseCaptured() => false;
+
+		public override void Hover(Vector2f mouse) { }
+
 		private Sprite GetIconSprite(string name)
 		{
 			if (_weaponSprites.TryGetValue(name, out var sprite))
@@ -67,6 +71,11 @@ namespace TheForestWaiter.Game.Hud.Sections
 				_weaponSprites.Add(name, icon);
 				return icon;
 			}
+		}
+
+		public override void OnPrimaryReleased()
+		{
+			
 		}
 	}
 }
