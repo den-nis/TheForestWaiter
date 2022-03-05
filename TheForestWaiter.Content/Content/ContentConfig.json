@@ -159,6 +159,16 @@
 			}
 		},
 		{
+			"path": "Textures/Hud/shop_numbers.png",
+			"type": "Texture",
+
+			"textureConfig": {
+				"tileWidth": 3,
+				"tileHeight": 5,
+				"hasTileSpacing": true
+			}
+		},
+		{
 			"path": "Textures/Items/coin.png",
 			"type": "Texture",
 
