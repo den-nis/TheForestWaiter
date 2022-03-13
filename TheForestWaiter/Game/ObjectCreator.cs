@@ -1,20 +1,12 @@
-﻿using SFML.System;
+﻿using LightInject;
+using SFML.System;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TheForestWaiter.Game.Core;
-using TheForestWaiter.Game.Objects.Weapons;
-using LightInject;
-using TheForestWaiter.Game.Objects;
-using TheForestWaiter.Game.Objects.Projectiles;
 using TheForestWaiter.Game.Objects.Abstract;
 using TheForestWaiter.Game.Objects.Weapons.Abstract;
 
 namespace TheForestWaiter.Game
 {
-    class ObjectCreator
+	class ObjectCreator
     {
         private readonly IServiceContainer _provider;
 
@@ -25,8 +17,8 @@ namespace TheForestWaiter.Game
 
         public GameObject CreateType(Type type) => (GameObject)_provider.GetInstance(type);
 
-        public T CreateGun<T>() where T : ProjectileLauncher => _provider.GetInstance<T>();
-        
+        public T CreateWeapon<T>() where T : Weapon =>  _provider.GetInstance<T>();
+
         public T Create<T>() where T : GameObject => _provider.GetInstance<T>();
         
         public T CreateAt<T>(Vector2f position) where T : GameObject

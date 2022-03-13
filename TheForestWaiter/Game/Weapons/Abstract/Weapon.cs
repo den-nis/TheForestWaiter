@@ -6,11 +6,12 @@ using TheForestWaiter.Game.Objects.Abstract;
 
 namespace TheForestWaiter.Game.Objects.Weapons.Abstract
 {
-	internal abstract class ProjectileLauncher : Drawable
+	internal abstract class Weapon : Drawable
     {
         public bool Firing { get; set; }
         public Color Color { get; set; }
 
+        public abstract string IconTextureName { get; }
         protected abstract Vector2f Origin { get; }
         protected abstract Vector2f AttachPoint { get; }
 
@@ -37,7 +38,7 @@ namespace TheForestWaiter.Game.Objects.Weapons.Abstract
         private float _fireTimer;
         private bool _firstShot;
 
-        public ProjectileLauncher(GameData game, ObjectCreator creator)
+        public Weapon(GameData game, ObjectCreator creator)
         {
             _creator = creator;
             Game = game;
@@ -60,7 +61,7 @@ namespace TheForestWaiter.Game.Objects.Weapons.Abstract
         {
             LastShotFromAngle = LastAimAngle + (Cone * (Rng.Float() - 0.5f));
 
-            if (Game.World.TouchingSolid(BarrelPosition + TrigHelper.FromAngleRad(LastShotFromAngle, 8)))  //8 is margin for big bullets
+            if (Game.World.TouchingSolid(BarrelPosition + TrigHelper.FromAngleRad(LastShotFromAngle, 10)))
             {
                 //Gun is stuck in wall
                 //TODO: play sound?

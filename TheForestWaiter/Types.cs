@@ -14,17 +14,17 @@ namespace TheForestWaiter
     public static class Types
     {
         public static IDictionary<string, Type> GameObjects { get; private set; }
-        public static IDictionary<string, Type> Guns { get; private set; }
+        public static IDictionary<string, Type> Weapons { get; private set; }
 
         static Types()
         {
             GameObjects = GetGameObjects();
-            Guns = GetGuns();
+            Weapons = GetWeapons();
         }
 
         private static IDictionary<string, Type> GetGameObjects() => GetTypes<GameObject>();
         
-        private static IDictionary<string, Type> GetGuns() => GetTypes<ProjectileLauncher>();
+        private static IDictionary<string, Type> GetWeapons() => GetTypes<Weapon>();
         
         private static IDictionary<string, Type> GetTypes<T>()
         {

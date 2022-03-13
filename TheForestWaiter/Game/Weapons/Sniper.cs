@@ -6,10 +6,12 @@ using TheForestWaiter.Game.Essentials;
 using TheForestWaiter.Game.Objects.Projectiles;
 using TheForestWaiter.Game.Objects.Weapons.Abstract;
 
-namespace TheForestWaiter.Game.Objects.Weapons.Guns
+namespace TheForestWaiter.Game.Objects.Weapons
 {
-	class Sniper : ProjectileLauncher
+	internal class Sniper : Weapon
     {
+        public override string IconTextureName => "Textures/Weapons/Icons/sniper.png";
+
         private float _smokeTimer = 0;
         private float _smokeEmitTimer = 0;
         private const float SMOKE_TIME_BETWEEN_EMIT = 0.005f;
@@ -20,7 +22,7 @@ namespace TheForestWaiter.Game.Objects.Weapons.Guns
         protected override Vector2f AttachPoint => Game.Objects.Player.Center - new Vector2f(0, 1);
         protected override Vector2f Origin => new(0f, 3f);
 
-        public Sniper(GameData game, ContentSource content, ObjectCreator creator) : base(game, creator)
+		public Sniper(GameData game, ContentSource content, ObjectCreator creator) : base(game, creator)
         {
             _content = content;
 
@@ -30,7 +32,7 @@ namespace TheForestWaiter.Game.Objects.Weapons.Guns
             KickbackForce = 120;
             AutoFire = false;
 
-            Sprite = content.Textures.CreateSprite("Textures/Guns/sniper.png");
+            Sprite = content.Textures.CreateSprite("Textures/Weapons/sniper.png");
         }
 
         public override void Draw(RenderWindow win)

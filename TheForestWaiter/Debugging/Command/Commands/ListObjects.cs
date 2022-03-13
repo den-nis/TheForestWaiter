@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TheForestWaiter.Debugging.DebugConsole;
 
 namespace TheForestWaiter.Debugging.Command.Commands
 {
-    [Command("objects", "Show names of objects that can be spawned")]
+	[Command("list", "Show names of objects")]
     class ListObjects : ICommand
     {
         public void Execute(CommandHandler handler, string[] args)
@@ -15,7 +11,12 @@ namespace TheForestWaiter.Debugging.Command.Commands
             var tb = new TableBuilder();
             foreach(var obj in Types.GameObjects.Values)
             {
-                tb.WriteRow(obj.Name);
+                tb.WriteRow("Object", obj.Name);
+            }
+
+            foreach (var obj in Types.Weapons.Values)
+            {
+                tb.WriteRow("Weapons", obj.Name);
             }
 
             Console.WriteLine(tb);

@@ -91,7 +91,7 @@ namespace TheForestWaiter
             WorldParticles.Update(time);
         }
 
-        public void LoadAllFromMap(Map map, World world, GameData data)
+        public void LoadAllFromMap(Map map)
         {
             Player = null;
 

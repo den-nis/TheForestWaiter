@@ -6,7 +6,7 @@ using TheForestWaiter.Game.Objects.Abstract;
 
 namespace TheForestWaiter.Debugging.Command.Commands
 {
-	[Command("spawn", "Spawn an object", "{name} ?{amount} ?{x} ?{y}")]
+	[Command("spawn", "Spawn a creature", "{name} ?{amount} ?{x} ?{y}")]
     class Spawn : ICommand
     {
         private readonly IServiceContainer _container;
@@ -25,10 +25,10 @@ namespace TheForestWaiter.Debugging.Command.Commands
             var pos = _game.Objects.Player.Center;
 
             if (args.Length > 2)
-                pos.X = args[2] == "*" ? pos.X : int.Parse(args[2]); 
+                pos.X = int.Parse(args[2]); 
 
             if (args.Length > 3)
-                pos.Y = args[3] == "*" ? pos.Y : int.Parse(args[3]);
+                pos.Y = int.Parse(args[3]);
 
             var type = Types.GameObjects.Values.FirstOrDefault(t => t.Name.Equals(args[0], StringComparison.OrdinalIgnoreCase));
 

@@ -21,7 +21,7 @@ namespace TheForestWaiter.Game
         {
             World.LoadFromMap(map);
             Objects.ClearAll();
-            Objects.LoadAllFromMap(map, World, this);
+            Objects.LoadAllFromMap(map);
         }
     }
 }
