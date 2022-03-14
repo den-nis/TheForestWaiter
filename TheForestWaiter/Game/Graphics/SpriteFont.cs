@@ -3,10 +3,11 @@ using SFML.System;
 
 namespace TheForestWaiter.Game.Graphics
 {
-	internal class SpriteFont
+	internal class SpriteFont : Drawable
 	{
 		public Vector2f Position { get; set; }
 		public Vector2f Spacing { get; set; } = new Vector2f(1, 1);
+		public Color Color { get; set; } = Color.White;
 
 		public float Scale { get; set; }
 		public int IndexOffset { get; set; } = '0';
@@ -24,11 +25,12 @@ namespace TheForestWaiter.Game.Graphics
 			_text = text;
 		}
 
-		public void Draw(RenderWindow window)
+		public void Draw(RenderTarget window)
 		{
 			float offsetX = 0;
 			float offsetY = 0;
 
+			_sheet.Sprite.Color = Color;
 			for (int i = 0; i < _text.Length; i++)
 			{
 				char character = _text[i];
@@ -59,5 +61,10 @@ namespace TheForestWaiter.Game.Graphics
 		{	
 			return character - IndexOffset;
 		}
-	}
+
+        public void Draw(RenderTarget target, RenderStates states)
+        {
+			Draw(target);
+		}
+    }
 }

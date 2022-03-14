@@ -1,12 +1,14 @@
 [
   {
-    "price": 999,
+    "id": 1,
+    "price": 2,
     "type": "Weapon",
     "name": "Sniper",
     "allowMultipleBuys": false,
     "iconSource": "Textures/Weapons/Icons/sniper.png"
   },
   {
+    "id": 2,
     "price": 1,
     "type": "Weapon",
     "name": "Sniper",
@@ -14,6 +16,7 @@
     "iconSource": "Textures/Projectiles/corruption_ball.png"
   },
   {
+    "id": 3,
     "price": 1,
     "type": "Weapon",
     "name": "Sniper",
@@ -21,6 +24,7 @@
     "iconSource": "Textures/Projectiles/corruption_ball.png"
   },
   {
+    "id": 4,
     "price": 9999,
     "type": "Weapon",
     "name": "Sniper",
@@ -28,6 +32,7 @@
     "iconSource": "Textures/Projectiles/corruption_ball.png"
   },
   {
+    "id": 5,
     "price": 1456,
     "type": "Weapon",
     "name": "Sniper",
@@ -35,6 +40,7 @@
     "iconSource": "Textures/Projectiles/corruption_ball.png"
   },
   {
+    "id": 6,
     "price": 1345,
     "type": "Weapon",
     "name": "Sniper",
@@ -42,6 +48,7 @@
     "iconSource": "Textures/Projectiles/corruption_ball.png"
   },
   {
+    "id": 7,
     "price": 321,
     "type": "Weapon",
     "name": "Sniper",
@@ -49,6 +56,7 @@
     "iconSource": "Textures/Projectiles/corruption_ball.png"
   },
   {
+    "id": 8,
     "price": 351,
     "type": "Weapon",
     "name": "Sniper",

@@ -8,7 +8,7 @@ namespace TheForestWaiter.Game.Logic
 	{
 		public event Action OnEquipedChanged = delegate { };
 
-		public IReadOnlyCollection<Weapon> OwnedWeapons => _ownedWeapons;
+		public IReadOnlyList<Weapon> OwnedWeapons => _ownedWeapons;
 		private readonly List<Weapon> _ownedWeapons = new();
 		private int _equipedIndex = 0;
 

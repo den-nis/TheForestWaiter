@@ -16,7 +16,7 @@ namespace TheForestWaiter.Game.Hud.Sections
 		private readonly SpriteFont _coinText;
 		private readonly GameData _game;
 
-		public PlayerHud(GameData game, ContentSource content)
+		public PlayerHud(float scale, GameData game, ContentSource content) : base(scale)
 		{
 			_game = game;
 			_boxSprite = content.Textures.CreateSprite("Textures/Hud/box.png");
@@ -62,11 +62,9 @@ namespace TheForestWaiter.Game.Hud.Sections
 			_coinText.Draw(window);
 		}
 
-		public override void Hover(Vector2f mouse) { }
-		public override bool IsMouseCaptured() => false;
-
-		public override void OnPrimaryReleased()
-		{ 
-		}
-	}
+		public override bool IsMouseOnAnyButton() => false;
+        public override void OnMouseMove(Vector2i mouse) { }
+		public override void OnPrimaryReleased() { }
+        public override void OnPrimaryPressed() { }
+    }
 }

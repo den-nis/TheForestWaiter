@@ -15,6 +15,7 @@ namespace TheForestWaiter.Game
 
         private const float HEIGHT_OFFSET = 100;
 
+        public Vector2u ViewportSize => _window.SfmlWindow.Size;
         public Vector2f MaxWorldView { get; } = new Vector2f(1920, 1080);
         public Vector2f TargetPosition { get; set; }
         public float TargetScale { get; set; } = 1;
@@ -60,10 +61,12 @@ namespace TheForestWaiter.Game
         public bool LockView { get; set; } = true;
 
         private readonly UserSettings _settings;
+        private readonly WindowHandle _window;
 
-        public Camera(UserSettings settings)
+        public Camera(UserSettings settings, WindowHandle window)
         {
             _settings = settings;
+            _window = window;
         }
 
         public void FollowPlayer(Vector2f position)
@@ -122,6 +125,11 @@ namespace TheForestWaiter.Game
         public View GetView()
         {
             return new View(Center, Size);
+        }
+
+        public View GetWindowView()
+        {
+            return GetWindowView(_window.SfmlWindow);
         }
 
         public static View GetWindowView(RenderWindow window)

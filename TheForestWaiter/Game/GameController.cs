@@ -87,7 +87,7 @@ namespace TheForestWaiter.Game
 
         private void WindowMouseButtonReleased(object sender, MouseButtonEventArgs e)
         {
-            if (_hud.IsMouseCaptured())
+            if (_hud.IsCaptured)
             {
                 _hud.PrimaryReleased();
             }
@@ -100,7 +100,9 @@ namespace TheForestWaiter.Game
 
         private void WindowMouseButtonPressed(object sender, MouseButtonEventArgs e)
         {
-            if (!_hud.IsMouseCaptured())
+            _hud.PrimaryPressed();
+
+            if (!_hud.IsCaptured)
             {
                 if (e.Button == _settings.Primary)
                     _game.Objects.Player.Controller.ToggleOn(ActionTypes.PrimaryAttack);
@@ -112,7 +114,7 @@ namespace TheForestWaiter.Game
             var mouse = new Vector2f(e.X, e.Y);
             var angle = (_camera.ToWorld(mouse) - _game.Objects.Player.Center).Angle() + (float)Math.PI * 2;
             _game.Objects.Player.Controller.Aim(angle);
-            _hud.Hover(mouse);
+            _hud.OnMouseMove(new Vector2i(e.X, e.Y));
         }
 
         private void WindowMouseWheelScrolled(object sender, MouseWheelScrollEventArgs e)

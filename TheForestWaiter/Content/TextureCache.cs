@@ -52,7 +52,7 @@ namespace TheForestWaiter.Content
             return animation;
         }
 
-        private void TryAddSections(AnimatedSprite sprite, ContentMeta meta)
+        private static void TryAddSections(AnimatedSprite sprite, ContentMeta meta)
         {
             if (meta.TextureConfig.Sections != null)
             {

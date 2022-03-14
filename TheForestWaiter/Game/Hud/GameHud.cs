@@ -1,20 +1,17 @@
 ﻿using SFML.Graphics;
 using SFML.System;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TheForestWaiter.Content;
 using TheForestWaiter.Game.Constants;
-using TheForestWaiter.Game.Essentials;
-using TheForestWaiter.Game.Graphics;
 using TheForestWaiter.Game.Hud.Sections;
 
 namespace TheForestWaiter.Game.Hud
 {
     internal class GameHud
     {
+        public bool IsCaptured { get; private set; } = false;
+
         private readonly List<HudSection> _sections;
         private readonly Camera _camera;
 
@@ -26,48 +23,63 @@ namespace TheForestWaiter.Game.Hud
 
             _sections = new()
             {
-                new PlayerHud(game, content)
+                new PlayerHud(scale, game, content)
                 {
                     Region = HudRegion.TopLeft,
                     Offset = new Vector2f(10, 10),
-                    Scale = scale
                 },
-                new WeaponsHud(game, content)
+                new WeaponsHud(scale, camera, game, content)
                 {
                     Region = HudRegion.BottomLeft,
-                    Scale = scale
                 },
-                new ShopHud(content, shop)
+                new ShopHud(scale, content, shop, camera)
                 {
                     Region = HudRegion.TopRight,
-                    Scale = scale * 0.9f,
                 }
             };
         }
 
+        public void Draw(RenderWindow window)
+        {
+            window.SetView(Camera.GetWindowView(window));
+
+            foreach (var section in _sections.Where(s => !s.Hidden))
+            {
+                section.Draw(window);
+            }
+
+            window.SetView(_camera.GetView());
+        }
+
         public void PrimaryReleased()
         {
-
-		}
-
-        public bool IsMouseCaptured()
-        {
-            bool captured = false;
-            foreach (var section in _sections)
+            foreach (var section in _sections.Where(s => !s.Hidden))
             {
-                if (section.IsMouseCaptured())
-                {
-                    captured = true;
-				}
+                section.OnPrimaryReleased();
             }
-            return captured;
-		}
+        }
 
-        public void Hover(Vector2f mouse)
+        public void PrimaryPressed()
+        {
+            if (ShouldCaptureWhenPress())
+            {
+                IsCaptured = true;
+                foreach (var section in _sections.Where(s => !s.Hidden))
+                {
+                    section.OnPrimaryPressed();
+                }
+            }
+            else
+            {
+                IsCaptured = false;
+            }
+        }
+
+        public void OnMouseMove(Vector2i mouse)
         {
             foreach (var section in _sections)
             {
-                section.Hover(mouse);
+                section.OnMouseMove(mouse);
 			}
 		}
 
@@ -77,16 +89,17 @@ namespace TheForestWaiter.Game.Hud
             section.Hidden = !section.Hidden;
         }
 
-        public void Draw(RenderWindow window)
+        private bool ShouldCaptureWhenPress()
         {
-            window.SetView(Camera.GetWindowView(window));
-
-            foreach(var section in _sections.Where(s => !s.Hidden))
+            foreach (var section in _sections.Where(s => !s.Hidden))
             {
-                section.Draw(window);
-			}
+                if (section.IsMouseOnAnyButton())
+                {
+                    return true;
+                }
+            }
 
-            window.SetView(_camera.GetView());
+            return false;
         }
     }
 }

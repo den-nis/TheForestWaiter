@@ -10,8 +10,9 @@ namespace TheForestWaiter.Game
 {
 	internal interface IDisplayProduct
 	{
-		string Name { get; }
+		int Id { get; }
 		int Price { get; }
+		string Name { get; }
 		string IconSource { get; }
 
 		bool IsAvailable();
@@ -19,6 +20,7 @@ namespace TheForestWaiter.Game
 
 	internal class Product : IDisplayProduct
 	{
+		public int Id { get; set; }
 		public string Name { get; set; } = "No name";
 		public string Type { get; set; } = "None";
 		public int Price { get; set; } = 1000;
@@ -72,11 +74,11 @@ namespace TheForestWaiter.Game
 		}
 		
 		/// <summary>
-		/// Returns a mesasge about the purchase
+		/// Returns a message about the purchase
 		/// </summary>
-		public string Purchase(string name)
+		public string Purchase(int id)
 		{
-			var product = _products.First(p => p.Name == name);
+			var product = _products.First(p => p.Id == id);
 
 			if (!product.IsAvailable())
 				return "Item is not available";
@@ -86,6 +88,7 @@ namespace TheForestWaiter.Game
 
 			product.Buy();
 			ApplyProduct(product);
+			_game.Session.Coins -= product.Price;
 
 			return $"Bought 1 x {product.Name}";
 		}
