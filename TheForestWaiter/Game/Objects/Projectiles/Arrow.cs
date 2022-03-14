@@ -1,9 +1,4 @@
 ﻿using SFML.System;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TheForestWaiter.Content;
 using TheForestWaiter.Game.Objects.Abstract;
 
@@ -13,13 +8,13 @@ namespace TheForestWaiter.Game.Objects.Projectiles
     {
         public Arrow(GameData game, ContentSource content) : base(game, content)
         {
-            Drag = new Vector2f(30, 0);
-            Gravity = 300;
+            Drag = new Vector2f(200, 0);
+            Penetration = 5;
+            Gravity = 900;
             RotationSpeed = 2f;
             ExplosionParticleName = "Particles/spark_gray.particle";
 
             SetTexture("Textures/Projectiles/arrow.png");
-
         }
     }
 }
