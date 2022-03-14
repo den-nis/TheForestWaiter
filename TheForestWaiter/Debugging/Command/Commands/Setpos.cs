@@ -5,7 +5,7 @@ using TheForestWaiter.Game;
 namespace TheForestWaiter.Debugging.Command.Commands
 {
     [Command("setpos", "Set the position of the player", "{x} {y}")]
-    class SetPos : ICommand
+    internal class SetPos : ICommand
     {
         private readonly GameData _game;
 

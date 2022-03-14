@@ -10,7 +10,7 @@ using TheForestWaiter.States;
 namespace TheForestWaiter.Debugging.Command.Commands
 {
     [Command("restart", "Change the current state to gamestate", "{name} ?{amount} ?{x} ?{y}")]
-    class Restart : ICommand
+    internal class Restart : ICommand
     {
         private readonly StateManager _stateManager;
         private readonly IServiceContainer _container;

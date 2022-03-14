@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace TheForestWaiter.Debugging.Command.Commands
 {
     [Command("timescale", "Speed up or slow time", "{number}")]
-    class Timescale : ICommand
+    internal class Timescale : ICommand
     {
         private readonly TimeProcessor _time;
 

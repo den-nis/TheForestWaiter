@@ -4,7 +4,7 @@ using TheForestWaiter.Game;
 namespace TheForestWaiter.Debugging.Command.Commands
 {
     [Command("fixdelta", "Fix delta time to a specific amount", "{number}")]
-    class FixDeltaTime : ICommand
+    internal class FixDeltaTime : ICommand
     {
         private readonly TimeProcessor _time;
 

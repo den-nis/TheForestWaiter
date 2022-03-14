@@ -4,7 +4,7 @@ using TheForestWaiter.Game;
 namespace TheForestWaiter.Debugging.Command.Commands
 {
     [Command("god", "")]
-    class GodMode : ICommand
+    internal class GodMode : ICommand
     {
         private readonly GameData _game;
 

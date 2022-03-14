@@ -8,7 +8,7 @@ using TheForestWaiter.Debugging.DebugConsole;
 namespace TheForestWaiter.Debugging.Command.Commands
 {
     [Command("help", "Shows commands")]
-    class Help : ICommand
+    internal class Help : ICommand
     {
         public void Execute(CommandHandler handler, string[] args)
         {

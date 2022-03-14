@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace TheForestWaiter.Debugging.Command.Commands
 {
     [Command("clear", "Clears the console")]
-    class Clear : ICommand
+    internal class Clear : ICommand
     {
         public void Execute(CommandHandler handler, string[] args)
         {

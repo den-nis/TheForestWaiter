@@ -4,7 +4,7 @@ using TheForestWaiter.Game;
 namespace TheForestWaiter.Debugging.Command.Commands
 {
     [Command("cameralock", "Locks or unlocks the camera")]
-    class CameraLock : ICommand
+    internal class CameraLock : ICommand
     {
         private readonly Camera _camera;
 

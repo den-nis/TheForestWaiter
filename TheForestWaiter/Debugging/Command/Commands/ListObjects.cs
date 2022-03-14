@@ -4,7 +4,7 @@ using TheForestWaiter.Debugging.DebugConsole;
 namespace TheForestWaiter.Debugging.Command.Commands
 {
 	[Command("list", "Show names of objects")]
-    class ListObjects : ICommand
+    internal class ListObjects : ICommand
     {
         public void Execute(CommandHandler handler, string[] args)
         {

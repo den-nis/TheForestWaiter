@@ -7,7 +7,7 @@ using TheForestWaiter.Game.Objects.Abstract;
 namespace TheForestWaiter.Debugging.Command.Commands
 {
 	[Command("spawn", "Spawn a creature", "{name} ?{amount} ?{x} ?{y}")]
-    class Spawn : ICommand
+    internal class Spawn : ICommand
     {
         private readonly IServiceContainer _container;
         private readonly GameData _game;
