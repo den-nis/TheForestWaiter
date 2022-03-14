@@ -15,7 +15,7 @@ namespace TheForestWaiter.Game.Objects.Abstract
 		protected string TrailParticleName { get; set; }
 		protected bool EnableTrail { get; set; } = false;
 
-		protected int RotationSmoothness { get; set; } = 10;
+		protected float RotationSpeed { get; set; } = 100;
 		protected float Range { get; set; } = 1000;
 		protected float Damage { get; set; } = 5;
 		protected float Knockback { get; set; } = 150;
@@ -52,7 +52,11 @@ namespace TheForestWaiter.Game.Objects.Abstract
 
 		private void Explode()
 		{
-			Game.Objects.WorldParticles.Emit(_content.Particles.Get(ExplosionParticleName, Center), 10);
+			if (ExplosionParticleName != null)
+			{
+				Game.Objects.WorldParticles.Emit(_content.Particles.Get(ExplosionParticleName, Center), 10);
+			}
+
 			Delete();
 		}
 
@@ -62,7 +66,12 @@ namespace TheForestWaiter.Game.Objects.Abstract
 
 			_spawn ??= Center;
 			_angle ??= Velocity.Angle();
-			_angle = (Velocity.Angle() * RotationSmoothness) / RotationSmoothness;
+
+			float currentAngle = _angle.Value;
+			float desiredAngle = Velocity.Angle();
+
+			var delta = (float)Math.Atan2(Math.Sin(desiredAngle - currentAngle), Math.Cos(desiredAngle - currentAngle));
+			_angle += delta * time * RotationSpeed * (float)Math.PI;
 
 			foreach (var creature in Game.Objects.Creatures)
 			{

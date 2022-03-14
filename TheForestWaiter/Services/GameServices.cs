@@ -40,8 +40,10 @@ namespace TheForestWaiter.Services
                 .RegisterScoped<DropSpawner>()
                 .RegisterScoped<ItemShop>()
 
+                //Weapons
                 .Register<Handgun>()
-                .Register<Sniper>();
+                .Register<Sniper>()
+                .Register<Bow>();
         }
 
         private void RegisterAllGameObjects()
