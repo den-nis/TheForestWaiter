@@ -70,7 +70,7 @@ namespace TheForestWaiter.Game
 		private void Load(string json)
 		{
 			_products = JsonConvert.DeserializeObject<List<Product>>(json);
-			Debug.Assert(_products.ToLookup(k => k.Name).Any(l => l.Count() > 1), "Detected duplicate names");
+			Debug.Assert(_products.ToLookup(k => k.Id).All(l => l.Count() == 1), "Duplicate ids");
 		}
 		
 		/// <summary>

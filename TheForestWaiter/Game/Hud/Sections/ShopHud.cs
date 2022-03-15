@@ -99,6 +99,10 @@ namespace TheForestWaiter.Game.Hud.Sections
 				for (int x = 0; x < COLUMNS; x++)
 				{
 					int i = y * COLUMNS + x;
+
+					if (i > _shop.Products.Count - 1)
+						return;
+
 					var item = _shop.Products[i];
 
 					_slots.Add(new ShopSlot()
