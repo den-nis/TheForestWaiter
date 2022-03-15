@@ -27,7 +27,7 @@ namespace TheForestWaiter
             if (SfmlWindow != null)
                 SfmlWindow.Close();
 
-            var title = _settings.Get("Window", "Title");  //TODO: make this type safe (remove the string methods from settings)
+            var title = _settings.Get("Window", "Title");
             var maxFps = (uint)_settings.GetInt("Window", "MaxFramerate");
 
             if (fullscreen)
