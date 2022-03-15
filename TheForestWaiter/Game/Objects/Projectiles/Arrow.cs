@@ -16,7 +16,7 @@ namespace TheForestWaiter.Game.Objects.Projectiles
             Drag = new Vector2f(30, 0);
             Gravity = 300;
             RotationSpeed = 2f;
-            ExplosionParticleName = null; //TODO: add particle
+            ExplosionParticleName = "Particles/spark_gray.particle";
 
             SetTexture("Textures/Projectiles/arrow.png");
 

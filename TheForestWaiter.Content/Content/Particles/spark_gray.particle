@@ -1,0 +1,29 @@
+﻿{
+	"colorStart": {
+		"R": 230,
+		"G": 230,
+		"B": 230,
+		"A": 255
+	},
+	"colorEnd": {
+		"R": 230,
+		"G": 230,
+		"B": 102,
+		"A": 0
+	},
+	"velocityVariation": {
+		"X": 200,
+		"Y": 200
+	},
+	"velocity": {
+		"X": 10,
+		"Y": 10
+	},
+	"sizeVariation": 1,
+	"sizeStart": 3,
+	"sizeEnd": 3,
+	"rotationSpeed": 2,
+	"rotationSpeedVariation": 10,
+	"lifeVariation": 2,
+	"life": 0
+}
