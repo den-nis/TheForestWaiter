@@ -1,13 +1,13 @@
 ﻿using SFML.Graphics;
 using SFML.System;
 using System;
+using System.Collections.Generic;
 using TheForestWaiter.Content;
-using TheForestWaiter.Game.Core;
 using TheForestWaiter.Game.Essentials;
 
 namespace TheForestWaiter.Game.Objects.Abstract
 {
-	internal abstract class Projectile : Movable
+    internal abstract class Projectile : Movable
 	{
 		public Creature Owner { get; private set; }
 
@@ -21,6 +21,7 @@ namespace TheForestWaiter.Game.Objects.Abstract
 		protected float Knockback { get; set; } = 150;
 		protected int Penetration { get; set; } = 1;
 
+		private readonly List<long> _damangedCreatureIds = new();
 		private readonly ContentSource _content;
 		private Vector2f? _spawn = null;
 		private float? _angle;
@@ -80,9 +81,12 @@ namespace TheForestWaiter.Game.Objects.Abstract
 					continue;
 				}
 
-				if (Collisions.SweptAABB(creature.FloatRect, FloatRect, Velocity * time, out _) < 1 || Intersects(creature))
+				bool touching = Collisions.SweptAABB(creature.FloatRect, FloatRect, Velocity * time, out _) < 1 || Intersects(creature);
+
+				if (touching && !_damangedCreatureIds.Contains(creature.GameObjectId))
 				{
 					creature.Damage(this, Damage, Knockback);
+					_damangedCreatureIds.Add(creature.GameObjectId);
 					_penetrated++;
 
 					if (_penetrated >= Penetration)

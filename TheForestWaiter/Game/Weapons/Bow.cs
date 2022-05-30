@@ -17,9 +17,9 @@ namespace TheForestWaiter.Game.Objects.Weapons
         { 
             AutoFire = false;
             Cone = TrigHelper.ToRad(5);
-            FireRatePerSecond = 5;
+            FireRatePerSecond = 3;
             FireSpeedVariation = 10;
-            FireSpeed = 900;
+            FireSpeed = 500;
 
             Sprite = content.Textures.CreateSprite("Textures/Weapons/bow.png");
         }
