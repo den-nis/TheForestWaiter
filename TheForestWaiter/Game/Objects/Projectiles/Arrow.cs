@@ -8,7 +8,6 @@ namespace TheForestWaiter.Game.Objects.Projectiles
     {
         public Arrow(GameData game, ContentSource content) : base(game, content)
         {
-            Drag = new Vector2f(200, 0);
             Penetration = 5;
             Gravity = 300;
             RotationSpeed = 2f;
