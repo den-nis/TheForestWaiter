@@ -1,86 +1,134 @@
 ﻿using SFML.Graphics;
 using SFML.System;
 using System;
+using System.Collections.Generic;
 using System.Linq;
-using TheForestWaiter.Game.Environment;
+using TheForestWaiter.Content;
+using TheForestWaiter.Game.Environment.Spawning;
 using TheForestWaiter.Game.Essentials;
 using TheForestWaiter.Game.Objects.Abstract;
 
 namespace TheForestWaiter.Game.Objects.Static
 {
 	internal class Spawner : Immovable
-    {
-		private readonly GameData _game;
+	{
+        private class InnerSpawner
+        {
+            public bool Enabled { get; set; } = true;
+
+            private Vector2f _left;
+            private Vector2f _right;
+
+            private readonly Timer _timer;
+			private readonly GameData _game;
+			private readonly SpawnJob _job;
+			private readonly ObjectCreator _creator;
+
+			public InnerSpawner(GameData gameData, SpawnJob job, ObjectCreator creator, Vector2f left, Vector2f right)
+			{
+                _left = left;
+                _right = right;
+                
+				_creator = creator;
+				_game = gameData;
+				_job = job;
+
+                _timer = new Timer(1 / job.Rate);
+				_timer.OnTick += OnSpawn;
+                _timer.Start();
+			}
+
+            public void Update(float time)
+            {
+                _timer.Update(time);
+			}
+
+			private void OnSpawn()
+			{
+                if (!Enabled)
+                    return;
+
+				var location = Rng.Bool() ? _left : _right;
+				var enemy = _creator.CreateType(Types.GameObjects[_job.Name]);
+                enemy.Center = location;
+
+				_game.Objects.AddGameObject(enemy);
+            }
+		}
+
+		private const int WAVE_LENGTH = 100;
+
+		private readonly WaveSettings _settings;
+        private int _currentWave = 1;
+        private float _waveTimer = 0; 
+        private float _checkTimer = 0;
+
+        private readonly List<InnerSpawner> _spawners = new();
 		private readonly ObjectCreator _creator;
-        private bool _initialUpdate = false;
-        private int _amount;
 
-        /// <summary>
-        /// 0 = Anywhere 
-        /// </summary>
-        private Vector2i _triggerDistance = new(0,0);
-
-        private readonly Timer _timer = new();
-        private Type _spawnType;
-
-        public Spawner(GameData game, ObjectCreator creator) : base(game)
-        {
-			_game = game;
+		public Spawner(GameData game, ObjectCreator creator, ContentSource content) : base(game)
+		{
+			var json = content.Source.GetString("waveSettings.json");
+			_settings = WaveSettings.FromJson(json);
 			_creator = creator;
-            _timer.OnTick += Spawn;
-        }
+		}
 
-        public override void Draw(RenderWindow window)
+		public override void Draw(RenderWindow window)
         {
+            
         }
 
         public override void Update(float time)
         {
-            _timer.Update(time);
-
-            if (!_initialUpdate)
+            //Setup the first wave
+            if (_waveTimer == 0 && _currentWave == 1)
             {
-                Spawn();
+                SetupWave();
 			}
 
-			_initialUpdate = true;
-        }
-
-        private void Spawn()
-        {
-            var distance = (_game.Objects.Player.Center - Center).Abs();
-
-            if ((distance.X < _triggerDistance.X || _triggerDistance.X == 0f) && (distance.Y < _triggerDistance.Y || _triggerDistance.Y == 0))
-            {
-                for (int i = 0; i < _amount; i++)
-                {
-                    var obj = _creator.CreateType(_spawnType);
-                    obj.Position = Position;
-                    Game.Objects.AddGameObject(obj);
-                }
-            }
-        }
-
-        public override void MapSetup(MapObject mapObject)
-        {
-            var lookup = mapObject.Properties.ToDictionary(k => k.Name, v => v.Value);
-            _amount = int.Parse(lookup["Amount"]);
+            _waveTimer += time;
+            _checkTimer += time;
             
-            var triggerDistanceParts = lookup["TriggerDistance"].Split(',');
-            _triggerDistance = new(
-                int.Parse(triggerDistanceParts[0]) * World.TILE_SIZE, 
-                int.Parse(triggerDistanceParts[1]) * World.TILE_SIZE
-                );
-
-            float interval = float.Parse(lookup["Interval"]);
-
-            if (interval != 0.0f)
+            if (_checkTimer > 1)
             {
-                _timer.SetInterval(interval);
-                _timer.OnTick += Spawn;
+                bool allEnemiesArekilled = !Game.Objects.Creatures.Any(x => !x.Friendly);
+                bool timeIsUp = _waveTimer > WAVE_LENGTH;
+
+                Console.WriteLine($"Time: {_waveTimer}/{WAVE_LENGTH}");
+
+                if (timeIsUp)
+                {
+                    if (_spawners[0].Enabled)
+                        _spawners.ForEach(x => x.Enabled = false);
+
+                    if (allEnemiesArekilled)
+                    {
+                        _currentWave++;
+                        Console.WriteLine($"Wave finished. Starting wave {_currentWave}");
+                        SetupWave();
+                    }
+                }
+
+                _checkTimer = 0;
             }
 
-            Types.GameObjects.TryGetValue(lookup["Object"], out _spawnType);
+            foreach(var spawner in _spawners)
+            {
+                spawner.Update(time);
+			}
+        }
+
+        private void SetupWave()
+        {
+            var enemies = _settings.Waves[_currentWave - 1].Enemies;
+
+            _spawners.Clear();
+            foreach (var enemy in enemies)
+            {
+				Console.WriteLine($"Creating spawner for {enemy.Name}");
+                var spawner = new InnerSpawner(Game, enemy, _creator, _settings.LeftSpawn, _settings.RightSpawn);
+                _spawners.Add(spawner);
+            }
         }
     }
 }

@@ -98,7 +98,7 @@ namespace TheForestWaiter
             var objects = map.Layers.Where(l => l.Type == "objectgroup").SelectMany(l => l.Objects);
             foreach (MapObject inf in objects)
             {
-                Types.GameObjects.TryGetValue(inf.Type, out Type type);
+                Types.GameObjects.TryGetValue(inf.Class, out Type type);
                 if (type != null)
                 {
                     var obj = _creator.CreateType(type);
@@ -108,7 +108,7 @@ namespace TheForestWaiter
                 }
                 else
                 {
-                    _debug.Log($"Missing type {inf.Type}");
+                    _debug.Log($"Missing type {inf.Class}");
                 }
             }
         }

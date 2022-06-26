@@ -1,0 +1,46 @@
+﻿{
+	"leftSpawn": [
+		32,
+		32
+	],
+
+	"rightSpawn": [
+		9568,
+		0
+	],
+
+	"waves": [
+		{
+			"enemies": [
+				{
+					"name": "Minirusher",
+					"rate": 0.1,
+					"increase": 0
+				}
+			]
+		},
+		{
+			"enemies": [
+				{
+					"name": "Minirusher",
+					"rate": 500,
+					"increase": 0.05
+				}
+			]
+		},
+		{
+			"enemies": [
+				{
+					"name": "Minirusher",
+					"rate": 5,
+					"increase": 2
+				},
+				{
+					"name": "Crawler",
+					"rate": 1,
+					"increase": 0.2
+				}
+			]
+		}
+	]
+}

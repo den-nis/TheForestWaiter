@@ -9,7 +9,7 @@ namespace TheForestWaiter.Game.Environment
         public int Width { get; set; }
         public int Height { get; set; }
         public float Rotation { get; set; }
-        public string Type { get; set; }
+        public string Class { get; set; }
         public bool Visible { get; set; }
         public float X { get; set; }
         public float Y { get; set; }

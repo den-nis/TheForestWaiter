@@ -1,0 +1,83 @@
+{
+    "automappingRulesFile": "",
+    "commands": [
+    ],
+    "extensionsPath": "extensions",
+    "folders": [
+        "."
+    ],
+    "propertyTypes": [
+        {
+            "color": "#ff1a6200",
+            "id": 1,
+            "members": [
+            ],
+            "name": "GrassField",
+            "type": "class",
+            "useAs": [
+                "object",
+                "tile"
+            ]
+        },
+        {
+            "color": "#ff000000",
+            "id": 2,
+            "members": [
+            ],
+            "name": "Minirusher",
+            "type": "class",
+            "useAs": [
+                "object",
+                "tile"
+            ]
+        },
+        {
+            "color": "#ff00ff15",
+            "id": 3,
+            "members": [
+            ],
+            "name": "Player",
+            "type": "class",
+            "useAs": [
+                "object",
+                "tile"
+            ]
+        },
+        {
+            "color": "#ff000000",
+            "id": 4,
+            "members": [
+            ],
+            "name": "Rusher",
+            "type": "class",
+            "useAs": [
+                "object",
+                "tile"
+            ]
+        },
+        {
+            "color": "#ff00b99d",
+            "id": 5,
+            "members": [
+            ],
+            "name": "Spawner",
+            "type": "class",
+            "useAs": [
+                "object",
+                "tile"
+            ]
+        },
+        {
+            "color": "#ff00ff15",
+            "id": 6,
+            "members": [
+            ],
+            "name": "Tree",
+            "type": "class",
+            "useAs": [
+                "object",
+                "tile"
+            ]
+        }
+    ]
+}
