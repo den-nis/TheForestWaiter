@@ -56,7 +56,7 @@ namespace TheForestWaiter.Game.Objects.Static
             }
 		}
 
-		private const int WAVE_LENGTH = 100;
+		private const int WAVE_LENGTH = 50;
 
 		private readonly WaveSettings _settings;
         private int _currentWave = 1;
@@ -72,6 +72,8 @@ namespace TheForestWaiter.Game.Objects.Static
 			_settings = WaveSettings.FromJson(json);
 			_creator = creator;
 		}
+
+        public int GetCurrentWave() => _currentWave;
 
 		public override void Draw(RenderWindow window)
         {
@@ -93,8 +95,6 @@ namespace TheForestWaiter.Game.Objects.Static
             {
                 bool allEnemiesArekilled = !Game.Objects.Creatures.Any(x => !x.Friendly);
                 bool timeIsUp = _waveTimer > WAVE_LENGTH;
-
-                Console.WriteLine($"Time: {_waveTimer}/{WAVE_LENGTH}");
 
                 if (timeIsUp)
                 {
@@ -120,6 +120,7 @@ namespace TheForestWaiter.Game.Objects.Static
 
         private void SetupWave()
         {
+            _waveTimer = 0;
             var enemies = _settings.Waves[_currentWave - 1].Enemies;
 
             _spawners.Clear();

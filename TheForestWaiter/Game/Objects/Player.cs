@@ -32,7 +32,7 @@ namespace TheForestWaiter.Game.Objects
             AutoJumpObstacles = false;
             Friendly = true;
             AirAcceleration = 1500;
-            AirSpeed = 100;
+            AirSpeed = 250;
             JumpForceVariation = 0;
             HorizontalOverflowDrag = 100;
 

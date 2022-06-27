@@ -35,7 +35,12 @@ namespace TheForestWaiter.Game.Hud
                 new ShopHud(scale, content, shop, camera)
                 {
                     Region = HudRegion.TopRight,
-                }
+                },
+                new WaveHud(scale, game, content)
+                {
+                    Region = HudRegion.BottomRight,
+                    Offset = new Vector2f(-10, -10)
+				}
             };
         }
 

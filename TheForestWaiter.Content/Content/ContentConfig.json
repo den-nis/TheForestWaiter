@@ -189,6 +189,16 @@
 				"framerate": 7,
 				"hasTileSpacing": true
 			}
+		},
+		{
+			"path": "Textures/Hud/wave_numbers.png",
+			"type": "Texture",
+
+			"textureConfig": {
+				"tileWidth": 12,
+				"tileHeight": 20,
+				"hasTileSpacing": true
+			}
 		}
 	]
 }
