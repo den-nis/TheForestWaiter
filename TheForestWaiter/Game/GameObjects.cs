@@ -18,6 +18,7 @@ namespace TheForestWaiter
     {
         public bool EnableDrawHitBoxes { get; set; } = false;
 
+        private readonly Queue<GameObject> _queue = new();
         private readonly UserSettings _settings;
         private readonly ObjectCreator _creator;
         private readonly Camera _camera;
@@ -87,6 +88,7 @@ namespace TheForestWaiter
 
         public void Update(float time)
         {
+            HandleQueue();
             ForAllContainers(c => c.Update(time));
             WorldParticles.Update(time);
         }
@@ -121,6 +123,19 @@ namespace TheForestWaiter
             }
         }
 
+        private void HandleQueue()
+        {
+            while(_queue.Count > 0)
+            {
+                AddGameObject(_queue.Dequeue());
+			}
+		}
+
+        /// <summary>
+        /// Will add the gameobjects next frame
+        /// </summary>
+        public void QueueAddGameObject(GameObject obj) => _queue.Enqueue(obj);
+        
         /// <summary>
         /// Adds the object to the correct object container
         /// </summary>
