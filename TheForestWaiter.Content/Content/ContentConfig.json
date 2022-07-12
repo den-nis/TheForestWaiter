@@ -108,6 +108,40 @@
 			}
 		},
 		{
+			"path": "Textures/Enemies/bigrusher.png",
+			"type": "Texture",
+
+			"textureConfig": {
+
+				"tileWidth": 176,
+				"tileHeight": 152,
+				"hasTileSpacing": true,
+
+				"sections": [
+					{
+						"name": "walking",
+						"fps": 4,
+						"start": 0,
+						"end": 7
+					},
+					{
+						"name": "idle",
+						"fixedFrame": 0
+					}
+				]
+			}
+		},
+		{
+			"path": "Textures/Enemies/bigrusher_gibs.png",
+			"type": "Texture",
+
+			"textureConfig": {
+				"tileWidth": 88,
+				"tileHeight": 64,
+				"hasTileSpacing": true
+			}
+		},
+		{
 			"path": "Textures/Enemies/crawler.png",
 			"type": "Texture",
 
