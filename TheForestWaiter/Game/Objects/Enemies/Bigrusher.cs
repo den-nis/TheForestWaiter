@@ -28,13 +28,14 @@ namespace TheForestWaiter.Game.Objects.Enemies
 
 			dropSpawner.Setup("Textures/Enemies/bigrusher_gibs.png");
 			dropSpawner.ChanceOfHeartDrop = 0.01f;
+			dropSpawner.MaxAmountCoins = 25;
 
 			SetMaxHealth(600, true);
 			UseHoldJumpWhenChase = true;
-			Gravity = 200;
+			Gravity = 300;
 			WalkSpeed = 90;
-			JumpForce = 150;
-			JumpForceVariation = 10;
+			JumpForce = 200;
+			JumpForceVariation = 200;
 			AirSpeed = 100;
 			AirAcceleration = 500;
 			Acceleration = 300;

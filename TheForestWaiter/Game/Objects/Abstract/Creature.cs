@@ -117,7 +117,7 @@ namespace TheForestWaiter.Game.Objects.Abstract
         private void SetStunVelocity(Movable by, float knockback)
         {
             var variation = Rng.Range(-KNOCKBACK_VARIATION, KNOCKBACK_VARIATION) * knockback;
-            var knockbackForce = Math.Max(0, knockback - KnockbackResistance + variation);
+            var knockbackForce = Math.Max(0, (knockback + variation) - KnockbackResistance);
 
             var angle = (Center - by.Center).Angle();
             angle += Rng.Range(-STUN_CONE, STUN_CONE);
