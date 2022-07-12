@@ -1,4 +1,5 @@
 ﻿using SFML.Graphics;
+using SFML.System;
 using System;
 using TheForestWaiter.Content;
 using TheForestWaiter.Game.Essentials;
@@ -12,13 +13,15 @@ namespace TheForestWaiter.Game.Objects.Enemies
 	{
 		private const float ATTACK_DAMAGE = 10;
 		private const float KNOCKBACK = 100;
+		private const int SPAWN_MINIONS = 20;
 
 		private readonly AnimatedSprite _animation;
 		private readonly RandomTrigger _jumpTrigger;
 		private readonly ContentSource _content;
 		private readonly DropSpawner _dropSpawner;
+		private readonly ObjectCreator _creator;
 
-		public Bigrusher(GameData game, ContentSource content, DropSpawner dropSpawner) : base(game)
+		public Bigrusher(GameData game, ContentSource content, DropSpawner dropSpawner, ObjectCreator creator) : base(game)
 		{
 			_animation = content.Textures.CreateAnimatedSprite("Textures/Enemies/bigrusher.png");
 			Size = _animation.Sheet.TileSize.ToVector2f();
@@ -26,18 +29,21 @@ namespace TheForestWaiter.Game.Objects.Enemies
 			dropSpawner.Setup("Textures/Enemies/bigrusher_gibs.png");
 			dropSpawner.ChanceOfHeartDrop = 0.01f;
 
-			SetMaxHealth(10, true);
+			SetMaxHealth(600, true);
 			UseHoldJumpWhenChase = true;
-			WalkSpeed = 220 + Rng.Range(0, 100);
-			JumpForce = 350;
-			JumpForceVariation = 200;
+			Gravity = 200;
+			WalkSpeed = 90;
+			JumpForce = 150;
+			JumpForceVariation = 10;
 			AirSpeed = 100;
 			AirAcceleration = 500;
-			Acceleration = 3000;
+			Acceleration = 300;
+			KnockbackResistance = 10000;
 
 			_jumpTrigger = new RandomTrigger(Jump, 70, 1, 2);
 			_content = content;
 			_dropSpawner = dropSpawner;
+			_creator = creator;
 		}
 
 		public override void Update(float time)
@@ -87,13 +93,26 @@ namespace TheForestWaiter.Game.Objects.Enemies
 		protected override void OnDeath()
 		{
 			_dropSpawner.Spawn(Center);
+
+			for (int i = 0; i < SPAWN_MINIONS; i++)
+			{
+				var at = Center + new Vector2f(Rng.Var(40), Rng.Var(40));
+				var speed = (at - Center).Norm() * 400;
+
+				var obj = _creator.CreateAndShoot<Minirusher>(at, speed);
+				Game.Objects.QueueAddGameObject(obj);
+			}
+
 			Delete();
 		}
 
 		protected override void OnDamage(GameObject by)
 		{
-			var prop = _content.Particles.Get("Particles/blood.particle", Center);
-			Game.Objects.WorldParticles.Emit(prop, 5);
+			for (int i = 0; i < 10; i++)
+			{
+				var prop = _content.Particles.Get("Particles/blood.particle", Center + new Vector2f(Rng.Var(30), Rng.Var(30)));
+				Game.Objects.WorldParticles.Emit(prop, 5);
+			}
 		}
 	}
 }
