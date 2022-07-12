@@ -35,10 +35,10 @@ namespace TheForestWaiter.Services
                 .RegisterScoped<GameObjects>()
                 .RegisterScoped<World>()
                 .RegisterScoped<ObjectCreator>()
-                .RegisterScoped<GibSpawner>()
-                .RegisterScoped<PickupSpawner>()
-                .RegisterScoped<DropSpawner>()
                 .RegisterScoped<ItemShop>()
+                .Register<PickupSpawner>()
+                .Register<DropSpawner>()
+                .Register<GibSpawner>()
 
                 //Weapons
                 .Register<Handgun>()
