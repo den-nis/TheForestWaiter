@@ -103,13 +103,13 @@ namespace TheForestWaiter.Game.Objects.Abstract
 						return;
 					}
 				}
+			}
 
-				_traveled = (Center - _spawn.Value).Len();
-				if (_traveled > Range || CollisionFlags > 0)
-				{
-					Explode();
-					return;
-				}
+			_traveled = (Center - _spawn.Value).Len();
+			if (_traveled > Range || CollisionFlags > 0)
+			{
+				Explode();
+				return;
 			}
 
 			_sprite.Rotation = TrigHelper.ToDeg(_angle.Value);
