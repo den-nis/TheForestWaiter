@@ -31,6 +31,10 @@ namespace TheForestWaiter.Game.Weapons
             FireSpeedVariation = 100;
 
             Sprite = content.Textures.CreateSprite("Textures/Weapons/chaingun.png");
+            FireSound = content.Sounds.CreateGameSound("Sounds/Weapons/chaingun.wav");
+            FireSound.PitchVariation = 0.5f;
+            FireSound.Volume = 40f;
+
             _content = content;
         }
 
@@ -78,8 +82,7 @@ namespace TheForestWaiter.Game.Weapons
 
         public override void OnFire()
         {
-            Game.Objects.WorldParticles.Emit(_content.Particles.Get("Particles/handgun_smoke.particle", BarrelPosition, ShotFromAngle, 400), 10);
-            
+            Game.Objects.WorldParticles.Emit(_content.Particles.Get("Particles/handgun_smoke.particle", BarrelPosition, GetShotFromAngle(), 400), 10);
             FireProjectile<ChainBullet>();
         }
     }

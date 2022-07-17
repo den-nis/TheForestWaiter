@@ -35,6 +35,7 @@ namespace TheForestWaiter.Game.Objects
             AirSpeed = 250;
             JumpForceVariation = 0;
             HorizontalOverflowDrag = 100;
+            InvincibleWhenStunned = true;
 
             Weapons.Add(creator.CreateWeapon<Handgun>());
             Weapons.OnEquipedChanged += OnEquipmentChangedEventHandler;

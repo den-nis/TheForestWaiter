@@ -16,6 +16,7 @@ namespace TheForestWaiter.Game.Objects.Abstract
         public float HealthPercentage => _maxHealth / Health;
         public bool Alive { get; private set; } = true;
         public bool IsStunned => _stunTimer > 0;
+        public bool InvincibleWhenStunned { get; set; } = false;
 
         public bool Friendly { get; protected set; } = false;
         protected bool Invincible { get; set; }
@@ -53,7 +54,7 @@ namespace TheForestWaiter.Game.Objects.Abstract
 
         public void Damage(Movable by, float amount, float knockback)
         {
-            if (IsStunned || !Alive)
+            if ((InvincibleWhenStunned && IsStunned) || !Alive)
             {
                 return;
             }

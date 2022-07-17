@@ -12,6 +12,7 @@ namespace TheForestWaiter.Shared
         Texture,
         Font,
         Particle,
+        Sound,
     }
 
     public class ContentConfig

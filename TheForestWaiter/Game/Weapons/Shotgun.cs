@@ -25,12 +25,13 @@ namespace TheForestWaiter.Game.Weapons
             KickbackForce = 50;
 
             Sprite = content.Textures.CreateSprite("Textures/Weapons/shotgun.png");
+            FireSound = content.Sounds.CreateGameSound("Sounds/Weapons/shotgun_{n}.wav");
             _content = content;
         }
 
 		public override void OnFire()
 		{
-            Game.Objects.WorldParticles.Emit(_content.Particles.Get("Particles/handgun_smoke.particle", BarrelPosition, ShotFromAngle, 120), 10);
+            Game.Objects.WorldParticles.Emit(_content.Particles.Get("Particles/handgun_smoke.particle", BarrelPosition, GetShotFromAngle(), 120), 10);
 
             for (int i = 0; i < 10; i++)
             {

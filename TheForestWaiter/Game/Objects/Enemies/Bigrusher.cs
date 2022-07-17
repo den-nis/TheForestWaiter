@@ -13,7 +13,7 @@ namespace TheForestWaiter.Game.Objects.Enemies
 	{
 		private const float ATTACK_DAMAGE = 10;
 		private const float KNOCKBACK = 100;
-		private const int SPAWN_MINIONS = 20;
+		private const int SPAWN_MINIONS = 50;
 
 		private readonly AnimatedSprite _animation;
 		private readonly RandomTrigger _jumpTrigger;
@@ -30,7 +30,7 @@ namespace TheForestWaiter.Game.Objects.Enemies
 			dropSpawner.ChanceOfHeartDrop = 0.01f;
 			dropSpawner.MaxAmountCoins = 25;
 
-			SetMaxHealth(600, true);
+			SetMaxHealth(3000, true);
 			UseHoldJumpWhenChase = true;
 			Gravity = 300;
 			WalkSpeed = 90;

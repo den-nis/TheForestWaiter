@@ -1,8 +1,10 @@
-﻿using SFML.Graphics;
+﻿using SFML.Audio;
+using SFML.Graphics;
 using SFML.System;
 using System;
 using TheForestWaiter.Game.Essentials;
 using TheForestWaiter.Game.Objects.Abstract;
+using TheForestWaiter.Game.Sounds;
 
 namespace TheForestWaiter.Game.Weapons.Abstract
 {
@@ -28,6 +30,9 @@ namespace TheForestWaiter.Game.Weapons.Abstract
 
         protected GameData Game { get; set; }
         protected Sprite Sprite { get; set; }
+
+        protected GameSound FireSound { get; set; }
+        protected GameSound StuckSound { get; set; }
 
         public Vector2f LastAim { get; private set; }
         public float LastAimAngle { get; private set; }
@@ -60,17 +65,17 @@ namespace TheForestWaiter.Game.Weapons.Abstract
         {
             if (Game.World.TouchingSolid(BarrelPosition + TrigHelper.FromAngleRad(GetShotFromAngle(), 10)))
             {
-                //Gun is stuck in wall
-                //TODO: play sound?
+                StuckSound?.Play();
             }
             else
             {
+                FireSound?.Play();
                 OnFire();
                 Kickback();
             }
         }
 
-        private float GetShotFromAngle()
+        protected float GetShotFromAngle()
         {
             return LastAimAngle + (Cone * (Rng.Float() - 0.5f)); 
         }

@@ -21,7 +21,10 @@ namespace TheForestWaiter.Game.Weapons
             FireSpeedVariation = 10;
             FireSpeed = 500;
 
+            FireSound = content.Sounds.CreateGameSound("Sounds/Weapons/bow.wav");
             Sprite = content.Textures.CreateSprite("Textures/Weapons/bow.png");
+
+            FireSound.PitchVariation = 0.05f;
         }
 
 		public override void OnFire()

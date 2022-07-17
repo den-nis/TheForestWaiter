@@ -18,6 +18,7 @@ namespace TheForestWaiter.Content
                 ".png" or ".jpg" => ContentType.Texture,
                 ".ttf" => ContentType.Font,
                 ".particle" => ContentType.Particle,
+                ".wav" => ContentType.Sound,
                 _ => ContentType.Raw,
             };
         }
