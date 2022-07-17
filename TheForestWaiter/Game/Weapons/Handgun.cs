@@ -27,7 +27,7 @@ namespace TheForestWaiter.Game.Weapons
 
 		public override void OnFire()
 		{
-            Game.Objects.WorldParticles.Emit(_content.Particles.Get("Particles/handgun_smoke.particle", BarrelPosition, LastShotFromAngle, 120), 10);
+            Game.Objects.WorldParticles.Emit(_content.Particles.Get("Particles/handgun_smoke.particle", BarrelPosition, ShotFromAngle, 120), 10);
             FireProjectile<SmallBullet>();
 		}
 	}

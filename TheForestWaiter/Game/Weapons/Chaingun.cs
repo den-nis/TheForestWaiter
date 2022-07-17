@@ -18,7 +18,9 @@ namespace TheForestWaiter.Game.Weapons
         protected override Vector2f Origin => new(1, 5);
 
         private const int BEST_FIRERATE = 150;
-        private const int OVER_HEAT = 10;
+        private const int OVER_HEAT = 13;
+        private const int TIME_STUCK = 3;
+        private float _stuckTimer = 0;
         private float _heat = 0;
 
         public Chaingun(GameData game, ContentSource content, ObjectCreator creator) : base(game, creator)
@@ -26,6 +28,7 @@ namespace TheForestWaiter.Game.Weapons
             AutoFire = true;
             Cone = TrigHelper.ToRad(20);
             FireRatePerSecond = 100;
+            FireSpeedVariation = 100;
 
             Sprite = content.Textures.CreateSprite("Textures/Weapons/chaingun.png");
             _content = content;
@@ -35,10 +38,21 @@ namespace TheForestWaiter.Game.Weapons
 		{
 			base.BackgroundUpdate(time);
 
+            if (_stuckTimer > 0)
+            {
+                _stuckTimer -= time;
+                return;
+			}
+
             if (Firing)
             {
                 _heat += time;
-                _heat = Math.Min(OVER_HEAT, _heat);
+
+                if (_heat > OVER_HEAT)
+                {
+                    _stuckTimer = TIME_STUCK;
+                    return;
+				}
             }
             else
             {
@@ -64,7 +78,8 @@ namespace TheForestWaiter.Game.Weapons
 
         public override void OnFire()
         {
-            Game.Objects.WorldParticles.Emit(_content.Particles.Get("Particles/handgun_smoke.particle", BarrelPosition, LastShotFromAngle, 120), 10);
+            Game.Objects.WorldParticles.Emit(_content.Particles.Get("Particles/handgun_smoke.particle", BarrelPosition, ShotFromAngle, 400), 10);
+            
             FireProjectile<ChainBullet>();
         }
     }

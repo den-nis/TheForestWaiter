@@ -42,6 +42,7 @@ namespace TheForestWaiter.Services
 
                 //Weapons
                 .Register<Handgun>()
+                .Register<Shotgun>()
                 .Register<Chaingun>()
                 .Register<Sniper>()
                 .Register<Bow>();

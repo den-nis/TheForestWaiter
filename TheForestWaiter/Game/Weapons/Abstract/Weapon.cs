@@ -29,7 +29,6 @@ namespace TheForestWaiter.Game.Weapons.Abstract
         protected GameData Game { get; set; }
         protected Sprite Sprite { get; set; }
 
-        public float LastShotFromAngle { get; private set; }
         public Vector2f LastAim { get; private set; }
         public float LastAimAngle { get; private set; }
 
@@ -59,9 +58,7 @@ namespace TheForestWaiter.Game.Weapons.Abstract
 
         private void Fire()
         {
-            LastShotFromAngle = LastAimAngle + (Cone * (Rng.Float() - 0.5f));
-
-            if (Game.World.TouchingSolid(BarrelPosition + TrigHelper.FromAngleRad(LastShotFromAngle, 10)))
+            if (Game.World.TouchingSolid(BarrelPosition + TrigHelper.FromAngleRad(GetShotFromAngle(), 10)))
             {
                 //Gun is stuck in wall
                 //TODO: play sound?
@@ -72,6 +69,12 @@ namespace TheForestWaiter.Game.Weapons.Abstract
                 Kickback();
             }
         }
+
+        private float GetShotFromAngle()
+        {
+            return LastAimAngle + (Cone * (Rng.Float() - 0.5f)); 
+        }
+
 
         /// <summary>
         /// Gets called even when the weapon is not equiped (only if the player has the weapon available)
@@ -117,7 +120,7 @@ namespace TheForestWaiter.Game.Weapons.Abstract
 
         protected void FireProjectile<T>() where T : Projectile
         {
-            var velocity = TrigHelper.FromAngleRad(LastShotFromAngle, Rng.Var(FireSpeed, FireSpeedVariation));
+            var velocity = TrigHelper.FromAngleRad(GetShotFromAngle(), Rng.Var(FireSpeed, FireSpeedVariation));
             var bullet = _creator.FireProjectile<T>(BarrelPosition, velocity, Game.Objects.Player);
             Game.Objects.Projectiles.Add(bullet);
         }
