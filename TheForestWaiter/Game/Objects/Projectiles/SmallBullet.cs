@@ -8,6 +8,7 @@ namespace TheForestWaiter.Game.Objects.Projectiles
 		public SmallBullet(GameData game, ContentSource content) : base(game, content)
 		{
 			SetTexture("Textures/Projectiles/bullet_generic.png");
+			Damage = 20;
 		}
 	}
 }

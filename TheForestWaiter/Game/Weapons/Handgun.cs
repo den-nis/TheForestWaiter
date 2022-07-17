@@ -19,7 +19,7 @@ namespace TheForestWaiter.Game.Weapons
         { 
             AutoFire = true;
             Cone = TrigHelper.ToRad(5);
-            FireRatePerSecond = 3;
+            FireRatePerSecond = 5;
 
             Sprite = content.Textures.CreateSprite("Textures/Weapons/handgun.png");
             FireSound = content.Sounds.CreateGameSound("Sounds/Weapons/handgun_{n}.wav");
