@@ -4,9 +4,9 @@ using System;
 using TheForestWaiter.Content;
 using TheForestWaiter.Game.Essentials;
 using TheForestWaiter.Game.Objects.Projectiles;
-using TheForestWaiter.Game.Objects.Weapons.Abstract;
+using TheForestWaiter.Game.Weapons.Abstract;
 
-namespace TheForestWaiter.Game.Objects.Weapons
+namespace TheForestWaiter.Game.Weapons
 {
 	internal class Sniper : Weapon
     {
@@ -19,7 +19,7 @@ namespace TheForestWaiter.Game.Objects.Weapons
 
         private readonly ContentSource _content;
 
-        protected override Vector2f AttachPoint => Game.Objects.Player.Center - new Vector2f(0, 1);
+        protected override Vector2f AttachPoint => Game.Objects.Player.Center;
         protected override Vector2f Origin => new(0f, 3f);
 
 		public Sniper(GameData game, ContentSource content, ObjectCreator creator) : base(game, creator)

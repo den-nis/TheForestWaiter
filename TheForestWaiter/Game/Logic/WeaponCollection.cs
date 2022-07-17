@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using TheForestWaiter.Game.Objects.Weapons.Abstract;
+using TheForestWaiter.Game.Weapons.Abstract;
 
 namespace TheForestWaiter.Game.Logic
 {
 	internal class WeaponCollection
 	{
-		public event Action OnEquipedChanged = delegate { };
+	
+		/// <summary>
+		/// Parameter = previous weaopn
+		/// </summary>
+		public event Action<Weapon> OnEquipedChanged = delegate { };
 
 		public IReadOnlyList<Weapon> OwnedWeapons => _ownedWeapons;
 		private readonly List<Weapon> _ownedWeapons = new();
@@ -28,8 +32,9 @@ namespace TheForestWaiter.Game.Logic
 
 			if (index != _equipedIndex)
 			{
+				var previous = _equipedIndex;
 				_equipedIndex = index;
-				OnEquipedChanged();
+				OnEquipedChanged(_ownedWeapons[previous]);
 			}
 		}
 

@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TheForestWaiter.Game.Objects.Weapons.Abstract;
-
-namespace TheForestWaiter.Game
+﻿namespace TheForestWaiter.Game
 {
 	internal class Session
 	{

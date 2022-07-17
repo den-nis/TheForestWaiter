@@ -6,7 +6,7 @@ using TheForestWaiter.Game.Gibs;
 using TheForestWaiter.Game.Hud;
 using TheForestWaiter.Game.Logic;
 using TheForestWaiter.Game.Objects.Items;
-using TheForestWaiter.Game.Objects.Weapons;
+using TheForestWaiter.Game.Weapons;
 
 namespace TheForestWaiter.Services
 {
@@ -42,6 +42,7 @@ namespace TheForestWaiter.Services
 
                 //Weapons
                 .Register<Handgun>()
+                .Register<Chaingun>()
                 .Register<Sniper>()
                 .Register<Bow>();
         }

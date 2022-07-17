@@ -2,7 +2,7 @@
 using SFML.System;
 using System;
 using TheForestWaiter.Game.Objects.Abstract;
-using TheForestWaiter.Game.Objects.Weapons.Abstract;
+using TheForestWaiter.Game.Weapons.Abstract;
 
 namespace TheForestWaiter.Game
 {

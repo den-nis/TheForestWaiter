@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TheForestWaiter.Content;
 using TheForestWaiter.Game.Essentials;
-using TheForestWaiter.Game.Objects.Weapons.Abstract;
+using TheForestWaiter.Game.Weapons.Abstract;
 
 namespace TheForestWaiter.Game.Hud.Sections
 {

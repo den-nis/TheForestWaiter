@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using TheForestWaiter.Content;
-using TheForestWaiter.Game.Objects.Weapons.Abstract;
+using TheForestWaiter.Game.Weapons.Abstract;
 
 namespace TheForestWaiter.Game
 {

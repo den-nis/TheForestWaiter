@@ -14,9 +14,10 @@ namespace TheForestWaiter.Game.Objects.Abstract
 		protected string ExplosionParticleName { get; set; } = "Particles/spark.particle";
 		protected string TrailParticleName { get; set; }
 		protected bool EnableTrail { get; set; } = false;
+		protected bool RemoveOnLowMovement { get; set; } = true; //If a bullet some how stops moving, remove it.
 
 		protected float RotationSpeed { get; set; } = 100;
-		protected float Range { get; set; } = 1000;
+		protected float Range { get; set; } = 1500;
 		protected float Damage { get; set; } = 5;
 		protected float Knockback { get; set; } = 150;
 		protected int Penetration { get; set; } = 1;
@@ -64,6 +65,13 @@ namespace TheForestWaiter.Game.Objects.Abstract
 		public override void Update(float time)
 		{
 			base.Update(time);
+
+
+			if (RemoveOnLowMovement && Velocity.Len() < 0.1f)
+			{
+				Explode();
+				return;
+			}
 
 			_spawn ??= Center;
 			_angle ??= Velocity.Angle();

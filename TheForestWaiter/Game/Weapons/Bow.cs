@@ -2,9 +2,9 @@
 using TheForestWaiter.Content;
 using TheForestWaiter.Game.Essentials;
 using TheForestWaiter.Game.Objects.Projectiles;
-using TheForestWaiter.Game.Objects.Weapons.Abstract;
+using TheForestWaiter.Game.Weapons.Abstract;
 
-namespace TheForestWaiter.Game.Objects.Weapons
+namespace TheForestWaiter.Game.Weapons
 {
 	internal class Bow : Weapon
     {

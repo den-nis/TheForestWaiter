@@ -4,7 +4,7 @@ using System;
 using TheForestWaiter.Game.Essentials;
 using TheForestWaiter.Game.Objects.Abstract;
 
-namespace TheForestWaiter.Game.Objects.Weapons.Abstract
+namespace TheForestWaiter.Game.Weapons.Abstract
 {
 	internal abstract class Weapon : Drawable
     {
@@ -72,6 +72,11 @@ namespace TheForestWaiter.Game.Objects.Weapons.Abstract
                 Kickback();
             }
         }
+
+        /// <summary>
+        /// Gets called even when the weapon is not equiped (only if the player has the weapon available)
+        /// </summary>
+        public virtual void BackgroundUpdate(float time) { }
 
         public virtual void Update(float time)
         {

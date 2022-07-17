@@ -6,8 +6,8 @@ using TheForestWaiter.Game.Essentials;
 using TheForestWaiter.Game.Graphics;
 using TheForestWaiter.Game.Logic;
 using TheForestWaiter.Game.Objects.Abstract;
-using TheForestWaiter.Game.Objects.Weapons;
-using TheForestWaiter.Game.Objects.Weapons.Abstract;
+using TheForestWaiter.Game.Weapons;
+using TheForestWaiter.Game.Weapons.Abstract;
 
 namespace TheForestWaiter.Game.Objects
 {
@@ -82,6 +82,11 @@ namespace TheForestWaiter.Game.Objects
 			}
 
             HandleAnimations(time);
+
+            foreach (var weapon in Weapons.OwnedWeapons)
+            {
+                weapon.BackgroundUpdate(time);
+            }
         }
 
 		public override void Draw(RenderWindow window)
@@ -140,10 +145,9 @@ namespace TheForestWaiter.Game.Objects
             _sprite.Update(time);
         }
 
-        private void OnEquipmentChangedEventHandler()
+        private void OnEquipmentChangedEventHandler(Weapon previous)
 		{
-			var previousWeapon = Weapons.GetEquiped();
-            previousWeapon.Firing = false;
+            previous.Firing = false;
 			_switchCooldown = SWITCH_COOLDOWN_TIME;
         }
 

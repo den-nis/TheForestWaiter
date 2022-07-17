@@ -6,8 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TheForestWaiter.Game.Core;
 using TheForestWaiter.Game.Objects.Abstract;
-using TheForestWaiter.Game.Objects.Weapons;
-using TheForestWaiter.Game.Objects.Weapons.Abstract;
+using TheForestWaiter.Game.Weapons.Abstract;
 
 namespace TheForestWaiter
 {
