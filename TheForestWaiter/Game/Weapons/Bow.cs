@@ -13,7 +13,7 @@ namespace TheForestWaiter.Game.Weapons
         protected override Vector2f AttachPoint => Game.Objects.Player.Center - new Vector2f(0, 1);
         protected override Vector2f Origin => new(2.5f, 8.5f);
 
-		public Bow(GameData game, ContentSource content, ObjectCreator creator) : base(game, creator)
+		public Bow(GameData game, ContentSource content, ObjectCreator creator, SoundSystem sound) : base(game, creator, sound)
         { 
             AutoFire = false;
             Cone = TrigHelper.ToRad(5);
@@ -21,7 +21,7 @@ namespace TheForestWaiter.Game.Weapons
             FireSpeedVariation = 10;
             FireSpeed = 500;
 
-            FireSound = content.Sounds.CreateGameSound("Sounds/Weapons/bow.wav");
+            FireSound = new("Sounds/Weapons/bow.wav");
             Sprite = content.Textures.CreateSprite("Textures/Weapons/bow.png");
 
             FireSound.PitchVariation = 0.05f;

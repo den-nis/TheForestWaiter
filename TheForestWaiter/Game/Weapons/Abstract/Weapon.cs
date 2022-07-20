@@ -4,7 +4,6 @@ using SFML.System;
 using System;
 using TheForestWaiter.Game.Essentials;
 using TheForestWaiter.Game.Objects.Abstract;
-using TheForestWaiter.Game.Sounds;
 
 namespace TheForestWaiter.Game.Weapons.Abstract
 {
@@ -31,21 +30,22 @@ namespace TheForestWaiter.Game.Weapons.Abstract
         protected GameData Game { get; set; }
         protected Sprite Sprite { get; set; }
 
-        protected GameSound FireSound { get; set; }
-        protected GameSound StuckSound { get; set; }
+        protected SoundInfo FireSound { get; set; }
+        protected SoundInfo StuckSound { get; set; }
 
         public Vector2f LastAim { get; private set; }
         public float LastAimAngle { get; private set; }
 
         private readonly ObjectCreator _creator;
-
-        private float _fireTimer;
+		private readonly SoundSystem _sound;
+		private float _fireTimer;
         private bool _firstShot;
 
-        public Weapon(GameData game, ObjectCreator creator)
+        public Weapon(GameData game, ObjectCreator creator, SoundSystem sound)
         {
             _creator = creator;
-            Game = game;
+			_sound = sound;
+			Game = game;
         }
 
         public abstract void OnFire();
@@ -65,11 +65,11 @@ namespace TheForestWaiter.Game.Weapons.Abstract
         {
             if (Game.World.TouchingSolid(BarrelPosition + TrigHelper.FromAngleRad(GetShotFromAngle(), 10)))
             {
-                StuckSound?.Play();
+               _sound.Play(StuckSound ?? SoundInfo.None);
             }
             else
             {
-                FireSound?.Play();
+                _sound.Play(FireSound ?? SoundInfo.None);
                 OnFire();
                 Kickback();
             }

@@ -22,7 +22,7 @@ namespace TheForestWaiter.Game.Weapons
         protected override Vector2f AttachPoint => Game.Objects.Player.Center;
         protected override Vector2f Origin => new(0f, 3f);
 
-		public Sniper(GameData game, ContentSource content, ObjectCreator creator) : base(game, creator)
+		public Sniper(GameData game, ContentSource content, ObjectCreator creator, SoundSystem sound) : base(game, creator, sound)
         {
             _content = content;
 

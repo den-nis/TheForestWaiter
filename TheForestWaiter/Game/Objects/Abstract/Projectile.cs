@@ -7,7 +7,7 @@ using TheForestWaiter.Game.Essentials;
 
 namespace TheForestWaiter.Game.Objects.Abstract
 {
-    internal abstract class Projectile : Movable
+	internal abstract class Projectile : Movable
 	{
 		public Creature Owner { get; private set; }
 
@@ -22,8 +22,10 @@ namespace TheForestWaiter.Game.Objects.Abstract
 		protected float Knockback { get; set; } = 150;
 		protected int Penetration { get; set; } = 1;
 
+		private readonly SoundInfo _impactSound = new("Sounds/wall_hit.wav");
 		private readonly List<long> _damangedCreatureIds = new();
 		private readonly ContentSource _content;
+		private readonly SoundSystem _sound;
 		private Vector2f? _spawn = null;
 		private float? _angle;
 		private float _traveled = 0;
@@ -31,9 +33,11 @@ namespace TheForestWaiter.Game.Objects.Abstract
 
 		private Sprite _sprite;
 
-		public Projectile(GameData game, ContentSource content) : base(game)
+		public Projectile(GameData game, ContentSource content, SoundSystem sound) : base(game)
 		{
+			_impactSound.Volume = 70;
 			_content = content;
+			_sound = sound;
 			Gravity = 0;
 		}
 
@@ -108,6 +112,9 @@ namespace TheForestWaiter.Game.Objects.Abstract
 			_traveled = (Center - _spawn.Value).Len();
 			if (_traveled > Range || CollisionFlags > 0)
 			{
+				if (CollisionFlags > 0)
+					_sound.Play(_impactSound);
+
 				Explode();
 				return;
 			}
@@ -119,6 +126,11 @@ namespace TheForestWaiter.Game.Objects.Abstract
 		public override void Draw(RenderWindow window)
 		{
 			window.Draw(_sprite);
+		}
+
+		public override void OnMarkedForDeletion()
+		{
+			_sprite.Dispose();
 		}
 	}
 }

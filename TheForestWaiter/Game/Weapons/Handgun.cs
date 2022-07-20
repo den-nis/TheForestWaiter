@@ -15,14 +15,14 @@ namespace TheForestWaiter.Game.Weapons
         protected override Vector2f AttachPoint => Game.Objects.Player.Center - new Vector2f(0, 1);
         protected override Vector2f Origin => new(2.5f, 6.5f);
 
-		public Handgun(GameData game, ContentSource content, ObjectCreator creator) : base(game, creator)
+		public Handgun(GameData game, ContentSource content, ObjectCreator creator, SoundSystem sound) : base(game, creator, sound)
         { 
             AutoFire = true;
             Cone = TrigHelper.ToRad(5);
             FireRatePerSecond = 5;
 
             Sprite = content.Textures.CreateSprite("Textures/Weapons/handgun.png");
-            FireSound = content.Sounds.CreateGameSound("Sounds/Weapons/handgun_{n}.wav");
+            FireSound = new("Sounds/Weapons/handgun_{n}.wav");
 
             _content = content;
         }

@@ -40,7 +40,11 @@ namespace TheForestWaiter.Game.Objects.Abstract
             window.DrawHitBox(Position, Size, Color.Green, lineThickness);
         }
 
-        public void Delete() => _markedForDeletion = true;
+        public void Delete()
+        {
+		    _markedForDeletion = true;
+            OnMarkedForDeletion();
+		}
 
         /// <summary>
         /// Can be used for setup logic that needs the tiled object data
@@ -49,5 +53,10 @@ namespace TheForestWaiter.Game.Objects.Abstract
         {
 
         }
+
+        public virtual void OnMarkedForDeletion()
+        {
+            
+		}
     }
 }

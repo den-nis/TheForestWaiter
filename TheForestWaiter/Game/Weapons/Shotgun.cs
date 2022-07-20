@@ -15,7 +15,7 @@ namespace TheForestWaiter.Game.Weapons
         protected override Vector2f AttachPoint => Game.Objects.Player.Center;
         protected override Vector2f Origin => new(0f, 3f);
 
-		public Shotgun(GameData game, ContentSource content, ObjectCreator creator) : base(game, creator)
+		public Shotgun(GameData game, ContentSource content, ObjectCreator creator, SoundSystem sound) : base(game, creator, sound)
         { 
             AutoFire = false;
             Cone = TrigHelper.ToRad(12);
@@ -25,7 +25,7 @@ namespace TheForestWaiter.Game.Weapons
             KickbackForce = 50;
 
             Sprite = content.Textures.CreateSprite("Textures/Weapons/shotgun.png");
-            FireSound = content.Sounds.CreateGameSound("Sounds/Weapons/shotgun_{n}.wav");
+            FireSound = new("Sounds/Weapons/shotgun_{n}.wav");
             _content = content;
         }
 

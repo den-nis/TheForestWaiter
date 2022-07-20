@@ -23,7 +23,7 @@ namespace TheForestWaiter.Game.Weapons
         private float _stuckTimer = 0;
         private float _heat = 0;
 
-        public Chaingun(GameData game, ContentSource content, ObjectCreator creator) : base(game, creator)
+        public Chaingun(GameData game, ContentSource content, ObjectCreator creator, SoundSystem sound) : base(game, creator, sound)
         {
             AutoFire = true;
             Cone = TrigHelper.ToRad(20);
@@ -31,11 +31,13 @@ namespace TheForestWaiter.Game.Weapons
             FireSpeedVariation = 100;
 
             Sprite = content.Textures.CreateSprite("Textures/Weapons/chaingun.png");
-            FireSound = content.Sounds.CreateGameSound("Sounds/Weapons/chaingun.wav");
-            FireSound.PitchVariation = 0.5f;
-            FireSound.Volume = 40f;
+			FireSound = new("Sounds/Weapons/chaingun.wav")
+			{
+				PitchVariation = 0.5f,
+				Volume = 40f
+			};
 
-            _content = content;
+			_content = content;
         }
 
 		public override void BackgroundUpdate(float time)

@@ -1,4 +1,5 @@
 ﻿using SFML.Graphics;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,6 +38,11 @@ namespace TheForestWaiter.Game.Core
 
         public void CleanupMarkedForDeletion()
         {
+            foreach(var delete in _objects.Where(o => o.MarkedForDeletion && o is IDisposable))
+            {
+                ((IDisposable)delete).Dispose();
+			}
+
             _objects.RemoveAll(o => o.MarkedForDeletion);
         }
 

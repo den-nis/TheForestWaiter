@@ -9,7 +9,7 @@ namespace TheForestWaiter.Game.Objects.Projectiles
 		
 		private readonly ContentSource _content;
 
-		public CorruptionBall(GameData game, ContentSource content) : base(game, content)
+		public CorruptionBall(GameData game, ContentSource content, SoundSystem sound) : base(game, content, sound)
 		{
 			_content = content;
 
