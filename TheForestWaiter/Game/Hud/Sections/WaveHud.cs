@@ -45,8 +45,8 @@ namespace TheForestWaiter.Game.Hud.Sections
 		}
 
 		public override bool IsMouseOnAnyButton() => false;
-        public override void OnMouseMove(Vector2i mouse) { }
+		public override void OnMouseMove(Vector2i mouse) { }
 		public override void OnPrimaryReleased() { }
-        public override void OnPrimaryPressed() { }
-    }
+		public override void OnPrimaryPressed() { }
+	}
 }

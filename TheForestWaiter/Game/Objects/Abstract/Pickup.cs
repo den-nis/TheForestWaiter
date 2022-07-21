@@ -2,7 +2,6 @@
 using SFML.System;
 using TheForestWaiter.Content;
 using TheForestWaiter.Game.Constants;
-using TheForestWaiter.Game.Core;
 using TheForestWaiter.Game.Essentials;
 using TheForestWaiter.Game.Graphics;
 

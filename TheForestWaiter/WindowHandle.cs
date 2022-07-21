@@ -5,50 +5,50 @@ using System;
 namespace TheForestWaiter
 {
 	internal class WindowHandle : ISetup
-    {
-        private readonly UserSettings _settings;
+	{
+		private readonly UserSettings _settings;
 
-        public event EventHandler OnWindowChanged = delegate { };
+		public event EventHandler OnWindowChanged = delegate { };
 
-        public RenderWindow SfmlWindow { get; private set; }
-        public bool IsFullscreen { get; private set; }
+		public RenderWindow SfmlWindow { get; private set; }
+		public bool IsFullscreen { get; private set; }
 
-        public WindowHandle(UserSettings settings)
-        {
-            _settings = settings;
-        }
+		public WindowHandle(UserSettings settings)
+		{
+			_settings = settings;
+		}
 
-        public void InitializeWindow(bool fullscreen)
-        {
-            if (SfmlWindow != null)
-                SfmlWindow.Close();
+		public void InitializeWindow(bool fullscreen)
+		{
+			if (SfmlWindow != null)
+				SfmlWindow.Close();
 
-            var title = _settings.Get("Window", "Title");
-            var maxFps = (uint)_settings.GetInt("Window", "MaxFramerate");
+			var title = _settings.Get("Window", "Title");
+			var maxFps = (uint)_settings.GetInt("Window", "MaxFramerate");
 
-            if (fullscreen)
-            {
-                SfmlWindow = new RenderWindow(VideoMode.DesktopMode, title, Styles.Fullscreen);
-                IsFullscreen = true;
-            }
-            else
-            {
-                var width = (uint)_settings.GetInt("Window", "Width");
-                var height = (uint)_settings.GetInt("Window", "Height");
+			if (fullscreen)
+			{
+				SfmlWindow = new RenderWindow(VideoMode.DesktopMode, title, Styles.Fullscreen);
+				IsFullscreen = true;
+			}
+			else
+			{
+				var width = (uint)_settings.GetInt("Window", "Width");
+				var height = (uint)_settings.GetInt("Window", "Height");
 
-                SfmlWindow = new RenderWindow(new VideoMode(width, height), title, Styles.Close | Styles.Resize);
-                IsFullscreen = false;
-            }
+				SfmlWindow = new RenderWindow(new VideoMode(width, height), title, Styles.Close | Styles.Resize);
+				IsFullscreen = false;
+			}
 
-            SfmlWindow.SetFramerateLimit(maxFps);
+			SfmlWindow.SetFramerateLimit(maxFps);
 
-            OnWindowChanged(this, EventArgs.Empty);
-        }
+			OnWindowChanged(this, EventArgs.Empty);
+		}
 
-        public void Setup()
-        {
-            InitializeWindow(false);
-            SfmlWindow.SetKeyRepeatEnabled(false);
-        }
-    }
+		public void Setup()
+		{
+			InitializeWindow(false);
+			SfmlWindow.SetKeyRepeatEnabled(false);
+		}
+	}
 }

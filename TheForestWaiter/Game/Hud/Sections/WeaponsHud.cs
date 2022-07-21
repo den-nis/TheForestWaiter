@@ -2,7 +2,6 @@
 using SFML.System;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using TheForestWaiter.Content;
 using TheForestWaiter.Game.Essentials;
 using TheForestWaiter.Game.Weapons.Abstract;
@@ -17,16 +16,16 @@ namespace TheForestWaiter.Game.Hud.Sections
 		private readonly Dictionary<string, Sprite> _weaponSprites = new();
 		private readonly Sprite _slot;
 		private readonly Sprite _select;
-        private readonly Camera _camera;
-        private readonly GameData _game;
+		private readonly Camera _camera;
+		private readonly GameData _game;
 		private readonly ContentSource _content;
 
 		private int _mouseOnIndex = 0;
 
 		public WeaponsHud(float scale) : base(scale)
 		{
-            _camera = IoC.GetInstance<Camera>();
-            _game = IoC.GetInstance<GameData>();
+			_camera = IoC.GetInstance<Camera>();
+			_game = IoC.GetInstance<GameData>();
 			_content = IoC.GetInstance<ContentSource>();
 			_slot = _content.Textures.CreateSprite("Textures/Hud/slot.png");
 			_select = _content.Textures.CreateSprite("Textures/Hud/select.png");
@@ -75,15 +74,15 @@ namespace TheForestWaiter.Game.Hud.Sections
 		}
 
 		public override void OnPrimaryReleased()
-		{	
+		{
 			if (_mouseOnIndex != -1)
-            {
+			{
 				_game.Objects.Player.Weapons.Select(_mouseOnIndex);
-            }
+			}
 		}
 
-        public override void OnMouseMove(Vector2i mouse)
-        {
+		public override void OnMouseMove(Vector2i mouse)
+		{
 			_mouseOnIndex = -1;
 			LoopOverSlotPositions((position, weapon) =>
 			{
@@ -98,7 +97,7 @@ namespace TheForestWaiter.Game.Hud.Sections
 		}
 
 		public void LoopOverSlotPositions(Action<Vector2f, Weapon> func)
-        {
+		{
 			var section = GetPosition(_camera);
 			float offset = section.X;
 
@@ -112,6 +111,6 @@ namespace TheForestWaiter.Game.Hud.Sections
 			}
 		}
 
-		public override void OnPrimaryPressed() {}
+		public override void OnPrimaryPressed() { }
 	}
 }

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TheForestWaiter.Game.Essentials
 {
@@ -13,17 +9,17 @@ namespace TheForestWaiter.Game.Essentials
 
 		public TimeSpan Interval => TimeSpan.FromSeconds(_interval);
 
-		public float Time { get; private set; } 
+		public float Time { get; private set; }
 
 		public event Action OnTick;
 
 		public Timer(float interval) => SetInterval(interval);
-		
+
 		public Timer(TimeSpan interval) => SetInterval(interval);
-		
+
 		public Timer()
 		{
-			
+
 		}
 
 		public void Start() => Enabled = true;
@@ -41,7 +37,7 @@ namespace TheForestWaiter.Game.Essentials
 		}
 
 		public void Reset() => Time = 0;
-		
+
 		public void Update(float time)
 		{
 			if (Enabled)

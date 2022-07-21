@@ -8,37 +8,37 @@ namespace TheForestWaiter.Debugging
 {
 	class ActiveDebug : IDebug
 	{
-        private readonly IServiceContainer _serviceContainer;
-        private CommandHandler _commandHandler;
+		private readonly IServiceContainer _serviceContainer;
+		private CommandHandler _commandHandler;
 
-        public ActiveDebug(IServiceContainer serviceContainer)
-        {
-            _serviceContainer = serviceContainer;
-        }
-
-        public void Draw(RenderWindow window)
+		public ActiveDebug(IServiceContainer serviceContainer)
 		{
-        }
+			_serviceContainer = serviceContainer;
+		}
 
-        public void Setup()
-        {
-            _commandHandler = new CommandHandler(_serviceContainer);
-            _commandHandler.IndexAndStartConsoleThread();
-        }
+		public void Draw(RenderWindow window)
+		{
+		}
 
-        public void Update(float time)
+		public void Setup()
+		{
+			_commandHandler = new CommandHandler(_serviceContainer);
+			_commandHandler.IndexAndStartConsoleThread();
+		}
+
+		public void Update(float time)
 		{
 			_commandHandler.Update();
 		}
 
-        public void Dispose()
-        {
-            
-        }
+		public void Dispose()
+		{
 
-        public void Log(string message)
-        {
-            Console.WriteLine(message);
-        }
-    }
+		}
+
+		public void Log(string message)
+		{
+			Console.WriteLine(message);
+		}
+	}
 }

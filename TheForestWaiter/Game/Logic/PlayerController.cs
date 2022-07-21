@@ -1,12 +1,11 @@
-﻿using SFML.System;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Linq;
 using TheForestWaiter.Game.Constants;
 
 namespace TheForestWaiter.Game.Logic
 {
-	internal class PlayerController 
+	internal class PlayerController
 	{
 		private float _aim;
 

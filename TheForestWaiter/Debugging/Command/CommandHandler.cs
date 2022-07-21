@@ -10,92 +10,92 @@ namespace TheForestWaiter.Debugging.Command
 {
 	class CommandHandler : IDisposable
 	{
-        private Task _consoleThread;
+		private Task _consoleThread;
 
-        public IReadOnlyDictionary<string, CommandInfo> CommandInfo => _commands;
-        private readonly BlockingCollection<string> _pendingCommands = new();
-        private readonly Dictionary<string, CommandInfo> _commands = new();
-        private readonly IServiceContainer _container;
+		public IReadOnlyDictionary<string, CommandInfo> CommandInfo => _commands;
+		private readonly BlockingCollection<string> _pendingCommands = new();
+		private readonly Dictionary<string, CommandInfo> _commands = new();
+		private readonly IServiceContainer _container;
 
-        public CommandHandler(IServiceContainer container)
-        {
-            _container = container;
-        }
-
-        public void IndexAndStartConsoleThread()
+		public CommandHandler(IServiceContainer container)
 		{
-            IndexCommands();
-            _consoleThread = StartConsoleThread();
-        }
+			_container = container;
+		}
 
-        public void Update()
-        {
-            while (_pendingCommands.Count > 0)
-            {
-                var command = _pendingCommands.Take();
+		public void IndexAndStartConsoleThread()
+		{
+			IndexCommands();
+			_consoleThread = StartConsoleThread();
+		}
 
-                try
-                {
-                  var parts = command.Split(' ');
-                  ExecuteCommand(parts[0], parts[1..]);
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                }
-            }
-        }
+		public void Update()
+		{
+			while (_pendingCommands.Count > 0)
+			{
+				var command = _pendingCommands.Take();
 
-        private Task StartConsoleThread()
-        {
-            return Task.Factory.StartNew(() =>
-            {
-                while (true)
-                {
-                    _pendingCommands.Add(Console.ReadLine());
-                }
-            }, TaskCreationOptions.LongRunning);
-        }
+				try
+				{
+					var parts = command.Split(' ');
+					ExecuteCommand(parts[0], parts[1..]);
+				}
+				catch (Exception e)
+				{
+					Console.WriteLine(e);
+				}
+			}
+		}
 
-        private void ExecuteCommand(string command, string[] args)
-        {
-            if (!_commands.ContainsKey(command))
-            {
-                Console.WriteLine($"Unknown command {command}, use \"help\" to get a list of commands");
-                return;
-            }
+		private Task StartConsoleThread()
+		{
+			return Task.Factory.StartNew(() =>
+			{
+				while (true)
+				{
+					_pendingCommands.Add(Console.ReadLine());
+				}
+			}, TaskCreationOptions.LongRunning);
+		}
 
-            var instance = CreateCommand(command);
-            instance.Execute(this, args);
-        }
+		private void ExecuteCommand(string command, string[] args)
+		{
+			if (!_commands.ContainsKey(command))
+			{
+				Console.WriteLine($"Unknown command {command}, use \"help\" to get a list of commands");
+				return;
+			}
 
-        private ICommand CreateCommand(string name)
-        {
-            Type command = _commands[name].Command;
-            return (ICommand)_container.GetInstance(command);
-        }
+			var instance = CreateCommand(command);
+			instance.Execute(this, args);
+		}
 
-        private void IndexCommands()
-        {
-            var assembly = Assembly.GetExecutingAssembly();
-            var types = assembly.GetTypes();
-            var commandTypes = types.Where(t => t.IsAssignableTo(typeof(ICommand)) && t != typeof(ICommand));
-            
-            foreach (var command in commandTypes)
-            {
-                var attribute = command.GetCustomAttribute<CommandAttribute>();
+		private ICommand CreateCommand(string name)
+		{
+			Type command = _commands[name].Command;
+			return (ICommand)_container.GetInstance(command);
+		}
 
-                _commands.Add(attribute.Name, new CommandInfo
-                {
-                    Command = command,
-                    Attribute = attribute
-                });
-            }
-        }
+		private void IndexCommands()
+		{
+			var assembly = Assembly.GetExecutingAssembly();
+			var types = assembly.GetTypes();
+			var commandTypes = types.Where(t => t.IsAssignableTo(typeof(ICommand)) && t != typeof(ICommand));
+
+			foreach (var command in commandTypes)
+			{
+				var attribute = command.GetCustomAttribute<CommandAttribute>();
+
+				_commands.Add(attribute.Name, new CommandInfo
+				{
+					Command = command,
+					Attribute = attribute
+				});
+			}
+		}
 
 		public void Dispose()
 		{
-            _consoleThread.Dispose();
-        }
+			_consoleThread.Dispose();
+		}
 	}
 }

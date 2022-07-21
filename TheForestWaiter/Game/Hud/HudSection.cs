@@ -13,10 +13,10 @@ namespace TheForestWaiter.Game.Hud
 		public Vector2f Offset { get; set; }
 		public bool Hidden { get; set; }
 
-        public HudSection(float scale)
-        {
+		public HudSection(float scale)
+		{
 			Scale = scale;
-        }
+		}
 
 		protected Vector2f ScaleVector => new(Scale, Scale);
 
@@ -50,4 +50,3 @@ namespace TheForestWaiter.Game.Hud
 		}
 	}
 }
- 

@@ -1,10 +1,5 @@
 ﻿using SFML.Graphics;
 using SFML.System;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TheForestWaiter.Content;
 
 namespace TheForestWaiter.Game.Environment
@@ -31,33 +26,33 @@ namespace TheForestWaiter.Game.Environment
 		private readonly Sprite _spriteTrees;
 
 		private readonly Sprite[] _all;
-        private readonly Camera _camera;
-        private Vector2f _offset;
+		private readonly Camera _camera;
+		private Vector2f _offset;
 		private Vector2f _windowSize;
 
 		public Background(ContentSource content, Camera camera)
 		{
-            _camera = camera;
+			_camera = camera;
 			_spriteSky = content.Textures.CreateSprite("Textures/Background/sky.png");
 			_spriteStars = content.Textures.CreateSprite("Textures/Background/stars.png");
 			_spriteMountain = content.Textures.CreateSprite("Textures/Background/mountains.png");
 			_spriteTrees = content.Textures.CreateSprite("Textures/Background/trees.png");
 
-			_all = new Sprite[] { 
-				_spriteSky, 
-				_spriteStars, 
+			_all = new Sprite[] {
+				_spriteSky,
+				_spriteStars,
 				_spriteMountain,
-				_spriteTrees, 
+				_spriteTrees,
 			};
 
-			foreach(var i in _all)
+			foreach (var i in _all)
 			{
 				i.Texture.Repeated = true;
 			}
 
 			//TODO: is this too much logic for the constructor?
 			UpdateSize((int)camera.MaxWorldView.X, (int)camera.MaxWorldView.Y);
-        }
+		}
 
 		public void UpdateSize(int width, int height)
 		{
@@ -105,10 +100,10 @@ namespace TheForestWaiter.Game.Environment
 			SetSpriteOffset(_spriteMountain, new Vector2f(_offset.X * MOUNTAIN_SPEED, 0));
 			SetSpriteOffset(_spriteTrees, new Vector2f(_offset.X * TREES_SPEED, 0));
 
-			_spriteSky.Position      = new Vector2f(_spriteSky.Position.X,      (center - SKY_HEIGHT_FOCUS)      - (_offset.Y * SKY_SPEED      * VERTICAL_MULTIPLIER));
-			_spriteStars.Position    = new Vector2f(_spriteStars.Position.X,    (center - STARS_HEIGHT_FOCUS)    - (_offset.Y * STARS_SPEED    * VERTICAL_MULTIPLIER));
+			_spriteSky.Position = new Vector2f(_spriteSky.Position.X, (center - SKY_HEIGHT_FOCUS) - (_offset.Y * SKY_SPEED * VERTICAL_MULTIPLIER));
+			_spriteStars.Position = new Vector2f(_spriteStars.Position.X, (center - STARS_HEIGHT_FOCUS) - (_offset.Y * STARS_SPEED * VERTICAL_MULTIPLIER));
 			_spriteMountain.Position = new Vector2f(_spriteMountain.Position.X, (center - MOUNTAIN_HEIGHT_FOCUS) - (_offset.Y * MOUNTAIN_SPEED * VERTICAL_MULTIPLIER));
-			_spriteTrees.Position    = new Vector2f(_spriteTrees.Position.X,    (center - TREES_HEIGHT_FOCUS)    - (_offset.Y * TREES_SPEED    * VERTICAL_MULTIPLIER));
+			_spriteTrees.Position = new Vector2f(_spriteTrees.Position.X, (center - TREES_HEIGHT_FOCUS) - (_offset.Y * TREES_SPEED * VERTICAL_MULTIPLIER));
 		}
 	}
 }

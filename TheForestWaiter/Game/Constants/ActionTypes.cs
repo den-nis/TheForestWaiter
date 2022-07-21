@@ -1,6 +1,6 @@
 ﻿namespace TheForestWaiter.Game.Constants
 {
-	internal enum ActionTypes 
+	internal enum ActionTypes
 	{
 		Left,
 		Right,

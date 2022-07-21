@@ -73,11 +73,11 @@ namespace TheForestWaiter.Game.Objects.Abstract
 		protected void MoveLeft() => _targetMovingDirection = -1;
 
 		protected void MoveRight() => _targetMovingDirection = 1;
-		
+
 		protected void HoldJump() => _wantsToHoldJump = true;
-		
+
 		protected void Jump() => _wantsToJump = true;
-		
+
 		private void PerformMovement(float time)
 		{
 			bool jumpNextUpdate = false;
@@ -109,7 +109,7 @@ namespace TheForestWaiter.Game.Objects.Abstract
 					jumpNextUpdate = true;
 				}
 			}
-			
+
 			if (_wantsToJump)
 			{
 				if (grounded)

@@ -5,30 +5,30 @@ using TheForestWaiter.Services;
 namespace TheForestWaiter
 {
 	internal class Program
-    {
-        static void Main()
-        {
-            SetCulture();
+	{
+		static void Main()
+		{
+			SetCulture();
 
-            using ServiceContainer container = new()
-            {
-                PropertyDependencySelector = new DisablePropertyDependencies()
-            };
+			using ServiceContainer container = new()
+			{
+				PropertyDependencySelector = new DisablePropertyDependencies()
+			};
 
-            IoC.SetContainer(container);
+			IoC.SetContainer(container);
 
-            GlobalServices startup = new(container);
+			GlobalServices startup = new(container);
 
-            startup.Register();
-            startup.Setup();
-            container.GetInstance<Entry>().Run();        
-        }
+			startup.Register();
+			startup.Setup();
+			container.GetInstance<Entry>().Run();
+		}
 
-        static void SetCulture()
-        {
-            CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
-            CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
-            CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
-        }
-    }
+		static void SetCulture()
+		{
+			CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
+			CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
+			CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
+		}
+	}
 }

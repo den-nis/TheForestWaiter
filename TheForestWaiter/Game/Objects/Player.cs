@@ -34,7 +34,7 @@ namespace TheForestWaiter.Game.Objects
 			var content = IoC.GetInstance<ContentSource>();
 			var creator = IoC.GetInstance<ObjectCreator>();
 			_sound = IoC.GetInstance<SoundSystem>();
-			
+
 
 
 			_walkSound = new SoundInfo("Sounds/Player/walk_{n}.wav");

@@ -12,7 +12,7 @@ namespace TheForestWaiter.Game.Objects.Enemies
 {
 	internal class Crawler : GroundCreature
 	{
-		private const float CHASE_DISTANCE = 200; 
+		private const float CHASE_DISTANCE = 200;
 		private const float AVOID_DISTANCE = 100;
 		private const float AVOID_DISTANCE_VARIATION = 20;
 
@@ -31,7 +31,7 @@ namespace TheForestWaiter.Game.Objects.Enemies
 
 		private readonly RandomTrigger _attackTrigger;
 		private float _prepareAttackTime = 0;
-	
+
 		private readonly float _avoidDistance;
 
 		public Crawler()
@@ -49,7 +49,7 @@ namespace TheForestWaiter.Game.Objects.Enemies
 
 			_avoidDistance = Rng.Var(AVOID_DISTANCE, AVOID_DISTANCE_VARIATION);
 			_attackTrigger = new RandomTrigger(PrepareAttack, 0.1f, 0.1f);
-			_dropSpawner.Setup("Textures/Enemies/crawler_gibs.png");	
+			_dropSpawner.Setup("Textures/Enemies/crawler_gibs.png");
 		}
 
 		public override void Draw(RenderWindow window)

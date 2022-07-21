@@ -1,6 +1,6 @@
 ﻿namespace TheForestWaiter.Game.Objects.Abstract
-{ 
-    abstract class Immovable : GameObject
-    {
-    }
+{
+	abstract class Immovable : GameObject
+	{
+	}
 }

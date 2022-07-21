@@ -72,7 +72,7 @@ namespace TheForestWaiter.Game
 			_products = JsonConvert.DeserializeObject<List<Product>>(json);
 			Debug.Assert(_products.ToLookup(k => k.Id).All(l => l.Count() == 1), "Duplicate ids");
 		}
-		
+
 		/// <summary>
 		/// Returns a message about the purchase
 		/// </summary>
@@ -103,7 +103,7 @@ namespace TheForestWaiter.Game
 					break;
 
 				default:
-					throw new KeyNotFoundException($"Cannot handle product type \"{product.Type}\""); 
+					throw new KeyNotFoundException($"Cannot handle product type \"{product.Type}\"");
 			}
 		}
 	}

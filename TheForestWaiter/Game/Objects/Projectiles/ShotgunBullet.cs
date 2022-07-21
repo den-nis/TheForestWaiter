@@ -1,5 +1,4 @@
-﻿using TheForestWaiter.Content;
-using TheForestWaiter.Game.Objects.Abstract;
+﻿using TheForestWaiter.Game.Objects.Abstract;
 
 namespace TheForestWaiter.Game.Objects.Projectiles
 {

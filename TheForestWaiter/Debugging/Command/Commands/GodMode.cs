@@ -3,18 +3,18 @@
 namespace TheForestWaiter.Debugging.Command.Commands
 {
 	[Command("god", "")]
-    internal class GodMode : ICommand
-    {
-        private readonly GameData _game;
+	internal class GodMode : ICommand
+	{
+		private readonly GameData _game;
 
-        public GodMode(GameData game)
-        {
-            _game = game;
-        }
+		public GodMode(GameData game)
+		{
+			_game = game;
+		}
 
-        public void Execute(CommandHandler handler, string[] args)
-        {
-            _game.Objects.Player.God();
-        }
-    }
+		public void Execute(CommandHandler handler, string[] args)
+		{
+			_game.Objects.Player.God();
+		}
+	}
 }

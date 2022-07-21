@@ -42,7 +42,7 @@ namespace TheForestWaiter.Game.Graphics
 					continue;
 				}
 
-				int index = GetIndex(character); 
+				int index = GetIndex(character);
 				if (index < 0 || index >= _sheet.TotatlTiles)
 				{
 					continue;
@@ -58,13 +58,13 @@ namespace TheForestWaiter.Game.Graphics
 		}
 
 		private int GetIndex(char character)
-		{	
+		{
 			return character - IndexOffset;
 		}
 
-        public void Draw(RenderTarget target, RenderStates states)
-        {
+		public void Draw(RenderTarget target, RenderStates states)
+		{
 			Draw(target);
 		}
-    }
+	}
 }

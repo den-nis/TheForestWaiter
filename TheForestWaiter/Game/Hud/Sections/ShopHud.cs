@@ -10,19 +10,19 @@ namespace TheForestWaiter.Game.Hud.Sections
 	internal class ShopHud : HudSection
 	{
 		private class ShopSlot
-        {
-            public IDisplayProduct Product { get; set; }
+		{
+			public IDisplayProduct Product { get; set; }
 			public Vector2f RelativePosition { get; set; }
-        }
+		}
 
-        private const int ROWS = 3;
+		private const int ROWS = 3;
 		private const int COLUMNS = 2;
 
 		private readonly Dictionary<string, Sprite> _iconCache = new();
-		private readonly List<ShopSlot> _slots = new();	
-        private readonly ContentSource _content;
+		private readonly List<ShopSlot> _slots = new();
+		private readonly ContentSource _content;
 		private readonly ItemShop _shop;
-        private readonly Camera _camera;
+		private readonly Camera _camera;
 
 		private readonly Sprite _slot;
 		private readonly SpriteFont _priceText;
@@ -49,7 +49,7 @@ namespace TheForestWaiter.Game.Hud.Sections
 		public override void Draw(RenderWindow window)
 		{
 			for (int i = 0; i < _slots.Count; i++)
-            {
+			{
 				var slot = _slots[i];
 
 				var position = GetPosition(window) + slot.RelativePosition * Scale;
@@ -66,7 +66,7 @@ namespace TheForestWaiter.Game.Hud.Sections
 				icon.Position = slotCenter;
 				icon.Origin = icon.Texture.Size.ToVector2f() / 2;
 				icon.Color = color;
-				
+
 				_slot.Scale = ScaleVector;
 				_slot.Position = position;
 				_slot.Color = color;
@@ -74,23 +74,23 @@ namespace TheForestWaiter.Game.Hud.Sections
 				window.Draw(_slot);
 				window.Draw(icon);
 				_priceText.Draw(window);
-            }
+			}
 		}
 
 		private Color GetSlotColor(ShopSlot slot, int index)
-        {
+		{
 			if (!slot.Product.IsAvailable())
 			{
 				return new Color(255, 255, 255, 150);
 			}
 
 			if (_mouseOnIndex == index)
-            {
+			{
 				return new Color(200, 200, 255, 255);
-            }
+			}
 
 			return Color.White;
-        }
+		}
 
 		private void SetupSlots()
 		{
@@ -129,46 +129,46 @@ namespace TheForestWaiter.Game.Hud.Sections
 		}
 
 		public override void OnMouseMove(Vector2i mouse)
-        {
+		{
 			for (int i = 0; i < _slots.Count; i++)
-            {
+			{
 				var slot = _slots[i];
 				var rect = new FloatRect(
 					GetPosition(_camera) + slot.RelativePosition * Scale,
 					_slot.Texture.Size.ToVector2f() * Scale);
 
 				if (rect.Intersects(new FloatRect(mouse.ToVector2f(), new Vector2f(1, 1))))
-                {
+				{
 					_mouseOnIndex = i;
 					return;
 				}
-            }
+			}
 
 			_mouseOnIndex = -1;
-        }
+		}
 
 		public override bool IsMouseOnAnyButton()
 		{
 			if (_mouseOnIndex != -1)
-            {
+			{
 				return true;
-            }
+			}
 
 			return false;
 		}
 
-		public override void OnPrimaryReleased() 
+		public override void OnPrimaryReleased()
 		{
 			if (_clickedOnIndex != -1 && _clickedOnIndex == _mouseOnIndex)
 			{
 				//TODO: do something with the responses?
 				_shop.Purchase(_slots[_clickedOnIndex].Product.Id);
 			}
-        }
+		}
 
-        public override void OnPrimaryPressed() 
+		public override void OnPrimaryPressed()
 		{
 			_clickedOnIndex = _mouseOnIndex;
 		}
-    }
+	}
 }

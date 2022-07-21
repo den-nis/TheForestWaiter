@@ -18,7 +18,7 @@ namespace TheForestWaiter
 		public Key FullScreen { get; private set; }
 		public Button Primary { get; private set; }
 
-        public void Setup()
+		public void Setup()
 		{
 			FileIniDataParser parser = new();
 			_data = parser.ReadFile(SETTINGS_PATH);

@@ -3,13 +3,13 @@
 namespace TheForestWaiter.Game
 {
 	internal interface IGameObjectContainer
-    {
-        public void Draw(RenderWindow window);
+	{
+		public void Draw(RenderWindow window);
 
-        public void Update(float time);
+		public void Update(float time);
 
-        public void Clear();
+		public void Clear();
 
-        public void CleanupMarkedForDeletion();
-    }
+		public void CleanupMarkedForDeletion();
+	}
 }

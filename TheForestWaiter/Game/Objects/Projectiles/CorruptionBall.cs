@@ -6,10 +6,10 @@ namespace TheForestWaiter.Game.Objects.Projectiles
 	{
 		private const float PARTICLE_SPAWN_INTERVAL = 0.01f;
 		private float _particleTimer = -1;
-		
+
 		private readonly ContentSource _content;
 
-		public CorruptionBall() 
+		public CorruptionBall()
 		{
 			_content = IoC.GetInstance<ContentSource>();
 
