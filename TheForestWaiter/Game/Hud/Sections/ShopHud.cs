@@ -32,14 +32,14 @@ namespace TheForestWaiter.Game.Hud.Sections
 		private int _clickedOnIndex = -1;
 		private int _mouseOnIndex = -1;
 
-		public ShopHud(float scale, ContentSource content, ItemShop shop, Camera camera) : base(scale)
+		public ShopHud(float scale) : base(scale)
 		{
-			_content = content;
-			_shop = shop;
-            _camera = camera;
+			_content = IoC.GetInstance<ContentSource>();
+			_shop = IoC.GetInstance<ItemShop>();
+			_camera = IoC.GetInstance<Camera>();
 
-			_slot = content.Textures.CreateSprite("Textures/Hud/shop_slot.png");
-			_priceText = new SpriteFont(content.Textures.CreateSpriteSheet("Textures/Hud/shop_numbers.png"));
+			_slot = _content.Textures.CreateSprite("Textures/Hud/shop_slot.png");
+			_priceText = new SpriteFont(_content.Textures.CreateSpriteSheet("Textures/Hud/shop_numbers.png"));
 
 			Size = new Vector2f(_slot.Texture.Size.X * COLUMNS, _slot.Texture.Size.Y * ROWS);
 

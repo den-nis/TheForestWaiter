@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TheForestWaiter.Game.Environment
 {
-    class MapProperties
+    sealed internal class MapProperties
     {
         public string Name { get; set; }
         public string Value { get; set; }

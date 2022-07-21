@@ -1,6 +1,6 @@
 ﻿namespace TheForestWaiter.Game.Environment
 {
-    class Map
+    sealed internal class Map
     {
         public Layer[] Layers { get; set; }
     }

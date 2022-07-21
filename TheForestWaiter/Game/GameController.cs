@@ -10,7 +10,7 @@ using TheForestWaiter.Game.Hud;
 
 namespace TheForestWaiter.Game
 {
-    class GameController : IDisposable
+    sealed internal class GameController : IDisposable
     {
         private RenderWindow _attached;
         private readonly GameData _game;

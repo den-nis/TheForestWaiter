@@ -32,7 +32,7 @@ namespace TheForestWaiter.Game.Objects.Abstract
         private float _maxHealth = 100;
         private float _stunTimer = 0;
 
-        public Creature(GameData game) : base(game)
+        public Creature()
         {
             Health = _maxHealth;
         }

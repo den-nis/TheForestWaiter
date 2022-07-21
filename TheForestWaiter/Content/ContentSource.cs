@@ -7,7 +7,7 @@ using TheForestWaiter.Shared;
 
 namespace TheForestWaiter.Content
 {
-    internal class ContentSource
+	internal class ContentSource
     {
         public IContentSource Source { get; private set; }
         public ContentConfig Config { get; private set; }

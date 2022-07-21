@@ -2,7 +2,7 @@
 
 namespace TheForestWaiter.Game.Environment
 {
-    struct Tile
+    internal struct Tile
     {
         public bool Air { get; set; }
         public bool Solid { get; set; }

@@ -24,9 +24,9 @@ namespace TheForestWaiter.Game.Objects.Abstract
 
         protected GameData Game { get; set; }
 
-        public GameObject(GameData game)
+        public GameObject()
         {
-            Game = game;
+            Game = IoC.GetInstance<GameData>();
         }
 
         public bool Intersects(GameObject other) => FloatRect.Intersects(other.FloatRect);

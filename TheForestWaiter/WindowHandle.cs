@@ -1,14 +1,10 @@
 ﻿using SFML.Graphics;
 using SFML.Window;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TheForestWaiter
 {
-    class WindowHandle : ISetup
+	internal class WindowHandle : ISetup
     {
         private readonly UserSettings _settings;
 

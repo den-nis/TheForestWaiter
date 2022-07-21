@@ -1,9 +1,8 @@
-﻿using System;
-using TheForestWaiter.Game;
+﻿using TheForestWaiter.Game;
 
 namespace TheForestWaiter.Debugging.Command.Commands
 {
-    [Command("god", "")]
+	[Command("god", "")]
     internal class GodMode : ICommand
     {
         private readonly GameData _game;

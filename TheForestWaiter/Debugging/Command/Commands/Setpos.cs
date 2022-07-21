@@ -1,10 +1,9 @@
 ﻿using SFML.System;
-using System;
 using TheForestWaiter.Game;
 
 namespace TheForestWaiter.Debugging.Command.Commands
 {
-    [Command("setpos", "Set the position of the player", "{x} {y}")]
+	[Command("setpos", "Set the position of the player", "{x} {y}")]
     internal class SetPos : ICommand
     {
         private readonly GameData _game;

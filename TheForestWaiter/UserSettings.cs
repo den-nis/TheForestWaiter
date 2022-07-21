@@ -6,7 +6,7 @@ using static SFML.Window.Mouse;
 
 namespace TheForestWaiter
 {
-	class UserSettings : ISetup
+	internal class UserSettings : ISetup
 	{
 		private const string SETTINGS_PATH = "Settings.ini";
 		private IniData _data;

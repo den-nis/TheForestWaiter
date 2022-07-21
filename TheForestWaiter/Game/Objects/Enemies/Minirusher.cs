@@ -20,13 +20,16 @@ namespace TheForestWaiter.Game.Objects.Enemies
 		private readonly ContentSource _content;
 		private readonly DropSpawner _dropSpawner;
 
-		public Minirusher(GameData game, ContentSource content, DropSpawner dropSpawner) : base(game)
+		public Minirusher()
 		{
-			_animation = content.Textures.CreateAnimatedSprite("Textures/Enemies/minirusher.png");
+			_content = IoC.GetInstance<ContentSource>();
+			_dropSpawner = IoC.GetInstance<DropSpawner>();
+
+			_animation = _content.Textures.CreateAnimatedSprite("Textures/Enemies/minirusher.png");
 			Size = _animation.Sheet.TileSize.ToVector2f();
 
-			dropSpawner.Setup("Textures/Enemies/minirusher_gibs.png");
-			dropSpawner.ChanceOfHeartDrop = 0.01f;
+			_dropSpawner.Setup("Textures/Enemies/minirusher_gibs.png");
+			_dropSpawner.ChanceOfHeartDrop = 0.01f;
 
 			SetMaxHealth(10, true);
 			UseHoldJumpWhenChase = true;
@@ -38,8 +41,6 @@ namespace TheForestWaiter.Game.Objects.Enemies
 			Acceleration = 3000;
 
 			_jumpTrigger = new RandomTrigger(Jump, 70, 1, 2);
-			_content = content;
-			_dropSpawner = dropSpawner;
 		}
 
 		public override void Update(float time)

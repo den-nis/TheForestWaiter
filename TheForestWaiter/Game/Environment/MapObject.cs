@@ -2,7 +2,7 @@
 
 namespace TheForestWaiter.Game.Environment
 {
-    class MapObject
+    sealed internal class MapObject
     {
         public int Id { get; set; }
         public string Name { get; set; }

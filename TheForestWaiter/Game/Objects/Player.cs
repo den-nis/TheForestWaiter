@@ -29,8 +29,14 @@ namespace TheForestWaiter.Game.Objects
 		private float _switchCooldown = 0;
 		private float _walkSoundTimer = 0;
 
-		public Player(GameData game, ContentSource content, ObjectCreator creator, SoundSystem sound) : base(game)
+		public Player()
 		{
+			var content = IoC.GetInstance<ContentSource>();
+			var creator = IoC.GetInstance<ObjectCreator>();
+			_sound = IoC.GetInstance<SoundSystem>();
+			
+
+
 			_walkSound = new SoundInfo("Sounds/Player/walk_{n}.wav");
 			_hurtSound = new SoundInfo("Sounds/Player/hurt.wav");
 			_walkSound.Volume = 10f;
@@ -50,7 +56,6 @@ namespace TheForestWaiter.Game.Objects
 
 			Weapons.Add(creator.CreateWeapon<Handgun>());
 			Weapons.OnEquipedChanged += OnEquipmentChangedEventHandler;
-			this._sound = sound;
 		}
 
 		public override void Update(float time)

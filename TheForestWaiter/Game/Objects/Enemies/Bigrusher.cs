@@ -21,14 +21,18 @@ namespace TheForestWaiter.Game.Objects.Enemies
 		private readonly DropSpawner _dropSpawner;
 		private readonly ObjectCreator _creator;
 
-		public Bigrusher(GameData game, ContentSource content, DropSpawner dropSpawner, ObjectCreator creator) : base(game)
+		public Bigrusher()
 		{
-			_animation = content.Textures.CreateAnimatedSprite("Textures/Enemies/bigrusher.png");
+			_content = IoC.GetInstance<ContentSource>();
+			_dropSpawner = IoC.GetInstance<DropSpawner>();
+			_creator = IoC.GetInstance<ObjectCreator>();
+
+			_animation = _content.Textures.CreateAnimatedSprite("Textures/Enemies/bigrusher.png");
 			Size = _animation.Sheet.TileSize.ToVector2f();
 
-			dropSpawner.Setup("Textures/Enemies/bigrusher_gibs.png");
-			dropSpawner.ChanceOfHeartDrop = 0.01f;
-			dropSpawner.MaxAmountCoins = 25;
+			_dropSpawner.Setup("Textures/Enemies/bigrusher_gibs.png");
+			_dropSpawner.ChanceOfHeartDrop = 0.01f;
+			_dropSpawner.MaxAmountCoins = 25;
 
 			SetMaxHealth(3000, true);
 			UseHoldJumpWhenChase = true;
@@ -42,9 +46,6 @@ namespace TheForestWaiter.Game.Objects.Enemies
 			KnockbackResistance = 10000;
 
 			_jumpTrigger = new RandomTrigger(Jump, 70, 1, 2);
-			_content = content;
-			_dropSpawner = dropSpawner;
-			_creator = creator;
 		}
 
 		public override void Update(float time)

@@ -7,7 +7,7 @@ using TheForestWaiter.Game.Objects.Abstract;
 
 namespace TheForestWaiter.Game.Core
 {
-    internal class GameObjectContainer<G> : IGameObjectContainer, IEnumerable<G> where G : GameObject
+    sealed internal class GameObjectContainer<G> : IGameObjectContainer, IEnumerable<G> where G : GameObject
     {
         private readonly List<G> _objects = new();
 

@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TheForestWaiter.Debugging.DebugConsole;
 
 namespace TheForestWaiter.Debugging.Command.Commands
 {
-    [Command("timeinfo", "", "")]
+	[Command("timeinfo", "", "")]
     internal class TimeInfo : ICommand
     {
         private readonly TimeProcessor _time;

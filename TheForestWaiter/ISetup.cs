@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TheForestWaiter
 {
-    interface ISetup
+    internal interface ISetup
     {
         /// <summary>
         /// Runs during loading screen

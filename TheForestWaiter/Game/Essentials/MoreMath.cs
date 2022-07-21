@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TheForestWaiter.Game.Essentials
 {
-	public static class ForestMath
+	public static class MoreMath
 	{
 		public static float MoveTowardsZero(float value, float by)
 		{

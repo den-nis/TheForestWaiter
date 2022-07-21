@@ -31,7 +31,7 @@ namespace TheForestWaiter.Game.Objects
 		private float _life;
 		private float _rotation;
 
-		public Gib(GameData game, SpriteSheet sheet) : base(game)
+		public Gib(SpriteSheet sheet)
 		{
 			Sheet = sheet;
 			Size = Sheet.TileSize.ToVector2f();
@@ -69,7 +69,7 @@ namespace TheForestWaiter.Game.Objects
 			else
 			{
 				_rotation += AngularMomentum * time;
-				AngularMomentum = ForestMath.MoveTowardsZero(AngularMomentum, _airRotationDrag * time);
+				AngularMomentum = MoreMath.MoveTowardsZero(AngularMomentum, _airRotationDrag * time);
 			}
 		}
 

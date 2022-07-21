@@ -14,7 +14,7 @@ namespace TheForestWaiter.Game.Weapons
 
         private readonly ContentSource _content;
 
-        protected override Vector2f AttachPoint => Game.Objects.Player.Center - new Vector2f(0, 0);
+        protected override Vector2f AttachPoint => _gameData.Objects.Player.Center - new Vector2f(0, 0);
         protected override Vector2f Origin => new(1, 5);
 
         private const int BEST_FIRERATE = 150;
@@ -23,21 +23,24 @@ namespace TheForestWaiter.Game.Weapons
         private float _stuckTimer = 0;
         private float _heat = 0;
 
-        public Chaingun(GameData game, ContentSource content, ObjectCreator creator, SoundSystem sound) : base(game, creator, sound)
+        private readonly GameData _gameData;
+
+        public Chaingun()
         {
+            _gameData = IoC.GetInstance<GameData>();
+            _content = IoC.GetInstance<ContentSource>();
+
             AutoFire = true;
             Cone = TrigHelper.ToRad(20);
             FireRatePerSecond = 100;
             FireSpeedVariation = 100;
 
-            Sprite = content.Textures.CreateSprite("Textures/Weapons/chaingun.png");
+            Sprite = _content.Textures.CreateSprite("Textures/Weapons/chaingun.png");
 			FireSound = new("Sounds/Weapons/chaingun.wav")
 			{
 				PitchVariation = 0.5f,
 				Volume = 40f
 			};
-
-			_content = content;
         }
 
 		public override void BackgroundUpdate(float time)
@@ -84,7 +87,7 @@ namespace TheForestWaiter.Game.Weapons
 
         public override void OnFire()
         {
-            Game.Objects.WorldParticles.Emit(_content.Particles.Get("Particles/handgun_smoke.particle", BarrelPosition, GetShotFromAngle(), 400), 10);
+            _gameData.Objects.WorldParticles.Emit(_content.Particles.Get("Particles/handgun_smoke.particle", BarrelPosition, GetShotFromAngle(), 400), 10);
             FireProjectile<ChainBullet>();
         }
     }

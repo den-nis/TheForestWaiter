@@ -18,11 +18,13 @@ namespace TheForestWaiter.Game.Gibs
 		private readonly ContentSource _content;
         private readonly float _gibMultiplier;
 
-		public GibSpawner(GameData game, ContentSource content, UserSettings settings, ObjectCreator creator)
+		public GibSpawner()
 		{
+			var settings = IoC.GetInstance<UserSettings>();
+			_game = IoC.GetInstance<GameData>();
+			_content = IoC.GetInstance<ContentSource>();
+
 			_gibMultiplier = settings.GetFloat("Game", "GibMultiplier");
-			_game = game;
-			_content = content;
         }
 
 		public void Setup(string sheetName)
@@ -41,7 +43,7 @@ namespace TheForestWaiter.Game.Gibs
 		public void Spawn(Vector2f at, int index)
 		{
 			var velocity = TrigHelper.FromAngleRad(Rng.Angle(), Rng.Range(MinVelocity, MaxVelocity));
-			var gib = new Gib(_game, _sheet);
+			var gib = new Gib(_sheet);
 
             gib.SetLife(10);
 			gib.Center = at;

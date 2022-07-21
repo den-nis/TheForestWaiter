@@ -16,10 +16,10 @@ namespace TheForestWaiter.Game.Logic
 		private readonly PickupSpawner _pickupSpawner;
 		private readonly GibSpawner _gibSpawner;
 
-		public DropSpawner(PickupSpawner pickupSpawner, GibSpawner gibSpawner)
+		public DropSpawner()
 		{
-			_pickupSpawner = pickupSpawner;
-			_gibSpawner = gibSpawner;
+			_pickupSpawner = IoC.GetInstance<PickupSpawner>();
+			_gibSpawner = IoC.GetInstance<GibSpawner>();
 		}
 
 		public void Setup(string gibSheetName)

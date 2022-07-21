@@ -4,6 +4,7 @@ using SFML.System;
 using System;
 using TheForestWaiter.Game.Essentials;
 using TheForestWaiter.Game.Objects.Abstract;
+using TheForestWaiter.Services;
 
 namespace TheForestWaiter.Game.Weapons.Abstract
 {
@@ -27,7 +28,6 @@ namespace TheForestWaiter.Game.Weapons.Abstract
         protected Vector2f BarrelPosition => AttachPoint + TrigHelper.FromAngleRad(LastAimAngle, Sprite.Texture.Size.X - Origin.X);
         protected int AimingDirection { get; private set; } = 1;
 
-        protected GameData Game { get; set; }
         protected Sprite Sprite { get; set; }
 
         protected SoundInfo FireSound { get; set; }
@@ -36,16 +36,17 @@ namespace TheForestWaiter.Game.Weapons.Abstract
         public Vector2f LastAim { get; private set; }
         public float LastAimAngle { get; private set; }
 
+        private readonly GameData _gameData;
         private readonly ObjectCreator _creator;
 		private readonly SoundSystem _sound;
 		private float _fireTimer;
         private bool _firstShot;
 
-        public Weapon(GameData game, ObjectCreator creator, SoundSystem sound)
+        public Weapon()
         {
-            _creator = creator;
-			_sound = sound;
-			Game = game;
+            _gameData = IoC.GetInstance<GameData>();
+            _creator = IoC.GetInstance<ObjectCreator>();
+			_sound = IoC.GetInstance<SoundSystem>();
         }
 
         public abstract void OnFire();
@@ -63,7 +64,7 @@ namespace TheForestWaiter.Game.Weapons.Abstract
 
         private void Fire()
         {
-            if (Game.World.TouchingSolid(BarrelPosition + TrigHelper.FromAngleRad(GetShotFromAngle(), 10)))
+            if (_gameData.World.TouchingSolid(BarrelPosition + TrigHelper.FromAngleRad(GetShotFromAngle(), 10)))
             {
                _sound.Play(StuckSound ?? SoundInfo.None);
             }
@@ -120,14 +121,14 @@ namespace TheForestWaiter.Game.Weapons.Abstract
 
         private void Kickback()
         {
-            Game.Objects.Player.Velocity += TrigHelper.FromAngleRad((float)(LastAimAngle - Math.PI), KickbackForce);
+            _gameData.Objects.Player.Velocity += TrigHelper.FromAngleRad((float)(LastAimAngle - Math.PI), KickbackForce);
         }
 
         protected void FireProjectile<T>() where T : Projectile
         {
             var velocity = TrigHelper.FromAngleRad(GetShotFromAngle(), Rng.Var(FireSpeed, FireSpeedVariation));
-            var bullet = _creator.FireProjectile<T>(BarrelPosition, velocity, Game.Objects.Player);
-            Game.Objects.Projectiles.Add(bullet);
+            var bullet = _creator.FireProjectile<T>(BarrelPosition, velocity, _gameData.Objects.Player);
+            _gameData.Objects.Projectiles.Add(bullet);
         }
     }
 }

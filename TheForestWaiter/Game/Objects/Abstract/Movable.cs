@@ -32,10 +32,6 @@ namespace TheForestWaiter.Game.Objects.Abstract
         private Vector2f _lastWorldCheckArea;
         private Vector2f _lastWorldCheckCenter;
 
-        public Movable(GameData game) : base(game) 
-        {
-        }
-
         public override void Update(float time)
         {
             UpdatePhysics(time);

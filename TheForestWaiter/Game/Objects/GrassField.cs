@@ -12,10 +12,12 @@ namespace TheForestWaiter.Game.Objects.Static
 		private readonly bool _enabled;
 		private readonly ObjectCreator _creator;
 
-		public GrassField(GameData game, UserSettings settings, ObjectCreator creator) : base(game)
+		public GrassField()
 		{
+			var settings = IoC.GetInstance<UserSettings>();
+			_creator = IoC.GetInstance<ObjectCreator>();
+
 			_enabled = settings.GetBool("Game", "EnableGrass");
-			_creator = creator;
 		}
 
 		private void SetupGrassFields()

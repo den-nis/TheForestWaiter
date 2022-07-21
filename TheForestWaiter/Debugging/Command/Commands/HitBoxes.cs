@@ -1,14 +1,10 @@
 ﻿using LightInject;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TheForestWaiter.Game;
 
 namespace TheForestWaiter.Debugging.Command.Commands
 {
-    [Command("hitbox", "Toggle hitboxes")]
+	[Command("hitbox", "Toggle hitboxes")]
     internal class HitBoxes : ICommand
     {
         private readonly GameData _game;
