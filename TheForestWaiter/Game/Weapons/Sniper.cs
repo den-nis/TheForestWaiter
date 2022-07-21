@@ -19,12 +19,15 @@ namespace TheForestWaiter.Game.Weapons
 
         private readonly ContentSource _content;
 
-        protected override Vector2f AttachPoint => Game.Objects.Player.Center;
+        protected override Vector2f AttachPoint => _gameData.Objects.Player.Center;
         protected override Vector2f Origin => new(0f, 3f);
 
-		public Sniper(GameData game, ContentSource content, ObjectCreator creator, SoundSystem sound) : base(game, creator, sound)
+        private readonly GameData _gameData;
+
+        public Sniper()
         {
-            _content = content;
+            _content = IoC.GetInstance<ContentSource>();
+            _gameData = IoC.GetInstance<GameData>();
 
             Cone = 0;
             FireSpeed = 2000;
@@ -33,7 +36,7 @@ namespace TheForestWaiter.Game.Weapons
             AutoFire = false;
             FireSound = new("Sounds/Weapons/sniper_{n}.wav");
 
-            Sprite = content.Textures.CreateSprite("Textures/Weapons/sniper.png");
+            Sprite = _content.Textures.CreateSprite("Textures/Weapons/sniper.png");
         }
 
         public override void Draw(RenderWindow win)
@@ -48,7 +51,7 @@ namespace TheForestWaiter.Game.Weapons
                 while (_smokeEmitTimer > SMOKE_TIME_BETWEEN_EMIT)
                 {
                     var smoke = _content.Particles.Get("Particles/sniper_smoke.particle", BarrelPosition, TrigHelper.Up, 10);
-                    Game.Objects.WorldParticles.Emit(smoke, 1);
+                    _gameData.Objects.WorldParticles.Emit(smoke, 1);
                     _smokeEmitTimer -= SMOKE_TIME_BETWEEN_EMIT;
                 }
 
@@ -65,7 +68,7 @@ namespace TheForestWaiter.Game.Weapons
             _smokeTimer = SMOKE_TIME;
 
             var prop = _content.Particles.Get("Particles/sniper_muzzle_flash.particle", BarrelPosition, LastAimAngle, 320);
-            Game.Objects.WorldParticles.Emit(prop, 20);
+            _gameData.Objects.WorldParticles.Emit(prop, 20);
 
             FireProjectile<SniperBullet>();
         }

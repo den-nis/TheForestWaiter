@@ -4,7 +4,7 @@ using System.IO.Compression;
 
 namespace TheForestWaiter.Content
 {
-    sealed class ZipContentSource : IContentSource, IDisposable
+	sealed class ZipContentSource : IContentSource, IDisposable
     {
         private ZipArchive Archive { get; set; }
 

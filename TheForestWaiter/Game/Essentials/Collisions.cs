@@ -1,12 +1,10 @@
 ﻿using SFML.Graphics;
 using SFML.System;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace TheForestWaiter.Game.Essentials
 {
-    class Collisions
+	class Collisions
     {
         //TODO: maybe use something else than SweptAABB
         public static Vector2f RayCast(FloatRect sBox, Vector2f start, Vector2f end)

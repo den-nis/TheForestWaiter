@@ -1,26 +1,27 @@
-﻿using System.Globalization;
-using TheForestWaiter.Game;
-using LightInject;
+﻿using LightInject;
+using System.Globalization;
 using TheForestWaiter.Services;
 
 namespace TheForestWaiter
 {
-    class Program
+	internal class Program
     {
         static void Main()
         {
             SetCulture();
 
-            using ServiceContainer services = new()
+            using ServiceContainer container = new()
             {
                 PropertyDependencySelector = new DisablePropertyDependencies()
             };
 
-            GlobalServices startup = new(services);
+            IoC.SetContainer(container);
+
+            GlobalServices startup = new(container);
 
             startup.Register();
             startup.Setup();
-            services.GetInstance<Entry>().Run();        
+            container.GetInstance<Entry>().Run();        
         }
 
         static void SetCulture()

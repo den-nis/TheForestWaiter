@@ -26,8 +26,9 @@ namespace TheForestWaiter.Game.Objects.Abstract
 		private readonly AnimatedSprite _animation;
 		private float _life = LIFE_SPAN;
 
-		public Pickup(string texture, GameData game, ContentSource content) : base(game)
+		public Pickup(string texture)
 		{
+			var content = IoC.GetInstance<ContentSource>();
 			_animation = content.Textures.CreateAnimatedSprite(texture);
 			_animation.CurrentFrame = Rng.RangeInt(_animation.AnimationStart, _animation.AnimationEnd);
 

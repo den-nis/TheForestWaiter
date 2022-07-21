@@ -1,10 +1,7 @@
 ﻿using Newtonsoft.Json;
 using SFML.System;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using TheForestWaiter.Game.Essentials;
 using TheForestWaiter.Game.Particles;
 using TheForestWaiter.Shared;

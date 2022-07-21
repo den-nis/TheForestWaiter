@@ -9,7 +9,7 @@ using TheForestWaiter.Content;
 
 namespace TheForestWaiter.Game.Environment
 {
-	class Background
+	sealed internal class Background
 	{
 		public float Horizon { get; set; } = 0;
 

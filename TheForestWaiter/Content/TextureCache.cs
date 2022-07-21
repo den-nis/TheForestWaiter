@@ -6,7 +6,7 @@ using TheForestWaiter.Shared;
 
 namespace TheForestWaiter.Content
 {
-    class TextureCache : ContentCache<Texture>
+	class TextureCache : ContentCache<Texture>
     {
         protected override ContentType Type => ContentType.Texture;
 

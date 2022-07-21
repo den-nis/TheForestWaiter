@@ -4,7 +4,7 @@ using TheForestWaiter.Shared;
 
 namespace TheForestWaiter.Content
 {
-    abstract class ContentCache<T> where T : class
+	abstract class ContentCache<T> where T : class
     {
         protected abstract ContentType Type { get; }
 

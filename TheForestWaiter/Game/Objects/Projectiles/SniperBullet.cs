@@ -5,7 +5,7 @@ namespace TheForestWaiter.Game.Objects.Projectiles
 {
 	internal class SniperBullet : Projectile
     {
-        public SniperBullet(GameData game, ContentSource content, SoundSystem sound) : base(game, content, sound)
+        public SniperBullet()
         {
             Damage = 100;
             Penetration = 7;

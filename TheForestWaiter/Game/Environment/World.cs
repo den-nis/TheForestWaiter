@@ -12,7 +12,7 @@ using TheForestWaiter.Game.Graphics;
 
 namespace TheForestWaiter.Game.Environment
 {
-    class World
+    sealed internal class World
     {
         public const int TILE_SIZE = 32;
         public Vector2i Size => new(_tiles.GetLength(0), _tiles.GetLength(1));

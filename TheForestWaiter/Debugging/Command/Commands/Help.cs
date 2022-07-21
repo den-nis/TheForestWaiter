@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TheForestWaiter.Debugging.DebugConsole;
 
 namespace TheForestWaiter.Debugging.Command.Commands
 {
-    [Command("help", "Shows commands")]
+	[Command("help", "Shows commands")]
     internal class Help : ICommand
     {
         public void Execute(CommandHandler handler, string[] args)

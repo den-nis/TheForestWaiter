@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TheForestWaiter.Debugging.Command.Commands
+﻿namespace TheForestWaiter.Debugging.Command.Commands
 {
-    [Command("timescale", "Speed up or slow time", "{number}")]
+	[Command("timescale", "Speed up or slow time", "{number}")]
     internal class Timescale : ICommand
     {
         private readonly TimeProcessor _time;

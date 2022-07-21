@@ -10,7 +10,7 @@ using TheForestWaiter.Game.Weapons.Abstract;
 
 namespace TheForestWaiter
 {
-    public static class Types
+    internal static class Types
     {
         public static IDictionary<string, Type> GameObjects { get; private set; }
         public static IDictionary<string, Type> Weapons { get; private set; }

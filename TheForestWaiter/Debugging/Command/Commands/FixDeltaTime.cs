@@ -1,9 +1,6 @@
-﻿using System;
-using TheForestWaiter.Game;
-
-namespace TheForestWaiter.Debugging.Command.Commands
+﻿namespace TheForestWaiter.Debugging.Command.Commands
 {
-    [Command("fixdelta", "Fix delta time to a specific amount", "{number}")]
+	[Command("fixdelta", "Fix delta time to a specific amount", "{number}")]
     internal class FixDeltaTime : ICommand
     {
         private readonly TimeProcessor _time;

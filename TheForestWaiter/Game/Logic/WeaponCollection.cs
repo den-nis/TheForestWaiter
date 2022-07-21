@@ -6,7 +6,6 @@ namespace TheForestWaiter.Game.Logic
 {
 	internal class WeaponCollection
 	{
-	
 		/// <summary>
 		/// Parameter = previous weaopn
 		/// </summary>

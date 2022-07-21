@@ -15,28 +15,29 @@ namespace TheForestWaiter.Game.Hud
         private readonly List<HudSection> _sections;
         private readonly Camera _camera;
 
-        public GameHud(GameData game, Camera camera, ContentSource content, UserSettings settings, ItemShop shop)
+        public GameHud()
         {
-            _camera = camera;
+            var settings = IoC.GetInstance<UserSettings>();
+            _camera = IoC.GetInstance<Camera>();
 
             var scale = settings.GetFloat("Game", "HudScale");
 
             _sections = new()
             {
-                new PlayerHud(scale, game, content)
+                new PlayerHud(scale)
                 {
                     Region = HudRegion.TopLeft,
                     Offset = new Vector2f(10, 10),
                 },
-                new WeaponsHud(scale, camera, game, content)
+                new WeaponsHud(scale)
                 {
                     Region = HudRegion.BottomLeft,
                 },
-                new ShopHud(scale, content, shop, camera)
+                new ShopHud(scale)
                 {
                     Region = HudRegion.TopRight,
                 },
-                new WaveHud(scale, game, content)
+                new WaveHud(scale)
                 {
                     Region = HudRegion.BottomRight,
                     Offset = new Vector2f(-10, -10)

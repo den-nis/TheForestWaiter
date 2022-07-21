@@ -1,26 +1,16 @@
-﻿using Newtonsoft.Json;
+﻿using LightInject;
+using Newtonsoft.Json;
 using SFML.Graphics;
-using SFML.System;
-using SFML.Window;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TheForestWaiter.Content;
-using TheForestWaiter.Debugging;
-using TheForestWaiter.Game.Debugging;
 using TheForestWaiter.Game.Environment;
 using TheForestWaiter.Game.Essentials;
-using LightInject;
+using TheForestWaiter.Game.Hud;
 using TheForestWaiter.Services;
 using TheForestWaiter.States;
-using TheForestWaiter.Game.Hud;
 
 namespace TheForestWaiter.Game
 {
-    class GameState : IState
+	class GameState : IState
     {
         private readonly GameServices _services;
 

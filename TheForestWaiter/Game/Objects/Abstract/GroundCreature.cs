@@ -33,7 +33,7 @@ namespace TheForestWaiter.Game.Objects.Abstract
 		private bool _wantsToJump = false;
 		private bool _wantsToHoldJump = false;
 
-		public GroundCreature(GameData game) : base(game)
+		public GroundCreature()
 		{
 			Drag = new Vector2f(0, 0);
 		}

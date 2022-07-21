@@ -6,7 +6,7 @@ using TheForestWaiter.Game.Weapons.Abstract;
 
 namespace TheForestWaiter.Debugging.Command.Commands
 {
-    [Command("give", "equip a weapon", "{weapon name}")]
+	[Command("give", "equip a weapon", "{weapon name}")]
     internal class Give : ICommand
     {
         private readonly GameData _game;

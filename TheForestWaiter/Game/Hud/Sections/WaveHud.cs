@@ -14,9 +14,10 @@ namespace TheForestWaiter.Game.Hud.Sections
 		private readonly GameData _game;
 		private Spawner _spawner;
 
-		public WaveHud(float scale, GameData game, ContentSource content) : base(scale)
+		public WaveHud(float scale) : base(scale)
 		{
-			_game = game;
+			var content = IoC.GetInstance<ContentSource>();
+			_game = IoC.GetInstance<GameData>(); ;
 
 			var numberSheet = content.Textures.CreateSpriteSheet("Textures/Hud/wave_numbers.png");
 			_waveText = new SpriteFont(numberSheet);

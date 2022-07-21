@@ -66,11 +66,13 @@ namespace TheForestWaiter.Game.Objects.Static
         private readonly List<InnerSpawner> _spawners = new();
 		private readonly ObjectCreator _creator;
 
-		public Spawner(GameData game, ObjectCreator creator, ContentSource content) : base(game)
+		public Spawner()
 		{
+            var content = IoC.GetInstance<ContentSource>();
+            _creator = IoC.GetInstance<ObjectCreator>();
+            
 			var json = content.Source.GetString("waveSettings.json");
 			_settings = WaveSettings.FromJson(json);
-			_creator = creator;
 		}
 
         public int GetCurrentWave() => _currentWave;

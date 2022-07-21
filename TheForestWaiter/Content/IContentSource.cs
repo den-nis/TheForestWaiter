@@ -2,7 +2,7 @@
 
 namespace TheForestWaiter.Content
 {
-    interface IContentSource
+	interface IContentSource
     {
         Stream GetStream(string name);
         byte[] GetBytes(string name);

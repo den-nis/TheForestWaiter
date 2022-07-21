@@ -34,12 +34,13 @@ namespace TheForestWaiter.Game.Objects.Enemies
 	
 		private readonly float _avoidDistance;
 
-		public Crawler(GameData game, ContentSource content, DropSpawner dropSpawner, ObjectCreator creator) : base(game)
+		public Crawler()
 		{
-			_content = content;
-			_dropSpawner = dropSpawner;
-			_creator = creator;
-			_animation = content.Textures.CreateAnimatedSprite("Textures/Enemies/crawler.png");
+			_creator = IoC.GetInstance<ObjectCreator>();
+			_content = IoC.GetInstance<ContentSource>();
+			_dropSpawner = IoC.GetInstance<DropSpawner>();
+
+			_animation = _content.Textures.CreateAnimatedSprite("Textures/Enemies/crawler.png");
 			Size = _animation.Sheet.TileSize.ToVector2f();
 
 			SetMaxHealth(50, true);

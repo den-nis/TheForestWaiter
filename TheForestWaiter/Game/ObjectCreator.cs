@@ -6,7 +6,7 @@ using TheForestWaiter.Game.Weapons.Abstract;
 
 namespace TheForestWaiter.Game
 {
-	class ObjectCreator
+	internal class ObjectCreator
     {
         private readonly IServiceContainer _provider;
 

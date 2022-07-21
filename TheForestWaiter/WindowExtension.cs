@@ -1,14 +1,9 @@
 ﻿using SFML.Graphics;
 using SFML.System;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TheForestWaiter
 {
-    static class WindowExtension
+	internal static class WindowExtension
     {
 		private static readonly RectangleShape _box = new()
 		{

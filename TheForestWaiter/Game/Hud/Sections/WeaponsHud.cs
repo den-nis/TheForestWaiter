@@ -23,13 +23,13 @@ namespace TheForestWaiter.Game.Hud.Sections
 
 		private int _mouseOnIndex = 0;
 
-		public WeaponsHud(float scale, Camera camera, GameData game, ContentSource content) : base(scale)
+		public WeaponsHud(float scale) : base(scale)
 		{
-            _camera = camera;
-            _game = game;
-			_content = content;
-			_slot = content.Textures.CreateSprite("Textures/Hud/slot.png");
-			_select = content.Textures.CreateSprite("Textures/Hud/select.png");
+            _camera = IoC.GetInstance<Camera>();
+            _game = IoC.GetInstance<GameData>();
+			_content = IoC.GetInstance<ContentSource>();
+			_slot = _content.Textures.CreateSprite("Textures/Hud/slot.png");
+			_select = _content.Textures.CreateSprite("Textures/Hud/select.png");
 
 			Size = new Vector2f(_slot.Texture.Size.X * MAX_WEAPONS, _slot.Texture.Size.Y);
 		}

@@ -1,5 +1,4 @@
 ﻿using SFML.System;
-using TheForestWaiter.Game.Core;
 using TheForestWaiter.Game.Essentials;
 
 namespace TheForestWaiter.Game.Objects.Items
@@ -12,10 +11,10 @@ namespace TheForestWaiter.Game.Objects.Items
 		private readonly GameData _game;
 		private readonly ObjectCreator _creator;
 
-		public PickupSpawner(GameData game, ObjectCreator creator)
+		public PickupSpawner()
 		{
-			_game = game;
-			_creator = creator;
+			_game = IoC.GetInstance<GameData>();
+			_creator = IoC.GetInstance<ObjectCreator>();
 		}
 
 		public void SpawnAmount(Vector2f at, int coins, int hearts)

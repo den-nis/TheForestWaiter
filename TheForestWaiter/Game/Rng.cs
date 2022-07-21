@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace TheForestWaiter.Game
 {
-    public static class Rng
+	internal static class Rng
     {
         private static Random Random { get; set; } = new Random();
 

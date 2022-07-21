@@ -1,6 +1,6 @@
 ﻿namespace TheForestWaiter.Game.Environment
 {
-    class Layer
+    sealed internal class Layer
     {
         public string Type { get; set; }
         public string Name { get; set;  }

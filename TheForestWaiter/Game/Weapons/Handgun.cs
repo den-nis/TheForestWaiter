@@ -12,24 +12,27 @@ namespace TheForestWaiter.Game.Weapons
 
         private readonly ContentSource _content;
 
-        protected override Vector2f AttachPoint => Game.Objects.Player.Center - new Vector2f(0, 1);
+        protected override Vector2f AttachPoint => _gameData.Objects.Player.Center - new Vector2f(0, 1);
         protected override Vector2f Origin => new(2.5f, 6.5f);
 
-		public Handgun(GameData game, ContentSource content, ObjectCreator creator, SoundSystem sound) : base(game, creator, sound)
-        { 
+        private readonly GameData _gameData;
+
+		public Handgun()
+        {
+            _content = IoC.GetInstance<ContentSource>();
+            _gameData = IoC.GetInstance<GameData>();
+
             AutoFire = true;
             Cone = TrigHelper.ToRad(5);
             FireRatePerSecond = 5;
 
-            Sprite = content.Textures.CreateSprite("Textures/Weapons/handgun.png");
+            Sprite = _content.Textures.CreateSprite("Textures/Weapons/handgun.png");
             FireSound = new("Sounds/Weapons/handgun_{n}.wav");
-
-            _content = content;
         }
 
 		public override void OnFire()
 		{
-            Game.Objects.WorldParticles.Emit(_content.Particles.Get("Particles/handgun_smoke.particle", BarrelPosition, GetShotFromAngle(), 120), 10);
+            _gameData.Objects.WorldParticles.Emit(_content.Particles.Get("Particles/handgun_smoke.particle", BarrelPosition, GetShotFromAngle(), 120), 10);
             FireProjectile<SmallBullet>();
 		}
 	}

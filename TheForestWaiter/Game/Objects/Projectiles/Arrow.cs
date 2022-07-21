@@ -6,7 +6,7 @@ namespace TheForestWaiter.Game.Objects.Projectiles
 {
     internal class Arrow : Projectile
     {
-        public Arrow(GameData game, ContentSource content, SoundSystem sound) : base(game, content, sound)
+        public Arrow() 
         {
             Damage = 15;
             Penetration = 5;

@@ -5,7 +5,7 @@ namespace TheForestWaiter.Game.Objects.Projectiles
 {
 	internal class ShotgunBullet : Projectile
 	{
-		public ShotgunBullet(GameData game, ContentSource content, SoundSystem sound) : base(game, content, sound)
+		public ShotgunBullet()
 		{
 			SetTexture("Textures/Projectiles/bullet_shotgun.png");
 			ExplosionParticleName = "Particles/spark_gray.particle";

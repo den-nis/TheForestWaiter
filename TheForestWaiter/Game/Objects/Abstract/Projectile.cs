@@ -33,11 +33,11 @@ namespace TheForestWaiter.Game.Objects.Abstract
 
 		private Sprite _sprite;
 
-		public Projectile(GameData game, ContentSource content, SoundSystem sound) : base(game)
+		public Projectile()
 		{
 			_impactSound.Volume = 70;
-			_content = content;
-			_sound = sound;
+			_content = IoC.GetInstance<ContentSource>();
+			_sound = IoC.GetInstance<SoundSystem>();
 			Gravity = 0;
 		}
 

@@ -9,9 +9,9 @@ namespace TheForestWaiter.Game.Objects.Projectiles
 		
 		private readonly ContentSource _content;
 
-		public CorruptionBall(GameData game, ContentSource content, SoundSystem sound) : base(game, content, sound)
+		public CorruptionBall() 
 		{
-			_content = content;
+			_content = IoC.GetInstance<ContentSource>();
 
 			ExplosionParticleName = "Particles/corruption_ball_smoke.particle";
 			Damage = 40;

@@ -16,9 +16,11 @@ namespace TheForestWaiter.Game.Hud.Sections
 		private readonly SpriteFont _coinText;
 		private readonly GameData _game;
 
-		public PlayerHud(float scale, GameData game, ContentSource content) : base(scale)
+		public PlayerHud(float scale) : base(scale)
 		{
-			_game = game;
+			var content = IoC.GetInstance<ContentSource>();
+			_game = IoC.GetInstance<GameData>();
+
 			_boxSprite = content.Textures.CreateSprite("Textures/Hud/box.png");
 			_healthSprite = content.Textures.CreateSprite("Textures/Hud/health.png");
 			_coinText = new SpriteFont(content.Textures.CreateSpriteSheet("Textures/Hud/numbers.png"));

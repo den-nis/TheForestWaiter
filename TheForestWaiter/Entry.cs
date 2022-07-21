@@ -12,7 +12,7 @@ using TheForestWaiter.States;
 
 namespace TheForestWaiter
 {
-    class Entry
+    internal class Entry
     {
         private readonly WindowHandle _window;
         private readonly IDebug _debug;
