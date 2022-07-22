@@ -38,8 +38,8 @@ namespace TheForestWaiter.Game.Weapons
 			Sprite = _content.Textures.CreateSprite("Textures/Weapons/chaingun.png");
 			FireSound = new("Sounds/Weapons/chaingun.wav")
 			{
-				PitchVariation = 0.5f,
-				Volume = 40f
+				PitchVariation = 0.3f,
+				Volume = 20f
 			};
 		}
 
