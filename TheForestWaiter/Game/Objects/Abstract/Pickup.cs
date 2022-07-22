@@ -22,12 +22,16 @@ namespace TheForestWaiter.Game.Objects.Abstract
 		private const int LIFE_SPAN = 60;
 		private const int TIME_WHEN_VISIBLE_DECAY = 10;
 
+		private readonly SoundSystem _sound;
+		private readonly SoundInfo _pickupSound = new("Sounds/Pickups/coin_{n}.wav");
 		private readonly AnimatedSprite _animation;
 		private float _life = LIFE_SPAN;
 
 		public Pickup(string texture)
 		{
 			var content = IoC.GetInstance<ContentSource>();
+			_sound = IoC.GetInstance<SoundSystem>();
+
 			_animation = content.Textures.CreateAnimatedSprite(texture);
 			_animation.CurrentFrame = Rng.RangeInt(_animation.AnimationStart, _animation.AnimationEnd);
 
@@ -63,6 +67,7 @@ namespace TheForestWaiter.Game.Objects.Abstract
 
 				if (Intersects(player))
 				{
+					_sound.Play(_pickupSound);
 					OnPickup(player);
 					Delete();
 					return;

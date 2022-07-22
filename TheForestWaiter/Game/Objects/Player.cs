@@ -20,7 +20,6 @@ namespace TheForestWaiter.Game.Objects
 		public WeaponCollection Weapons { get; } = new();
 
 		private readonly SoundInfo _walkSound;
-		private readonly SoundInfo _hurtSound;
 
 		private readonly AnimatedSprite _sprite;
 		private readonly Color _stunColor = new(255, 200, 200);
@@ -35,12 +34,8 @@ namespace TheForestWaiter.Game.Objects
 			var creator = IoC.GetInstance<ObjectCreator>();
 			_sound = IoC.GetInstance<SoundSystem>();
 
-
-
-			_walkSound = new SoundInfo("Sounds/Player/walk_{n}.wav");
-			_hurtSound = new SoundInfo("Sounds/Player/hurt.wav");
-			_walkSound.Volume = 10f;
-			_hurtSound.Volume = 90f;
+			SoundOnDamage = new("Sounds/Player/hurt.wav") { Volume = 90f };
+			_walkSound = new("Sounds/Player/walk_{n}.wav") { Volume = 10f };
 
 			_sprite = content.Textures.CreateAnimatedSprite("Textures/Player/sheet.png");
 			Size = _sprite.Sheet.TileSize.ToVector2f();
@@ -124,13 +119,17 @@ namespace TheForestWaiter.Game.Objects
 		{
 			if (CollisionFlags.HasFlag(WorldCollisionFlags.Bottom) && MovingDirection != 0)
 			{
-				_walkSoundTimer += time;
+				_walkSoundTimer -= time;
 
-				if (_walkSoundTimer > WALK_SOUND_INTERVAL)
+				if (_walkSoundTimer <= 0)
 				{
 					_sound.Play(_walkSound);
-					_walkSoundTimer = 0;
+					_walkSoundTimer = WALK_SOUND_INTERVAL;
 				}
+			}
+			else
+			{
+				_walkSoundTimer = 0;
 			}
 		}
 
@@ -186,7 +185,6 @@ namespace TheForestWaiter.Game.Objects
 
 		protected override void OnDamage(GameObject by)
 		{
-			_sound.Play(_hurtSound);
 		}
 
 		protected override void OnDeath()

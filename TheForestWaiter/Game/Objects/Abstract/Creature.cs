@@ -22,6 +22,7 @@ namespace TheForestWaiter.Game.Objects.Abstract
 		protected bool Invincible { get; set; }
 		protected float StunTime { get; set; } = 0.1f;
 		protected float KnockbackResistance { get; set; } = 0;
+		protected SoundInfo SoundOnDamage = new("Sounds/Enemies/hurt.wav");
 
 		/// <summary>
 		/// Direction creature is facing based on the last move direction
@@ -32,8 +33,12 @@ namespace TheForestWaiter.Game.Objects.Abstract
 		private float _maxHealth = 100;
 		private float _stunTimer = 0;
 
+		private readonly SoundSystem _sound;
+
 		public Creature()
 		{
+			_sound = IoC.GetInstance<SoundSystem>();
+
 			Health = _maxHealth;
 		}
 
@@ -63,6 +68,7 @@ namespace TheForestWaiter.Game.Objects.Abstract
 
 			if (!Invincible)
 			{
+				_sound.Play(SoundOnDamage);
 				Health -= amount;
 				Health = Math.Max(0, Health);
 			}
