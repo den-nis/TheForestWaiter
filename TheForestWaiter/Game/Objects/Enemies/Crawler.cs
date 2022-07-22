@@ -43,7 +43,7 @@ namespace TheForestWaiter.Game.Objects.Enemies
 			_animation = _content.Textures.CreateAnimatedSprite("Textures/Enemies/crawler.png");
 			Size = _animation.Sheet.TileSize.ToVector2f();
 
-			SetMaxHealth(50, true);
+			SetMaxHealth(300, true);
 			JumpForce = Rng.Var(400, variation: 20);
 			WalkSpeed = Rng.Var(120, variation: 10);
 

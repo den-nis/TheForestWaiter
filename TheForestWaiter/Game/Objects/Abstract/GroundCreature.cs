@@ -9,6 +9,11 @@ namespace TheForestWaiter.Game.Objects.Abstract
 	/// </summary>
 	internal abstract class GroundCreature : Creature
 	{
+		/// <summary>
+		/// 0 means the creature is carrying nothing
+		/// 1 means it's carrying so much it can't move
+		/// </summary>
+		protected float CarryingWeight = 0;
 		protected float JumpForce { get; set; } = 500;
 		protected float JumpHoldForce { get; set; } = 100;
 		protected float JumpForceVariation { get; set; } = 100;
@@ -82,7 +87,7 @@ namespace TheForestWaiter.Game.Objects.Abstract
 		{
 			bool jumpNextUpdate = false;
 			bool grounded = CollisionFlags.HasFlag(WorldCollisionFlags.Bottom);
-			float speed = grounded ? WalkSpeed : (AirSpeed ?? WalkSpeed);
+			float speed = (grounded ? WalkSpeed : (AirSpeed ?? WalkSpeed)) * (1 - CarryingWeight);
 			float acceleration = grounded ? Acceleration : (AirAcceleration ?? Acceleration);
 
 			if (_targetMovingDirection == 0)
@@ -114,7 +119,7 @@ namespace TheForestWaiter.Game.Objects.Abstract
 			{
 				if (grounded)
 				{
-					SetVelocityY(-JumpForce + Rng.Range(-JumpForceVariation, JumpForceVariation));
+					SetVelocityY((-JumpForce + Rng.Range(-JumpForceVariation, JumpForceVariation)) * (1 - CarryingWeight));
 				}
 			}
 

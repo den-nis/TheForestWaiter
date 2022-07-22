@@ -6,7 +6,7 @@ namespace TheForestWaiter.Game.Objects.Projectiles
 	{
 		public Arrow()
 		{
-			Damage = 15;
+			Damage = 90;
 			Penetration = 5;
 			Gravity = 300;
 			RotationSpeed = 2f;

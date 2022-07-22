@@ -29,6 +29,8 @@ namespace TheForestWaiter.Game.Weapons
 			FireSpeed = 1500;
 			KickbackForce = 50;
 
+			Weight = 0.2f;
+
 			Sprite = _content.Textures.CreateSprite("Textures/Weapons/shotgun.png");
 			FireSound = new("Sounds/Weapons/shotgun_{n}.wav");
 		}

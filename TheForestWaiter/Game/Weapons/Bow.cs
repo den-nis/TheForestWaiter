@@ -22,9 +22,11 @@ namespace TheForestWaiter.Game.Weapons
 
 			AutoFire = false;
 			Cone = TrigHelper.ToRad(5);
-			FireRatePerSecond = 3;
+			FireRatePerSecond = 2;
 			FireSpeedVariation = 10;
 			FireSpeed = 500;
+
+			Weight = 0;
 
 			FireSound = new("Sounds/Weapons/bow.wav");
 			Sprite = content.Textures.CreateSprite("Textures/Weapons/bow.png");

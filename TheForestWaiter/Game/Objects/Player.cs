@@ -39,14 +39,14 @@ namespace TheForestWaiter.Game.Objects
 
 			_sprite = content.Textures.CreateAnimatedSprite("Textures/Player/sheet.png");
 			Size = _sprite.Sheet.TileSize.ToVector2f();
-
+			
 			StunTime = 1;
 			AutoJumpObstacles = false;
 			Friendly = true;
 			AirAcceleration = 1500;
 			AirSpeed = 250;
 			JumpForceVariation = 0;
-			HorizontalOverflowDrag = 100;
+			HorizontalOverflowDrag = 200;
 			InvincibleWhenStunned = true;
 
 			Weapons.Add(creator.CreateWeapon<Handgun>());
@@ -181,6 +181,9 @@ namespace TheForestWaiter.Game.Objects
 		{
 			previous.Firing = false;
 			_switchCooldown = SWITCH_COOLDOWN_TIME;
+
+			var current = Weapons.GetEquiped();
+			CarryingWeight = current.Weight;
 		}
 
 		protected override void OnDamage(GameObject by)

@@ -100,8 +100,10 @@ namespace TheForestWaiter.Game.Objects.Static
 
 				if (timeIsUp)
 				{
-					if (_spawners[0].Enabled)
-						_spawners.ForEach(x => x.Enabled = false);
+					foreach (var spawner in _spawners)
+					{
+						spawner.Enabled = false;
+					}
 
 					if (allEnemiesArekilled)
 					{

@@ -30,10 +30,12 @@ namespace TheForestWaiter.Game.Weapons
 
 			Cone = 0;
 			FireSpeed = 2000;
-			FireRatePerSecond = 1;
+			FireRatePerSecond = 2;
 			KickbackForce = 120;
 			AutoFire = false;
 			FireSound = new("Sounds/Weapons/sniper_{n}.wav");
+
+			Weight = 0.25f;
 
 			Sprite = _content.Textures.CreateSprite("Textures/Weapons/sniper.png");
 		}

@@ -10,7 +10,7 @@ namespace TheForestWaiter.Game.Objects.Enemies
 {
 	internal class Minirusher : GroundCreature
 	{
-		private const float ATTACK_DAMAGE = 10;
+		private const float ATTACK_DAMAGE = 5;
 		private const float KNOCKBACK = 100;
 
 		private readonly AnimatedSprite _animation;
@@ -29,7 +29,7 @@ namespace TheForestWaiter.Game.Objects.Enemies
 			_dropSpawner.Setup("Textures/Enemies/minirusher_gibs.png");
 			_dropSpawner.ChanceOfHeartDrop = 0.01f;
 
-			SetMaxHealth(10, true);
+			SetMaxHealth(100, true);
 			UseHoldJumpWhenChase = true;
 			WalkSpeed = 220 + Rng.Range(0, 100);
 			JumpForce = 350;

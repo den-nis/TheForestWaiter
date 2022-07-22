@@ -32,8 +32,9 @@ namespace TheForestWaiter.Game.Weapons
 
 			AutoFire = true;
 			Cone = TrigHelper.ToRad(20);
-			FireRatePerSecond = 100;
+			FireRatePerSecond = 80;
 			FireSpeedVariation = 100;
+			Weight = 0.4f;
 
 			Sprite = _content.Textures.CreateSprite("Textures/Weapons/chaingun.png");
 			FireSound = new("Sounds/Weapons/chaingun.wav")
