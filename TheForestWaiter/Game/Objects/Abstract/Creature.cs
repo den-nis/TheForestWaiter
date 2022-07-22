@@ -8,6 +8,7 @@ namespace TheForestWaiter.Game.Objects.Abstract
 	/// </summary>
 	internal abstract class Creature : Movable
 	{
+		private const float REMOVE_AT_Y = 6000;
 		private const float KNOCKBACK_VARIATION = 0.10f;
 		private const float MOVING_DIRECTION_THRESHOLD = 0.1f;
 		private const float STUN_CONE = (float)Math.PI / 16;
@@ -115,6 +116,11 @@ namespace TheForestWaiter.Game.Objects.Abstract
 			{
 				MovingDirection = 0;
 			}
+
+			if (Position.Y > REMOVE_AT_Y)
+			{
+				Delete();
+			}
 		}
 
 		protected abstract void OnDeath();
@@ -126,9 +132,12 @@ namespace TheForestWaiter.Game.Objects.Abstract
 			var variation = Rng.Range(-KNOCKBACK_VARIATION, KNOCKBACK_VARIATION) * knockback;
 			var knockbackForce = Math.Max(0, (knockback + variation) - KnockbackResistance);
 
-			var angle = (Center - by.Center).Angle();
-			angle += Rng.Range(-STUN_CONE, STUN_CONE);
-			Velocity = TrigHelper.FromAngleRad(angle, knockbackForce);
+			if (knockbackForce > 0)
+			{
+				var angle = (Center - by.Center).Angle();
+				angle += Rng.Range(-STUN_CONE, STUN_CONE);
+				Velocity = TrigHelper.FromAngleRad(angle, knockbackForce);
+			}
 		}
 	}
 }
