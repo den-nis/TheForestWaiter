@@ -12,7 +12,7 @@ namespace TheForestWaiter.Game.Graphics
 
 		public bool Paused { get; set; } = false;
 		public bool Reversed { get; set; } = false;
-		public int Framerate { get; set; } = 15;
+		public float Framerate { get; set; } = 15;
 
 		public List<SheetSection> Sections { get; set; } = new();
 

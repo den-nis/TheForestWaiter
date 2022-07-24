@@ -233,6 +233,41 @@
 				"tileHeight": 20,
 				"hasTileSpacing": true
 			}
+		},
+		{
+			"path": "Textures/Enemies/vortex.png",
+			"type": "Texture",
+
+			"textureConfig": {
+				"tileWidth": 50,
+				"tileHeight": 37,
+				"hasTileSpacing": true,
+
+				"sections": [
+					{
+						"name": "flying",
+						"fps": 12,
+						"start": 0,
+						"end": 6
+					},
+					{
+						"name": "attack",
+						"fps": 12,
+						"start": 12,
+						"end": 23
+					}
+				]
+			}
+		},
+		{
+			"path": "Textures/Enemies/vortex_gibs.png",
+			"type": "Texture",
+
+			"textureConfig": {
+				"tileWidth": 14,
+				"tileHeight": 14,
+				"hasTileSpacing": true
+			}
 		}
 	]
 }

@@ -13,6 +13,7 @@ namespace TheForestWaiter.Game.Gibs
 		public float MaxVelocity { get; set; } = 300;
 		public float MinVelocity { get; set; } = 100;
 
+		private const string NO_SHEET_SET = "No sheet set for gib spawner";
 		private SpriteSheet _sheet;
 		private readonly GameData _game;
 		private readonly ContentSource _content;
@@ -34,6 +35,8 @@ namespace TheForestWaiter.Game.Gibs
 
 		public void SpawnAll(Vector2f at)
 		{
+			if (_sheet == null) throw new InvalidOperationException(NO_SHEET_SET);
+
 			for (int i = 0; i < _sheet.TotatlTiles * _gibMultiplier; i++)
 			{
 				Spawn(at, i % _sheet.TotatlTiles);
@@ -42,6 +45,8 @@ namespace TheForestWaiter.Game.Gibs
 
 		public void Spawn(Vector2f at, int index)
 		{
+			if (_sheet == null) throw new InvalidOperationException(NO_SHEET_SET);
+
 			var velocity = TrigHelper.FromAngleRad(Rng.Angle(), Rng.Range(MinVelocity, MaxVelocity));
 			var gib = new Gib(_sheet);
 
