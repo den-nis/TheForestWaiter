@@ -22,6 +22,7 @@ namespace TheForestWaiter.Game.Weapons
 		private const int TIME_STUCK = 3;
 		private float _stuckTimer = 0;
 		private float _heat = 0;
+		private bool _firstRound = true;
 
 		private readonly GameData _gameData;
 
@@ -32,7 +33,7 @@ namespace TheForestWaiter.Game.Weapons
 
 			AutoFire = true;
 			Cone = TrigHelper.ToRad(20);
-			FireRatePerSecond = 80;
+			FireRatePerSecond = 40;
 			FireSpeedVariation = 100;
 			Weight = 0.4f;
 
@@ -56,6 +57,12 @@ namespace TheForestWaiter.Game.Weapons
 
 			if (Firing)
 			{
+				if (_firstRound)
+				{
+					_heat += 0.2f;
+					_firstRound = false;
+				}
+
 				_heat += time;
 
 				if (_heat > OVER_HEAT)
@@ -66,7 +73,8 @@ namespace TheForestWaiter.Game.Weapons
 			}
 			else
 			{
-				_heat -= time;
+				_firstRound = true;
+				_heat -= time * 2;
 				_heat = Math.Max(0, _heat);
 			}
 		}
