@@ -130,7 +130,7 @@ namespace TheForestWaiter.Game.Objects.Enemies
 			Delete();
 		}
 
-		protected override void OnDamage(GameObject by)
+		protected override void OnDamage(GameObject by, float amount)
 		{
 			var prop = _content.Particles.Get("Particles/blood.particle", Center);
 			Game.Objects.WorldParticles.Emit(prop, 5);

@@ -108,7 +108,7 @@ namespace TheForestWaiter.Game.Objects.Enemies
 			Delete();
 		}
 
-		protected override void OnDamage(GameObject by)
+		protected override void OnDamage(GameObject by, float amount)
 		{
 		}
 	}

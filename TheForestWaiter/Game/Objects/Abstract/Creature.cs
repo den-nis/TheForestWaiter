@@ -23,7 +23,7 @@ namespace TheForestWaiter.Game.Objects.Abstract
 		protected bool Invincible { get; set; }
 		protected float StunTime { get; set; } = 0.1f;
 		protected float KnockbackResistance { get; set; } = 0;
-		protected SoundInfo SoundOnDamage = new("Sounds/Enemies/hurt.wav");
+		protected SoundInfo SoundOnDamage = new("Sounds/Enemies/small_hurt.wav");
 
 		/// <summary>
 		/// Direction creature is facing based on the last move direction
@@ -85,7 +85,7 @@ namespace TheForestWaiter.Game.Objects.Abstract
 				SetStunVelocity(by, knockback);
 			}
 
-			OnDamage(by);
+			OnDamage(by, amount);
 		}
 
 		public override void Update(float time)
@@ -125,7 +125,7 @@ namespace TheForestWaiter.Game.Objects.Abstract
 
 		protected abstract void OnDeath();
 
-		protected abstract void OnDamage(GameObject by);
+		protected abstract void OnDamage(GameObject by, float amount);
 
 		private void SetStunVelocity(Movable by, float knockback)
 		{
