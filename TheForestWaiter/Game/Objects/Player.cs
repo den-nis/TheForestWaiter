@@ -186,7 +186,7 @@ namespace TheForestWaiter.Game.Objects
 			CarryingWeight = current.Weight;
 		}
 
-		protected override void OnDamage(GameObject by)
+		protected override void OnDamage(GameObject by, float amount)
 		{
 		}
 
