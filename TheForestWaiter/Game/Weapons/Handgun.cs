@@ -26,7 +26,7 @@ namespace TheForestWaiter.Game.Weapons
 			Cone = TrigHelper.ToRad(5);
 			FireRatePerSecond = 5;
 
-			Weight = 0.2f;
+			Weight = 0f;
 
 			Sprite = _content.Textures.CreateSprite("Textures/Weapons/handgun.png");
 			FireSound = new("Sounds/Weapons/handgun_{n}.wav");
