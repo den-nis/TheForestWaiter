@@ -6,7 +6,7 @@ namespace TheForestWaiter.Game.Objects.Projectiles
 	{
 		public SniperBullet()
 		{
-			Damage = 350;
+			Damage = 100;
 			Penetration = 10;
 			SetTexture("Textures/Projectiles/bullet_sniper.png");
 		}

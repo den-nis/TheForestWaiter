@@ -31,7 +31,7 @@ namespace TheForestWaiter.Game.Objects.Enemies
 
 			SetMaxHealth(100, true);
 			UseHoldJumpWhenChase = true;
-			WalkSpeed = 220 + Rng.Range(0, 100);
+			WalkSpeed = 120 + Rng.Range(0, 100);
 			JumpForce = 350;
 			JumpForceVariation = 200;
 			AirSpeed = 100;
@@ -94,7 +94,7 @@ namespace TheForestWaiter.Game.Objects.Enemies
 		protected override void OnDamage(GameObject by, float amount)
 		{
 			var prop = _content.Particles.Get("Particles/blood.particle", Center);
-			Game.Objects.WorldParticles.Emit(prop, 5);
+			Game.Objects.WorldParticles.Emit(prop, (int)(5 + (amount/100)));
 		}
 	}
 }

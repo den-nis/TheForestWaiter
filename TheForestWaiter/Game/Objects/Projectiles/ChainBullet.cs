@@ -8,7 +8,7 @@ namespace TheForestWaiter.Game.Objects.Projectiles
 		{
 			SetTexture("Textures/Projectiles/bullet_chain.png");
 			ExplosionParticleName = "Particles/spark_gray.particle";
-			Damage = 30;
+			Damage = 10;
 		}
 	}
 }
