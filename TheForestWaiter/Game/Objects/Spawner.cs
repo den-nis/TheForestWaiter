@@ -1,81 +1,48 @@
 ﻿using SFML.Graphics;
-using SFML.System;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using TheForestWaiter.Content;
 using TheForestWaiter.Game.Environment.Spawning;
-using TheForestWaiter.Game.Essentials;
+using TheForestWaiter.Game.Logic;
 using TheForestWaiter.Game.Objects.Abstract;
+using TheForestWaiter.Game.Objects.Items;
 
 namespace TheForestWaiter.Game.Objects.Static
 {
 	internal class Spawner : Immovable
 	{
-		private class InnerSpawner
-		{
-			public bool Enabled { get; set; } = true;
+		private const float CHECK_INTERVAL = 1;
 
-			private Vector2f _left;
-			private Vector2f _right;
-
-			private readonly Timer _timer;
-			private readonly GameData _game;
-			private readonly SpawnJob _job;
-			private readonly ObjectCreator _creator;
-
-			public InnerSpawner(GameData gameData, SpawnJob job, ObjectCreator creator, Vector2f left, Vector2f right)
-			{
-				_left = left;
-				_right = right;
-
-				_creator = creator;
-				_game = gameData;
-				_job = job;
-
-				_timer = new Timer(1 / job.Rate);
-				_timer.OnTick += OnSpawn;
-				_timer.Start();
-			}
-
-			public void Update(float time)
-			{
-				_timer.Update(time);
-			}
-
-			private void OnSpawn()
-			{
-				if (!Enabled)
-					return;
-
-				var location = Rng.Bool() ? _left : _right;
-				var enemy = _creator.CreateType(Types.GameObjects[_job.Name]);
-				enemy.Center = location;
-
-				_game.Objects.AddGameObject(enemy);
-			}
-		}
-
-		private const int WAVE_LENGTH = 50;
-
-		private readonly WaveSettings _settings;
-		private int _currentWave = 1;
-		private float _waveTimer = 0;
+		public int CurrentWave { get; private set; } = 0;
+		private float _waveTime = 0;
 		private float _checkTimer = 0;
 
-		private readonly List<InnerSpawner> _spawners = new();
-		private readonly ObjectCreator _creator;
+		private readonly WaveSettings _settings;
+		private readonly List<SpawnJob> _activeJobs = new();
+		private List<SpawnJobDescription> _spawnQueue = new();
+		private bool _finished = false;
 
 		public Spawner()
 		{
 			var content = IoC.GetInstance<ContentSource>();
-			_creator = IoC.GetInstance<ObjectCreator>();
 
 			var json = content.Source.GetString("waveSettings.json");
 			_settings = WaveSettings.FromJson(json);
+
+			StartWave(1);
 		}
 
-		public int GetCurrentWave() => _currentWave;
+		public void StartWave(int number)
+		{
+			CurrentWave = number;
+			_waveTime = 0;
+			_spawnQueue = new(GetJobsForWave(number).OrderBy(j => j.Time));
+
+			if (_spawnQueue.Count == 0) _finished = true;
+
+			PickupSpawner.EnableHearts = number < 10;
+		}
 
 		public override void Draw(RenderWindow window)
 		{
@@ -84,55 +51,61 @@ namespace TheForestWaiter.Game.Objects.Static
 
 		public override void Update(float time)
 		{
-			//Setup the first wave
-			if (_waveTimer == 0 && _currentWave == 1)
-			{
-				SetupWave();
-			}
-
-			_waveTimer += time;
 			_checkTimer += time;
+			_waveTime += time;
 
-			if (_checkTimer > 1)
+			if (_finished) return;
+
+			var shouldStart = _spawnQueue.Where(w => w.Time < _waveTime);
+			foreach(var job in shouldStart)
 			{
-				bool allEnemiesArekilled = !Game.Objects.Creatures.Any(x => !x.Friendly);
-				bool timeIsUp = _waveTimer > WAVE_LENGTH;
-
-				if (timeIsUp)
-				{
-					foreach (var spawner in _spawners)
-					{
-						spawner.Enabled = false;
-					}
-
-					if (allEnemiesArekilled)
-					{
-						_currentWave++;
-						Console.WriteLine($"Wave finished. Starting wave {_currentWave}");
-						SetupWave();
-					}
-				}
-
-				_checkTimer = 0;
+				Console.WriteLine($"Started job {job.Time} : {job.Creature}");
+				StartJob(job);
 			}
 
-			foreach (var spawner in _spawners)
+			_spawnQueue.RemoveAll(j => shouldStart.Contains(j));
+
+			foreach (var job in _activeJobs)
 			{
-				spawner.Update(time);
+				job.Update(time);
+			}
+
+			if (_checkTimer > CHECK_INTERVAL)
+			{
+				_activeJobs.RemoveAll(j => !j.IsActive);
+				_checkTimer = 0;
+
+				if (_spawnQueue.Count == 0 && GetAmountOfEnemiesLeft() == 0)
+				{
+					StartWave(CurrentWave + 1);
+				}
 			}
 		}
 
-		private void SetupWave()
+		private void StartJob(SpawnJobDescription job)
 		{
-			_waveTimer = 0;
-			var enemies = _settings.Waves[_currentWave - 1].Enemies;
+			var spawnJob = new SpawnJob(job, _settings.LeftSpawn, _settings.RightSpawn);
+			_activeJobs.Add(spawnJob);
+		}
 
-			_spawners.Clear();
-			foreach (var enemy in enemies)
+		private int GetAmountOfEnemiesLeft()
+		{
+			var enemies = Game.Objects.Creatures.Where(c => !c.Friendly);
+			return enemies.Count();
+		}
+
+		/// <summary>
+		/// Returns empty list if the wave isn't programmed
+		/// </summary>
+		private IEnumerable<SpawnJobDescription> GetJobsForWave(int waveNumber)
+		{
+			if (waveNumber > _settings.Waves.Length)
 			{
-				Console.WriteLine($"Creating spawner for {enemy.Name}");
-				var spawner = new InnerSpawner(Game, enemy, _creator, _settings.LeftSpawn, _settings.RightSpawn);
-				_spawners.Add(spawner);
+				return Enumerable.Empty<SpawnJobDescription>();
+			}
+			else
+			{
+				return _settings.Waves[waveNumber - 1].Jobs;
 			}
 		}
 	}

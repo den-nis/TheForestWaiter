@@ -41,7 +41,7 @@ namespace TheForestWaiter.Game.Hud.Sections
 			if (_spawner == null)
 				_spawner = (Spawner)_game.Objects.Environment.First(x => x is Spawner);
 
-			return _spawner?.GetCurrentWave() ?? 0;
+			return _spawner?.CurrentWave ?? 0;
 		}
 
 		public override bool IsMouseOnAnyButton() => false;
