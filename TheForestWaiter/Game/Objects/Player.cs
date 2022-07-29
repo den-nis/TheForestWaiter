@@ -19,11 +19,12 @@ namespace TheForestWaiter.Game.Objects
 		public PlayerController Controller { get; } = new();
 		public WeaponCollection Weapons { get; } = new();
 
+		private readonly AnimatedSprite _sprite;
+		private readonly SoundSystem _sound;
 		private readonly SoundInfo _walkSound;
 
-		private readonly AnimatedSprite _sprite;
 		private readonly Color _stunColor = new(255, 200, 200);
-		private readonly SoundSystem _sound;
+		
 		private bool _justJumped = false;
 		private float _switchCooldown = 0;
 		private float _walkSoundTimer = 0;
@@ -48,6 +49,8 @@ namespace TheForestWaiter.Game.Objects
 			JumpForceVariation = 0;
 			HorizontalOverflowDrag = 200;
 			InvincibleWhenStunned = true;
+			JumpHoldForce = 300;
+			JumpForce = 400;
 
 			Weapons.Add(creator.CreateWeapon<Handgun>());
 			Weapons.OnEquipedChanged += OnEquipmentChangedEventHandler;
@@ -79,14 +82,18 @@ namespace TheForestWaiter.Game.Objects
 					MoveLeft();
 			}
 
-			if (Controller.IsActive(ActionTypes.Up) && !_justJumped)
+			if (Controller.IsActive(ActionTypes.Up))
 			{
-				Jump();
-				_justJumped = true;
-			}
-			else
-			{
-				HoldJump();
+				if (!_justJumped)
+				{
+					Jump();
+					_justJumped = true;
+				}
+				else
+				{
+					HoldJump();
+
+				}
 			}
 
 			if (!Controller.IsActive(ActionTypes.Up))

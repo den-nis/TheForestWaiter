@@ -1,10 +1,14 @@
 ﻿using SFML.System;
+using System.Linq;
 using TheForestWaiter.Game.Essentials;
+using TheForestWaiter.Game.Objects.Static;
 
 namespace TheForestWaiter.Game.Objects.Items
 {
 	internal class PickupSpawner
 	{
+		public static bool EnableHearts { get; set; }
+
 		public float MAX_VELOCITY { get; set; } = 150;
 		public float MIN_VELOCITY { get; set; } = 100;
 
@@ -26,9 +30,12 @@ namespace TheForestWaiter.Game.Objects.Items
 				_game.Objects.AddGameObject(_creator.CreateAndShoot<Coin>(at, velocity));
 			}
 
-			for (int i = 0; i < hearts; i++)
+			if (EnableHearts)
 			{
-				_game.Objects.AddGameObject(_creator.CreateAndShoot<Apple>(at, velocity));
+				for (int i = 0; i < hearts; i++)
+				{
+					_game.Objects.AddGameObject(_creator.CreateAndShoot<Apple>(at, velocity));
+				}
 			}
 		}
 	}

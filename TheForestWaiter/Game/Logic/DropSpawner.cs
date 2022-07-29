@@ -13,24 +13,24 @@ namespace TheForestWaiter.Game.Logic
 		public int MinAmountCoins { get; set; } = 0;
 		public int MaxAmountCoins { get; set; } = 4;
 
-		private readonly PickupSpawner _pickupSpawner;
-		private readonly GibSpawner _gibSpawner;
+		public PickupSpawner PickupSpawner { get; private set; }
+		public GibSpawner GibSpawner { get; private set; }
 
 		public DropSpawner()
 		{
-			_pickupSpawner = IoC.GetInstance<PickupSpawner>();
-			_gibSpawner = IoC.GetInstance<GibSpawner>();
+			PickupSpawner = IoC.GetInstance<PickupSpawner>();
+			GibSpawner = IoC.GetInstance<GibSpawner>();
 		}
 
 		public void Setup(string gibSheetName)
 		{
-			_gibSpawner.Setup(gibSheetName);
+			GibSpawner.Setup(gibSheetName);
 		}
 
 		public void Spawn(Vector2f at)
 		{
-			_gibSpawner.SpawnAll(at);
-			_pickupSpawner.SpawnAmount(at, Rng.RangeInt(MinAmountCoins, MaxAmountCoins), ChanceOfHeartDrop > Rng.Float() ? 1 : 0);
+			GibSpawner.SpawnAll(at);
+			PickupSpawner.SpawnAmount(at, Rng.RangeInt(MinAmountCoins, MaxAmountCoins), ChanceOfHeartDrop > Rng.Float() ? 1 : 0);
 		}
 	}
 }
