@@ -25,7 +25,7 @@ jobs:
       run: dotnet restore
       
     - name: Build
-      run: dotnet publish ./TheForestWaiter/TheForestWaiter.csproj --self-contained true --configuration ${{env.configuration}} --runtime ${{env.runtime}} -p:PublishSingleFile=true 
+      run: dotnet publish ./TheForestWaiter/TheForestWaiter.csproj --self-contained true --configuration ${{env.configuration}} --runtime ${{env.runtime}} --output build -p:PublishSingleFile=true
       
     - name: Remove debug files
       run: rm ./build/*.pdb
