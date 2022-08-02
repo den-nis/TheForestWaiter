@@ -56,7 +56,6 @@ namespace TheForestWaiter.Game.Environment.Spawning
 
 		private void Spawn(GameObject creature)
 		{
-			Console.WriteLine($"Spawning {creature.GetType().Name}");
 			creature.Position = PickSide();
 			_gameData.Objects.AddGameObject(creature);
 		}

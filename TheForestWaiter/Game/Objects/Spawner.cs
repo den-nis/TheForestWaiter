@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using TheForestWaiter.Content;
 using TheForestWaiter.Game.Environment.Spawning;
-using TheForestWaiter.Game.Logic;
 using TheForestWaiter.Game.Objects.Abstract;
 using TheForestWaiter.Game.Objects.Items;
 
@@ -59,7 +58,6 @@ namespace TheForestWaiter.Game.Objects.Static
 			var shouldStart = _spawnQueue.Where(w => w.Time < _waveTime);
 			foreach(var job in shouldStart)
 			{
-				Console.WriteLine($"Started job {job.Time} : {job.Creature}");
 				StartJob(job);
 			}
 
