@@ -26,10 +26,10 @@ jobs:
       run: dotnet restore
       
     - name: TEMP TEST
-      run: echo do these environment variables work ? $runtime
+      run: echo do these environment variables work ? ${{runtime}}
 
     - name: Build
-      run: dotnet publish -p:Configuration=$configuration -p:r=$runtime -p:PublishSingleFile=true
+      run: dotnet publish -p:Configuration=$configuration -p:r=${{runtime}} -p:PublishSingleFile=true
       
     - name: Remove debug files
       run: rm ./build/*.pdb
