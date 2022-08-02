@@ -74,6 +74,16 @@
 			}
 		},
 		{
+			"path": "Textures/Player/player_gibs.png",
+			"type": "Texture",
+
+			"textureConfig": {
+				"tileWidth": 12,
+				"tileHeight": 11,
+				"hasTileSpacing": true
+			}
+		},
+		{
 			"path": "Textures/Enemies/minirusher.png",
 			"type": "Texture",
 
@@ -266,6 +276,16 @@
 			"textureConfig": {
 				"tileWidth": 14,
 				"tileHeight": 14,
+				"hasTileSpacing": true
+			}
+		},
+		{
+			"path": "Textures/Menu/score_numbers.png",
+			"type": "Texture",
+
+			"textureConfig": {
+				"tileWidth": 12,
+				"tileHeight": 20,
 				"hasTileSpacing": true
 			}
 		}

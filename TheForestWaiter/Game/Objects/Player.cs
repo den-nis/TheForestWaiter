@@ -3,16 +3,20 @@ using System;
 using TheForestWaiter.Content;
 using TheForestWaiter.Game.Constants;
 using TheForestWaiter.Game.Essentials;
-using TheForestWaiter.Game.Graphics;
+using TheForestWaiter.Game.Gibs;
 using TheForestWaiter.Game.Logic;
 using TheForestWaiter.Game.Objects.Abstract;
 using TheForestWaiter.Game.Weapons;
 using TheForestWaiter.Game.Weapons.Abstract;
+using TheForestWaiter.Graphics;
+using TheForestWaiter.States;
+using TheForestWaiter.UI.Menus;
 
 namespace TheForestWaiter.Game.Objects
 {
 	internal class Player : GroundCreature
 	{
+		private const float TIME_TILL_DEATH_SCREEN = 4f;
 		private const float SWITCH_COOLDOWN_TIME = 0.2f;
 		private const float WALK_SOUND_INTERVAL = 0.50f;
 
@@ -20,7 +24,9 @@ namespace TheForestWaiter.Game.Objects
 		public WeaponCollection Weapons { get; } = new();
 
 		private readonly AnimatedSprite _sprite;
+		private readonly ContentSource _content;
 		private readonly SoundSystem _sound;
+		private readonly GibSpawner _gibs;
 		private readonly SoundInfo _walkSound;
 
 		private readonly Color _stunColor = new(255, 200, 200);
@@ -31,14 +37,18 @@ namespace TheForestWaiter.Game.Objects
 
 		public Player()
 		{
-			var content = IoC.GetInstance<ContentSource>();
 			var creator = IoC.GetInstance<ObjectCreator>();
+			_content = IoC.GetInstance<ContentSource>();
 			_sound = IoC.GetInstance<SoundSystem>();
+			_gibs = IoC.GetInstance<GibSpawner>();
+
+			_gibs.Setup("Textures/Player/player_gibs.png");
+			_gibs.MaxVelocity = 500;
 
 			SoundOnDamage = new("Sounds/Player/hurt.wav") { Volume = 90f };
 			_walkSound = new("Sounds/Player/walk_{n}.wav") { Volume = 10f };
 
-			_sprite = content.Textures.CreateAnimatedSprite("Textures/Player/sheet.png");
+			_sprite = _content.Textures.CreateAnimatedSprite("Textures/Player/sheet.png");
 			Size = _sprite.Sheet.TileSize.ToVector2f();
 			
 			StunTime = 1;
@@ -202,6 +212,19 @@ namespace TheForestWaiter.Game.Objects
 			DisableDraws = true;
 			DisableUpdates = true;
 			EnableCollision = false;
+
+			IoC.GetInstance<PlayStats>().Harvest();
+
+			IoC.GetInstance<StateManager>().StartTransition(new StateTransition
+			{
+				Delay = TIME_TILL_DEATH_SCREEN,
+				Length = 5,
+				TargetState = typeof(DeathMenu)
+			}, true);
+
+			_gibs.SpawnAll(Center);
+			var prop = _content.Particles.Get("Particles/blood.particle", Center);
+			Game.Objects.WorldParticles.Emit(prop, 50);
 		}
 	}
 }

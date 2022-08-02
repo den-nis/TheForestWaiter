@@ -14,6 +14,7 @@ namespace TheForestWaiter.States
 
 		private readonly Queue<StateTransition> _transitionQueue = new();
 		private float _transitionTimer = 0;
+		private float _delayTimer = 0;
 		private bool _transitionHasChangedState = false;
 
 		private readonly RectangleShape _overlay = new();
@@ -23,6 +24,12 @@ namespace TheForestWaiter.States
 		{
 			_window = IoC.GetInstance<WindowHandle>();
 			_overlay.FillColor = Color.Transparent;
+		}
+
+		public void ForceClearQueue()
+		{
+			_transitionQueue.Clear();
+			Reset();
 		}
 
 		public void SetState<T>() where T : IState, new() => SetState(new T());
@@ -55,40 +62,61 @@ namespace TheForestWaiter.States
 
 		public void Update(float time)
 		{
-			if (_transitionQueue.Any())
+			UpdateLogic(time);
+			CurrentState.Update(time);
+		}
+
+		private void UpdateLogic(float time)
+		{
+			_overlay.Size = _window.SfmlWindow.Size.ToVector2f();
+
+			if (!_transitionQueue.Any())
+				return;
+
+			var activeTransition = _transitionQueue.Peek();
+
+			if (activeTransition.Delay > _delayTimer)
 			{
-				_transitionTimer += time;
-
-				var activeTransition = _transitionQueue.Peek();
-				var delta = _transitionTimer / activeTransition.Length;
-
-				if (delta < 1)
-				{
-					var animation = delta > 0.5 ? (1 - delta) * 2 : delta * 2;
-					var color = new Color(activeTransition.Color)
-					{
-						A = (byte)(animation * 255)
-					};
-
-					_overlay.FillColor = color;
-					_overlay.Size = _window.SfmlWindow.Size.ToVector2f();
-
-					if (!_transitionHasChangedState && delta >= .5f)
-					{
-						var state = (IState)Activator.CreateInstance(activeTransition.TargetState);
-						SetState(state);
-						_transitionHasChangedState = true;
-					}
-				}
-				else
-				{
-					_transitionQueue.Dequeue();
-					_transitionHasChangedState = false;
-					_transitionTimer = 0;
-				}
+				_delayTimer += time;
+				return;
 			}
 
-			CurrentState.Update(time);
+			_transitionTimer += time;
+			var delta = _transitionTimer / activeTransition.Length;
+			
+			if (delta < 1)
+			{
+				var animation = delta > 0.5 ? (1 - delta) * 2 : delta * 2;
+
+				SetOverlayColor((byte)(animation * 255), activeTransition.Color);
+			
+				if (!_transitionHasChangedState && delta >= .5f)
+				{
+					var state = (IState)Activator.CreateInstance(activeTransition.TargetState);
+					SetState(state);
+					_transitionHasChangedState = true;
+				}
+			}
+			else
+			{
+				_transitionQueue.Dequeue();
+				Reset();
+			}
+		}
+
+		private void SetOverlayColor(byte alpha, Color color)
+		{
+			_overlay.FillColor = new Color(color)
+			{
+				A = alpha
+			};
+		}
+
+		private void Reset()
+		{
+			_transitionHasChangedState = false;
+			_transitionTimer = _delayTimer = 0;
+			SetOverlayColor(0, Color.Black);
 		}
 	}
 }

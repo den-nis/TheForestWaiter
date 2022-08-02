@@ -37,6 +37,7 @@ namespace TheForestWaiter.Services
 				.RegisterSingleton<WindowHandle>()
 				.RegisterSingleton<TimeProcessor>()
 				.RegisterSingleton<SoundSystem>()
+				.RegisterSingleton<PlayStats>()
 
 				//Services
 				.Register<UIServices>()

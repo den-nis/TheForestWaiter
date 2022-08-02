@@ -2,6 +2,7 @@
 using System;
 using TheForestWaiter.Game;
 using TheForestWaiter.States;
+using TheForestWaiter.UI.Abstract;
 
 namespace TheForestWaiter.UI.Menus
 {
@@ -16,15 +17,15 @@ namespace TheForestWaiter.UI.Menus
 
 			var start = new Button("Textures/Menu/start.png", 3)
 			{
-				Position = new Vector2f(80, 80 + i++ * spacing),
+				AbsolutePosition = new Vector2f(80, 80 + i++ * spacing),
 			};
 			var credits = new Button("Textures/Menu/credits.png", 3)
 			{
-				Position = new Vector2f(80, 80 + i++ * spacing),
+				AbsolutePosition = new Vector2f(80, 80 + i++ * spacing),
 			};
 			var exit = new Button("Textures/Menu/exit.png", 3)
 			{
-				Position = new Vector2f(80, 80 + i++ * spacing),
+				AbsolutePosition = new Vector2f(80, 80 + i++ * spacing),
 			};
 
 			start.OnClick += () => stateManager.StartTransition(new StateTransition

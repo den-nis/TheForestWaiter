@@ -2,11 +2,35 @@
 using SFML.System;
 using TheForestWaiter.Game.Essentials;
 
-namespace TheForestWaiter.UI
+namespace TheForestWaiter.UI.Abstract
 {
 	internal abstract class Control
 	{
-		public Vector2f Position { get; set; }
+		private readonly WindowHandle _window;
+
+		private bool _maintainY;
+		private bool _maintainX;
+
+		public Control()
+		{
+			_window = IoC.GetInstance<WindowHandle>();
+		}
+
+		public void SetYRelativeBottom() => _maintainY = true;
+
+		public void SetXRelativeToRight() => _maintainX = true;
+
+		protected Vector2f ActualPosition 
+		{
+			get
+			{
+				var x = _maintainX ? _window.SfmlWindow.Size.X - AbsolutePosition.X : AbsolutePosition.X;
+				var y = _maintainY ? _window.SfmlWindow.Size.Y - AbsolutePosition.Y : AbsolutePosition.Y;
+				return new Vector2f(x, y);
+			}
+		}
+
+		public Vector2f AbsolutePosition { get; set; }
 		public Vector2f Size { get; set; }
 
 		private bool _mouseIsInside = false;
@@ -19,23 +43,23 @@ namespace TheForestWaiter.UI
 		protected virtual void OnPressed() { }
 		protected virtual void OnMouseMoveEnter(Vector2f position) { }
 		protected virtual void OnMouseMoveExit(Vector2f position) { }
-		
+
 		public void MouseDown()
 		{
-			if (Collisions.BoxPoint(Position, Size, _mousePosition))
+			if (Collisions.BoxPoint(ActualPosition, Size, _mousePosition))
 				OnPressed();
 		}
 
 		public void MouseUp()
 		{
-			if (Collisions.BoxPoint(Position, Size, _mousePosition))
+			if (Collisions.BoxPoint(ActualPosition, Size, _mousePosition))
 				OnReleased();
 		}
 
 		public void MoveMouse(Vector2f position)
 		{
 			_mousePosition = position;
-			if (Collisions.BoxPoint(Position, Size, position))
+			if (Collisions.BoxPoint(ActualPosition, Size, position))
 			{
 				if (!_mouseIsInside)
 					OnMouseMoveEnter(position);

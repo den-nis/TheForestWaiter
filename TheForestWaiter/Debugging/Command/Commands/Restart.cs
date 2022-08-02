@@ -18,6 +18,7 @@ namespace TheForestWaiter.Debugging.Command.Commands
 
 		public void Execute(CommandHandler handler, string[] args)
 		{
+			_stateManager.ForceClearQueue();
 			_stateManager.SetState(_container.GetInstance<GameState>());
 		}
 	}

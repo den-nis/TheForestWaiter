@@ -8,7 +8,7 @@ using TheForestWaiter.Game.Essentials;
 using TheForestWaiter.Services;
 using TheForestWaiter.States;
 
-namespace TheForestWaiter.UI
+namespace TheForestWaiter.UI.Abstract
 {
 	internal abstract class UIState : IState
 	{
@@ -39,10 +39,10 @@ namespace TheForestWaiter.UI
 			var center = Window.SfmlWindow.Size / 2;
 			Window.SfmlWindow.SetView(new View(center.ToVector2f(), Window.SfmlWindow.Size.ToVector2f()));
 
-			Window.SfmlWindow.Clear(new Color(255,192,26));
+			Window.SfmlWindow.Clear(new Color(255, 192, 26));
 			Window.SfmlWindow.Draw(_background);
 
-			foreach(var control in Controls)
+			foreach (var control in Controls)
 			{
 				control.Draw(Window.SfmlWindow);
 			}
@@ -54,7 +54,7 @@ namespace TheForestWaiter.UI
 		{
 			ScaleBackground();
 
-			foreach(var control in Controls)
+			foreach (var control in Controls)
 			{
 				control.Update(time);
 			}
@@ -63,21 +63,30 @@ namespace TheForestWaiter.UI
 		private void ScaleBackground()
 		{
 			var wSize = Window.SfmlWindow.Size;
-			var useX = wSize.X > wSize.Y;
-			var desiredWidth = (useX ? wSize.X : wSize.Y) + 100;
-			var currentWidth = useX ? _background.Texture.Size.X : _background.Texture.Size.Y;
+			var bSize = _background.Texture.Size;
 
-			var scale = desiredWidth / (float)currentWidth;
+			var bRatio = bSize.X / (float)bSize.Y;
+			var wRatio = wSize.X / (float)wSize.Y;
 
+			float scale;
+			if (wRatio > bRatio)
+			{
+				scale = wSize.X / (float)bSize.X;
+			}
+			else
+			{
+				scale = wSize.Y / (float)bSize.Y;
+			}
+			
 			_background.Scale = new Vector2f(scale, scale);
 		}
 
 		private void OnMousePressed() => Controls.ForEach(x => x.MouseDown());
-		
+
 		private void OnMouseReleased() => Controls.ForEach(x => x.MouseUp());
-		
+
 		private void OnMouseMove(Vector2f position) => Controls.ForEach(x => x.MoveMouse(position));
-		
+
 		public void Dispose()
 		{
 			_controller.OnMousePressed -= OnMousePressed;
@@ -87,7 +96,7 @@ namespace TheForestWaiter.UI
 			_services.Dispose();
 			_background.Dispose();
 
-			foreach(var control in Controls)
+			foreach (var control in Controls)
 			{
 				if (control is IDisposable dispose)
 				{

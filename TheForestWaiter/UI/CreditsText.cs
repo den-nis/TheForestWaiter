@@ -2,6 +2,7 @@
 using TheForestWaiter.Content;
 using TheForestWaiter.Game.Essentials;
 using TheForestWaiter.States;
+using TheForestWaiter.UI.Abstract;
 using TheForestWaiter.UI.Menus;
 
 namespace TheForestWaiter.UI

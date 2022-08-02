@@ -3,6 +3,7 @@ using SFML.System;
 using System;
 using TheForestWaiter.Content;
 using TheForestWaiter.Game.Essentials;
+using TheForestWaiter.UI.Abstract;
 
 namespace TheForestWaiter.UI
 {
@@ -39,7 +40,7 @@ namespace TheForestWaiter.UI
 
 			var c = _sprite.Color;
 			_sprite.Color = new Color(c.R, c.G, c.B, alpha);
-			_sprite.Position = Position;
+			_sprite.Position = ActualPosition;
 		}
 
 		public override void Draw(RenderWindow window)
