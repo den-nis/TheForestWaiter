@@ -1,5 +1,6 @@
 ﻿using LightInject;
 using System;
+using System.Diagnostics;
 using TheForestWaiter.Game;
 using TheForestWaiter.Game.Environment;
 using TheForestWaiter.Game.Gibs;
@@ -15,9 +16,9 @@ namespace TheForestWaiter.Services
 		private readonly ServiceContainer _container;
 		private Scope _scope;
 
-		public GameServices(ServiceContainer container)
+		public GameServices()
 		{
-			_container = container;
+			_container = IoC.GetInstance<ServiceContainer>();
 		}
 
 		public void Register()
@@ -58,12 +59,13 @@ namespace TheForestWaiter.Services
 
 		public void Dispose()
 		{
+			Debug.WriteLine("Disposing game services");
 			_scope.Dispose();
 		}
 
 		public void Setup()
 		{
-			_container.GetInstance<GameController>();
+			_container.GetInstance<GameController>().Setup();
 		}
 	}
 }

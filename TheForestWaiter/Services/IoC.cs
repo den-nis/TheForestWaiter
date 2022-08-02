@@ -6,9 +6,10 @@ namespace TheForestWaiter
 	{
 		private static IServiceContainer _container;
 
-		public static void SetContainer(IServiceContainer container)
+		public static void SetContainer(ServiceContainer container)
 		{
 			_container = container;
+			_container.RegisterSingleton<ServiceContainer>();
 		}
 
 		public static T GetInstance<T>()

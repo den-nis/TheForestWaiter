@@ -18,24 +18,23 @@ namespace TheForestWaiter.Game
 		private readonly Camera _camera;
 		private readonly ContentSource _content;
 		private readonly GameHud _hud;
-
 		private readonly GameData _game;
 
 		private const float CLEAN_UP_INTERVAL = 10;
 		private float _cleanUpTimer = CLEAN_UP_INTERVAL;
 		private readonly Background _background;
 
-		public GameState(WindowHandle window, ContentSource content, ServiceContainer container)
+		public GameState()
 		{
-			_services = new GameServices(container);
+			_services = new GameServices();
 			_services.Register();
 
-			_game = container.GetInstance<GameData>();
-			_camera = container.GetInstance<Camera>();
-			_background = container.GetInstance<Background>();
-			_hud = container.GetInstance<GameHud>();
-			_window = window;
-			_content = content;
+			_game = IoC.GetInstance<GameData>();
+			_camera = IoC.GetInstance<Camera>();
+			_background = IoC.GetInstance<Background>();
+			_hud = IoC.GetInstance<GameHud>();
+			_window = IoC.GetInstance<WindowHandle>();
+			_content = IoC.GetInstance<ContentSource>();
 		}
 
 		public void Dispose()
@@ -77,6 +76,8 @@ namespace TheForestWaiter.Game
 			_game.World.Draw(_window.SfmlWindow, new FloatRect(_camera.Position, _camera.Size), true);
 
 			_hud.Draw(_window.SfmlWindow);
+
+			_window.SfmlWindow.SetView(Camera.GetWindowView(_window.SfmlWindow));
 		}
 
 		public void Update(float time)

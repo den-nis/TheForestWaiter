@@ -6,6 +6,7 @@ using TheForestWaiter.Debugging;
 using TheForestWaiter.Debugging.Command;
 using TheForestWaiter.Game;
 using TheForestWaiter.Game.Debugging;
+using TheForestWaiter.UI.Menus;
 using TheForestWaiter.States;
 
 namespace TheForestWaiter.Services
@@ -25,6 +26,8 @@ namespace TheForestWaiter.Services
 				.RegisterInstance(_container)
 				.RegisterInstance<IServiceContainer>(_container)
 
+				.Register<MainMenu>()
+				.Register<CreditsMenu>()
 				.Register<GameState>()
 
 				.RegisterSingleton<Entry>()
@@ -34,6 +37,11 @@ namespace TheForestWaiter.Services
 				.RegisterSingleton<WindowHandle>()
 				.RegisterSingleton<TimeProcessor>()
 				.RegisterSingleton<SoundSystem>()
+
+				//Services
+				.Register<UIServices>()
+				.Register<GameServices>()
+
 #if DEBUG
 				.RegisterSingleton<IDebug, ActiveDebug>();
 			RegisterCommands();

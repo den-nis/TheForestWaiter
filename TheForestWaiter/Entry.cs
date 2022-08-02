@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using TheForestWaiter.Game;
 using TheForestWaiter.Game.Debugging;
+using TheForestWaiter.UI.Menus;
 using TheForestWaiter.States;
 
 namespace TheForestWaiter
@@ -10,20 +11,20 @@ namespace TheForestWaiter
 		private readonly WindowHandle _window;
 		private readonly IDebug _debug;
 		private readonly StateManager _stateManager;
-		private readonly GameState _gameState;
+		private readonly MainMenu _menu;
 		private readonly TimeProcessor _time;
 
 		public Entry(
 			WindowHandle window,
 			IDebug debug,
 			StateManager stateManager,
-			GameState gameState,
+			MainMenu menu,
 			TimeProcessor manager)
 		{
 			_window = window;
 			_debug = debug;
 			_stateManager = stateManager;
-			_gameState = gameState;
+			_menu = menu;
 			_time = manager;
 		}
 
@@ -32,7 +33,7 @@ namespace TheForestWaiter
 			Stopwatch timer = Stopwatch.StartNew();
 			float deltaTime = 0;
 
-			_stateManager.SetState(_gameState);
+			_stateManager.SetState(_menu);
 
 			while (_window.SfmlWindow.IsOpen)
 			{
