@@ -34,6 +34,9 @@ jobs:
        -p:DebugType=None
        -p:DebugSymbols=false
 
+    - name: Remove content
+      run: del ./build/Content.zip
+
     - name: Publish artifacts
       uses: actions/upload-artifact@v2
       with:
