@@ -2,9 +2,9 @@ name: Build for windows
 
 on:
   push:
-    branches: [ main ]
+    branches: [ pipeline ]
   pull_request:
-    branches: [ main ]
+    branches: [ pipeline ]
 
 jobs:
   build:
