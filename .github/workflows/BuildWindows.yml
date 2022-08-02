@@ -30,9 +30,6 @@ jobs:
     - name: Remove debug files
       run: rm ./build/*.pdb
       
-    - name: Remove jsons
-      run: rm ./build/*.json
-      
     - name: Publish artifacts
       uses: actions/upload-artifact@v2
       with:
