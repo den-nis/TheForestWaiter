@@ -17,7 +17,7 @@ namespace TheForestWaiter.Game.Objects.Abstract
 		protected bool RemoveOnLowMovement { get; set; } = true; //If a bullet some how stops moving, remove it.
 
 		protected float RotationSpeed { get; set; } = 100;
-		protected float Range { get; set; } = 1500;
+		protected float Range { get; set; } = 2000;
 		protected float Damage { get; set; } = 5;
 		protected float Knockback { get; set; } = 150;
 		protected int Penetration { get; set; } = 1;
