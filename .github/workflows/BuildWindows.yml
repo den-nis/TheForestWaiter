@@ -24,10 +24,10 @@ jobs:
       run: dotnet publish /p:Configuration=Release /p:PublishProfile=FolderProfile -o build
       
     - name: Remove debug files
-      run: del ./build/*.pdb
+      run: rm ./build/*.pdb
       
     - name: Remove jsons
-      run: del ./build/*.json
+      run: rm ./build/*.json
       
     - name: Publish-Artifacts
       uses: actions/upload-artifact@v2
