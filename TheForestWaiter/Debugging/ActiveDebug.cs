@@ -1,12 +1,11 @@
 ﻿using LightInject;
 using SFML.Graphics;
-using System;
 using TheForestWaiter.Debugging.Command;
 using TheForestWaiter.Game.Debugging;
 
 namespace TheForestWaiter.Debugging
 {
-	class ActiveDebug : IDebug
+	internal class ActiveDebug : IDebug
 	{
 		private readonly IServiceContainer _serviceContainer;
 		private CommandHandler _commandHandler;
@@ -34,11 +33,6 @@ namespace TheForestWaiter.Debugging
 		public void Dispose()
 		{
 
-		}
-
-		public void Log(string message)
-		{
-			Console.WriteLine(message);
 		}
 	}
 }

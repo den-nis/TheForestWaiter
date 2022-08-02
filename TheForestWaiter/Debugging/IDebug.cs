@@ -10,7 +10,5 @@ namespace TheForestWaiter.Game.Debugging
 		void Update(float time);
 
 		void Draw(RenderWindow window);
-
-		void Log(string message);
 	}
 }
