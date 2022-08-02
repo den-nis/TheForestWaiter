@@ -26,7 +26,7 @@ namespace TheForestWaiter.Game.Objects.Static
 		{
 			var content = IoC.GetInstance<ContentSource>();
 
-			var json = content.Source.GetString("waveSettings.json");
+			var json = content.Source.GetString("wave_settings.json");
 			_settings = WaveSettings.FromJson(json);
 
 			StartWave(1);
