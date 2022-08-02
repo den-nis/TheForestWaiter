@@ -11,6 +11,10 @@ namespace TheForestWaiter.UI
 	{
 		public event Action OnClick;
 
+		private readonly SoundInfo _clickSound;
+		private readonly SoundInfo _selectSound;
+
+		private readonly SoundSystem _sound;
 		private readonly Sprite _sprite;
 
 		private bool hovering = false;
@@ -19,6 +23,10 @@ namespace TheForestWaiter.UI
 		public Button(string texture, float scale)
 		{
 			var content = IoC.GetInstance<ContentSource>();
+			_sound = IoC.GetInstance<SoundSystem>();
+
+			_clickSound = new("Sounds/Menu/click.wav");
+			_selectSound = new("Sounds/Menu/select.wav");
 
 			_sprite = content.Textures.CreateSprite(texture);
 			_sprite.Scale = new Vector2f(scale, scale);
@@ -50,13 +58,18 @@ namespace TheForestWaiter.UI
 
 		protected override void OnReleased()
 		{
+			_sound.Play(_clickSound);
 			pressed = false;
 			OnClick?.Invoke();
 		}
 		
 		protected override void OnPressed() => pressed = true;
-		
-		protected override void OnMouseMoveEnter(Vector2f position) => hovering = true;
+
+		protected override void OnMouseMoveEnter(Vector2f position)
+		{
+			_sound.Play(_selectSound);
+			hovering = true;
+		}
 		
 		protected override void OnMouseMoveExit(Vector2f position)
 		{

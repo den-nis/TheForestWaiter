@@ -27,7 +27,9 @@ namespace TheForestWaiter.Game.Objects
 		private readonly ContentSource _content;
 		private readonly SoundSystem _sound;
 		private readonly GibSpawner _gibs;
+
 		private readonly SoundInfo _walkSound;
+		private readonly SoundInfo _deathSound;
 
 		private readonly Color _stunColor = new(255, 200, 200);
 		
@@ -47,6 +49,7 @@ namespace TheForestWaiter.Game.Objects
 
 			SoundOnDamage = new("Sounds/Player/hurt.wav") { Volume = 90f };
 			_walkSound = new("Sounds/Player/walk_{n}.wav") { Volume = 10f };
+			_deathSound = new("Sounds/Player/death.wav");
 
 			_sprite = _content.Textures.CreateAnimatedSprite("Textures/Player/sheet.png");
 			Size = _sprite.Sheet.TileSize.ToVector2f();
@@ -212,6 +215,8 @@ namespace TheForestWaiter.Game.Objects
 			DisableDraws = true;
 			DisableUpdates = true;
 			EnableCollision = false;
+
+			_sound.Play(_deathSound);
 
 			IoC.GetInstance<PlayStats>().Harvest();
 
