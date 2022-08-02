@@ -6,6 +6,12 @@ on:
   pull_request:
     branches: [ pipeline ]
 
+env:
+  runtime: 'win-x64'
+  configuration: 'Release'
+  version: '6.0.x'
+   
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -15,13 +21,13 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 6.0.x
+        dotnet-version: ${{ env.version }}
 
     - name: Restore dependencies
       run: dotnet restore
       
     - name: Build
-      run: dotnet publish /p:Configuration=Release /p:PublishProfile=FolderProfile -o build
+      run: dotnet publish /p:Configuration=$configuration /p:r=$runtime /p:PublishProfile=FolderProfile -o build
       
     - name: Remove debug files
       run: rm ./build/*.pdb
