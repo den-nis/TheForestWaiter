@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
@@ -21,17 +21,17 @@ jobs:
       run: dotnet restore
       
     - name: Build
-      run: dotnet publish /p:Configuration=Release /p:PublishProfile=FolderProfile
+      run: dotnet publish /p:Configuration=Release /p:PublishProfile=FolderProfile -o build
       
     - name: Remove debug files
-      run: del ./TheForestWaiter/bin/Release/net5.0/win-x64/publish/*.pdb
+      run: del ./build/*.pdb
       
     - name: Remove jsons
-      run: del ./TheForestWaiter/bin/Release/net5.0/win-x64/publish/*.json
+      run: del ./build/*.json
       
     - name: Publish-Artifacts
       uses: actions/upload-artifact@v2
       with:
         name: release.exe
-        path:  ./TheForestWaiter/bin/Release/net5.0/win-x64/publish
+        path:  ./build
         retention-days: 5
