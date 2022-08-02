@@ -2,6 +2,7 @@
 using SFML.System;
 using SFML.Window;
 using System;
+using System.Diagnostics;
 using TheForestWaiter.Game.Constants;
 using TheForestWaiter.Game.Essentials;
 using TheForestWaiter.Game.Hud;
@@ -29,8 +30,11 @@ namespace TheForestWaiter.Game
 			_settings = settings;
 			_hud = hud;
 			_camera = camera;
-			_gameWindow.OnWindowChanged += OnWindowChanged;
+		}
 
+		public void Setup()
+		{
+			_gameWindow.OnWindowChanged += OnWindowChanged;
 			Attach(_gameWindow.SfmlWindow);
 		}
 
@@ -41,6 +45,8 @@ namespace TheForestWaiter.Game
 
 		private void Attach(RenderWindow window)
 		{
+			Debug.WriteLine("Attaching game controller");
+
 			if (_attached != null)
 				Detach();
 			_attached = window;
@@ -57,6 +63,8 @@ namespace TheForestWaiter.Game
 
 		private void Detach()
 		{
+			Debug.WriteLine("Detaching game controller");
+
 			_attached.KeyPressed -= WindowKeyPressed;
 			_attached.KeyReleased -= WindowKeyReleased;
 			_attached.MouseWheelScrolled -= WindowMouseWheelScrolled;

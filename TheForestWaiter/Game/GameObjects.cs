@@ -2,6 +2,7 @@
 using SFML.System;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using TheForestWaiter.Game;
 using TheForestWaiter.Game.Core;
@@ -110,7 +111,7 @@ namespace TheForestWaiter
 				}
 				else
 				{
-					_debug.Log($"Missing type {inf.Class}");
+					Debug.Fail($"Missing type {inf.Class}");
 				}
 			}
 		}
