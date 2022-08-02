@@ -121,6 +121,7 @@ namespace TheForestWaiter
 
 		public void Dispose()
 		{
+			Debug.WriteLine("Disposing sound system");
 			foreach (var sound in _queues.SelectMany(x => x))
 			{
 				sound.Dispose();
