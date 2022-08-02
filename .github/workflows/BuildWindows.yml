@@ -27,7 +27,7 @@ jobs:
       run: dotnet restore
       
     - name: Build
-      run: dotnet publish /p:Configuration=$configuration /p:r=$runtime /p:PublishProfile=FolderProfile -o build
+      run: dotnet publish -p:Configuration=$configuration -p:r=$runtime -p:PublishSingleFile=true
       
     - name: Remove debug files
       run: rm ./build/*.pdb
