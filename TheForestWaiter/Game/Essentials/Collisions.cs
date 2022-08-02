@@ -6,6 +6,16 @@ namespace TheForestWaiter.Game.Essentials
 {
 	class Collisions
 	{
+		public static bool Box(Vector2f p1, Vector2f s1, Vector2f p2, Vector2f s2)
+		{
+			return new FloatRect(p1, s1).Intersects(new FloatRect(p2, s2));
+		}
+
+		public static bool BoxPoint(Vector2f p1, Vector2f s1, Vector2f p)
+		{
+			return new FloatRect(p1, s1).Intersects(new FloatRect(p, new Vector2f(1,1)));
+		}
+
 		//TODO: maybe use something else than SweptAABB
 		public static Vector2f RayCast(FloatRect sBox, Vector2f start, Vector2f end)
 		{
