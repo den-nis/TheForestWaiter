@@ -1,21 +1,24 @@
 ﻿using SFML.Graphics;
 using SFML.Window;
 using System;
+using TheForestWaiter.Content;
 
 namespace TheForestWaiter
 {
 	internal class WindowHandle : ISetup
 	{
-		private readonly UserSettings _settings;
-
 		public event EventHandler OnWindowChanged = delegate { };
 
 		public RenderWindow SfmlWindow { get; private set; }
 		public bool IsFullscreen { get; private set; }
 
-		public WindowHandle(UserSettings settings)
+		private readonly ContentSource _content;
+		private readonly UserSettings _settings;
+
+		public WindowHandle()
 		{
-			_settings = settings;
+			_content = IoC.GetInstance<ContentSource>();
+			_settings = IoC.GetInstance<UserSettings>();
 		}
 
 		public void InitializeWindow(bool fullscreen)
@@ -41,6 +44,9 @@ namespace TheForestWaiter
 			}
 
 			SfmlWindow.SetFramerateLimit(maxFps);
+
+			using var image = new Image(_content.Source.GetBytes("Textures/Icon.png"));
+			SfmlWindow.SetIcon(256, 256, image.Pixels);
 
 			OnWindowChanged(this, EventArgs.Empty);
 		}
