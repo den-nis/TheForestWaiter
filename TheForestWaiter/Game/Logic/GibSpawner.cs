@@ -2,7 +2,7 @@
 using System;
 using TheForestWaiter.Content;
 using TheForestWaiter.Game.Essentials;
-using TheForestWaiter.Game.Graphics;
+using TheForestWaiter.Graphics;
 using TheForestWaiter.Game.Objects;
 
 namespace TheForestWaiter.Game.Gibs

@@ -1,9 +1,9 @@
 ﻿using SFML.Graphics;
 using SFML.System;
 
-namespace TheForestWaiter.Game.Graphics
+namespace TheForestWaiter.Graphics
 {
-	class SpriteSheet : Drawable
+	internal class SpriteSheet : Drawable
 	{
 		public Sprite Sprite { get; set; }
 

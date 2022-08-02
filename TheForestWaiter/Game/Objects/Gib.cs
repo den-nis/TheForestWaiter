@@ -3,7 +3,7 @@ using SFML.System;
 using System;
 using TheForestWaiter.Game.Constants;
 using TheForestWaiter.Game.Essentials;
-using TheForestWaiter.Game.Graphics;
+using TheForestWaiter.Graphics;
 using TheForestWaiter.Game.Objects.Abstract;
 
 namespace TheForestWaiter.Game.Objects

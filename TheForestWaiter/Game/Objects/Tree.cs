@@ -1,7 +1,7 @@
 ﻿using SFML.Graphics;
 using TheForestWaiter.Content;
 using TheForestWaiter.Game.Essentials;
-using TheForestWaiter.Game.Graphics;
+using TheForestWaiter.Graphics;
 using TheForestWaiter.Game.Objects.Abstract;
 
 namespace TheForestWaiter.Game.Objects.Static

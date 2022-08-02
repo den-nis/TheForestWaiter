@@ -1,7 +1,7 @@
 ﻿using SFML.Graphics;
 using SFML.System;
 
-namespace TheForestWaiter.Game.Graphics
+namespace TheForestWaiter.Graphics
 {
 	internal class SpriteFont : Drawable
 	{
@@ -9,7 +9,7 @@ namespace TheForestWaiter.Game.Graphics
 		public Vector2f Spacing { get; set; } = new Vector2f(1, 1);
 		public Color Color { get; set; } = Color.White;
 
-		public float Scale { get; set; }
+		public float Scale { get; set; } = 1;
 		public int IndexOffset { get; set; } = '0';
 
 		private readonly SpriteSheet _sheet;

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TheForestWaiter.Shared;
 
-namespace TheForestWaiter.Game.Graphics
+namespace TheForestWaiter.Graphics
 {
 	class AnimatedSprite : Drawable
 	{

@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TheForestWaiter.Content;
-using TheForestWaiter.Game.Graphics;
+using TheForestWaiter.Graphics;
 
 namespace TheForestWaiter.Game.Environment
 {

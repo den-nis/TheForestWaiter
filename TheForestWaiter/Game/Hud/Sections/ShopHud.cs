@@ -3,7 +3,7 @@ using SFML.System;
 using System.Collections.Generic;
 using TheForestWaiter.Content;
 using TheForestWaiter.Game.Essentials;
-using TheForestWaiter.Game.Graphics;
+using TheForestWaiter.Graphics;
 
 namespace TheForestWaiter.Game.Hud.Sections
 {
