@@ -1,6 +1,7 @@
 ﻿using SFML.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using TheForestWaiter.Content;
 using TheForestWaiter.Game.Essentials;
@@ -49,7 +50,7 @@ namespace TheForestWaiter.Game.Objects.Enemies
 				var dps = total / SAMPLE_LENGTH;
 				_totalDamage += total;
 
-				Console.WriteLine($"Dummy ({GameObjectId}) d/hit : {_history.Average(),-5} dps : {dps,-5} hits : {_history.Count,-5} total : {_totalDamage}");
+				Debug.WriteLine($"Dummy ({GameObjectId}) d/hit : {_history.Average(),-5} dps : {dps,-5} hits : {_history.Count,-5} total : {_totalDamage}");
 
 				_history.Clear();
 				_timerEnabled = false;
