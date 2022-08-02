@@ -25,14 +25,18 @@ jobs:
       run: dotnet restore
       
     - name: Build
-      run: dotnet publish ./TheForestWaiter/TheForestWaiter.csproj --self-contained true --configuration ${{env.configuration}} --runtime ${{env.runtime}} --output build -p:PublishSingleFile=true
-      
-    - name: Remove debug files
-      run: rm ./build/*.pdb
+      run: dotnet publish ./TheForestWaiter/TheForestWaiter.csproj
+       --self-contained true 
+       --configuration ${{env.configuration}} 
+       --runtime ${{env.runtime}} 
+       --output build 
+       -p:PublishSingleFile=true
+       -p:DebugType=None
+       -p:DebugSymbols=false
       
     - name: Publish artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: release.exe
+        name: drop
         path:  ./build
         retention-days: 5
