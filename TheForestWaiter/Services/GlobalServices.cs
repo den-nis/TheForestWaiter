@@ -54,9 +54,9 @@ namespace TheForestWaiter.Services
 		public void Setup()
 		{
 			_container.GetInstance<UserSettings>().Setup();
+			_container.GetInstance<ContentSource>().Setup();
 			_container.GetInstance<WindowHandle>().Setup();
 			_container.GetInstance<IDebug>().Setup();
-			_container.GetInstance<ContentSource>().Setup();
 		}
 
 		private void RegisterCommands()

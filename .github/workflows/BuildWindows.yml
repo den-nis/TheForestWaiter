@@ -2,10 +2,14 @@ name: Build for windows
 
 on:
   push:
-    branches: [ main ]
+    branches: [ pipeline ]
   pull_request:
-    branches: [ main ]
+    branches: [ pipeline ]
 
+env:
+  runtime: win-x64
+  configuration: Release
+   
 jobs:
   build:
     runs-on: windows-latest
@@ -15,23 +19,27 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 5.0.x
+        dotnet-version: 6.0.x
 
     - name: Restore dependencies
       run: dotnet restore
       
     - name: Build
-      run: dotnet publish /p:Configuration=Release /p:PublishProfile=FolderProfile
-      
-    - name: Remove debug files
-      run: del ./TheForestWaiter/bin/Release/net5.0/win-x64/publish/*.pdb
-      
-    - name: Remove jsons
-      run: del ./TheForestWaiter/bin/Release/net5.0/win-x64/publish/*.json
-      
-    - name: Publish-Artifacts
+      run: dotnet publish ./TheForestWaiter/TheForestWaiter.csproj
+       --self-contained true 
+       --configuration ${{env.configuration}} 
+       --runtime ${{env.runtime}} 
+       --output build 
+       -p:PublishSingleFile=true
+       -p:DebugType=None
+       -p:DebugSymbols=false
+
+    - name: Remove content
+      run: del ./build/Content.zip
+
+    - name: Publish artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: release.exe
-        path:  ./TheForestWaiter/bin/Release/net5.0/win-x64/publish
+        name: drop
+        path:  ./build
         retention-days: 5
