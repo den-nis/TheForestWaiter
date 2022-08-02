@@ -90,7 +90,7 @@ namespace TheForestWaiter.Game.Objects.Enemies
 			_animation.Sprite.Position = Position;
 			_animation.Sheet.MirrorX = PlayerDirection == 1;
 
-			if (_prepareAttackTime > 0 && false)
+			if (_prepareAttackTime > 0)
 			{
 				_animation.SetSection("attack");
 			}
