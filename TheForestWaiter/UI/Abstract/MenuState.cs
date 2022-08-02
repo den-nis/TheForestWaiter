@@ -77,7 +77,7 @@ namespace TheForestWaiter.UI.Abstract
 			{
 				scale = wSize.Y / (float)bSize.Y;
 			}
-			
+
 			_background.Scale = new Vector2f(scale, scale);
 		}
 

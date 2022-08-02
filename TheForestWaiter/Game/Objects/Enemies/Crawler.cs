@@ -3,10 +3,10 @@ using SFML.System;
 using System;
 using TheForestWaiter.Content;
 using TheForestWaiter.Game.Essentials;
-using TheForestWaiter.Graphics;
 using TheForestWaiter.Game.Logic;
 using TheForestWaiter.Game.Objects.Abstract;
 using TheForestWaiter.Game.Objects.Projectiles;
+using TheForestWaiter.Graphics;
 
 namespace TheForestWaiter.Game.Objects.Enemies
 {

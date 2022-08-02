@@ -13,7 +13,7 @@ namespace TheForestWaiter.Game.Essentials
 
 		public static bool BoxPoint(Vector2f p1, Vector2f s1, Vector2f p)
 		{
-			return new FloatRect(p1, s1).Intersects(new FloatRect(p, new Vector2f(1,1)));
+			return new FloatRect(p1, s1).Intersects(new FloatRect(p, new Vector2f(1, 1)));
 		}
 
 		//TODO: maybe use something else than SweptAABB

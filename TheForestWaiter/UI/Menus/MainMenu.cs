@@ -7,7 +7,7 @@ using TheForestWaiter.UI.Abstract;
 namespace TheForestWaiter.UI.Menus
 {
 	internal class MainMenu : UIState
-	{ 
+	{
 		public MainMenu()
 		{
 			var stateManager = IoC.GetInstance<StateManager>();

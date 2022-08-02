@@ -71,7 +71,7 @@ namespace TheForestWaiter.Game.Objects.Abstract
 			{
 				_sound.Play(SoundOnDamage);
 				Health -= amount;
-				
+
 				if (Health <= 0)
 				{
 					Health = 0;

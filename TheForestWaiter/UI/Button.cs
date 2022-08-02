@@ -62,7 +62,7 @@ namespace TheForestWaiter.UI
 			pressed = false;
 			OnClick?.Invoke();
 		}
-		
+
 		protected override void OnPressed() => pressed = true;
 
 		protected override void OnMouseMoveEnter(Vector2f position)
@@ -70,7 +70,7 @@ namespace TheForestWaiter.UI
 			_sound.Play(_selectSound);
 			hovering = true;
 		}
-		
+
 		protected override void OnMouseMoveExit(Vector2f position)
 		{
 			hovering = false;

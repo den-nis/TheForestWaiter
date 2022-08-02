@@ -3,8 +3,8 @@ using SFML.System;
 using System.Linq;
 using TheForestWaiter.Content;
 using TheForestWaiter.Game.Essentials;
-using TheForestWaiter.Graphics;
 using TheForestWaiter.Game.Objects.Static;
+using TheForestWaiter.Graphics;
 
 namespace TheForestWaiter.Game.Hud.Sections
 {

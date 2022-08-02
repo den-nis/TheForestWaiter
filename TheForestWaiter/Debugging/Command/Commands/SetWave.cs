@@ -17,7 +17,7 @@ namespace TheForestWaiter.Debugging.Command.Commands
 
 		public void Execute(CommandHandler handler, string[] args)
 		{
-			foreach(var creature in _gameData.Objects.Creatures.Where(c => !c.Friendly))
+			foreach (var creature in _gameData.Objects.Creatures.Where(c => !c.Friendly))
 			{
 				creature.Delete();
 				Console.WriteLine($"Deleted {creature.GetType().Name} ({creature.GameObjectId})");

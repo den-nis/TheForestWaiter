@@ -2,8 +2,8 @@
 using System;
 using TheForestWaiter.Content;
 using TheForestWaiter.Game.Essentials;
-using TheForestWaiter.Graphics;
 using TheForestWaiter.Game.Objects;
+using TheForestWaiter.Graphics;
 
 namespace TheForestWaiter.Game.Gibs
 {

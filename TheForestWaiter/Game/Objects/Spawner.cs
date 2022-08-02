@@ -56,7 +56,7 @@ namespace TheForestWaiter.Game.Objects.Static
 			if (_finished) return;
 
 			var shouldStart = _spawnQueue.Where(w => w.Time < _waveTime);
-			foreach(var job in shouldStart)
+			foreach (var job in shouldStart)
 			{
 				StartJob(job);
 			}

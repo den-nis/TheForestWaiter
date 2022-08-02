@@ -8,7 +8,7 @@ namespace TheForestWaiter.UI
 {
 	internal class ScoreLabel : Control
 	{
-		private const float SPACING = 20f;	
+		private const float SPACING = 20f;
 
 		private readonly PlayStats _session;
 		private readonly SpriteFont _numbersSprite;

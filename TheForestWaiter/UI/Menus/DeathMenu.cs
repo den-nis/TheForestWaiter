@@ -5,7 +5,7 @@ using TheForestWaiter.UI.Abstract;
 namespace TheForestWaiter.UI.Menus
 {
 	internal class DeathMenu : UIState
-	{ 
+	{
 		public DeathMenu()
 		{
 			var state = IoC.GetInstance<StateManager>();

@@ -1,8 +1,7 @@
 ﻿using System.Diagnostics;
-using TheForestWaiter.Game;
 using TheForestWaiter.Game.Debugging;
-using TheForestWaiter.UI.Menus;
 using TheForestWaiter.States;
+using TheForestWaiter.UI.Menus;
 
 namespace TheForestWaiter
 {

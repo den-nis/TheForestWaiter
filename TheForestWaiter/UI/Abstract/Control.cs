@@ -20,7 +20,7 @@ namespace TheForestWaiter.UI.Abstract
 
 		public void SetXRelativeToRight() => _maintainX = true;
 
-		protected Vector2f ActualPosition 
+		protected Vector2f ActualPosition
 		{
 			get
 			{

@@ -32,7 +32,7 @@ namespace TheForestWaiter.Game.Objects
 		private readonly SoundInfo _deathSound;
 
 		private readonly Color _stunColor = new(255, 200, 200);
-		
+
 		private bool _justJumped = false;
 		private float _switchCooldown = 0;
 		private float _walkSoundTimer = 0;
@@ -53,7 +53,7 @@ namespace TheForestWaiter.Game.Objects
 
 			_sprite = _content.Textures.CreateAnimatedSprite("Textures/Player/sheet.png");
 			Size = _sprite.Sheet.TileSize.ToVector2f();
-			
+
 			StunTime = 1;
 			AutoJumpObstacles = false;
 			Friendly = true;

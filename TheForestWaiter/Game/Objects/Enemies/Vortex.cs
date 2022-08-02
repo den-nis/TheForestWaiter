@@ -2,9 +2,9 @@
 using System;
 using TheForestWaiter.Content;
 using TheForestWaiter.Game.Essentials;
-using TheForestWaiter.Graphics;
 using TheForestWaiter.Game.Logic;
 using TheForestWaiter.Game.Objects.Abstract;
+using TheForestWaiter.Graphics;
 
 namespace TheForestWaiter.Game.Objects.Enemies
 {
@@ -32,13 +32,13 @@ namespace TheForestWaiter.Game.Objects.Enemies
 			_animation = _content.Textures.CreateAnimatedSprite("Textures/Enemies/vortex.png");
 			_animation.SetSection("flying");
 			_animation.Framerate += Rng.Float();
-			
+
 			Size = _animation.Sheet.TileSize.ToVector2f();
 
 			_maxFlyingHeight = 180 + Rng.Var(80);
 			_minFlyingHeight = 50;
 			FlyingHeight = _maxFlyingHeight;
-			
+
 			Speed = 150 + Rng.Var(40);
 			SetMaxHealth(300, true);
 		}
@@ -72,7 +72,7 @@ namespace TheForestWaiter.Game.Objects.Enemies
 			_animation.Sprite.Color = IsStunned ? new Color(255, 0, 0) : Color.White;
 			_animation.Sprite.Position = Position;
 			_animation.Sheet.MirrorX = FacingDirection > 0;
-			
+
 			_animation.Update(time);
 		}
 

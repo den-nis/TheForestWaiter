@@ -2,9 +2,9 @@
 using System;
 using TheForestWaiter.Content;
 using TheForestWaiter.Game.Essentials;
-using TheForestWaiter.Graphics;
 using TheForestWaiter.Game.Logic;
 using TheForestWaiter.Game.Objects.Abstract;
+using TheForestWaiter.Graphics;
 
 namespace TheForestWaiter.Game.Objects.Enemies
 {
@@ -94,7 +94,7 @@ namespace TheForestWaiter.Game.Objects.Enemies
 		protected override void OnDamage(GameObject by, float amount)
 		{
 			var prop = _content.Particles.Get("Particles/blood.particle", Center);
-			Game.Objects.WorldParticles.Emit(prop, (int)(5 + (amount/100)));
+			Game.Objects.WorldParticles.Emit(prop, (int)(5 + (amount / 100)));
 		}
 	}
 }

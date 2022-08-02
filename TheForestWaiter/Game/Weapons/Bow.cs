@@ -1,6 +1,5 @@
 ﻿using SFML.System;
 using TheForestWaiter.Content;
-using TheForestWaiter.Game.Essentials;
 using TheForestWaiter.Game.Objects.Projectiles;
 using TheForestWaiter.Game.Weapons.Abstract;
 

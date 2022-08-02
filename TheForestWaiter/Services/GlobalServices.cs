@@ -6,8 +6,8 @@ using TheForestWaiter.Debugging;
 using TheForestWaiter.Debugging.Command;
 using TheForestWaiter.Game;
 using TheForestWaiter.Game.Debugging;
-using TheForestWaiter.UI.Menus;
 using TheForestWaiter.States;
+using TheForestWaiter.UI.Menus;
 
 namespace TheForestWaiter.Services
 {

@@ -34,7 +34,7 @@ namespace TheForestWaiter.Game.Environment.Spawning
 			if (!IsActive) return;
 
 			_delay -= time;
-			while(_delay <= 0)
+			while (_delay <= 0)
 			{
 				_delay += _description.Delay;
 				_spawned++;

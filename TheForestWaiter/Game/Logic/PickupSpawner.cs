@@ -1,7 +1,5 @@
 ﻿using SFML.System;
-using System.Linq;
 using TheForestWaiter.Game.Essentials;
-using TheForestWaiter.Game.Objects.Static;
 
 namespace TheForestWaiter.Game.Objects.Items
 {

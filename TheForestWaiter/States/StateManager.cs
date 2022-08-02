@@ -83,13 +83,13 @@ namespace TheForestWaiter.States
 
 			_transitionTimer += time;
 			var delta = _transitionTimer / activeTransition.Length;
-			
+
 			if (delta < 1)
 			{
 				var animation = delta > 0.5 ? (1 - delta) * 2 : delta * 2;
 
 				SetOverlayColor((byte)(animation * 255), activeTransition.Color);
-			
+
 				if (!_transitionHasChangedState && delta >= .5f)
 				{
 					var state = (IState)Activator.CreateInstance(activeTransition.TargetState);

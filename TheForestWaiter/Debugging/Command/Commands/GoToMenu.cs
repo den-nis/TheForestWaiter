@@ -1,6 +1,6 @@
 ﻿using LightInject;
-using TheForestWaiter.UI.Menus;
 using TheForestWaiter.States;
+using TheForestWaiter.UI.Menus;
 
 namespace TheForestWaiter.Debugging.Command.Commands
 {

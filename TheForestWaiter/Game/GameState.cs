@@ -1,5 +1,4 @@
-﻿using LightInject;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using SFML.Graphics;
 using TheForestWaiter.Content;
 using TheForestWaiter.Game.Environment;
