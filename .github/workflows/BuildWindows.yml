@@ -9,7 +9,6 @@ on:
 env:
   runtime: win-x64
   configuration: Release
-  version: 6.0.x
    
 
 jobs:
@@ -21,7 +20,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: ${{ env.version }}
+        dotnet-version: 6.0.x
 
     - name: Restore dependencies
       run: dotnet restore
@@ -35,7 +34,7 @@ jobs:
     - name: Remove jsons
       run: rm ./build/*.json
       
-    - name: Publish-Artifacts
+    - name: Publish artifacts
       uses: actions/upload-artifact@v2
       with:
         name: release.exe
