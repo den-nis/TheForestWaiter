@@ -7,9 +7,9 @@ on:
     branches: [ pipeline ]
 
 env:
-  runtime: 'win-x64'
-  configuration: 'Release'
-  version: '6.0.x'
+  runtime: win-x64
+  configuration: Release
+  version: 6.0.x
    
 
 jobs:
