@@ -17,19 +17,22 @@ namespace TheForestWaiter.Game
 		private readonly UserSettings _settings;
 		private readonly GameHud _hud;
 		private readonly Camera _camera;
+		private readonly NetworkTraffic _traffic;
 
 		public GameController(
 			GameData data,
 			WindowHandle gameWindow,
 			UserSettings settings,
 			GameHud hud,
-			Camera camera)
+			Camera camera, 
+			NetworkTraffic traffic)
 		{
 			_game = data;
 			_gameWindow = gameWindow;
 			_settings = settings;
 			_hud = hud;
 			_camera = camera;
+			_traffic = traffic;
 		}
 
 		public void Setup()
@@ -147,7 +150,7 @@ namespace TheForestWaiter.Game
 
 			if (c >= Keyboard.Key.Num1 && c <= Keyboard.Key.Num9)
 			{
-				_game.Objects.Player.Weapons.Select(c - Keyboard.Key.Num1);
+				_game.Objects.Player.Inventory.Select(c - Keyboard.Key.Num1);
 			}
 		}
 

@@ -1,33 +1,46 @@
 [
   {
-    "id": 2,
+    "itemId": 1,
+    "price": 30,
+    "type": "Weapon",
+    "name": "Handgun",
+    "isInStore": false,
+    "allowMultipleBuys": false,
+    "iconSource": "Textures/Weapons/Icons/handgun.png"
+  },
+  {
+    "itemId": 2,
     "price": 30,
     "type": "Weapon",
     "name": "Bow",
+    "isInStore": true,
     "allowMultipleBuys": false,
     "iconSource": "Textures/Weapons/Icons/bow.png"
   },
   {
-    "id": 4,
+    "itemId": 3,
     "price": 100,
     "type": "Weapon",
     "name": "Shotgun",
+    "isInStore": true,
     "allowMultipleBuys": false,
     "iconSource": "Textures/Weapons/Icons/shotgun.png"
   },
   {
-    "id": 1,
+    "itemId": 4,
     "price": 200,
     "type": "Weapon",
     "name": "Sniper",
+    "isInStore": true,
     "allowMultipleBuys": false,
     "iconSource": "Textures/Weapons/Icons/sniper.png"
   },
   {
-    "id": 3,
+    "itemId": 5,
     "price": 999,
     "type": "Weapon",
     "name": "Chaingun",
+    "isInStore": true,
     "allowMultipleBuys": false,
     "iconSource": "Textures/Weapons/Icons/chaingun.png"
   }

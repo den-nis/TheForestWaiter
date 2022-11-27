@@ -17,7 +17,12 @@ namespace TheForestWaiter.Game
 
 		public GameObject CreateType(Type type) => (GameObject)_provider.GetInstance(type);
 
-		public T CreateWeapon<T>() where T : Weapon => _provider.GetInstance<T>();
+		public T CreateWeapon<T>(Creature owner) where T : Weapon
+		{
+			var weapon = _provider.GetInstance<T>();
+			weapon.Owner = owner;
+			return weapon;
+		} 
 
 		public T Create<T>() where T : GameObject => _provider.GetInstance<T>();
 

@@ -15,6 +15,8 @@ namespace TheForestWaiter.Game.Objects.Static
 
 		public Tree()
 		{
+			IsClientSide = true;
+
 			var content = IoC.GetInstance<ContentSource>();
 
 			Animation = content.Textures.CreateAnimatedSprite("Textures/World/tree.png");

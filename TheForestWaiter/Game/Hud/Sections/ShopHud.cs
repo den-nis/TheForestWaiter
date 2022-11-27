@@ -21,7 +21,7 @@ namespace TheForestWaiter.Game.Hud.Sections
 		private readonly Dictionary<string, Sprite> _iconCache = new();
 		private readonly List<ShopSlot> _slots = new();
 		private readonly ContentSource _content;
-		private readonly ItemShop _shop;
+		private readonly ItemRepository _repo;
 		private readonly Camera _camera;
 
 		private readonly Sprite _slot;
@@ -35,7 +35,7 @@ namespace TheForestWaiter.Game.Hud.Sections
 		public ShopHud(float scale) : base(scale)
 		{
 			_content = IoC.GetInstance<ContentSource>();
-			_shop = IoC.GetInstance<ItemShop>();
+			_repo = IoC.GetInstance<ItemRepository>();
 			_camera = IoC.GetInstance<Camera>();
 
 			_slot = _content.Textures.CreateSprite("Textures/Hud/shop_slot.png");
@@ -94,16 +94,17 @@ namespace TheForestWaiter.Game.Hud.Sections
 
 		private void SetupSlots()
 		{
+			var products = _repo.GetProducts();
 			for (int y = 0; y < ROWS; y++)
 			{
 				for (int x = 0; x < COLUMNS; x++)
 				{
 					int i = y * COLUMNS + x;
 
-					if (i > _shop.Products.Count - 1)
+					if (i > products.Count - 1)
 						return;
 
-					var item = _shop.Products[i];
+					var item = products[i];
 
 					_slots.Add(new ShopSlot()
 					{
@@ -162,7 +163,7 @@ namespace TheForestWaiter.Game.Hud.Sections
 			if (_clickedOnIndex != -1 && _clickedOnIndex == _mouseOnIndex)
 			{
 				//TODO: do something with the responses?
-				_shop.Purchase(_slots[_clickedOnIndex].Product.Id);
+				_repo.Purchase(_slots[_clickedOnIndex].Product.ItemId);
 			}
 		}
 

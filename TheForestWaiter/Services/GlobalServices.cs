@@ -14,10 +14,12 @@ namespace TheForestWaiter.Services
 	class GlobalServices : IServices
 	{
 		private readonly ServiceContainer _container;
+		private readonly string[] _args;
 
-		public GlobalServices(ServiceContainer container)
+		public GlobalServices(ServiceContainer container, string[] args)
 		{
 			_container = container;
+			_args = args;
 		}
 
 		public void Register()
@@ -38,6 +40,7 @@ namespace TheForestWaiter.Services
 				.RegisterSingleton<TimeProcessor>()
 				.RegisterSingleton<SoundSystem>()
 				.RegisterSingleton<PlayStats>()
+				.RegisterSingleton<NetworkSettings>()
 
 				//Services
 				.Register<UIServices>()
@@ -56,7 +59,7 @@ namespace TheForestWaiter.Services
 			_container.GetInstance<UserSettings>().Setup();
 			_container.GetInstance<ContentSource>().Setup();
 			_container.GetInstance<WindowHandle>().Setup();
-			_container.GetInstance<IDebug>().Setup();
+			_container.GetInstance<IDebug>().Setup(_args);
 		}
 
 		private void RegisterCommands()

@@ -1,5 +1,6 @@
 ﻿using LightInject;
 using SFML.Graphics;
+using System;
 using TheForestWaiter.Debugging.Command;
 using TheForestWaiter.Game.Debugging;
 
@@ -19,9 +20,10 @@ namespace TheForestWaiter.Debugging
 		{
 		}
 
-		public void Setup()
+		public void Setup(string[] args)
 		{
 			_commandHandler = new CommandHandler(_serviceContainer);
+			_commandHandler.InjectCommand(args);
 			_commandHandler.IndexAndStartConsoleThread();
 		}
 
@@ -34,5 +36,12 @@ namespace TheForestWaiter.Debugging
 		{
 
 		}
+
+		public void Log(string message)
+		{
+			Console.WriteLine(message);
+		}
+
+		public void LogNetworking(string message) => Log(message);
 	}
 }

@@ -10,12 +10,17 @@ namespace TheForestWaiter.Game.Hud.Sections
 {
 	internal class WaveHud : HudSection
 	{
+		private readonly NetworkSettings _network;
 		private readonly SpriteFont _waveText;
 		private readonly GameData _game;
+		private readonly SharedState _sharedState;
 		private Spawner _spawner;
 
 		public WaveHud(float scale) : base(scale)
 		{
+			_network = IoC.GetInstance<NetworkSettings>();
+			_sharedState = IoC.GetInstance<SharedState>();
+
 			var content = IoC.GetInstance<ContentSource>();
 			_game = IoC.GetInstance<GameData>(); ;
 
@@ -38,6 +43,9 @@ namespace TheForestWaiter.Game.Hud.Sections
 
 		private int GetWaveNumber()
 		{
+			if (_network.IsClient)
+				return _sharedState.WaveNumber;
+
 			if (_spawner == null)
 				_spawner = (Spawner)_game.Objects.Environment.First(x => x is Spawner);
 

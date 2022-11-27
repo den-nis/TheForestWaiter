@@ -14,7 +14,7 @@ namespace TheForestWaiter.Game.Weapons
 
 		private readonly ContentSource _content;
 
-		protected override Vector2f AttachPoint => _gameData.Objects.Player.Center - new Vector2f(0, 0);
+		protected override Vector2f AttachPoint => Owner.Center - new Vector2f(0, 0);
 		protected override Vector2f Origin => new(1, 5);
 
 		private const int BEST_FIRERATE = 150;
@@ -94,9 +94,11 @@ namespace TheForestWaiter.Game.Weapons
 			}
 		}
 
-		public override void OnFire()
+		public override void OnFire(bool noProjectile)
 		{
 			_gameData.Objects.WorldParticles.Emit(_content.Particles.Get("Particles/handgun_smoke.particle", BarrelPosition, GetShotFromAngle(), 400), 10);
+			
+			if (noProjectile) return;
 			FireProjectile<ChainBullet>();
 		}
 	}

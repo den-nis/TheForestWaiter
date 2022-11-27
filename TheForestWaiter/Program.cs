@@ -6,7 +6,7 @@ namespace TheForestWaiter
 {
 	internal class Program
 	{
-		static void Main()
+		static void Main(string[] args)
 		{
 			SetCulture();
 
@@ -17,7 +17,7 @@ namespace TheForestWaiter
 
 			IoC.SetContainer(container);
 
-			GlobalServices startup = new(container);
+			GlobalServices startup = new(container, args);
 
 			startup.Register();
 			startup.Setup();

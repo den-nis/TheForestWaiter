@@ -10,18 +10,20 @@ namespace TheForestWaiter.Debugging.Command.Commands
 	internal class Give : ICommand
 	{
 		private readonly GameData _game;
+		private readonly ItemRepository _repo;
 		private readonly IServiceContainer _container;
 
-		public Give(GameData game, IServiceContainer container)
+		public Give(GameData game, ItemRepository repo, IServiceContainer container)
 		{
 			_game = game;
+			_repo = repo;
 			_container = container;
 		}
 
 		public void Execute(CommandHandler handler, string[] args)
 		{
-			var weapon = (Weapon)_container.GetInstance(Types.Weapons.Values.FirstOrDefault(t => t.Name.Equals(args[0], StringComparison.OrdinalIgnoreCase)));
-			_game.Objects.Player.Weapons.Add(weapon);
+			var id = _repo.All.First(x => x.Name == args[0]).ItemId;
+			_repo.Give(id);
 		}
 	}
 }

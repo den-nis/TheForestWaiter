@@ -12,7 +12,7 @@ namespace TheForestWaiter.Game.Weapons
 
 		private readonly ContentSource _content;
 
-		protected override Vector2f AttachPoint => _gameData.Objects.Player.Center;
+		protected override Vector2f AttachPoint => Owner.Center;
 		protected override Vector2f Origin => new(0f, 3f);
 
 		private readonly GameData _gameData;
@@ -35,10 +35,11 @@ namespace TheForestWaiter.Game.Weapons
 			FireSound = new("Sounds/Weapons/shotgun_{n}.wav");
 		}
 
-		public override void OnFire()
+		public override void OnFire(bool noProjectile)
 		{
 			_gameData.Objects.WorldParticles.Emit(_content.Particles.Get("Particles/handgun_smoke.particle", BarrelPosition, GetShotFromAngle(), 120), 10);
 
+			if (noProjectile) return;
 			for (int i = 0; i < 10; i++)
 			{
 				FireProjectile<ShotgunBullet>();

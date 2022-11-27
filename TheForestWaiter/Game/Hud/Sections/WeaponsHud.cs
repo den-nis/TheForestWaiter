@@ -4,13 +4,12 @@ using System;
 using System.Collections.Generic;
 using TheForestWaiter.Content;
 using TheForestWaiter.Game.Essentials;
-using TheForestWaiter.Game.Weapons.Abstract;
 
 namespace TheForestWaiter.Game.Hud.Sections
 {
 	internal class WeaponsHud : HudSection
 	{
-		private const int MAX_WEAPONS = 9; //TODO: move this to _game.Objects.Player.Weapons or shop (prevent buying more?)
+		private const int MAX_WEAPONS = 9; //TODO: move this to Inventory (prevent buying more?)
 		private const int MARGIN_WEAPON_SLOTS = 10;
 
 		private readonly Dictionary<string, Sprite> _weaponSprites = new();
@@ -19,7 +18,7 @@ namespace TheForestWaiter.Game.Hud.Sections
 		private readonly Camera _camera;
 		private readonly GameData _game;
 		private readonly ContentSource _content;
-
+		private readonly ItemRepository _repo;
 		private int _mouseOnIndex = 0;
 
 		public WeaponsHud(float scale) : base(scale)
@@ -27,6 +26,7 @@ namespace TheForestWaiter.Game.Hud.Sections
 			_camera = IoC.GetInstance<Camera>();
 			_game = IoC.GetInstance<GameData>();
 			_content = IoC.GetInstance<ContentSource>();
+			_repo = IoC.GetInstance<ItemRepository>();
 			_slot = _content.Textures.CreateSprite("Textures/Hud/slot.png");
 			_select = _content.Textures.CreateSprite("Textures/Hud/select.png");
 
@@ -38,19 +38,19 @@ namespace TheForestWaiter.Game.Hud.Sections
 			_select.Scale = ScaleVector;
 			_slot.Scale = ScaleVector;
 
-			LoopOverSlotPositions((position, weapon) =>
+			LoopOverSlotPositions((position, info) =>
 			{
 				_slot.Position = position;
 				_select.Position = _slot.Position;
 				window.Draw(_slot);
 
-				var icon = GetIconSprite(weapon.IconTextureName);
+				var icon = GetIconSprite(info.IconSource);
 				icon.Scale = ScaleVector;
 				icon.Origin = (icon.Texture.Size / 2).ToVector2f();
 				icon.Position = _slot.Position + (_slot.Texture.Size / 2).ToVector2f() * Scale;
 				window.Draw(icon);
 
-				if (weapon == _game.Objects.Player.Weapons.GetEquiped())
+				if (info.ItemId == _game.Objects.Player.Inventory.GetCurrentItem())
 				{
 					window.Draw(_select);
 				}
@@ -77,35 +77,35 @@ namespace TheForestWaiter.Game.Hud.Sections
 		{
 			if (_mouseOnIndex != -1)
 			{
-				_game.Objects.Player.Weapons.Select(_mouseOnIndex);
+				_game.Objects.Player.Inventory.Select(_mouseOnIndex);
 			}
 		}
 
 		public override void OnMouseMove(Vector2i mouse)
 		{
 			_mouseOnIndex = -1;
-			LoopOverSlotPositions((position, weapon) =>
+			LoopOverSlotPositions((position, info) =>
 			{
 				var rect = new FloatRect(position, _slot.Texture.Size.ToVector2f() * Scale);
 				if (rect.Intersects(new FloatRect(mouse.ToVector2f(), new Vector2f(1, 1))))
 				{
 					//Casting because for some reason IReadonlyList does not have .IndexOf
-					_mouseOnIndex = ((List<Weapon>)_game.Objects.Player.Weapons.OwnedWeapons).IndexOf(weapon);
+					_mouseOnIndex = ((List<int>)_game.Objects.Player.Inventory.Items).IndexOf(info.ItemId);
 					return;
 				}
 			});
 		}
 
-		public void LoopOverSlotPositions(Action<Vector2f, Weapon> func)
+		public void LoopOverSlotPositions(Action<Vector2f, ItemInfo> func)
 		{
 			var section = GetPosition(_camera);
 			float offset = section.X;
 
-			foreach (var weapon in _game.Objects.Player.Weapons.OwnedWeapons)
+			foreach (var itemId in _game.Objects.Player.Inventory.Items)
 			{
 				var position = new Vector2f(offset, section.Y);
 
-				func(position, weapon);
+				func(position, _repo.GetItemInfo(itemId));
 
 				offset += (int)(_slot.Texture.Size.X * Scale) + MARGIN_WEAPON_SLOTS;
 			}

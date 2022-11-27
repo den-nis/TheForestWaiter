@@ -22,6 +22,8 @@ namespace TheForestWaiter.Game.Objects.Abstract
 		public bool DisableUpdates { get; set; }
 		public bool DisableDraws { get; set; }
 
+		public bool IsClientSide { get; protected set; } = false;
+
 		protected GameData Game { get; set; }
 
 		public GameObject()

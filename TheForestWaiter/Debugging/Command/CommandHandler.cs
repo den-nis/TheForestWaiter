@@ -34,6 +34,11 @@ namespace TheForestWaiter.Debugging.Command
 			{
 				var command = _pendingCommands.Take();
 
+				if (string.IsNullOrEmpty(command))
+				{
+					continue;
+				}
+
 				try
 				{
 					var parts = command.Split(' ');
@@ -55,6 +60,11 @@ namespace TheForestWaiter.Debugging.Command
 					_pendingCommands.Add(Console.ReadLine());
 				}
 			}, TaskCreationOptions.LongRunning);
+		}
+
+		public void InjectCommand(string[] command)
+		{
+			_pendingCommands.Add(string.Join(' ', command));
 		}
 
 		private void ExecuteCommand(string command, string[] args)

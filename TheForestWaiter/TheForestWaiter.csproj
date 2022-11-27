@@ -1,51 +1,41 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-  
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
     <OutputType>Exe</OutputType>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <PlatformTarget>x64</PlatformTarget>
-	<OutputType>WinExe</OutputType>
+    <OutputType>WinExe</OutputType>
   </PropertyGroup>
-
   <ItemGroup>
     <None Remove="Content.zip" />
     <None Remove="Icon.ico" />
     <None Remove="TileSet.tsx" />
   </ItemGroup>
-
   <ItemGroup>
     <EmbeddedResource Include="Icon.ico" />
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="ini-parser-netstandard" Version="2.5.2" />
     <PackageReference Include="LightInject" Version="6.4.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="SFML.Net" Version="2.5.0" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\TheForestWaiter.Shared\TheForestWaiter.Shared.csproj" />
   </ItemGroup>
-
   <ItemGroup>
     <EmbeddedResource Include="Content.zip">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
-
   <ItemGroup>
     <None Update="Settings.ini">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
     <Exec Command="dotnet run --project ../TheForestWaiter.Content/TheForestWaiter.Content.csproj ../TheForestWaiter.Content/Content Content.zip" />
   </Target>
-
 </Project>

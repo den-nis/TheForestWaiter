@@ -22,15 +22,17 @@ namespace TheForestWaiter
 		private readonly Queue<GameObject> _queue = new();
 		private readonly UserSettings _settings;
 		private readonly ObjectCreator _creator;
+		private readonly NetworkSettings _networking;
 		private readonly Camera _camera;
 		private readonly IDebug _debug;
 
-		public GameObjects(UserSettings settings, ObjectCreator creator, Camera camera, IDebug debug)
+		public GameObjects()
 		{
-			_settings = settings;
-			_creator = creator;
-			_camera = camera;
-			_debug = debug;
+			_networking = IoC.GetInstance<NetworkSettings>();
+			_settings =  IoC.GetInstance<UserSettings>();
+			_creator =  IoC.GetInstance<ObjectCreator>();
+			_camera =  IoC.GetInstance<Camera>();
+			_debug =  IoC.GetInstance<IDebug>();
 
 			WorldParticles = new ParticleSystem(_settings.GetInt("Game", "MaxParticles"));
 		}
@@ -94,7 +96,7 @@ namespace TheForestWaiter
 			WorldParticles.Update(time);
 		}
 
-		public void LoadAllFromMap(Map map)
+		public void LoadAllFromMap(Map map, bool onlyClientSideObjects)
 		{
 			Player = null;
 
@@ -107,7 +109,11 @@ namespace TheForestWaiter
 					var obj = _creator.CreateType(type);
 					obj.Position = new Vector2f(inf.X, inf.Y - obj.Size.Y);
 					obj.MapSetup(inf);
-					AddGameObject(obj);
+
+					if (!onlyClientSideObjects || obj.IsClientSide)
+					{
+						AddGameObject(obj);
+					}
 				}
 				else
 				{
@@ -145,7 +151,11 @@ namespace TheForestWaiter
 			switch (obj)
 			{
 				case Player player:
-					Player = player;
+
+					if (!player.IsGhost)
+					{
+						Player = player;
+					}
 					Creatures.Add(player);
 					break;
 

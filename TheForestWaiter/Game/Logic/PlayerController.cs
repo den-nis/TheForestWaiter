@@ -7,6 +7,9 @@ namespace TheForestWaiter.Game.Logic
 {
 	internal class PlayerController
 	{
+		public event Action<ActionTypes, bool> OnAction;
+		public event Action<float> OnAim;
+
 		private float _aim;
 
 		private readonly bool[] _binaryActions;
@@ -28,16 +31,27 @@ namespace TheForestWaiter.Game.Logic
 
 		public void ToggleOn(ActionTypes action)
 		{
+			OnAction?.Invoke(action, true);
 			_binaryActions[(int)action] = true;
 		}
 
 		public void ToggleOff(ActionTypes action)
 		{
+			OnAction?.Invoke(action, false);
 			_binaryActions[(int)action] = false;
+		}
+
+		public void Toggle(ActionTypes action, bool toggle)
+		{
+			if (toggle)
+				ToggleOn(action);
+			else
+				ToggleOff(action);
 		}
 
 		public void Aim(float radians)
 		{
+			OnAim?.Invoke(radians);
 			_aim = radians;
 		}
 

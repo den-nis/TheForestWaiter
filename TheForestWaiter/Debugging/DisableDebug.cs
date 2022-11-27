@@ -9,10 +9,12 @@ namespace TheForestWaiter.Debugging
 
 		public void Draw(RenderWindow window) { }
 
-		public void Setup() { }
+		public void Setup(string[] args) { }
 
 		public void Dispose() { }
 
 		public void Log(string message) { }
+
+		public void LogNetworking(string message) { }
 	}
 }

@@ -14,11 +14,11 @@ namespace TheForestWaiter.Game
 		public GameObjects Objects { get; private set; }
 		public Session Session { get; private set; } = new();
 
-		public void LoadFromMap(Map map)
+		public void LoadFromMap(Map map, bool onlyClientSideObjects)
 		{
 			World.LoadFromMap(map);
 			Objects.ClearAll();
-			Objects.LoadAllFromMap(map);
+			Objects.LoadAllFromMap(map, onlyClientSideObjects);
 		}
 	}
 }

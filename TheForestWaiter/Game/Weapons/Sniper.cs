@@ -18,7 +18,7 @@ namespace TheForestWaiter.Game.Weapons
 
 		private readonly ContentSource _content;
 
-		protected override Vector2f AttachPoint => _gameData.Objects.Player.Center;
+		protected override Vector2f AttachPoint => Owner.Center;
 		protected override Vector2f Origin => new(0f, 3f);
 
 		private readonly GameData _gameData;
@@ -64,13 +64,14 @@ namespace TheForestWaiter.Game.Weapons
 			base.Update(time);
 		}
 
-		public override void OnFire()
+		public override void OnFire(bool noProjectile)
 		{
 			_smokeTimer = SMOKE_TIME;
 
 			var prop = _content.Particles.Get("Particles/sniper_muzzle_flash.particle", BarrelPosition, LastAimAngle, 320);
 			_gameData.Objects.WorldParticles.Emit(prop, 20);
 
+			if (noProjectile) return;
 			FireProjectile<SniperBullet>();
 		}
 	}

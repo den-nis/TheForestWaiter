@@ -1,14 +1,18 @@
 ﻿using SFML.Graphics;
+using SFML.System;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using TheForestWaiter.Content;
 using TheForestWaiter.Game.Constants;
 using TheForestWaiter.Game.Essentials;
 using TheForestWaiter.Game.Gibs;
 using TheForestWaiter.Game.Logic;
 using TheForestWaiter.Game.Objects.Abstract;
-using TheForestWaiter.Game.Weapons;
 using TheForestWaiter.Game.Weapons.Abstract;
 using TheForestWaiter.Graphics;
+using TheForestWaiter.Multiplayer;
+using TheForestWaiter.Multiplayer.Messages;
 using TheForestWaiter.States;
 using TheForestWaiter.UI.Menus;
 
@@ -16,13 +20,17 @@ namespace TheForestWaiter.Game.Objects
 {
 	internal class Player : GroundCreature
 	{
+		public int PlayerId { get; set; } = 0;
+		public bool IsGhost { get; set; } = false;
+
 		private const float TIME_TILL_DEATH_SCREEN = 4f;
 		private const float SWITCH_COOLDOWN_TIME = 0.2f;
 		private const float WALK_SOUND_INTERVAL = 0.50f;
 
 		public PlayerController Controller { get; } = new();
-		public WeaponCollection Weapons { get; } = new();
+		public Inventory Inventory { get; }
 
+		private readonly NetworkTraffic _traffic;
 		private readonly AnimatedSprite _sprite;
 		private readonly ContentSource _content;
 		private readonly SoundSystem _sound;
@@ -36,13 +44,20 @@ namespace TheForestWaiter.Game.Objects
 		private bool _justJumped = false;
 		private float _switchCooldown = 0;
 		private float _walkSoundTimer = 0;
+		private Vector2f _lastPosition = default;
 
 		public Player()
 		{
+			IsClientSide = true;
+
 			var creator = IoC.GetInstance<ObjectCreator>();
+			_traffic = IoC.GetInstance<NetworkTraffic>();
 			_content = IoC.GetInstance<ContentSource>();
 			_sound = IoC.GetInstance<SoundSystem>();
 			_gibs = IoC.GetInstance<GibSpawner>();
+
+			Inventory = IoC.GetInstance<Inventory>();
+			Inventory.Owner = this;
 
 			_gibs.Setup("Textures/Player/player_gibs.png");
 			_gibs.MaxVelocity = 500;
@@ -65,15 +80,48 @@ namespace TheForestWaiter.Game.Objects
 			JumpHoldForce = 300;
 			JumpForce = 400;
 
-			Weapons.Add(creator.CreateWeapon<Handgun>());
-			Weapons.OnEquipedChanged += OnEquipmentChangedEventHandler;
+			Inventory.OnEquipWeapon += OnWeaponChangedEventHandler;
+			Inventory.Add(1);
+
+			if (_traffic.IsClient) //TODO: remove
+			{
+				Heal(-10);
+			}
+
+			if (_traffic.IsMultiplayer)
+			{
+				//TODO: every ghost is subscribed to these events. 
+				//Can't put the IsGhost check outside the event handler because it's assigned after the constructor has run
+				Controller.OnAction += (action, toggle) => 
+				{
+					if (!IsGhost)
+						_traffic.Send(new PlayerAction { Action = action, State = toggle, PlayerId = _traffic.MyId });
+				};
+
+				Controller.OnAim += (angle) => 
+				{
+					if (!IsGhost)
+						_traffic.Send(new PlayerAim { Angle = angle, PlayerId = _traffic.MyId });
+				};
+
+				Inventory.OnEquipedChanged += (previous) => 
+				{
+					if (!IsGhost)
+						_traffic.Send(new PlayerItems
+						{
+							PlayerId = _traffic.MyId,
+							Items = Inventory.Items.ToArray(),
+							EquipedIndex = Inventory.EquipedIndex,
+						});
+				};
+			}
 		}
 
 		public override void Update(float time)
 		{
 			base.Update(time);
 
-			var gun = Weapons.GetEquiped();
+			var gun = Inventory.GetCurrentWeapon();
 
 			_switchCooldown -= time;
 
@@ -117,17 +165,33 @@ namespace TheForestWaiter.Game.Objects
 			HandleAnimations(time);
 			HandleSounds(time);
 
-			foreach (var weapon in Weapons.OwnedWeapons)
+			foreach (var weapon in Inventory.Weapons)
 			{
 				weapon.BackgroundUpdate(time);
 			}
+
+			if (_traffic.IsMultiplayer && !IsGhost && _lastPosition != Position)
+			{
+				//TODO:
+				//I could probably get away with sending this less often than everything frame.
+				//It can fill in the blank using the controller actions.
+				_traffic.Send(new PlayerPosition
+				{
+					X = Position.X,
+					Y = Position.Y,
+					PlayerId = _traffic.MyId 
+				});
+			}
+
+			_lastPosition = Position;
 		}
 
 		public override void Draw(RenderWindow window)
 		{
 			if (_switchCooldown <= 0)
 			{
-				window.Draw(Weapons.GetEquiped());
+				var weapon = Inventory.GetCurrentWeapon();
+				if (weapon != null) window.Draw(weapon);
 			}
 
 			window.Draw(_sprite);
@@ -159,7 +223,7 @@ namespace TheForestWaiter.Game.Objects
 			bool isMovingLeft = FacingDirection < 0;
 			bool aimingRight = TrigHelper.IsPointingRight(Controller.GetAim());
 
-			var gun = Weapons.GetEquiped();
+			var gun = Inventory.GetCurrentWeapon();
 
 			if (IsStunned)
 			{
@@ -197,13 +261,20 @@ namespace TheForestWaiter.Game.Objects
 			_sprite.Update(time);
 		}
 
-		private void OnEquipmentChangedEventHandler(Weapon previous)
+		private void OnWeaponChangedEventHandler(Weapon previous)
 		{
-			previous.Firing = false;
+			if (previous != null)
+			{
+				previous.Firing = false;
+			}
+
 			_switchCooldown = SWITCH_COOLDOWN_TIME;
 
-			var current = Weapons.GetEquiped();
-			CarryingWeight = current.Weight;
+			var current = Inventory.GetCurrentWeapon();
+			if (current != null)
+			{
+				CarryingWeight = current.Weight;
+			}
 		}
 
 		protected override void OnDamage(GameObject by, float amount)
@@ -230,6 +301,31 @@ namespace TheForestWaiter.Game.Objects
 			_gibs.SpawnAll(Center);
 			var prop = _content.Particles.Get("Particles/blood.particle", Center);
 			Game.Objects.WorldParticles.Emit(prop, 50);
+		}
+
+		public IEnumerable<IMessage> GenerateInfoMessages(ushort? playerId)
+		{
+			var id = playerId ?? _traffic.MyId;
+
+			yield return new PlayerPosition { PlayerId = id, X = Position.X, Y = Position.Y };
+			yield return new PlayerAim { PlayerId = id, Angle = Controller.GetAim() };
+			
+			foreach (var action in Enum.GetValues<ActionTypes>())
+			{
+				yield return new PlayerAction
+				{
+					PlayerId = id,
+					Action = action,
+					State = Controller.IsActive(action),
+				};
+			}
+
+			yield return new PlayerItems
+			{
+				PlayerId = id,
+				Items = Inventory.Items.ToArray(),
+				EquipedIndex = Inventory.EquipedIndex,
+			};
 		}
 	}
 }

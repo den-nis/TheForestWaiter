@@ -14,6 +14,8 @@ namespace TheForestWaiter.Game.Weapons.Abstract
 		public Color Color { get; set; }
 
 		public abstract string IconTextureName { get; }
+
+		public Creature Owner { get; set; }
 		protected abstract Vector2f Origin { get; }
 		protected abstract Vector2f AttachPoint { get; }
 
@@ -39,17 +41,19 @@ namespace TheForestWaiter.Game.Weapons.Abstract
 		private readonly GameData _gameData;
 		private readonly ObjectCreator _creator;
 		private readonly SoundSystem _sound;
+		private readonly NetworkSettings _networking;
 		private float _fireTimer;
 		private bool _firstShot;
 
 		public Weapon()
 		{
+			_networking = IoC.GetInstance<NetworkSettings>();
 			_gameData = IoC.GetInstance<GameData>();
 			_creator = IoC.GetInstance<ObjectCreator>();
 			_sound = IoC.GetInstance<SoundSystem>();
 		}
 
-		public abstract void OnFire();
+		public abstract void OnFire(bool noProjectile);
 
 		public void Aim(float angle)
 		{
@@ -71,7 +75,7 @@ namespace TheForestWaiter.Game.Weapons.Abstract
 			else
 			{
 				_sound.Play(FireSound ?? SoundInfo.None);
-				OnFire();
+				OnFire(_networking.IsClient);
 				Kickback();
 			}
 		}
@@ -121,13 +125,13 @@ namespace TheForestWaiter.Game.Weapons.Abstract
 
 		private void Kickback()
 		{
-			_gameData.Objects.Player.Velocity += TrigHelper.FromAngleRad((float)(LastAimAngle - Math.PI), KickbackForce);
+			Owner.Velocity += TrigHelper.FromAngleRad((float)(LastAimAngle - Math.PI), KickbackForce);
 		}
 
 		protected void FireProjectile<T>() where T : Projectile
 		{
 			var velocity = TrigHelper.FromAngleRad(GetShotFromAngle(), Rng.Var(FireSpeed, FireSpeedVariation));
-			var bullet = _creator.FireProjectile<T>(BarrelPosition, velocity, _gameData.Objects.Player);
+			var bullet = _creator.FireProjectile<T>(BarrelPosition, velocity, Owner);
 			_gameData.Objects.Projectiles.Add(bullet);
 		}
 	}
