@@ -1,23 +1,25 @@
 ﻿using SFML.Graphics;
 using SFML.System;
+using System;
 
 namespace TheForestWaiter.Graphics
 {
 	internal class SpriteFont : Drawable
 	{
+		public SpriteSheet Sheet { get; set; }
 		public Vector2f Position { get; set; }
 		public Vector2f Spacing { get; set; } = new Vector2f(1, 1);
 		public Color Color { get; set; } = Color.White;
 
 		public float Scale { get; set; } = 1;
 		public int IndexOffset { get; set; } = '0';
+		public Func<char, int> CustomIndexMapping { private get; set; }
 
-		private readonly SpriteSheet _sheet;
 		private string _text = string.Empty;
 
 		public SpriteFont(SpriteSheet sheet)
 		{
-			_sheet = sheet;
+			Sheet = sheet;
 		}
 
 		public void SetText(string text)
@@ -30,36 +32,43 @@ namespace TheForestWaiter.Graphics
 			float offsetX = 0;
 			float offsetY = 0;
 
-			_sheet.Sprite.Color = Color;
+			Sheet.Sprite.Color = Color;
 			for (int i = 0; i < _text.Length; i++)
 			{
 				char character = _text[i];
 
 				if (character == '\n')
 				{
-					offsetY += (_sheet.TileSize.Y + Spacing.Y) * Scale;
+					offsetY += (Sheet.TileSize.Y + Spacing.Y) * Scale;
 					offsetX = 0;
 					continue;
 				}
 
 				int index = GetIndex(character);
-				if (index < 0 || index >= _sheet.TotatlTiles)
+				if (index < 0 || index >= Sheet.TotatlTiles)
 				{
 					continue;
 				}
 
-				_sheet.SetRect(index);
-				_sheet.Sprite.Position = new Vector2f(Position.X + offsetX, Position.Y + offsetY);
-				_sheet.Sprite.Scale = new Vector2f(Scale, Scale);
-				window.Draw(_sheet);
+				Sheet.SetRect(index);
+				Sheet.Sprite.Position = new Vector2f(Position.X + offsetX, Position.Y + offsetY);
+				Sheet.Sprite.Scale = new Vector2f(Scale, Scale);
+				window.Draw(Sheet);
 
-				offsetX += (_sheet.TileSize.X + Spacing.X) * Scale;
+				offsetX += (Sheet.TileSize.X + Spacing.X) * Scale;
 			}
 		}
 
 		private int GetIndex(char character)
 		{
-			return character - IndexOffset;
+			if (CustomIndexMapping != null)
+			{
+				return CustomIndexMapping(character);
+			}
+			else
+			{
+				return character - IndexOffset;
+			}
 		}
 
 		public void Draw(RenderTarget target, RenderStates states)

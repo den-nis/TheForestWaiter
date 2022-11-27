@@ -6,17 +6,22 @@ using TheForestWaiter.States;
 
 namespace TheForestWaiter.Debugging.Command.Commands
 {
-	[Command("join", "Change the current state to gamestate", "{ip} {port}")]
+	[Command("join", "", "{ip} {port}")]
 	internal class Join : ICommand
 	{
 		private readonly StateManager _stateManager;
 		private readonly NetworkSettings _network;
+		private readonly UserSettings _settings;
 		private readonly IServiceContainer _container;
 
-		public Join(StateManager stateManager, NetworkSettings network, IServiceContainer container)
+		public Join(StateManager stateManager,
+			  NetworkSettings network,
+			  UserSettings settings,
+			  IServiceContainer container)
 		{
 			_stateManager = stateManager;
 			_network = network;
+			_settings = settings;
 			_container = container;
 		}
 
@@ -30,7 +35,7 @@ namespace TheForestWaiter.Debugging.Command.Commands
 
 			IoC.GetInstance<NetworkTraffic>().Send(new Greetings()
 			{
-				Username = "TEST",
+				Username = _settings.Get("Multiplayer", "Username"),
 			});
 		}
 	}

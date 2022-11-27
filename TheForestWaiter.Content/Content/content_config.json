@@ -9,7 +9,6 @@
 			"path": "Textures/World/tree.png",
 			"type": "Texture",
 			"compression": "NoCompression",
-
 			"textureConfig": {
 				"tileWidth": 36,
 				"tileHeight": 64,
@@ -20,7 +19,6 @@
 			"path": "Textures/World/grass.png",
 			"type": "Texture",
 			"compression": "NoCompression",
-
 			"textureConfig": {
 				"tileWidth": 32,
 				"tileHeight": 6,
@@ -31,7 +29,6 @@
 			"path": "Textures/world.png",
 			"type": "Texture",
 			"compression": "NoCompression",
-
 			"textureConfig": {
 				"tileWidth": 32,
 				"tileHeight": 32,
@@ -41,12 +38,10 @@
 		{
 			"path": "Textures/Player/sheet.png",
 			"type": "Texture",
-
 			"textureConfig": {
 				"tileWidth": 17,
 				"tileHeight": 36,
 				"hasTileSpacing": true,
-
 				"sections": [
 					{
 						"name": "walking",
@@ -76,7 +71,6 @@
 		{
 			"path": "Textures/Player/player_gibs.png",
 			"type": "Texture",
-
 			"textureConfig": {
 				"tileWidth": 12,
 				"tileHeight": 11,
@@ -86,13 +80,10 @@
 		{
 			"path": "Textures/Enemies/minirusher.png",
 			"type": "Texture",
-
 			"textureConfig": {
-
 				"tileWidth": 22,
 				"tileHeight": 19,
 				"hasTileSpacing": true,
-
 				"sections": [
 					{
 						"name": "walking",
@@ -110,7 +101,6 @@
 		{
 			"path": "Textures/Enemies/minirusher_gibs.png",
 			"type": "Texture",
-
 			"textureConfig": {
 				"tileWidth": 11,
 				"tileHeight": 8,
@@ -120,13 +110,10 @@
 		{
 			"path": "Textures/Enemies/bigrusher.png",
 			"type": "Texture",
-
 			"textureConfig": {
-
 				"tileWidth": 176,
 				"tileHeight": 152,
 				"hasTileSpacing": true,
-
 				"sections": [
 					{
 						"name": "walking",
@@ -144,7 +131,6 @@
 		{
 			"path": "Textures/Enemies/bigrusher_gibs.png",
 			"type": "Texture",
-
 			"textureConfig": {
 				"tileWidth": 88,
 				"tileHeight": 64,
@@ -154,12 +140,10 @@
 		{
 			"path": "Textures/Enemies/crawler.png",
 			"type": "Texture",
-
 			"textureConfig": {
 				"tileWidth": 26,
 				"tileHeight": 23,
 				"hasTileSpacing": true,
-
 				"sections": [
 					{
 						"name": "walking",
@@ -185,7 +169,6 @@
 		{
 			"path": "Textures/Enemies/crawler_gibs.png",
 			"type": "Texture",
-
 			"textureConfig": {
 				"tileWidth": 7,
 				"tileHeight": 7,
@@ -195,7 +178,6 @@
 		{
 			"path": "Textures/Hud/numbers.png",
 			"type": "Texture",
-
 			"textureConfig": {
 				"tileWidth": 4,
 				"tileHeight": 7,
@@ -205,7 +187,6 @@
 		{
 			"path": "Textures/Hud/shop_numbers.png",
 			"type": "Texture",
-
 			"textureConfig": {
 				"tileWidth": 3,
 				"tileHeight": 5,
@@ -215,7 +196,6 @@
 		{
 			"path": "Textures/Items/coin.png",
 			"type": "Texture",
-
 			"textureConfig": {
 				"tileWidth": 6,
 				"tileHeight": 6,
@@ -226,7 +206,6 @@
 		{
 			"path": "Textures/Items/apple.png",
 			"type": "Texture",
-
 			"textureConfig": {
 				"tileWidth": 15,
 				"tileHeight": 17,
@@ -237,7 +216,6 @@
 		{
 			"path": "Textures/Hud/wave_numbers.png",
 			"type": "Texture",
-
 			"textureConfig": {
 				"tileWidth": 12,
 				"tileHeight": 20,
@@ -247,12 +225,10 @@
 		{
 			"path": "Textures/Enemies/vortex.png",
 			"type": "Texture",
-
 			"textureConfig": {
 				"tileWidth": 50,
 				"tileHeight": 37,
 				"hasTileSpacing": true,
-
 				"sections": [
 					{
 						"name": "flying",
@@ -272,7 +248,6 @@
 		{
 			"path": "Textures/Enemies/vortex_gibs.png",
 			"type": "Texture",
-
 			"textureConfig": {
 				"tileWidth": 14,
 				"tileHeight": 14,
@@ -282,10 +257,18 @@
 		{
 			"path": "Textures/Menu/score_numbers.png",
 			"type": "Texture",
-
 			"textureConfig": {
 				"tileWidth": 12,
 				"tileHeight": 20,
+				"hasTileSpacing": true
+			}
+		},
+		{
+			"path": "Textures/Hud/generic_text.png",
+			"type": "Texture",
+			"textureConfig": {
+				"tileWidth": 14,
+				"tileHeight": 18,
 				"hasTileSpacing": true
 			}
 		}

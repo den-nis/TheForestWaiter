@@ -23,6 +23,15 @@ namespace TheForestWaiter.Game.Hud
 
 			_sections = new()
 			{
+				new WaveHud(scale)
+				{
+					Region = HudRegion.TopLeft,
+					Offset = new Vector2f(10, 10 + 31 * scale)
+				},
+				new ShopHud(scale)
+				{
+					Region = HudRegion.TopRight,
+				},
 				new PlayerHud(scale)
 				{
 					Region = HudRegion.TopLeft,
@@ -32,15 +41,11 @@ namespace TheForestWaiter.Game.Hud
 				{
 					Region = HudRegion.BottomLeft,
 				},
-				new ShopHud(scale)
+				new MessagesHud(scale)
 				{
-					Region = HudRegion.TopRight,
+					Region = HudRegion.BottomLeft,
+					Offset = new Vector2f(10, -33 * scale)
 				},
-				new WaveHud(scale)
-				{
-					Region = HudRegion.BottomRight,
-					Offset = new Vector2f(-10, -10)
-				}
 			};
 		}
 
@@ -54,6 +59,14 @@ namespace TheForestWaiter.Game.Hud
 			}
 
 			window.SetView(_camera.GetView());
+		}
+
+		public void Update(float time)
+		{
+			foreach (var section in _sections)
+			{
+				section.Update(time);
+			}
 		}
 
 		public void PrimaryReleased()

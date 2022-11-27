@@ -6,5 +6,6 @@ enum MessageType : byte
     GameInfo,
 	PlayerAim,
 	PlayerAction,
-	PlayerItemAction
+	PlayerItemAction,
+	TextMessage
 }

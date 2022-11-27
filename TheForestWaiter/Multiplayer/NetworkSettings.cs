@@ -9,7 +9,7 @@ namespace TheForestWaiter;
 /// </summary>
 internal class NetworkSettings
 {
-    public IPEndPoint ServerEndpoint { get; set; }
+	public IPEndPoint ServerEndpoint { get; set; }
 
 	public short Port { get; private set;}
     public bool IsClient { get; private set; } = false;
@@ -18,11 +18,13 @@ internal class NetworkSettings
 
     public ushort MyPlayerId { get; set; } = 0;
     public int MySecret { get; set; } = 0;
-
-    public NetworkSettings(UserSettings settings, IDebug debug)
+	public string Username { get; set; }
+    
+	public NetworkSettings(UserSettings settings, IDebug debug)
     {
         var ip = IPAddress.Parse(settings.Get("Multiplayer", "Server"));
         var port = (short)settings.GetInt("Multiplayer", "Port");
+        Username = settings.Get("Multiplayer", "Username");
         
         switch(settings.Get("Multiplayer", "Mode"))
         {

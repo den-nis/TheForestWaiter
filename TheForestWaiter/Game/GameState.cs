@@ -108,6 +108,8 @@ internal class GameState : IState
 		_camera.FollowPlayer(_game.Objects.Player.Center);
 		_camera.Update(time);
 
+		_hud.Update(time);
+
 		_packageHandler?.HandleIncoming();
 	}
 }

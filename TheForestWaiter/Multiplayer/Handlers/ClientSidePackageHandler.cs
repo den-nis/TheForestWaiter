@@ -1,5 +1,6 @@
 using System.Net;
 using System.Threading;
+using TheForestWaiter.Game;
 using TheForestWaiter.Multiplayer.Messages;
 
 namespace TheForestWaiter.Multiplayer.Handlers;
@@ -14,6 +15,7 @@ internal class ClientSidePackageHandler : PackageHandler
 	private readonly PlayerGhosts _ghosts;
 	private readonly GameObjects _game;
 	private readonly NetworkTraffic _traffic;
+	private readonly GameMessages _messages;
 
 	public ClientSidePackageHandler()
 	{
@@ -22,6 +24,7 @@ internal class ClientSidePackageHandler : PackageHandler
 		_ghosts = IoC.GetInstance<PlayerGhosts>();
 		_game = IoC.GetInstance<GameObjects>();
 		_traffic = IoC.GetInstance<NetworkTraffic>();
+		_messages = IoC.GetInstance<GameMessages>();
 	}
 
 	private void StartReceivingSync(CancellationToken token)
@@ -61,6 +64,11 @@ internal class ClientSidePackageHandler : PackageHandler
 				var info = GameInfo.Deserialize(packet.Data); 
 				_state.WaveNumber = info.WaveNumber;
 				break;
+
+			case MessageType.TextMessage:
+                var msg = TextMessage.Deserialize(packet.Data);
+                _messages.PostLocal(msg.Text);
+                break;
         }
 	}
 }

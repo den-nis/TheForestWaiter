@@ -5,7 +5,7 @@ using TheForestWaiter.Game.Objects.Static;
 
 namespace TheForestWaiter.Debugging.Command.Commands
 {
-	[Command("setwave", "Start the target wave", "setwave 2")]
+	[Command("setwave", "Reset and start the selected wave", "{wave number}")]
 	internal class SetWave : ICommand
 	{
 		private readonly GameData _gameData;

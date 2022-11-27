@@ -48,5 +48,9 @@ namespace TheForestWaiter.Game.Hud
 				_ => throw new KeyNotFoundException($"Cannot handle region {Region}"),
 			};
 		}
+
+		public virtual void Update(float time)
+		{
+		}
 	}
 }

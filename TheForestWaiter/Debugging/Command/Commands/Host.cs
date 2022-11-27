@@ -5,7 +5,7 @@ using TheForestWaiter.States;
 
 namespace TheForestWaiter.Debugging.Command.Commands
 {
-	[Command("host", "Change the current state to gamestate", "{port}")]
+	[Command("host", "", "{port}")]
 	internal class Host : ICommand
 	{
 		private readonly StateManager _stateManager;

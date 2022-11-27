@@ -21,6 +21,7 @@ internal class ServerSidePackageHandler : PackageHandler
 	private readonly GameObjects _objects;
     private readonly PlayerGhosts _ghosts;
 	private readonly GameData _game;
+	private readonly GameMessages _messages;
 
 	public ServerSidePackageHandler()
     {
@@ -32,6 +33,7 @@ internal class ServerSidePackageHandler : PackageHandler
         _objects = IoC.GetInstance<GameObjects>();
         _ghosts = IoC.GetInstance<PlayerGhosts>();
         _game = IoC.GetInstance<GameData>();
+        _messages = IoC.GetInstance<GameMessages>();
 	}
 
 	protected override void HandlePacket(Packet packet, EndPoint endpoint)
@@ -52,6 +54,12 @@ internal class ServerSidePackageHandler : PackageHandler
             case MessageType.PlayerItemAction:
                 _ghosts.HandlePacket(packet, true);
                 break;
+
+            case MessageType.TextMessage:
+                var msg = TextMessage.Deserialize(packet.Data);
+                _traffic.SendToEveryoneExcept(msg, packet.PlayerId);
+                _messages.PostLocal(msg.Text);
+                break;
         }
 	}
 
@@ -71,7 +79,7 @@ internal class ServerSidePackageHandler : PackageHandler
 
         SendGameInfo(client.PlayerId);
 
-        _debug.LogNetworking($"Player \"{client.Username}\" ({client.PlayerId}) joined");
+        _messages.PostPublic($"{client.Username} joined the game!");
     }
 
 
