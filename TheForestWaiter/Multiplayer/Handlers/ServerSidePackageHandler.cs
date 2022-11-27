@@ -1,8 +1,10 @@
+using SFML.Graphics;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using TheForestWaiter.Game;
 using TheForestWaiter.Game.Debugging;
+using TheForestWaiter.Game.Essentials;
 using TheForestWaiter.Game.Objects.Static;
 using TheForestWaiter.Multiplayer.Messages;
 
@@ -79,7 +81,7 @@ internal class ServerSidePackageHandler : PackageHandler
 
         SendGameInfo(client.PlayerId);
 
-        _messages.PostPublic($"{client.Username} joined the game!");
+        _messages.PostPublic($"{Color.Green.ToTfwColorCode()}{client.Username} joined the game!");
     }
 
 

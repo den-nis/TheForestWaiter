@@ -1,6 +1,8 @@
 using SFML.Graphics;
 using SFML.System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 using TheForestWaiter.Content;
 using TheForestWaiter.Graphics;
 
@@ -16,6 +18,7 @@ internal class MessagesHud : HudSection
     {
         public float Life { get; set; }
         public string Text { get; set; }
+        public Color Color { get; set; }
     }
 
     private readonly List<Msg> _messages = new();
@@ -38,10 +41,13 @@ internal class MessagesHud : HudSection
 
     public void OnMessageHandler(string message)
     {
+        (var text, Color color) = ExtractColorPrefix(message);
+
         _messages.Add(new Msg
         {
             Life = MESSAGE_LIFE,
-            Text = message,
+            Text = text,
+            Color = color,
         });
 
         if (_messages.Count > MAX_ON_SCREEN)
@@ -55,18 +61,17 @@ internal class MessagesHud : HudSection
         for (int i = 0; i < _messages.Count; i++)
         {
             var msg = _messages[i];
-            
+
             var position = _messages.Count - i - 1;
             var offset = _text.Sheet.TileSize.Y * position * Scale * MESSAGE_SCALE;
 
             _text.Position = GetPosition(window) - new Vector2f(0, offset);
             _text.Scale = Scale * MESSAGE_SCALE;
 
-            var c = _text.Color;
             var a = (byte)((msg.Life / MESSAGE_LIFE) * byte.MaxValue);
 
             _text.IndexOffset = ' ';
-            _text.Color = new Color(c.R, c.G, c.B, a);
+            _text.Color = new Color(msg.Color.R, msg.Color.G, msg.Color.B, a);
             _text.SetText(msg.Text);
             _text.Draw(window);
         }
@@ -83,6 +88,29 @@ internal class MessagesHud : HudSection
         {
             _messages.RemoveAt(0);
         }
+    }
+
+    private (string, Color) ExtractColorPrefix(string text)
+    {
+        var pattern = "\\[[0-9]+,[0-9]+,[0-9]+\\]";
+        
+        Regex regex = new Regex(pattern);
+        var matches = regex.Matches(text);
+
+        if (matches.Any())
+        {
+            var match = matches[0];
+            var parts = match.Value.Trim('[', ']').Split(',');
+            
+            byte r = byte.Parse(parts[0]),
+                g = byte.Parse(parts[1]),
+                b = byte.Parse(parts[2]);
+
+            var length = matches.Sum(x => x.Length);
+            return (text[length..], new Color(r,g,b));
+        }
+
+        return (text, Color.White);
     }
 
     public override bool IsMouseOnAnyButton() => false;
