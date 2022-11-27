@@ -92,14 +92,14 @@ internal class MessagesHud : HudSection
 
     private (string, Color) ExtractColorPrefix(string text)
     {
-        var pattern = "\\[[0-9]+,[0-9]+,[0-9]+\\]";
+        var pattern = "^(\\[[0-9]+,[0-9]+,[0-9]+\\])+";
         
         Regex regex = new Regex(pattern);
         var matches = regex.Matches(text);
 
         if (matches.Any())
         {
-            var match = matches[0];
+            var match = Regex.Matches(matches[0].Value, "\\[[0-9]+,[0-9]+,[0-9]+\\]")[0];
             var parts = match.Value.Trim('[', ']').Split(',');
             
             byte r = byte.Parse(parts[0]),
