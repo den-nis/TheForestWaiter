@@ -81,9 +81,8 @@ internal class ServerSidePackageHandler : PackageHandler
 
         SendGameInfo(client.PlayerId);
 
-        _messages.PostPublic($"{Color.Green.ToTfwColorCode()}{client.Username} joined the game!");
+        _traffic.PostPublic($"{Color.Green.ToColorCode()}{client.Username} joined the game!");
     }
-
 
     private void SendGameInfo(ushort playerId)
     {

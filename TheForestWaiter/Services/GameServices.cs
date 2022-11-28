@@ -39,7 +39,6 @@ namespace TheForestWaiter.Services
 				.RegisterScoped<ObjectCreator>()
 				.RegisterScoped<ItemRepository>()
 				.RegisterScoped<NetworkTraffic>()
-				.RegisterScoped<SharedState>()
 				.RegisterScoped<GameMessages>()
 				.Register<PickupSpawner>()
 				.Register<DropSpawner>()
@@ -56,7 +55,9 @@ namespace TheForestWaiter.Services
 			var networking = IoC.GetInstance<NetworkSettings>();
 
 			if (networking.IsMultiplayer)
-				_container.RegisterScoped<PlayerGhosts>();
+				_container
+					.RegisterScoped<PlayerGhosts>()
+					.RegisterScoped<SharedState>();
 
 			if (networking.IsClient)
 				_container.RegisterScoped<PackageHandler, ClientSidePackageHandler>();

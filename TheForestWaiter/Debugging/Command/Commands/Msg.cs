@@ -6,21 +6,21 @@ namespace TheForestWaiter.Debugging.Command.Commands
 	internal class Msg : ICommand
 	{
 		private GameMessages _messages;
-		private NetworkSettings _network;
+		private NetworkTraffic _traffic;
 
-		public Msg(GameMessages messages, NetworkSettings network)
+		public Msg(GameMessages messages, NetworkTraffic traffic)
         {
 			_messages = messages;
-			_network = network;
+			_traffic = traffic;
 		}
 
 		public void Execute(CommandHandler handler, string[] args)
 		{
-            var name = _network.Username;
+            var name = _traffic.Username;
 
-            if (_network.IsMultiplayer)
+            if (_traffic.IsMultiplayer)
             {
-			    _messages.PostPublic($"{name}: {string.Join(' ', args)}");
+			    _traffic.PostPublic($"{name}: {string.Join(' ', args)}");
             }
             else
             {

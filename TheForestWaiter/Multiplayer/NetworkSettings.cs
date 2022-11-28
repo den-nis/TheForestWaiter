@@ -47,4 +47,10 @@ internal class NetworkSettings
         Port = port;
         ServerEndpoint = new IPEndPoint(ip, port);
     }
+
+    public void ResetSessionInfo()
+    {
+        MyPlayerId = 0;
+        MySecret = 0;
+    }
 }

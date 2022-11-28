@@ -32,11 +32,6 @@ namespace TheForestWaiter.Debugging.Command.Commands
 			var state = _container.GetInstance<GameState>();
 			_stateManager.ForceClearQueue();
 			_stateManager.SetState(state);
-
-			IoC.GetInstance<NetworkTraffic>().Send(new Greetings()
-			{
-				Username = _settings.Get("Multiplayer", "Username"),
-			});
 		}
 	}
 }

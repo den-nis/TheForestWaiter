@@ -1,6 +1,8 @@
+using SFML.Graphics;
 using System.Net;
 using System.Threading;
 using TheForestWaiter.Game;
+using TheForestWaiter.Game.Essentials;
 using TheForestWaiter.Multiplayer.Messages;
 
 namespace TheForestWaiter.Multiplayer.Handlers;
@@ -58,6 +60,7 @@ internal class ClientSidePackageHandler : PackageHandler
 					_traffic.Send(message);
 				}
 
+				_messages.PostLocal($"{Color.Yellow.ToColorCode()}Connected to {_network.ServerEndpoint}!");
 				break;
 
 			case MessageType.GameInfo:

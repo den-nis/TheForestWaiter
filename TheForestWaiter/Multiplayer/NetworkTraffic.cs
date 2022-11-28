@@ -1,8 +1,12 @@
+using SFML.Graphics;
 using System;
 using System.Net;
 using System.Net.Sockets;
+using TheForestWaiter.Game;
 using TheForestWaiter.Game.Debugging;
+using TheForestWaiter.Game.Essentials;
 using TheForestWaiter.Multiplayer;
+using TheForestWaiter.Multiplayer.Messages;
 
 namespace TheForestWaiter;
 
@@ -21,19 +25,22 @@ internal class NetworkTraffic : IDisposable
     /// </summary>
     public UdpClient ClientsUdp { get; set; }
 
-    public ushort MyId => _network.MyPlayerId;
+    public bool IsMultiplayer => _network.IsMultiplayer;
+    public string Username => _network.Username;
     public bool IsClient => _network.IsClient;
     public bool IsHost => _network.IsHost;
-    public bool IsMultiplayer => _network.IsMultiplayer;
+    public ushort MyId => _network.MyPlayerId;
 
 	private readonly NetworkSettings _network;
 	private readonly IDebug _debug;
 	private readonly NetworkServer _server;
+    private readonly GameMessages _messages;
 
 	public NetworkTraffic()
     {
 		_network = IoC.GetInstance<NetworkSettings>();
 		_debug = IoC.GetInstance<IDebug>();
+        _messages = IoC.GetInstance<GameMessages>();
 
         if (_network.IsHost)
         {
@@ -55,7 +62,22 @@ internal class NetworkTraffic : IDisposable
             ServerUdp = new UdpClient();
             ServerUdp.Connect(_network.ServerEndpoint);
             _debug.LogNetworking($"Target host : {_network.ServerEndpoint}");
+
+            _messages.PostLocal($"{Color.Yellow.ToColorCode()}Connecting to {_network.ServerEndpoint}...");
+            Send(new Greetings()
+			{
+				Username = _network.Username,
+			});
         }
+    }
+
+    public void PostPublic(string message, bool includeLocal = true)
+    {
+        if (includeLocal) _messages.PostLocal(message);
+        Send(new TextMessage
+        {
+           Text = message, 
+        });
     }
 
     public void SendToEveryoneExcept(IMessage message, ushort player)
@@ -166,5 +188,6 @@ internal class NetworkTraffic : IDisposable
 	{
 		ServerUdp?.Dispose();
         ClientsUdp?.Dispose();
+        _network.ResetSessionInfo();
 	}
 }
