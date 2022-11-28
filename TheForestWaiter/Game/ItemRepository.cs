@@ -1,5 +1,4 @@
-﻿using LightInject;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -65,14 +64,12 @@ internal class ItemRepository
 
 	private List<ItemInfo> _allItems = new();
 	private readonly GameData _game;
-	private readonly ServiceContainer _container;
 	private readonly NetContext _network;
 
-	public ItemRepository(GameData game, ContentSource content, ServiceContainer container, NetContext network)
+	public ItemRepository(GameData game, ContentSource content, NetContext network)
 	{
 		_game = game;
 		_network = network;
-		_container = container;
 		Load(content.Source.GetString("items.json"));
 	}
 
