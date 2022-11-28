@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using TheForestWaiter.Content;
 using TheForestWaiter.Game.Objects;
+using TheForestWaiter.Multiplayer;
 using TheForestWaiter.Multiplayer.Messages;
 
 namespace TheForestWaiter.Game;
@@ -65,13 +66,13 @@ internal class ItemRepository
 	private List<ItemInfo> _allItems = new();
 	private readonly GameData _game;
 	private readonly ServiceContainer _container;
-	private readonly NetworkTraffic _traffic;
+	private readonly NetContext _network;
 
-	public ItemRepository(GameData game, ContentSource content, ServiceContainer container, NetworkTraffic traffic)
+	public ItemRepository(GameData game, ContentSource content, ServiceContainer container, NetContext network)
 	{
 		_game = game;
+		_network = network;
 		_container = container;
-		_traffic = traffic;
 		Load(content.Source.GetString("items.json"));
 	}
 
@@ -124,9 +125,9 @@ internal class ItemRepository
 		var p = (player ?? _game.Objects.Player);
 		if (player == null || !player.IsGhost)
 		{
-			_traffic.SendIfMultiplayer(new PlayerItems
+			_network.Traffic.SendIfMultiplayer(new PlayerItems
 			{
-				PlayerId = _traffic.MyId,
+				PlayerId = _network.Settings.MyPlayerId,
 				Items = p.Inventory.Items.ToArray(),
 				EquipedIndex = p.Inventory.EquipedIndex,
 			});

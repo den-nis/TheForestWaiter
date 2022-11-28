@@ -1,4 +1,5 @@
 using TheForestWaiter.Game;
+using TheForestWaiter.Multiplayer;
 
 namespace TheForestWaiter.Debugging.Command.Commands
 {
@@ -6,21 +7,21 @@ namespace TheForestWaiter.Debugging.Command.Commands
 	internal class Msg : ICommand
 	{
 		private GameMessages _messages;
-		private NetworkTraffic _traffic;
+		private NetContext _network;
 
-		public Msg(GameMessages messages, NetworkTraffic traffic)
+		public Msg(GameMessages messages, NetContext network)
         {
 			_messages = messages;
-			_traffic = traffic;
+			_network = network;
 		}
 
 		public void Execute(CommandHandler handler, string[] args)
 		{
-            var name = _traffic.Username;
+            var name = _network.Settings.Username;
 
-            if (_traffic.IsMultiplayer)
+            if (_network.Settings.IsMultiplayer)
             {
-			    _traffic.PostPublic($"{name}: {string.Join(' ', args)}");
+			    _network.Traffic.PostPublic($"{name}: {string.Join(' ', args)}");
             }
             else
             {

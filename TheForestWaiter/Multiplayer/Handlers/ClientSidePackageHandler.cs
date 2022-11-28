@@ -12,20 +12,16 @@ namespace TheForestWaiter.Multiplayer.Handlers;
 /// </summary>
 internal class ClientSidePackageHandler : PackageHandler
 {
-	private readonly NetworkSettings _network;
-	private readonly SharedState _state;
-	private readonly PlayerGhosts _ghosts;
+	private readonly NetContext _network;
 	private readonly GameObjects _game;
-	private readonly NetworkTraffic _traffic;
+	private readonly PlayerGhosts _ghosts;
 	private readonly GameMessages _messages;
 
 	public ClientSidePackageHandler()
 	{
-		_network = IoC.GetInstance<NetworkSettings>();
-		_state = IoC.GetInstance<SharedState>();
+		_network = IoC.GetInstance<NetContext>();
 		_ghosts = IoC.GetInstance<PlayerGhosts>();
 		_game = IoC.GetInstance<GameObjects>();
-		_traffic = IoC.GetInstance<NetworkTraffic>();
 		_messages = IoC.GetInstance<GameMessages>();
 	}
 
@@ -50,22 +46,22 @@ internal class ClientSidePackageHandler : PackageHandler
 
             case MessageType.Acknowledge:
 				var ack = Acknowledge.Deserialize(packet.Data);
-				_network.MyPlayerId = ack.PlayerId;
-				_network.MySecret = ack.Secret;
+				_network.Settings.MyPlayerId = ack.PlayerId;
+				_network.Settings.MySecret = ack.Secret;
 
 				var response = _game.Player.GenerateInfoMessages(ack.PlayerId);
 
 				foreach (var message in response)
 				{
-					_traffic.Send(message);
+					_network.Traffic.Send(message);
 				}
 
-				_messages.PostLocal($"{Color.Yellow.ToColorCode()}Connected to {_network.ServerEndpoint}!");
+				_messages.PostLocal($"{Color.Yellow.ToColorCode()}Connected to {_network.Settings.ServerEndpoint}!");
 				break;
 
 			case MessageType.GameInfo:
 				var info = GameInfo.Deserialize(packet.Data); 
-				_state.WaveNumber = info.WaveNumber;
+				_network.State.WaveNumber = info.WaveNumber;
 				break;
 
 			case MessageType.TextMessage:

@@ -1,7 +1,7 @@
 ﻿using LightInject;
 using System.Net;
 using TheForestWaiter.Game;
-using TheForestWaiter.Multiplayer.Messages;
+using TheForestWaiter.Multiplayer;
 using TheForestWaiter.States;
 
 namespace TheForestWaiter.Debugging.Command.Commands
@@ -10,12 +10,12 @@ namespace TheForestWaiter.Debugging.Command.Commands
 	internal class Join : ICommand
 	{
 		private readonly StateManager _stateManager;
-		private readonly NetworkSettings _network;
+		private readonly NetSettings _network;
 		private readonly UserSettings _settings;
 		private readonly IServiceContainer _container;
 
 		public Join(StateManager stateManager,
-			  NetworkSettings network,
+			  NetSettings network,
 			  UserSettings settings,
 			  IServiceContainer container)
 		{

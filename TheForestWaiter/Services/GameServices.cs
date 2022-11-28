@@ -8,6 +8,7 @@ using TheForestWaiter.Game.Hud;
 using TheForestWaiter.Game.Logic;
 using TheForestWaiter.Game.Objects.Items;
 using TheForestWaiter.Game.Weapons;
+using TheForestWaiter.Multiplayer;
 using TheForestWaiter.Multiplayer.Handlers;
 
 namespace TheForestWaiter.Services
@@ -38,7 +39,7 @@ namespace TheForestWaiter.Services
 				.RegisterScoped<World>()
 				.RegisterScoped<ObjectCreator>()
 				.RegisterScoped<ItemRepository>()
-				.RegisterScoped<NetworkTraffic>()
+				.RegisterScoped<NetTraffic>()
 				.RegisterScoped<GameMessages>()
 				.Register<PickupSpawner>()
 				.Register<DropSpawner>()
@@ -52,10 +53,11 @@ namespace TheForestWaiter.Services
 				.Register<Sniper>()
 				.Register<Bow>();
 
-			var networking = IoC.GetInstance<NetworkSettings>();
+			var networking = IoC.GetInstance<NetSettings>();
 
 			if (networking.IsMultiplayer)
 				_container
+					.RegisterScoped<NetContext>()
 					.RegisterScoped<PlayerGhosts>()
 					.RegisterScoped<SharedState>();
 
@@ -64,7 +66,7 @@ namespace TheForestWaiter.Services
 
 			if (networking.IsHost)
 				_container.RegisterScoped<PackageHandler, ServerSidePackageHandler>();
-				_container.RegisterScoped<NetworkServer>();
+				_container.RegisterScoped<NetServer>();
 		}
 
 		private void RegisterAllGameObjects()
@@ -84,7 +86,7 @@ namespace TheForestWaiter.Services
 		public void Setup()
 		{
 			_container.GetInstance<GameController>().Setup();
-			_container.GetInstance<NetworkTraffic>().Setup();
+			_container.GetInstance<NetTraffic>().Setup();
 		}
 	}
 }

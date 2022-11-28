@@ -16,8 +16,8 @@ namespace TheForestWaiter.Multiplayer.Handlers;
 internal class ServerSidePackageHandler : PackageHandler
 {
 	private readonly IDebug _debug;
-    private readonly NetworkServer _server;
-    private readonly NetworkTraffic _traffic;
+    private readonly NetServer _server;
+    private readonly NetTraffic _traffic;
     private readonly Spawner _spawner;
 	private readonly ObjectCreator _creator;
 	private readonly GameObjects _objects;
@@ -28,8 +28,8 @@ internal class ServerSidePackageHandler : PackageHandler
 	public ServerSidePackageHandler()
     {
 		_debug = IoC.GetInstance<IDebug>();
-        _server = IoC.GetInstance<NetworkServer>();
-        _traffic = IoC.GetInstance<NetworkTraffic>();
+        _server = IoC.GetInstance<NetServer>();
+        _traffic = IoC.GetInstance<NetTraffic>();
         _spawner = IoC.GetInstance<Spawner>();
         _creator = IoC.GetInstance<ObjectCreator>();
         _objects = IoC.GetInstance<GameObjects>();

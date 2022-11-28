@@ -1,13 +1,13 @@
 using System.Net;
 using TheForestWaiter.Game.Debugging;
 
-namespace TheForestWaiter;
+namespace TheForestWaiter.Multiplayer;
 
 /// <summary>
 /// Class that stores and manages network data for the client and host.
 /// This class should be available at any time, even outside the gamestate.
 /// </summary>
-internal class NetworkSettings
+internal class NetSettings
 {
 	public IPEndPoint ServerEndpoint { get; set; }
 
@@ -20,7 +20,7 @@ internal class NetworkSettings
     public int MySecret { get; set; } = 0;
 	public string Username { get; set; }
     
-	public NetworkSettings(UserSettings settings, IDebug debug)
+	public NetSettings(UserSettings settings, IDebug debug)
     {
         var ip = IPAddress.Parse(settings.Get("Multiplayer", "Server"));
         var port = (short)settings.GetInt("Multiplayer", "Port");

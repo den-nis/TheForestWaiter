@@ -5,14 +5,13 @@ using System.Net;
 using System.Net.Sockets;
 using TheForestWaiter.Game;
 using TheForestWaiter.Game.Debugging;
-using TheForestWaiter.Multiplayer;
 
-namespace TheForestWaiter;
+namespace TheForestWaiter.Multiplayer;
 
 /// <summary>
 /// Gamestate class. Manages server specific operations and data.
 /// </summary>
-internal class NetworkServer
+internal class NetServer
 {
     public int Players => _clients.Count;
     public IReadOnlyList<Client> Clients => _clients;
@@ -21,12 +20,12 @@ internal class NetworkServer
     private Dictionary<int, Client> _clientsBySecret = new();
     private Dictionary<ushort, Client> _clientsById = new();
 
-	private readonly NetworkSettings _network;
+	private readonly NetSettings _network;
 	private readonly IDebug _debug;
 
-	public NetworkServer()
+	public NetServer()
     {
-		_network = IoC.GetInstance<NetworkSettings>();
+		_network = IoC.GetInstance<NetSettings>();
 		_debug = IoC.GetInstance<IDebug>();
 	}
 

@@ -1,6 +1,7 @@
 ﻿using LightInject;
 using System.Net;
 using TheForestWaiter.Game;
+using TheForestWaiter.Multiplayer;
 using TheForestWaiter.States;
 
 namespace TheForestWaiter.Debugging.Command.Commands
@@ -9,10 +10,10 @@ namespace TheForestWaiter.Debugging.Command.Commands
 	internal class Host : ICommand
 	{
 		private readonly StateManager _stateManager;
-		private readonly NetworkSettings _network;
+		private readonly NetSettings _network;
 		private readonly IServiceContainer _container;
 
-		public Host(StateManager stateManager, NetworkSettings network, IServiceContainer container)
+		public Host(StateManager stateManager, NetSettings network, IServiceContainer container)
 		{
 			_stateManager = stateManager;
 			_network = network;

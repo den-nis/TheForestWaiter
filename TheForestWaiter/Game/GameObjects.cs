@@ -12,6 +12,7 @@ using TheForestWaiter.Game.Objects;
 using TheForestWaiter.Game.Objects.Abstract;
 using TheForestWaiter.Game.Objects.Projectiles;
 using TheForestWaiter.Game.Particles;
+using TheForestWaiter.Multiplayer;
 
 namespace TheForestWaiter
 {
@@ -22,13 +23,13 @@ namespace TheForestWaiter
 		private readonly Queue<GameObject> _queue = new();
 		private readonly UserSettings _settings;
 		private readonly ObjectCreator _creator;
-		private readonly NetworkSettings _networking;
+		private readonly NetContext _network;
 		private readonly Camera _camera;
 		private readonly IDebug _debug;
 
 		public GameObjects()
 		{
-			_networking = IoC.GetInstance<NetworkSettings>();
+			_network = IoC.GetInstance<NetContext>();
 			_settings =  IoC.GetInstance<UserSettings>();
 			_creator =  IoC.GetInstance<ObjectCreator>();
 			_camera =  IoC.GetInstance<Camera>();

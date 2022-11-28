@@ -1,25 +1,13 @@
 using System.IO;
 using System.Net;
 
-/// <summary>
-/// Packet that also includes origin
-/// </summary>
-internal class TrackedPacket
-{
-    public IPEndPoint Endpoint { get; set; } 
-    public Packet Source { get; set; }
-
-    public TrackedPacket(IPEndPoint origin, Packet source)
-    {
-        Endpoint = origin;
-        Source = source;
-    }
-}
+namespace TheForestWaiter.Multiplayer;
 
 internal class Packet
 {
     public ushort PlayerId { get; set; }
     public int Secret { get; set; }
+
     public MessageType Type { get; set; }
     public byte[] Data { get; set; }
 
@@ -59,5 +47,20 @@ internal class Packet
             PlayerId = player,
             Secret = secret,
         };
+    }
+}
+
+/// <summary>
+/// Packet that also includes origin
+/// </summary>
+internal class TrackedPacket
+{
+    public IPEndPoint Endpoint { get; set; } 
+    public Packet Source { get; set; }
+
+    public TrackedPacket(IPEndPoint origin, Packet source)
+    {
+        Endpoint = origin;
+        Source = source;
     }
 }

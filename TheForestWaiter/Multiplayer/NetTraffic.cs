@@ -5,15 +5,14 @@ using System.Net.Sockets;
 using TheForestWaiter.Game;
 using TheForestWaiter.Game.Debugging;
 using TheForestWaiter.Game.Essentials;
-using TheForestWaiter.Multiplayer;
 using TheForestWaiter.Multiplayer.Messages;
 
-namespace TheForestWaiter;
+namespace TheForestWaiter.Multiplayer;
 
 /// <summary>
 /// Gamestate class for basic sending and receiving operations for both client and host.
 /// </summary>
-internal class NetworkTraffic : IDisposable
+internal class NetTraffic : IDisposable
 {
     /// <summary>
     /// The socket that is connected to the server
@@ -25,48 +24,42 @@ internal class NetworkTraffic : IDisposable
     /// </summary>
     public UdpClient ClientsUdp { get; set; }
 
-    public bool IsMultiplayer => _network.IsMultiplayer;
-    public string Username => _network.Username;
-    public bool IsClient => _network.IsClient;
-    public bool IsHost => _network.IsHost;
-    public ushort MyId => _network.MyPlayerId;
-
-	private readonly NetworkSettings _network;
+	private readonly NetSettings _settings;
 	private readonly IDebug _debug;
-	private readonly NetworkServer _server;
+	private readonly NetServer _server;
     private readonly GameMessages _messages;
 
-	public NetworkTraffic()
+	public NetTraffic()
     {
-		_network = IoC.GetInstance<NetworkSettings>();
 		_debug = IoC.GetInstance<IDebug>();
+		_settings = IoC.GetInstance<NetSettings>();
         _messages = IoC.GetInstance<GameMessages>();
 
-        if (_network.IsHost)
+        if (_settings.IsHost)
         {
-            _server = IoC.GetInstance<NetworkServer>();
+            _server = IoC.GetInstance<NetServer>();
         }
 	}
 
     public void Setup()
     {
-        if (IsHost)
+        if (_settings.IsHost)
         {
-            ClientsUdp = new UdpClient(_network.Port);
-            _debug.LogNetworking($"Hosted on port : {_network.Port}");
-            _network.MyPlayerId = 1;
+            ClientsUdp = new UdpClient(_settings.Port);
+            _debug.LogNetworking($"Hosted on port : {_settings.Port}");
+            _settings.MyPlayerId = 1;
         }
         
-        if (IsClient)
+        if (_settings.IsClient)
         {
             ServerUdp = new UdpClient();
-            ServerUdp.Connect(_network.ServerEndpoint);
-            _debug.LogNetworking($"Target host : {_network.ServerEndpoint}");
+            ServerUdp.Connect(_settings.ServerEndpoint);
+            _debug.LogNetworking($"Target host : {_settings.ServerEndpoint}");
 
-            _messages.PostLocal($"{Color.Yellow.ToColorCode()}Connecting to {_network.ServerEndpoint}...");
+            _messages.PostLocal($"{Color.Yellow.ToColorCode()}Connecting to {_settings.ServerEndpoint}...");
             Send(new Greetings()
 			{
-				Username = _network.Username,
+				Username = _settings.Username,
 			});
         }
     }
@@ -98,7 +91,7 @@ internal class NetworkTraffic : IDisposable
 
     public void SendIfMultiplayer(IMessage message)
     {
-        if (IsMultiplayer) Send(message);
+        if (_settings.IsMultiplayer) Send(message);
     }
 
     public void Send(IMessage message)
@@ -107,16 +100,16 @@ internal class NetworkTraffic : IDisposable
 
         var datagram = ToDatagram(message); 
     
-        if (IsHost)
+        if (_settings.IsHost)
         {
             _server.SendToAll(datagram, ClientsUdp);
         }
         else
         {
             //TODO: Is this really needed?
-            if (_network.ServerEndpoint != null)
+            if (_settings.ServerEndpoint != null)
             {
-                ServerUdp.Client.SendTo(datagram, _network.ServerEndpoint);
+                ServerUdp.Client.SendTo(datagram, _settings.ServerEndpoint);
             }
             else
             {
@@ -138,8 +131,8 @@ internal class NetworkTraffic : IDisposable
     {
         return new Packet
         {
-            PlayerId = _network.MyPlayerId,
-            Secret = _network.MySecret,
+            PlayerId = _settings.MyPlayerId,
+            Secret = _settings.MySecret,
             Type = type,
             Data = data,
         };
@@ -149,11 +142,11 @@ internal class NetworkTraffic : IDisposable
     {
         ValidateMultiplayer();
 
-        IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, _network.Port);
+        IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, _settings.Port);
 
         while(true)
         {
-            var datagram = (IsHost ? ClientsUdp : ServerUdp).Receive(ref endPoint);
+            var datagram = (_settings.IsHost ? ClientsUdp : ServerUdp).Receive(ref endPoint);
             
             if (datagram.Length == 0)
             {
@@ -163,7 +156,7 @@ internal class NetworkTraffic : IDisposable
             
             var packet = Packet.Read(datagram);
         
-            if (IsHost)
+            if (_settings.IsHost)
             {
                 if (!_server.VerifyPacket(packet))
                 {
@@ -178,7 +171,7 @@ internal class NetworkTraffic : IDisposable
 
     private void ValidateMultiplayer()
     {
-        if (!_network.IsMultiplayer)
+        if (!_settings.IsMultiplayer)
         {
             throw new InvalidOperationException("Attempted to use networking methods in singleplayer");
         }
@@ -188,6 +181,6 @@ internal class NetworkTraffic : IDisposable
 	{
 		ServerUdp?.Dispose();
         ClientsUdp?.Dispose();
-        _network.ResetSessionInfo();
+        _settings.ResetSessionInfo();
 	}
 }

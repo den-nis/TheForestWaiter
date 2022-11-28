@@ -6,6 +6,7 @@ using TheForestWaiter.Content;
 using TheForestWaiter.Game.Environment.Spawning;
 using TheForestWaiter.Game.Objects.Abstract;
 using TheForestWaiter.Game.Objects.Items;
+using TheForestWaiter.Multiplayer;
 using TheForestWaiter.Multiplayer.Messages;
 
 namespace TheForestWaiter.Game.Objects.Static
@@ -18,7 +19,7 @@ namespace TheForestWaiter.Game.Objects.Static
 		private float _waveTime = 0;
 		private float _checkTimer = 0;
 
-		private readonly NetworkTraffic _traffic;
+		private readonly NetContext _network;
 		private readonly WaveSettings _settings;
 		private readonly List<SpawnJob> _activeJobs = new();
 		private List<SpawnJobDescription> _spawnQueue = new();
@@ -26,7 +27,7 @@ namespace TheForestWaiter.Game.Objects.Static
 
 		public Spawner()
 		{
-			_traffic = IoC.GetInstance<NetworkTraffic>();
+			_network = IoC.GetInstance<NetContext>();
 			var content = IoC.GetInstance<ContentSource>();
 
 			var json = content.Source.GetString("wave_settings.json");
@@ -37,7 +38,7 @@ namespace TheForestWaiter.Game.Objects.Static
 
 		public void StartWave(int number)
 		{
-			if (_traffic.IsHost) _traffic.Send(new GameInfo { WaveNumber = number });
+			if (_network.Settings.IsHost) _network.Traffic.Send(new GameInfo { WaveNumber = number });
 				
 			CurrentWave = number;
 			_waveTime = 0;

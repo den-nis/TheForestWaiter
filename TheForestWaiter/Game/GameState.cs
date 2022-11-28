@@ -4,6 +4,7 @@ using TheForestWaiter.Content;
 using TheForestWaiter.Game.Environment;
 using TheForestWaiter.Game.Essentials;
 using TheForestWaiter.Game.Hud;
+using TheForestWaiter.Multiplayer;
 using TheForestWaiter.Multiplayer.Handlers;
 using TheForestWaiter.Services;
 using TheForestWaiter.States;
@@ -19,7 +20,7 @@ internal class GameState : IState
 	private readonly ContentSource _content;
 	private readonly GameHud _hud;
 	private readonly GameData _game;
-	private readonly NetworkSettings _networking;
+	private readonly NetContext _network;
 	private readonly PackageHandler _packageHandler;
 
 	private const float CLEAN_UP_INTERVAL = 10;
@@ -31,7 +32,7 @@ internal class GameState : IState
 		_services = new GameServices();
 		_services.Register();
 
-		_networking = IoC.GetInstance<NetworkSettings>();
+		_network = IoC.GetInstance<NetContext>();
 		_game = IoC.GetInstance<GameData>();
 		_camera = IoC.GetInstance<Camera>();
 		_background = IoC.GetInstance<Background>();
@@ -39,7 +40,7 @@ internal class GameState : IState
 		_window = IoC.GetInstance<WindowHandle>();
 		_content = IoC.GetInstance<ContentSource>();
 
-		if (_networking.IsMultiplayer)
+		if (_network.Settings.IsMultiplayer)
 			_packageHandler = IoC.GetInstance<PackageHandler>();
 	}
 
@@ -53,12 +54,12 @@ internal class GameState : IState
 		_services.Setup();
 
 		var map = LoadMap();
-		_game.LoadFromMap(map, _networking.IsClient);
+		_game.LoadFromMap(map, _network.Settings.IsClient);
 		SetupCamera();
 
 		_background.Horizon = _game.Objects.Player.Position.Y;
 
-		if (_networking.IsMultiplayer)
+		if (_network.Settings.IsMultiplayer)
 		{
 			_packageHandler.StartReceiving();
 		}

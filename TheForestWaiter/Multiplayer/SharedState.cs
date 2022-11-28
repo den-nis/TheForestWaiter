@@ -1,3 +1,5 @@
+namespace TheForestWaiter.Multiplayer;
+
 /// <summary>
 /// State that is shared between client and host.
 /// </summary>

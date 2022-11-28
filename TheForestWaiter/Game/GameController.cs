@@ -17,22 +17,20 @@ namespace TheForestWaiter.Game
 		private readonly UserSettings _settings;
 		private readonly GameHud _hud;
 		private readonly Camera _camera;
-		private readonly NetworkTraffic _traffic;
 
 		public GameController(
 			GameData data,
 			WindowHandle gameWindow,
 			UserSettings settings,
 			GameHud hud,
-			Camera camera, 
-			NetworkTraffic traffic)
+			Camera camera
+			)
 		{
 			_game = data;
 			_gameWindow = gameWindow;
 			_settings = settings;
 			_hud = hud;
 			_camera = camera;
-			_traffic = traffic;
 		}
 
 		public void Setup()

@@ -3,6 +3,7 @@ using SFML.System;
 using System;
 using TheForestWaiter.Game.Essentials;
 using TheForestWaiter.Game.Objects.Abstract;
+using TheForestWaiter.Multiplayer;
 
 namespace TheForestWaiter.Game.Weapons.Abstract
 {
@@ -41,13 +42,13 @@ namespace TheForestWaiter.Game.Weapons.Abstract
 		private readonly GameData _gameData;
 		private readonly ObjectCreator _creator;
 		private readonly SoundSystem _sound;
-		private readonly NetworkSettings _networking;
+		private readonly NetContext _network;
 		private float _fireTimer;
 		private bool _firstShot;
 
 		public Weapon()
 		{
-			_networking = IoC.GetInstance<NetworkSettings>();
+			_network = IoC.GetInstance<NetContext>();
 			_gameData = IoC.GetInstance<GameData>();
 			_creator = IoC.GetInstance<ObjectCreator>();
 			_sound = IoC.GetInstance<SoundSystem>();
@@ -75,7 +76,7 @@ namespace TheForestWaiter.Game.Weapons.Abstract
 			else
 			{
 				_sound.Play(FireSound ?? SoundInfo.None);
-				OnFire(_networking.IsClient);
+				OnFire(_network.Settings.IsClient);
 				Kickback();
 			}
 		}

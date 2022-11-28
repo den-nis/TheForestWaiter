@@ -6,6 +6,7 @@ using TheForestWaiter.Debugging;
 using TheForestWaiter.Debugging.Command;
 using TheForestWaiter.Game;
 using TheForestWaiter.Game.Debugging;
+using TheForestWaiter.Multiplayer;
 using TheForestWaiter.States;
 using TheForestWaiter.UI.Menus;
 
@@ -40,7 +41,7 @@ namespace TheForestWaiter.Services
 				.RegisterSingleton<TimeProcessor>()
 				.RegisterSingleton<SoundSystem>()
 				.RegisterSingleton<PlayStats>()
-				.RegisterSingleton<NetworkSettings>()
+				.RegisterSingleton<NetSettings>()
 
 				//Services
 				.Register<UIServices>()

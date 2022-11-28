@@ -8,34 +8,31 @@ using TheForestWaiter.Game.Objects;
 using TheForestWaiter.Game.Objects.Static;
 using TheForestWaiter.Multiplayer.Messages;
 
-namespace TheForestWaiter.Multiplayer.Handlers;
+namespace TheForestWaiter.Multiplayer;
 
-/// <summary>
-/// Shared logic between client and server side
-/// </summary>
 internal class PlayerGhosts
 {
     private readonly Dictionary<ushort, Player> _ghosts = new();
 
+    private readonly NetContext _network;
+	private readonly NetServer _server;
 	private readonly IDebug _debug;
-    private readonly NetworkSettings _network;
+
 	private readonly ItemRepository _repo;
-	private readonly NetworkServer _server;
-    private readonly NetworkTraffic _traffic;
-    private readonly Spawner _spawner;
 	private readonly ObjectCreator _creator;
 	private readonly GameObjects _objects;
+    private readonly Spawner _spawner;
 
 	public PlayerGhosts()
     {
 		_debug = IoC.GetInstance<IDebug>();
-        _server = IoC.GetInstance<NetworkServer>();
-        _traffic = IoC.GetInstance<NetworkTraffic>();
-        _spawner = IoC.GetInstance<Spawner>();
+        _network = IoC.GetInstance<NetContext>();
+        _server = IoC.GetInstance<NetServer>();
+
+        _repo = IoC.GetInstance<ItemRepository>();
         _creator = IoC.GetInstance<ObjectCreator>();
         _objects = IoC.GetInstance<GameObjects>();
-        _network = IoC.GetInstance<NetworkSettings>();
-        _repo = IoC.GetInstance<ItemRepository>();
+        _spawner = IoC.GetInstance<Spawner>();
 	}
 
     public Player GetObjectById(ushort playerId)
@@ -59,7 +56,7 @@ internal class PlayerGhosts
 	{
         var playerId = BitConverter.ToUInt16(packet.Data.Take(sizeof(ushort)).ToArray());
 
-        if (_network.IsClient && !_ghosts.ContainsKey(playerId)) //Host creates ghosts when clients connect
+        if (_network.Settings.IsClient && !_ghosts.ContainsKey(playerId)) //Host creates ghosts when clients connect
         {
             AddGhost(playerId);
         }
@@ -97,7 +94,7 @@ internal class PlayerGhosts
 
         if (relay)
         {
-            _traffic.SendToEveryoneExcept(message, playerId);
+            _network.Traffic.SendToEveryoneExcept(message, playerId);
         }
 	}
 }

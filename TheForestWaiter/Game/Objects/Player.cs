@@ -30,7 +30,7 @@ namespace TheForestWaiter.Game.Objects
 		public PlayerController Controller { get; } = new();
 		public Inventory Inventory { get; }
 
-		private readonly NetworkTraffic _traffic;
+		private readonly NetContext _network;
 		private readonly AnimatedSprite _sprite;
 		private readonly ContentSource _content;
 		private readonly SoundSystem _sound;
@@ -51,7 +51,7 @@ namespace TheForestWaiter.Game.Objects
 			IsClientSide = true;
 
 			var creator = IoC.GetInstance<ObjectCreator>();
-			_traffic = IoC.GetInstance<NetworkTraffic>();
+			_network = IoC.GetInstance<NetContext>();
 			_content = IoC.GetInstance<ContentSource>();
 			_sound = IoC.GetInstance<SoundSystem>();
 			_gibs = IoC.GetInstance<GibSpawner>();
@@ -83,33 +83,33 @@ namespace TheForestWaiter.Game.Objects
 			Inventory.OnEquipWeapon += OnWeaponChangedEventHandler;
 			Inventory.Add(1);
 
-			if (_traffic.IsClient) //TODO: remove
+			if (_network.Settings.IsClient) //TODO: remove
 			{
 				Heal(-10);
 			}
 
-			if (_traffic.IsMultiplayer)
+			if (_network.Settings.IsMultiplayer)
 			{
 				//TODO: every ghost is subscribed to these events. 
 				//Can't put the IsGhost check outside the event handler because it's assigned after the constructor has run
 				Controller.OnAction += (action, toggle) => 
 				{
 					if (!IsGhost)
-						_traffic.Send(new PlayerAction { Action = action, State = toggle, PlayerId = _traffic.MyId });
+						_network.Traffic.Send(new PlayerAction { Action = action, State = toggle, PlayerId = _network.Settings.MyPlayerId });
 				};
 
 				Controller.OnAim += (angle) => 
 				{
 					if (!IsGhost)
-						_traffic.Send(new PlayerAim { Angle = angle, PlayerId = _traffic.MyId });
+						_network.Traffic.Send(new PlayerAim { Angle = angle, PlayerId = _network.Settings.MyPlayerId });
 				};
 
 				Inventory.OnEquipedChanged += (previous) => 
 				{
 					if (!IsGhost)
-						_traffic.Send(new PlayerItems
+						_network.Traffic.Send(new PlayerItems
 						{
-							PlayerId = _traffic.MyId,
+							PlayerId = _network.Settings.MyPlayerId,
 							Items = Inventory.Items.ToArray(),
 							EquipedIndex = Inventory.EquipedIndex,
 						});
@@ -170,16 +170,16 @@ namespace TheForestWaiter.Game.Objects
 				weapon.BackgroundUpdate(time);
 			}
 
-			if (_traffic.IsMultiplayer && !IsGhost && _lastPosition != Position)
+			if (_network.Settings.IsMultiplayer && !IsGhost && _lastPosition != Position)
 			{
 				//TODO:
 				//I could probably get away with sending this less often than everything frame.
 				//It can fill in the blank using the controller actions.
-				_traffic.Send(new PlayerPosition
+				_network.Traffic.Send(new PlayerPosition
 				{
 					X = Position.X,
 					Y = Position.Y,
-					PlayerId = _traffic.MyId 
+					PlayerId = _network.Settings.MyPlayerId 
 				});
 			}
 
@@ -305,7 +305,7 @@ namespace TheForestWaiter.Game.Objects
 
 		public IEnumerable<IMessage> GenerateInfoMessages(ushort? playerId)
 		{
-			var id = playerId ?? _traffic.MyId;
+			var id = playerId ?? _network.Settings.MyPlayerId;
 
 			yield return new PlayerPosition { PlayerId = id, X = Position.X, Y = Position.Y };
 			yield return new PlayerAim { PlayerId = id, Angle = Controller.GetAim() };

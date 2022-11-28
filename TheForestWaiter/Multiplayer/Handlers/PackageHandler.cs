@@ -13,15 +13,15 @@ internal abstract class PackageHandler : IDisposable
 	private IDebug _debug;
     private CancellationTokenSource _cts = new();
 
-	protected NetworkSettings Network { get; set; }
-	protected NetworkTraffic Traffic { get; set; }
+	protected NetSettings Network { get; set; }
+	protected NetTraffic Traffic { get; set; }
 	protected ConcurrentQueue<TrackedPacket> PendingPackets { get; set; } = new();
 
     public PackageHandler()
     {
         _debug = IoC.GetInstance<IDebug>();
-        Network = IoC.GetInstance<NetworkSettings>();
-        Traffic = IoC.GetInstance<NetworkTraffic>();
+        Network = IoC.GetInstance<NetSettings>();
+        Traffic = IoC.GetInstance<NetTraffic>();
     }
 
     public void HandleIncoming()
