@@ -78,7 +78,7 @@ internal class ClientSidePackageHandler : PackageHandler
 
 				if (owner == null)
 				{
-					_debug.LogNetworking($"Could not find projectile for gameobject {projectile.Equals}");
+					_debug.LogNetworking($"Could not find owner for projectile {projectile}");
 					break;
 				}
 
