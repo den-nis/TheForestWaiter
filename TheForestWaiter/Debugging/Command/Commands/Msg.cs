@@ -18,15 +18,7 @@ namespace TheForestWaiter.Debugging.Command.Commands
 		public void Execute(CommandHandler handler, string[] args)
 		{
             var name = _network.Settings.Username;
-
-            if (_network.Settings.IsMultiplayer)
-            {
-			    _network.Traffic.PostPublic($"{name}: {string.Join(' ', args)}");
-            }
-            else
-            {
-                _messages.PostLocal($"{name}: {string.Join(' ', args)}");
-            }
+			_messages.Post($"{name}: {string.Join(' ', args)}");
 		}
 	}
 }

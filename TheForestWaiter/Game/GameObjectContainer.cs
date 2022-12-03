@@ -33,10 +33,11 @@ internal class GameObjectContainer<G> : IGameObjectContainer, IEnumerable<G> whe
 	public void Add(G obj)
 	{
 		_objects.Add(obj);
-		_byId.Add(obj.GameObjectId, obj);
+
+		if (obj.GlobalId != 0) _byId.Add(obj.GlobalId, obj);
 	}
 
-	public G GetById(int id)
+	public G GetByGlobalId(int id)
 	{
 		_byId.TryGetValue(id, out G key);
 		return key;

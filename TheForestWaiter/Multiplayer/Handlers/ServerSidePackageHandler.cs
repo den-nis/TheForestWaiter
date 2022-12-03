@@ -27,7 +27,8 @@ internal class ServerSidePackageHandler : PackageHandler
         _spawner = IoC.GetInstance<Spawner>();
         _creator = IoC.GetInstance<ObjectCreator>();
         _messages = IoC.GetInstance<GameMessages>();
-        _server = IoC.GetInstance<NetServer>();
+        _server = IoC.GetInstance<NetServer>();;
+
 	}
 
 	protected override void HandlePacket(Packet packet, EndPoint endpoint)
@@ -73,7 +74,7 @@ internal class ServerSidePackageHandler : PackageHandler
 
         SendGameInfo(client.PlayerId);
 
-        Network.Traffic.PostPublic($"{Color.Green.ToColorCode()}{client.Username} joined the game!");
+        _messages.Post($"{Color.Green.ToColorCode()}{client.Username} joined the game!");
     }
 
     private void SendGameInfo(ushort playerId)

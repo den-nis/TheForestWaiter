@@ -40,6 +40,7 @@ namespace TheForestWaiter.Services
 				.RegisterScoped<ObjectCreator>()
 				.RegisterScoped<ItemRepository>()
 				.RegisterScoped<GameMessages>()
+				.RegisterScoped<LocalGameMessages>()
 				.Register<PickupSpawner>()
 				.Register<DropSpawner>()
 				.Register<GibSpawner>()

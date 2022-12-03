@@ -19,8 +19,8 @@ namespace TheForestWaiter.Debugging.Command.Commands
 		{
 			foreach (var creature in _gameData.Objects.Creatures.Where(c => !c.Friendly))
 			{
+				Console.WriteLine($"Deleted {creature.GetType().Name}");
 				creature.Delete();
-				Console.WriteLine($"Deleted {creature.GetType().Name} ({creature.GameObjectId})");
 			}
 
 			var spawner = _gameData.Objects.Environment.FirstOrDefault(o => o is Spawner) as Spawner;

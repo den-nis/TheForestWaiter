@@ -6,8 +6,10 @@ namespace TheForestWaiter.Game.Objects.Abstract
 {
 	internal abstract class GameObject
 	{
-		private static int _idCounter = 0;
-		public int GameObjectId { get; } = _idCounter++;
+		/// <summary>
+		/// Id used for referencing shared objects only in multiplayer
+		/// </summary>
+		public int GlobalId { get; set; }
 
 		public Vector2f Position { get; set; }
 		public Vector2f Size { get; set; }

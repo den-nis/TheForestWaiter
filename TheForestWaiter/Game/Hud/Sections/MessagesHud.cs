@@ -35,8 +35,8 @@ internal class MessagesHud : HudSection
         _text = new SpriteFont(content.Textures.CreateSpriteSheet("Textures/Hud/generic_text.png"));
 
         //TODO: set Size?
-
-        _source.OnMessage += OnMessageHandler;
+        
+        _source.OnLocalMessage += OnMessageHandler;
     }
 
     public void OnMessageHandler(string message)

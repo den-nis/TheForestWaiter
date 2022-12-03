@@ -23,7 +23,7 @@ namespace TheForestWaiter.Game.Objects.Abstract
 		protected int Penetration { get; set; } = 1;
 
 		private readonly SoundInfo _impactSound = new("Sounds/wall_hit.wav");
-		private readonly List<long> _damangedCreatureIds = new();
+		private readonly List<Creature> _damangedCreatures = new();
 		private readonly ContentSource _content;
 		private readonly SoundSystem _sound;
 		private Vector2f? _spawn = null;
@@ -95,10 +95,10 @@ namespace TheForestWaiter.Game.Objects.Abstract
 
 				bool touching = Collisions.SweptAABB(creature.FloatRect, FloatRect, Velocity * time, out _) < 1 || Intersects(creature);
 
-				if (touching && !_damangedCreatureIds.Contains(creature.GameObjectId))
+				if (touching && !_damangedCreatures.Contains(creature))
 				{
 					creature.Damage(this, Damage, Knockback);
-					_damangedCreatureIds.Add(creature.GameObjectId);
+					_damangedCreatures.Add(creature);
 					_penetrated++;
 
 					if (_penetrated >= Penetration)

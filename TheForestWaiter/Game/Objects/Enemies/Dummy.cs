@@ -13,6 +13,7 @@ namespace TheForestWaiter.Game.Objects.Enemies
 		private const float SAMPLE_LENGTH = 1f;
 		private readonly List<float> _history = new();
 		private readonly Sprite _sprite;
+		private readonly GameMessages _message;
 
 		private float _totalDamage = 0;
 		private bool _timerEnabled = false;
@@ -21,6 +22,7 @@ namespace TheForestWaiter.Game.Objects.Enemies
 		public Dummy()
 		{
 			var content = IoC.GetInstance<ContentSource>();
+			_message = IoC.GetInstance<GameMessages>();
 
 			_sprite = content.Textures.CreateSprite("Textures/Enemies/dummy.png");
 			Size = _sprite.Texture.Size.ToVector2f();
@@ -49,7 +51,7 @@ namespace TheForestWaiter.Game.Objects.Enemies
 				var dps = total / SAMPLE_LENGTH;
 				_totalDamage += total;
 
-				Debug.WriteLine($"Dummy ({GameObjectId}) d/hit : {_history.Average(),-5} dps : {dps,-5} hits : {_history.Count,-5} total : {_totalDamage}");
+				_message.Post($"Dummy d/hit : {_history.Average(),-5} dps : {dps,-5} hits : {_history.Count,-5} total : {_totalDamage}");
 
 				_history.Clear();
 				_timerEnabled = false;

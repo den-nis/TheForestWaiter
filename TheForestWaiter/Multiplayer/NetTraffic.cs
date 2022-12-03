@@ -27,13 +27,13 @@ internal class NetTraffic : IDisposable
 	private readonly NetSettings _settings;
 	private readonly IDebug _debug;
 	private readonly NetServer _server;
-    private readonly GameMessages _messages;
+    private readonly LocalGameMessages _messages;
 
 	public NetTraffic()
     {
 		_debug = IoC.GetInstance<IDebug>();
 		_settings = IoC.GetInstance<NetSettings>();
-        _messages = IoC.GetInstance<GameMessages>();
+        _messages = IoC.GetInstance<LocalGameMessages>();
 
         if (_settings.IsHost)
         {
@@ -62,15 +62,6 @@ internal class NetTraffic : IDisposable
 				Username = _settings.Username,
 			});
         }
-    }
-
-    public void PostPublic(string message, bool includeLocal = true)
-    {
-        if (includeLocal) _messages.PostLocal(message);
-        Send(new TextMessage
-        {
-           Text = message, 
-        });
     }
 
     public void SendToEveryoneExcept(IMessage message, ushort player)

@@ -18,6 +18,8 @@ namespace TheForestWaiter
 {
 	internal class GameObjects
 	{
+		private int _globalIdCounter = 0;
+
 		public bool EnableDrawHitBoxes { get; set; } = false;
 
 		private readonly Queue<GameObject> _queue = new();
@@ -152,14 +154,16 @@ namespace TheForestWaiter
 		/// </summary>
 		public void AddGameObject(GameObject obj)
 		{
+			if (_network.Settings.IsHost)
+			{
+				obj.GlobalId = ++_globalIdCounter;
+			}
+
 			switch (obj)
 			{
 				case Player player:
 
-					if (!player.IsGhost)
-					{
-						Player = player;
-					}
+					if (!player.IsGhost) Player = player;
 					Creatures.Add(player);
 					break;
 

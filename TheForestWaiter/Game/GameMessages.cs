@@ -1,9 +1,42 @@
 using System;
 using System.Collections.Generic;
+using TheForestWaiter.Multiplayer;
+using TheForestWaiter.Multiplayer.Messages;
 
 namespace TheForestWaiter.Game;
 
 internal class GameMessages
+{
+    public event Action<string> OnLocalMessage;
+
+	private LocalGameMessages _messages;
+	private NetContext _networking;
+
+	public GameMessages()
+    {
+        _messages = IoC.GetInstance<LocalGameMessages>();
+        _networking = IoC.GetInstance<NetContext>();
+
+        _messages.OnMessage += (m) => OnLocalMessage?.Invoke(m);
+    }
+
+    public void PostLocal(string message) => _messages.PostLocal(message);
+
+    public void Post(string message, bool includeLocal = true)
+    {
+        if (includeLocal) _messages.PostLocal(message);
+
+        if (_networking.Settings.IsMultiplayer)
+        {
+            _networking.Traffic.Send(new TextMessage
+            {
+                Text = message, 
+            });
+        }
+    }
+}
+
+internal class LocalGameMessages
 {
     private const int MAX_HISTORY = 4000;
 
