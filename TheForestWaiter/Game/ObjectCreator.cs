@@ -3,6 +3,7 @@ using SFML.System;
 using System;
 using TheForestWaiter.Game.Objects.Abstract;
 using TheForestWaiter.Game.Weapons.Abstract;
+using TheForestWaiter.Multiplayer;
 
 namespace TheForestWaiter.Game
 {
@@ -26,24 +27,31 @@ namespace TheForestWaiter.Game
 
 		public T Create<T>() where T : GameObject => _provider.GetInstance<T>();
 
-		public T CreateAt<T>(Vector2f position) where T : GameObject
+		public T CreateAt<T>(Vector2f position) where T : GameObject => (T)CreateAt(typeof(T), position);
+
+		public GameObject CreateAt(Type type, Vector2f position)
 		{
-			T obj = _provider.GetInstance<T>();
+			GameObject obj = CreateType(type);
 			obj.Center = position;
 			return obj;
 		}
 
-		public T CreateAndShoot<T>(Vector2f position, Vector2f speed) where T : Movable
+		public T CreateAndShoot<T>(Vector2f position, Vector2f speed) where T : Movable => (T)CreateAndShoot(typeof(T), position, speed);
+
+		public Movable CreateAndShoot(Type type, Vector2f position, Vector2f speed)
 		{
-			T obj = CreateAt<T>(position);
+			Movable obj = (CreateAt(type, position) as Movable) ?? throw new InvalidOperationException("Unexpected gameobject type");
 			obj.SetVelocityX(speed.X);
 			obj.SetVelocityY(speed.Y);
 			return obj;
 		}
 
-		public T FireProjectile<T>(Vector2f position, Vector2f speed, Creature owner) where T : Projectile
+		public T FireProjectile<T>(Vector2f position, Vector2f speed, Creature owner) where T : Projectile =>
+			(T)FireProjectile(typeof(T), position, speed, owner);
+
+		public Projectile FireProjectile(Type type, Vector2f position, Vector2f speed, Creature owner)
 		{
-			var bullet = CreateAndShoot<T>(position, speed);
+			var bullet = (CreateAndShoot(type, position, speed) as Projectile) ?? throw new InvalidOperationException("Unexpected gameobject type");
 			bullet.Claim(owner);
 			return bullet;
 		}

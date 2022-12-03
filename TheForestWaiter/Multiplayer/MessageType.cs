@@ -7,5 +7,6 @@ enum MessageType : byte
 	PlayerAim,
 	PlayerAction,
 	PlayerItemAction,
-	TextMessage
+	TextMessage,
+	SpawnProjectile
 }

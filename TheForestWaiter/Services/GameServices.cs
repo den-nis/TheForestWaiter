@@ -39,7 +39,6 @@ namespace TheForestWaiter.Services
 				.RegisterScoped<World>()
 				.RegisterScoped<ObjectCreator>()
 				.RegisterScoped<ItemRepository>()
-				.RegisterScoped<NetTraffic>()
 				.RegisterScoped<GameMessages>()
 				.Register<PickupSpawner>()
 				.Register<DropSpawner>()
@@ -57,8 +56,7 @@ namespace TheForestWaiter.Services
 
 			if (networking.IsMultiplayer)
 				_container
-					.RegisterScoped<NetContext>()
-					.RegisterScoped<PlayerGhosts>()
+					.RegisterScoped<NetTraffic>()
 					.RegisterScoped<SharedState>();
 
 			if (networking.IsClient)
@@ -86,7 +84,7 @@ namespace TheForestWaiter.Services
 		public void Setup()
 		{
 			_container.GetInstance<GameController>().Setup();
-			_container.GetInstance<NetTraffic>().Setup();
+			_container.TryGetInstance<NetTraffic>()?.Setup();
 		}
 	}
 }

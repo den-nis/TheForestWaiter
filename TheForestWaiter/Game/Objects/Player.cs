@@ -20,7 +20,7 @@ namespace TheForestWaiter.Game.Objects
 {
 	internal class Player : GroundCreature
 	{
-		public int PlayerId { get; set; } = 0;
+		public ushort PlayerId { get; set; } = 0;
 		public bool IsGhost { get; set; } = false;
 
 		private const float TIME_TILL_DEATH_SCREEN = 4f;
@@ -83,13 +83,10 @@ namespace TheForestWaiter.Game.Objects
 			Inventory.OnEquipWeapon += OnWeaponChangedEventHandler;
 			Inventory.Add(1);
 
-			if (_network.Settings.IsClient) //TODO: remove
-			{
-				Heal(-10);
-			}
-
 			if (_network.Settings.IsMultiplayer)
 			{
+				if (_network.Settings.IsHost) PlayerId = 1;
+
 				//TODO: every ghost is subscribed to these events. 
 				//Can't put the IsGhost check outside the event handler because it's assigned after the constructor has run
 				Controller.OnAction += (action, toggle) => 
@@ -133,7 +130,7 @@ namespace TheForestWaiter.Game.Objects
 					gun.Aim(Controller.GetAim());
 				}
 				gun.Update(time);
-			}
+			}  
 
 			if (Controller.IsActive(ActionTypes.Right) != Controller.IsActive(ActionTypes.Left))
 			{

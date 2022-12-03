@@ -6,8 +6,8 @@ namespace TheForestWaiter.Game.Objects.Abstract
 {
 	internal abstract class GameObject
 	{
-		private static long _idCounter = 0;
-		public long GameObjectId { get; } = _idCounter++;
+		private static int _idCounter = 0;
+		public int GameObjectId { get; } = _idCounter++;
 
 		public Vector2f Position { get; set; }
 		public Vector2f Size { get; set; }

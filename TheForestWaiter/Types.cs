@@ -9,20 +9,34 @@ namespace TheForestWaiter
 {
 	internal static class Types
 	{
-		public static IDictionary<string, Type> GameObjects { get; private set; }
-		public static IDictionary<string, Type> Weapons { get; private set; }
+		private static IReadOnlyList<Type> _orderedGameObjects;
+		private static IReadOnlyDictionary<Type, ushort> _indexLookup;
+
+		public static IReadOnlyDictionary<string, Type> GameObjects { get; private set; }
+		public static IReadOnlyDictionary<string, Type> Weapons { get; private set; }
 
 		static Types()
 		{
 			GameObjects = GetGameObjects();
 			Weapons = GetWeapons();
+			SetupIndex(GameObjects.Values);
 		}
 
-		private static IDictionary<string, Type> GetGameObjects() => GetTypes<GameObject>();
+		public static void SetupIndex(IEnumerable<Type> objects)
+		{
+			_orderedGameObjects = objects.OrderBy(x => x.Name).ToList();
+			_indexLookup = Enumerable.Range(0, _orderedGameObjects.Count - 1).ToDictionary(k => _orderedGameObjects[k], v => (ushort)v);
+		}
 
-		private static IDictionary<string, Type> GetWeapons() => GetTypes<Weapon>();
+		public static ushort GetIndexByType(Type type) => _indexLookup[type];
 
-		private static IDictionary<string, Type> GetTypes<T>()
+		public static Type GetTypeByIndex(ushort index) => _orderedGameObjects[index];
+
+		private static Dictionary<string, Type> GetGameObjects() => GetTypes<GameObject>();
+
+		private static Dictionary<string, Type> GetWeapons() => GetTypes<Weapon>();
+
+		private static Dictionary<string, Type> GetTypes<T>()
 		{
 			var asm = Assembly.GetExecutingAssembly();
 			return asm.GetTypes().Where(t =>

@@ -42,6 +42,8 @@ namespace TheForestWaiter.Services
 				.RegisterSingleton<SoundSystem>()
 				.RegisterSingleton<PlayStats>()
 				.RegisterSingleton<NetSettings>()
+				.RegisterSingleton<NetContext>()
+				
 
 				//Services
 				.Register<UIServices>()

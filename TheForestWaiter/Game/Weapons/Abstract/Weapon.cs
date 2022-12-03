@@ -2,8 +2,10 @@
 using SFML.System;
 using System;
 using TheForestWaiter.Game.Essentials;
+using TheForestWaiter.Game.Objects;
 using TheForestWaiter.Game.Objects.Abstract;
 using TheForestWaiter.Multiplayer;
+using TheForestWaiter.Multiplayer.Messages;
 
 namespace TheForestWaiter.Game.Weapons.Abstract
 {
@@ -134,6 +136,17 @@ namespace TheForestWaiter.Game.Weapons.Abstract
 			var velocity = TrigHelper.FromAngleRad(GetShotFromAngle(), Rng.Var(FireSpeed, FireSpeedVariation));
 			var bullet = _creator.FireProjectile<T>(BarrelPosition, velocity, Owner);
 			_gameData.Objects.Projectiles.Add(bullet);
+
+			if (_network.Settings.IsHost)
+			{
+				_network.Traffic.Send(new SpawnProjectile
+				{
+					OwnerId = (Owner as Player).PlayerId, //TODO: doesn't work for creatures with weapons!
+					TypeIndex = Types.GetIndexByType(typeof(T)),
+					Speed = velocity,
+					Position = BarrelPosition,
+				});
+			}
 		}
 	}
 }

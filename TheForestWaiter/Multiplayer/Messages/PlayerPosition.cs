@@ -8,7 +8,7 @@ namespace TheForestWaiter.Multiplayer.Messages;
 internal class PlayerPosition : IMessage
 {
     public ushort PlayerId { get; set; }
-    public float X { get; set; }
+    public float X { get; set; } //TODO: use vector2f
     public float Y { get; set; }
 
 	public MessageType Type => MessageType.PlayerPosition;

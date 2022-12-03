@@ -2,6 +2,7 @@ using SFML.Graphics;
 using System.Net;
 using System.Threading;
 using TheForestWaiter.Game;
+using TheForestWaiter.Game.Debugging;
 using TheForestWaiter.Game.Essentials;
 using TheForestWaiter.Multiplayer.Messages;
 
@@ -12,24 +13,24 @@ namespace TheForestWaiter.Multiplayer.Handlers;
 /// </summary>
 internal class ClientSidePackageHandler : PackageHandler
 {
-	private readonly NetContext _network;
-	private readonly GameObjects _game;
-	private readonly PlayerGhosts _ghosts;
+	private readonly IDebug _debug;
 	private readonly GameMessages _messages;
+	private readonly ObjectCreator _creator;
 
 	public ClientSidePackageHandler()
 	{
-		_network = IoC.GetInstance<NetContext>();
-		_ghosts = IoC.GetInstance<PlayerGhosts>();
-		_game = IoC.GetInstance<GameObjects>();
+		//GameObjects / Network is available by parent
+
+		_debug = IoC.GetInstance<IDebug>();
 		_messages = IoC.GetInstance<GameMessages>();
+		_creator = IoC.GetInstance<ObjectCreator>();
 	}
 
 	private void StartReceivingSync(CancellationToken token)
 	{
 		while(!token.IsCancellationRequested)
         {
-            PendingPackets.Enqueue(Traffic.Receive());
+            PendingPackets.Enqueue(Network.Traffic.Receive());
         }
 	}
 
@@ -41,33 +42,50 @@ internal class ClientSidePackageHandler : PackageHandler
             case MessageType.PlayerAim:
             case MessageType.PlayerAction:
 			case MessageType.PlayerItemAction:
-                _ghosts.HandlePacket(packet);
+                HandlePlayerPacket(packet);
                 break;
 
             case MessageType.Acknowledge:
 				var ack = Acknowledge.Deserialize(packet.Data);
-				_network.Settings.MyPlayerId = ack.PlayerId;
-				_network.Settings.MySecret = ack.Secret;
+				Network.Settings.MyPlayerId = ack.PlayerId;
+				Objects.Player.PlayerId = ack.PlayerId;
+				Network.Settings.MySecret = ack.Secret;
 
-				var response = _game.Player.GenerateInfoMessages(ack.PlayerId);
+				var response = Objects.Player.GenerateInfoMessages(ack.PlayerId);
 
 				foreach (var message in response)
 				{
-					_network.Traffic.Send(message);
+					Network.Traffic.Send(message);
 				}
 
-				_messages.PostLocal($"{Color.Yellow.ToColorCode()}Connected to {_network.Settings.ServerEndpoint}!");
+				_messages.PostLocal($"{Color.Yellow.ToColorCode()}Connected to {Network.Settings.ServerEndpoint}!");
 				break;
 
 			case MessageType.GameInfo:
 				var info = GameInfo.Deserialize(packet.Data); 
-				_network.State.WaveNumber = info.WaveNumber;
+				Network.State.WaveNumber = info.WaveNumber;
 				break;
 
 			case MessageType.TextMessage:
                 var msg = TextMessage.Deserialize(packet.Data);
                 _messages.PostLocal(msg.Text);
                 break;
+
+			case MessageType.SpawnProjectile:
+				var projectile = SpawnProjectile.Deserialize(packet.Data);
+
+				var owner = projectile.OwnerId == Network.Settings.MyPlayerId ? Objects.Player : Objects.Ghosts.GetById(projectile.OwnerId);
+
+				if (owner == null)
+				{
+					_debug.LogNetworking($"Could not find projectile for gameobject {projectile.Equals}");
+					break;
+				}
+
+				var type = Types.GetTypeByIndex(projectile.TypeIndex);
+				var obj = _creator.FireProjectile(type, projectile.Position, projectile.Speed, owner);
+				Objects.AddGameObject(obj);
+				break;
         }
 	}
 }

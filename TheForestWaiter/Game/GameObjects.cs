@@ -44,6 +44,8 @@ namespace TheForestWaiter
 		public GameObjectContainer<Creature> Creatures { get; set; } = new();
 		public GameObjectContainer<Projectile> Projectiles { get; set; } = new();
 		public GameObjectContainer<Movable> Other { get; set; } = new();
+		public PlayerGhosts Ghosts { get; set; } = new(); //Multiplayer only
+		public IEnumerable<Player> Players => new[] { this.Player }.Concat(Ghosts);
 
 		public ParticleSystem WorldParticles { get; set; }
 
@@ -58,6 +60,7 @@ namespace TheForestWaiter
 			yield return Other;
 			yield return Creatures;
 			yield return Projectiles;
+			yield return Ghosts;
 		}
 
 		private void ForAllContainers(Action<IGameObjectContainer> func)

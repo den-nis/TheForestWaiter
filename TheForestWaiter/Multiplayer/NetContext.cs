@@ -7,9 +7,13 @@ internal class NetContext
 {
     public NetContext()
     {
-        State = IoC.GetInstance<SharedState>();
         Settings = IoC.GetInstance<NetSettings>();
-        Traffic = IoC.GetInstance<NetTraffic>();
+
+        if (Settings.IsMultiplayer)
+        {
+            Traffic = IoC.GetInstance<NetTraffic>();
+            State = IoC.GetInstance<SharedState>();
+        }
     }
 
     public SharedState State { get; set; }

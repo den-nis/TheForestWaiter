@@ -1,9 +1,12 @@
+using SFML.System;
 using System;
 using System.Collections.Concurrent;
+using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using TheForestWaiter.Game.Debugging;
+using TheForestWaiter.Multiplayer.Messages;
 
 namespace TheForestWaiter.Multiplayer.Handlers;
 
@@ -13,15 +16,15 @@ internal abstract class PackageHandler : IDisposable
 	private IDebug _debug;
     private CancellationTokenSource _cts = new();
 
-	protected NetSettings Network { get; set; }
-	protected NetTraffic Traffic { get; set; }
+    protected GameObjects Objects { get; set; }
+	protected NetContext Network { get; set; }
 	protected ConcurrentQueue<TrackedPacket> PendingPackets { get; set; } = new();
 
     public PackageHandler()
     {
         _debug = IoC.GetInstance<IDebug>();
-        Network = IoC.GetInstance<NetSettings>();
-        Traffic = IoC.GetInstance<NetTraffic>();
+        Network = IoC.GetInstance<NetContext>();
+        Objects = IoC.GetInstance<GameObjects>();
     }
 
     public void HandleIncoming()
@@ -51,7 +54,7 @@ internal abstract class PackageHandler : IDisposable
         {
             try
             {
-                var receive = Task.Run(() => Traffic.Receive());
+                var receive = Task.Run(() => Network.Traffic.Receive());
 
                 Task.WaitAny(receive, tcs.Task);
 
@@ -70,6 +73,53 @@ internal abstract class PackageHandler : IDisposable
                 _debug.LogNetworking("Something went wrong while receiving message");
                 _debug.LogNetworking(e.ToString());
             }
+        }
+    }
+
+    /// <param name="relay">Option for the host to sent messages to relay all messages to other clients</param>
+    protected void HandlePlayerPacket(Packet packet, bool relay = false)
+    {
+        var playerId = BitConverter.ToUInt16(packet.Data.Take(sizeof(ushort)).ToArray());
+
+        if (Network.Settings.IsClient && Objects.Ghosts.GetById(playerId) == null) //Host creates ghosts when clients connect
+        {
+            Objects.Ghosts.CreateAndAddGhost(playerId);
+        }
+
+        var ghost = Objects.Ghosts.GetById(playerId);
+
+        IMessage message = null;
+		switch (packet.Type)
+        {
+            case MessageType.PlayerPosition:
+                var position = PlayerPosition.Deserialize(packet.Data);
+                ghost.Position = new Vector2f(position.X, position.Y);
+                message = position;
+                break;
+
+            case MessageType.PlayerAim:
+                var aim = PlayerAim.Deserialize(packet.Data);
+                ghost.Controller.Aim(aim.Angle);
+                message = aim;
+                break;
+
+            case MessageType.PlayerItemAction:
+                var itemInfo = PlayerItems.Deserialize(packet.Data);
+                ghost.Inventory.Overwrite(itemInfo.Items);
+                ghost.Inventory.Select(itemInfo.EquipedIndex);
+                message = itemInfo;
+                break;
+
+            case MessageType.PlayerAction:
+                var act = PlayerAction.Deserialize(packet.Data);
+                ghost.Controller.Toggle(act.Action, act.State);
+                message = act;
+                break;
+        }
+
+        if (relay)
+        {
+            Network.Traffic.SendToEveryoneExcept(message, playerId);
         }
     }
 

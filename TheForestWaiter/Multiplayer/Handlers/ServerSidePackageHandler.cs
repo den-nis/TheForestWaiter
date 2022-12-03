@@ -16,26 +16,18 @@ namespace TheForestWaiter.Multiplayer.Handlers;
 internal class ServerSidePackageHandler : PackageHandler
 {
 	private readonly IDebug _debug;
-    private readonly NetServer _server;
-    private readonly NetTraffic _traffic;
     private readonly Spawner _spawner;
 	private readonly ObjectCreator _creator;
-	private readonly GameObjects _objects;
-    private readonly PlayerGhosts _ghosts;
-	private readonly GameData _game;
 	private readonly GameMessages _messages;
+    private readonly NetServer _server;
 
 	public ServerSidePackageHandler()
     {
 		_debug = IoC.GetInstance<IDebug>();
-        _server = IoC.GetInstance<NetServer>();
-        _traffic = IoC.GetInstance<NetTraffic>();
         _spawner = IoC.GetInstance<Spawner>();
         _creator = IoC.GetInstance<ObjectCreator>();
-        _objects = IoC.GetInstance<GameObjects>();
-        _ghosts = IoC.GetInstance<PlayerGhosts>();
-        _game = IoC.GetInstance<GameData>();
         _messages = IoC.GetInstance<GameMessages>();
+        _server = IoC.GetInstance<NetServer>();
 	}
 
 	protected override void HandlePacket(Packet packet, EndPoint endpoint)
@@ -54,12 +46,12 @@ internal class ServerSidePackageHandler : PackageHandler
             case MessageType.PlayerAim:
             case MessageType.PlayerAction:
             case MessageType.PlayerItemAction:
-                _ghosts.HandlePacket(packet, true);
+                HandlePlayerPacket(packet, true);
                 break;
 
             case MessageType.TextMessage:
                 var msg = TextMessage.Deserialize(packet.Data);
-                _traffic.SendToEveryoneExcept(msg, packet.PlayerId);
+                Network.Traffic.SendToEveryoneExcept(msg, packet.PlayerId);
                 _messages.PostLocal(msg.Text);
                 break;
         }
@@ -71,37 +63,37 @@ internal class ServerSidePackageHandler : PackageHandler
         var greet = Greetings.Deserialize(packet.Data);
         var client = _server.AddClient(endpoint, greet.Username);
     
-        _traffic.SendTo(new Acknowledge
+        Network.Traffic.SendTo(new Acknowledge
         {
             PlayerId = client.PlayerId,
             Secret = client.Secret,
         }, client.PlayerId);
 
-        _ghosts.AddGhost(client.PlayerId);
+        Objects.Ghosts.CreateAndAddGhost(client.PlayerId);
 
         SendGameInfo(client.PlayerId);
 
-        _traffic.PostPublic($"{Color.Green.ToColorCode()}{client.Username} joined the game!");
+        Network.Traffic.PostPublic($"{Color.Green.ToColorCode()}{client.Username} joined the game!");
     }
 
     private void SendGameInfo(ushort playerId)
     {
-        List<IMessage> messages = _game.Objects.Player.GenerateInfoMessages(1).ToList();
+        List<IMessage> messages = Objects.Player.GenerateInfoMessages(1).ToList();
 
         foreach (var player in _server.Clients)
         {
             if (player.PlayerId != playerId)
             {
-                messages.AddRange(_ghosts.GetObjectById(player.PlayerId).GenerateInfoMessages(player.PlayerId));
+                messages.AddRange(Objects.Ghosts.GetById(player.PlayerId).GenerateInfoMessages(player.PlayerId));
             }
         }
 
         foreach (var message in messages)
         {
-            _traffic.SendTo(message, playerId);
+            Network.Traffic.SendTo(message, playerId);
         }
 
-        _traffic.SendTo(new GameInfo
+        Network.Traffic.SendTo(new GameInfo
         {
             WaveNumber = _spawner.CurrentWave
         }, playerId);
