@@ -78,8 +78,12 @@ internal class ClientSidePackageHandler : PackageHandler
 			{
 				var obj = Spawned.Deserialize(packet.Data);
 				var type = Types.GetTypeByIndex(obj.TypeIndex);
-				var instance = _creator.CreateAndShoot(type, obj.Position, obj.Velocity);
+
+				var instance = _creator.CreateType(type);
+				instance.Position = obj.Position;
 				instance.SharedId = obj.SharedId;
+				if (instance is Movable m) { m.Velocity = obj.Velocity; }
+
 				Objects.AddGameObject(instance);
 				_debug.LogNetworking($"Spawned object ({obj.SharedId}) ({obj.GetType().Name})");
 				break;
