@@ -36,6 +36,12 @@ namespace TheForestWaiter.Game.Objects.Static
 			StartWave(1);
 		}
 
+		public void Restart()
+		{
+			_finished = false;
+			StartWave(1);
+		}
+
 		public void StartWave(int number)
 		{
 			if (_network.Settings.IsHost) _network.Traffic.Send(new GameInfo { WaveNumber = number });

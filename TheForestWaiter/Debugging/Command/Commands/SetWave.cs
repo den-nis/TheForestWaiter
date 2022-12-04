@@ -33,6 +33,7 @@ namespace TheForestWaiter.Debugging.Command.Commands
 				}
 
 				var spawner = _gameData.Objects.Environment.FirstOrDefault(o => o is Spawner) as Spawner;
+				spawner.Restart();
 				spawner.StartWave(int.Parse(args[0]));
 			}
 		}

@@ -85,7 +85,6 @@ internal class ClientSidePackageHandler : PackageHandler
 				if (instance is Movable m) { m.Velocity = obj.Velocity; }
 
 				Objects.AddGameObject(instance);
-				_debug.LogNetworking($"Spawned object ({obj.SharedId}) ({obj.GetType().Name})");
 				break;
 			}
 
