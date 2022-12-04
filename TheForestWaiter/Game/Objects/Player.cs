@@ -46,7 +46,7 @@ internal class Player : GroundCreature
 
 	public Player()
 	{
-		IsClientSide = true;
+		SpawnOnClient = true;
 
 		var creator = IoC.GetInstance<ObjectCreator>();
 		_network = IoC.GetInstance<NetContext>();
@@ -298,9 +298,7 @@ internal class Player : GroundCreature
 			}
 			else
 			{
-				//Go to spectator mode
 				_camera.SpectatorMode = true;
-				_camera.Focus = Game.Objects.Players.FirstOrDefault(p => p.Alive);
 			}
 		}
 
@@ -309,7 +307,7 @@ internal class Player : GroundCreature
 		Game.Objects.WorldParticles.Emit(prop, 50);
 	}
 
-	public IEnumerable<IMessage> GenerateInfoMessages()
+	public IEnumerable<IMessage> GeneratePlayerMessages()
 	{
 		yield return new PlayerPosition { SharedId = SharedId, X = Position.X, Y = Position.Y };
 		yield return new PlayerAim { SharedId = SharedId, Angle = Controller.GetAim() };

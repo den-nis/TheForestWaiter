@@ -83,24 +83,21 @@ internal class ServerSidePackageHandler : PackageHandler
 
     private void SendGameInfo(int sharedId)
     {
-        List<IMessage> messages = Objects.Player.GenerateInfoMessages().ToList();
+        List<IMessage> messages = new();
 
-        foreach (var player in _server.Clients)
+        foreach (var creature in Objects.Creatures.Where(x => x.Alive))
         {
-            if (player.SharedId != sharedId)
+            if (creature is Player player)
             {
-                var instance = Objects.Ghosts.GetBySharedId(player.SharedId);
-
-                if (instance.Alive)
+                if (player.SharedId != sharedId) //Don't tell the player where he is himself
                 {
-                    messages.AddRange(instance.GenerateInfoMessages());
+                    messages.AddRange(player.GeneratePlayerMessages());
                 }
             }
-        }
-
-        foreach (var creature in Objects.Creatures.Where(x => x.Alive && !(x is Player)) )
-        {
-            messages.Add(creature.GetSpawnMessage());
+            else
+            {
+                messages.Add(creature.GetSpawnMessage());
+            }
         }
 
         foreach (var message in messages)

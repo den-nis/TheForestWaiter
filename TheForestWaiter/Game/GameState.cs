@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using SFML.Graphics;
+using System.Linq;
 using TheForestWaiter.Content;
 using TheForestWaiter.Game.Environment;
 using TheForestWaiter.Game.Essentials;
@@ -106,6 +107,10 @@ internal class GameState : IState
 		}
 
 		_game.Objects.Update(time);
+
+		_camera.Focus = _game.Objects.Player.Alive 
+			? _game.Objects.Player 
+			: _game.Objects.Players.FirstOrDefault(p => p.Alive);
 		_camera.Update(time);
 
 		_hud.Update(time);

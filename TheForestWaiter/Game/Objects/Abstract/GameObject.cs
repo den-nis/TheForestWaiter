@@ -28,7 +28,10 @@ namespace TheForestWaiter.Game.Objects.Abstract
 		public bool DisableUpdates { get; set; }
 		public bool DisableDraws { get; set; }
 
-		public bool IsClientSide { get; protected set; } = false;
+		/// <summary>
+		/// When set to true, the object should spawn at game start, when in the map
+		/// </summary>
+		public bool SpawnOnClient { get; protected set; } = false; 
 
 		protected GameData Game { get; set; }
 		protected NetContext Net { get; set; }

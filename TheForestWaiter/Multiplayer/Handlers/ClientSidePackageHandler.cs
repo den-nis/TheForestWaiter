@@ -54,7 +54,7 @@ internal class ClientSidePackageHandler : PackageHandler
 				Network.Settings.MySecret = ack.Secret;
 				Objects.Player.SharedId = ack.SharedId;
 
-				var response = Objects.Player.GenerateInfoMessages();
+				var response = Objects.Player.GeneratePlayerMessages();
 
 				foreach (var message in response)
 				{

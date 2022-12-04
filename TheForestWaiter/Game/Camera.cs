@@ -18,7 +18,7 @@ namespace TheForestWaiter.Game
 
 		private const float HEIGHT_OFFSET = 100;
 
-		public GameObject Focus { get; set; } 
+		public Creature Focus { get; set; } 
 		public Vector2u ViewportSize => _window.SfmlWindow.Size;
 		public Vector2f MaxWorldView { get; } = new Vector2f(1920, 1080);
 		public Vector2f TargetPosition { get; set; }

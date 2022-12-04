@@ -92,13 +92,16 @@ namespace TheForestWaiter.Game.Objects.Enemies
 		{
 			_dropSpawner.Spawn(Center);
 
-			for (int i = 0; i < SPAWN_MINIONS; i++)
+			if (!Net.Settings.IsClient)
 			{
-				var at = Center + new Vector2f(Rng.Var(40), Rng.Var(40));
-				var speed = (at - Center).Norm() * 400;
+				for (int i = 0; i < SPAWN_MINIONS; i++)
+				{
+					var at = Center + new Vector2f(Rng.Var(40), Rng.Var(40));
+					var speed = (at - Center).Norm() * 400;
 
-				var obj = _creator.CreateAndShoot<Minirusher>(at, speed);
-				Game.Objects.QueueAddGameObject(obj);
+					var obj = _creator.CreateAndShoot<Minirusher>(at, speed);
+					Game.Objects.QueueAddGameObject(obj);
+				}
 			}
 
 			Delete();

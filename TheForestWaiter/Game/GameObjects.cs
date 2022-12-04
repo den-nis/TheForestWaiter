@@ -46,8 +46,8 @@ internal class GameObjects
 	public GameObjectContainer<Creature> Creatures { get; set; } = new();
 	public GameObjectContainer<Projectile> Projectiles { get; set; } = new();
 	public GameObjectContainer<Movable> Other { get; set; } = new();
-	public GameObjectContainer<Player> Ghosts { get; set; } = new();
-	public IEnumerable<Player> Players => new[] { this.Player }.Concat(Ghosts);
+	public IEnumerable<Player> Players => new[] { this.Player }
+		.Concat(Creatures.Where(c => c is Player).Select(p => p as Player));
 
 	public ParticleSystem WorldParticles { get; set; }
 
@@ -62,7 +62,6 @@ internal class GameObjects
 			(GameObject)Creatures.GetBySharedId(id) ??
 			(GameObject)Projectiles.GetBySharedId(id) ??
 			(GameObject)Environment.GetBySharedId(id) ??
-			(GameObject)Ghosts.GetBySharedId(id) ??
 			(Player.SharedId == id ? Player : null);
 	}
 
@@ -74,7 +73,6 @@ internal class GameObjects
 		yield return Other;
 		yield return Creatures;
 		yield return Projectiles;
-		yield return Ghosts;
 	}
 
 	private void ForAllContainers(Action<IGameObjectContainer> func)
@@ -129,7 +127,7 @@ internal class GameObjects
 				obj.Position = new Vector2f(inf.X, inf.Y - obj.Size.Y);
 				obj.MapSetup(inf);
 
-				if (!onlyClientSideObjects || obj.IsClientSide)
+				if (!onlyClientSideObjects || obj.SpawnOnClient)
 				{
 					AddGameObject(obj);
 				}
@@ -195,11 +193,7 @@ internal class GameObjects
 		{
 			case Player player:
 
-				if (player.IsGhost)
-				{
-					Ghosts.Add(player);
-				}
-				else
+				if (!player.IsGhost)
 				{
 					Player = player;
 				}

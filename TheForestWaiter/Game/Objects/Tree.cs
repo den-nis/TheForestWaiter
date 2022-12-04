@@ -15,7 +15,7 @@ namespace TheForestWaiter.Game.Objects.Static
 
 		public Tree()
 		{
-			IsClientSide = true;
+			SpawnOnClient = true;
 
 			var content = IoC.GetInstance<ContentSource>();
 
