@@ -8,7 +8,7 @@ namespace TheForestWaiter.Multiplayer.Messages;
 /// </summary>
 internal class PlayerAction : IMessage
 {
-    public ushort PlayerId { get; set; }
+    public int SharedId { get; set; }
     public ActionTypes Action { get; set; }
     public bool State { get; set; }
 
@@ -21,7 +21,7 @@ internal class PlayerAction : IMessage
         
         return new PlayerAction
         {
-            PlayerId = d.ReadUInt16(),
+            SharedId = d.ReadInt32(),
             Action = (ActionTypes)d.ReadUInt16(),
             State = d.ReadBoolean(),
         };
@@ -32,7 +32,7 @@ internal class PlayerAction : IMessage
         using MemoryStream m = new();
         using BinaryWriter w = new(m);
         
-        w.Write(PlayerId);
+        w.Write(SharedId);
         w.Write((ushort)Action);
         w.Write(State);
 

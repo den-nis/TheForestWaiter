@@ -62,9 +62,11 @@ namespace TheForestWaiter.Debugging.Command
 			}, TaskCreationOptions.LongRunning);
 		}
 
-		public void InjectCommand(string[] command)
+		public void InjectCommand(string[] command) => InjectCommand(string.Join(' ', command));
+		
+		public void InjectCommand(string command)
 		{
-			_pendingCommands.Add(string.Join(' ', command));
+			_pendingCommands.Add(command);
 		}
 
 		private void ExecuteCommand(string command, string[] args)

@@ -124,7 +124,7 @@ internal class ItemRepository
 		{
 			_network.Traffic.SendIfMultiplayer(new PlayerItems
 			{
-				PlayerId = _network.Settings.MyPlayerId,
+				SharedId = _network.Settings.MySharedId,
 				Items = p.Inventory.Items.ToArray(),
 				EquipedIndex = p.Inventory.EquipedIndex,
 			});

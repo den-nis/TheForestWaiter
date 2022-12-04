@@ -69,7 +69,7 @@ namespace TheForestWaiter.Game.Weapons.Abstract
 			window.Draw(Sprite);
 		}
 
-		private void Fire()
+		public void Fire()
 		{
 			if (_gameData.World.TouchingSolid(BarrelPosition + TrigHelper.FromAngleRad(GetShotFromAngle(), 10)))
 			{
@@ -106,7 +106,11 @@ namespace TheForestWaiter.Game.Weapons.Abstract
 				while ((_firstShot || AutoFire) && _fireTimer <= 0)
 				{
 					_fireTimer += 1f;
-					Fire();
+
+					if (!_network.Settings.IsClient) 
+					{
+						Fire();
+					}
 				}
 				_firstShot = false;
 			}
@@ -139,9 +143,9 @@ namespace TheForestWaiter.Game.Weapons.Abstract
 
 			if (_network.Settings.IsHost)
 			{
-				_network.Traffic.Send(new SpawnProjectile
+				_network.Traffic.Send(new SpawnedProjectile
 				{
-					OwnerId = (Owner as Player).PlayerId, //TODO: doesn't work for creatures with weapons!
+					OwnerSharedId = Owner.SharedId,
 					TypeIndex = Types.GetIndexByType(typeof(T)),
 					Speed = velocity,
 					Position = BarrelPosition,

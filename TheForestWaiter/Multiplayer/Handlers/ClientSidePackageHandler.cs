@@ -1,9 +1,11 @@
+using Newtonsoft.Json;
 using SFML.Graphics;
 using System.Net;
 using System.Threading;
 using TheForestWaiter.Game;
 using TheForestWaiter.Game.Debugging;
 using TheForestWaiter.Game.Essentials;
+using TheForestWaiter.Game.Objects.Abstract;
 using TheForestWaiter.Multiplayer.Messages;
 
 namespace TheForestWaiter.Multiplayer.Handlers;
@@ -42,16 +44,17 @@ internal class ClientSidePackageHandler : PackageHandler
             case MessageType.PlayerAim:
             case MessageType.PlayerAction:
 			case MessageType.PlayerItemAction:
+			case MessageType.PlayerShoot:
                 HandlePlayerPacket(packet);
                 break;
 
             case MessageType.Acknowledge:
 				var ack = Acknowledge.Deserialize(packet.Data);
-				Network.Settings.MyPlayerId = ack.PlayerId;
-				Objects.Player.PlayerId = ack.PlayerId;
+				Network.Settings.MySharedId = ack.SharedId;
 				Network.Settings.MySecret = ack.Secret;
+				Objects.Player.SharedId = ack.SharedId;
 
-				var response = Objects.Player.GenerateInfoMessages(ack.PlayerId);
+				var response = Objects.Player.GenerateInfoMessages();
 
 				foreach (var message in response)
 				{
@@ -71,10 +74,21 @@ internal class ClientSidePackageHandler : PackageHandler
                 _messages.PostLocal(msg.Text);
                 break;
 
-			case MessageType.SpawnProjectile:
-				var projectile = SpawnProjectile.Deserialize(packet.Data);
+			case MessageType.Spawned:
+			{
+				var obj = Spawned.Deserialize(packet.Data);
+				var type = Types.GetTypeByIndex(obj.TypeIndex);
+				var instance = _creator.CreateAndShoot(type, obj.Position, obj.Velocity);
+				instance.SharedId = obj.SharedId;
+				Objects.AddGameObject(instance);
+				_debug.LogNetworking($"Spawned object ({obj.SharedId}) ({obj.GetType().Name})");
+				break;
+			}
 
-				var owner = projectile.OwnerId == Network.Settings.MyPlayerId ? Objects.Player : Objects.Ghosts.GetById(projectile.OwnerId);
+			case MessageType.SpawnedProjectile:
+			{
+				var projectile = SpawnedProjectile.Deserialize(packet.Data);
+				var owner = Objects.GetBySharedId(projectile.OwnerSharedId);
 
 				if (owner == null)
 				{
@@ -83,9 +97,52 @@ internal class ClientSidePackageHandler : PackageHandler
 				}
 
 				var type = Types.GetTypeByIndex(projectile.TypeIndex);
-				var obj = _creator.FireProjectile(type, projectile.Position, projectile.Speed, owner);
+				var obj = _creator.FireProjectile(type, projectile.Position, projectile.Speed, owner as Creature);
 				Objects.AddGameObject(obj);
 				break;
+			}
+
+			case MessageType.ObjectUpdate:
+			{
+				var update = ObjectUpdate.Deserialize(packet.Data);
+				var instance = Objects.GetBySharedId(update.SharedId);
+
+				if (instance == null) break;
+
+				instance.Position = update.Position;
+				if (instance is Movable mover) mover.Velocity = update.Velocity;
+				break;
+			}
+
+			case MessageType.Damaged:
+			{
+				var damageMessage = ObjectDamaged.Deserialize(packet.Data);
+				var by = Objects.GetBySharedId(damageMessage.BySharedId);
+				var target = Objects.GetBySharedId(damageMessage.ForSharedId);
+
+				if (target != null && target is Creature creature)
+				{
+					creature.Damage(target as Movable, damageMessage.Damage, damageMessage.Knockback, true);
+				}
+
+				break;
+			}
+
+			case MessageType.MarkedForDeletion:
+			{
+				var message = MarkedForDeletion.Deserialize(packet.Data);
+				var target = Objects.GetBySharedId(message.SharedId);
+				target?.Delete();
+				break;
+			}
+
+			case MessageType.ObjectKilled:
+			{
+				var message = ObjectKilled.Deserialize(packet.Data);
+				var target = Objects.GetBySharedId(message.SharedId);
+				(target as Creature)?.Kill();
+				break;
+			}
         }
 	}
 }

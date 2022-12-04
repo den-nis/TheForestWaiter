@@ -3,24 +3,22 @@ using System.IO;
 namespace TheForestWaiter.Multiplayer.Messages;
 
 /// <summary>
-/// Bidirectional
+/// Host to client.
 /// </summary>
-internal class PlayerAim : IMessage
-{
+internal class MarkedForDeletion : IMessage
+{   
     public int SharedId { get; set; }
-    public float Angle { get; set; }
 
-	public MessageType Type => MessageType.PlayerAim;
+	public MessageType Type => MessageType.MarkedForDeletion;
 
-    public static PlayerAim Deserialize(byte[] data)
+    public static MarkedForDeletion Deserialize(byte[] data)
     {
         using MemoryStream m = new(data);
         using BinaryReader d = new(m);
         
-        return new PlayerAim 
-        { 
-            SharedId = d.ReadInt32(),
-            Angle = d.ReadSingle(), 
+        return new MarkedForDeletion
+        {
+			SharedId = d.ReadInt32(),
         };
     }
 
@@ -28,9 +26,8 @@ internal class PlayerAim : IMessage
 	{
         using MemoryStream m = new();
         using BinaryWriter w = new(m);
-
-        w.Write(SharedId);
-        w.Write(Angle);
+        
+		w.Write(SharedId);
 
         return m.ToArray();
 	}

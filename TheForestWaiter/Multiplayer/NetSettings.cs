@@ -16,7 +16,7 @@ internal class NetSettings
     public bool IsHost { get; private set; } = false;
     public bool IsMultiplayer => IsClient || IsHost;
 
-    public ushort MyPlayerId { get; set; } = 0;
+    public int MySharedId { get; set; } = 0;
     public int MySecret { get; set; } = 0;
 	public string Username { get; set; }
     
@@ -40,7 +40,7 @@ internal class NetSettings
 
     public void Setup(bool isHost, IPAddress ip, short port)
     {   
-        MyPlayerId = 0;
+        MySharedId = 0;
         MySecret = 0;
         IsClient = !isHost;
         IsHost = isHost;
@@ -50,7 +50,7 @@ internal class NetSettings
 
     public void ResetSessionInfo()
     {
-        MyPlayerId = 0;
+        MySharedId = 0;
         MySecret = 0;
     }
 }

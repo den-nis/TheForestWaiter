@@ -47,7 +47,7 @@ internal class NetTraffic : IDisposable
         {
             ClientsUdp = new UdpClient(_settings.Port);
             _debug.LogNetworking($"Hosted on port : {_settings.Port}");
-            _settings.MyPlayerId = 1;
+            _settings.MySharedId = 1;
         }
         
         if (_settings.IsClient)
@@ -64,20 +64,20 @@ internal class NetTraffic : IDisposable
         }
     }
 
-    public void SendToEveryoneExcept(IMessage message, ushort player)
+    public void SendToEveryoneExcept(IMessage message, int sharedId)
     {
           ValidateMultiplayer();
 
           var datagram = ToDatagram(message);
-          _server.SendToEveryoneExcept(datagram, player, ClientsUdp);
+          _server.SendToEveryoneExcept(datagram, sharedId, ClientsUdp);
     }
 
-    public void SendTo(IMessage message, ushort player)
+    public void SendTo(IMessage message, int sharedId)
     {
         ValidateMultiplayer();
 
         var datagram = ToDatagram(message);
-         _server.SendTo(datagram, player, ClientsUdp);
+         _server.SendTo(datagram, sharedId, ClientsUdp);
     }
 
     public void SendIfMultiplayer(IMessage message)
@@ -122,7 +122,7 @@ internal class NetTraffic : IDisposable
     {
         return new Packet
         {
-            PlayerId = _settings.MyPlayerId,
+            SharedId = _settings.MySharedId,
             Secret = _settings.MySecret,
             Type = type,
             Data = data,

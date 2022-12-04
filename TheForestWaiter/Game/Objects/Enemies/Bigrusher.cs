@@ -53,12 +53,8 @@ namespace TheForestWaiter.Game.Objects.Enemies
 			base.Update(time);
 			_jumpTrigger.Update(time);
 
-			Chase(Game.Objects.Player);
-			if (Intersects(Game.Objects.Player))
-			{
-				Game.Objects.Player.Damage(this, ATTACK_DAMAGE, KNOCKBACK);
-			}
-
+			Chase(GetNearestPlayer());
+			DamagePlayerIfTouching(ATTACK_DAMAGE, KNOCKBACK);
 			HandleAnimations(time);
 		}
 

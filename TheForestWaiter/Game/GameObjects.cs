@@ -14,166 +14,224 @@ using TheForestWaiter.Game.Objects.Projectiles;
 using TheForestWaiter.Game.Particles;
 using TheForestWaiter.Multiplayer;
 
-namespace TheForestWaiter
+namespace TheForestWaiter;
+
+internal class GameObjects
 {
-	internal class GameObjects
+	public bool EnableDrawHitBoxes { get; set; } = false;
+	
+	private readonly Queue<GameObject> _queue = new();
+	private readonly UserSettings _settings;
+	private readonly ObjectCreator _creator;
+	private readonly NetContext _network;
+	private readonly Camera _camera;
+	private readonly IDebug _debug;
+
+	private int _SharedIdCounter = 0;
+	
+	public GameObjects()
 	{
-		private int _globalIdCounter = 0;
+		_network  = IoC.GetInstance<NetContext>();
+		_settings = IoC.GetInstance<UserSettings>();
+		_creator  = IoC.GetInstance<ObjectCreator>();
+		_camera   = IoC.GetInstance<Camera>();
+		_debug    = IoC.GetInstance<IDebug>();
 
-		public bool EnableDrawHitBoxes { get; set; } = false;
+		WorldParticles = new ParticleSystem(_settings.GetInt("Game", "MaxParticles"));
+	}
 
-		private readonly Queue<GameObject> _queue = new();
-		private readonly UserSettings _settings;
-		private readonly ObjectCreator _creator;
-		private readonly NetContext _network;
-		private readonly Camera _camera;
-		private readonly IDebug _debug;
+	public Player Player { get; private set; } = null;
 
-		public GameObjects()
-		{
-			_network = IoC.GetInstance<NetContext>();
-			_settings =  IoC.GetInstance<UserSettings>();
-			_creator =  IoC.GetInstance<ObjectCreator>();
-			_camera =  IoC.GetInstance<Camera>();
-			_debug =  IoC.GetInstance<IDebug>();
+	public GameObjectContainer<Immovable> Environment { get; set; } = new();
+	public GameObjectContainer<Creature> Creatures { get; set; } = new();
+	public GameObjectContainer<Projectile> Projectiles { get; set; } = new();
+	public GameObjectContainer<Movable> Other { get; set; } = new();
+	public GameObjectContainer<Player> Ghosts { get; set; } = new();
+	public IEnumerable<Player> Players => new[] { this.Player }.Concat(Ghosts);
 
-			WorldParticles = new ParticleSystem(_settings.GetInt("Game", "MaxParticles"));
-		}
+	public ParticleSystem WorldParticles { get; set; }
 
-		public Player Player { get; private set; } = null;
-
-		public GameObjectContainer<Immovable> Environment { get; set; } = new();
-		public GameObjectContainer<Creature> Creatures { get; set; } = new();
-		public GameObjectContainer<Projectile> Projectiles { get; set; } = new();
-		public GameObjectContainer<Movable> Other { get; set; } = new();
-		public PlayerGhosts Ghosts { get; set; } = new(); //Multiplayer only
-		public IEnumerable<Player> Players => new[] { this.Player }.Concat(Ghosts);
-
-		public ParticleSystem WorldParticles { get; set; }
-
-		public IEnumerable<Movable> PhysicsObjects =>
-			 Creatures
+	public IEnumerable<Movable> PhysicsObjects =>
+		Creatures
 			.Concat(Other)
 			.Concat(Projectiles);
 
-		private IEnumerable<IGameObjectContainer> GetAllContainers()
-		{
-			yield return Environment;
-			yield return Other;
-			yield return Creatures;
-			yield return Projectiles;
-			yield return Ghosts;
-		}
+	public GameObject GetBySharedId(int id)
+	{
+		return 
+			(GameObject)Creatures.GetBySharedId(id) ??
+			(GameObject)Projectiles.GetBySharedId(id) ??
+			(GameObject)Environment.GetBySharedId(id) ??
+			(GameObject)Ghosts.GetBySharedId(id) ??
+			(Player.SharedId == id ? Player : null);
+	}
 
-		private void ForAllContainers(Action<IGameObjectContainer> func)
+	public bool SharedIdExists(int id) => GetBySharedId(id) != null;	
+
+	private IEnumerable<IGameObjectContainer> GetAllContainers()
+	{
+		yield return Environment;
+		yield return Other;
+		yield return Creatures;
+		yield return Projectiles;
+		yield return Ghosts;
+	}
+
+	private void ForAllContainers(Action<IGameObjectContainer> func)
+	{
+		foreach (var container in GetAllContainers())
 		{
-			foreach (var container in GetAllContainers())
+			func(container);
+		}
+	}
+
+	public void ClearAll()
+	{
+		Player = null;
+		ForAllContainers(c => c.Clear());
+	}
+
+	public void CleanUp()
+	{
+		ForAllContainers(c => c.CleanupMarkedForDeletion());
+	}
+
+	public void Draw(RenderWindow window)
+	{
+		ForAllContainers(c => c.Draw(window));
+		WorldParticles.Draw(window);
+
+		if (EnableDrawHitBoxes)
+		{
+			DrawHitBoxes(window);
+		}
+	}
+
+	public void Update(float time)
+	{
+		HandleQueue();
+		ForAllContainers(c => c.Update(time));
+		WorldParticles.Update(time);
+		UpdateRemote();
+	}
+
+	public void LoadAllFromMap(Map map, bool onlyClientSideObjects)
+	{
+		Player = null;
+
+		var objects = map.Layers.Where(l => l.Type == "objectgroup").SelectMany(l => l.Objects);
+		foreach (MapObject inf in objects)
+		{
+			Types.GameObjects.TryGetValue(inf.Class, out Type type);
+			if (type != null)
 			{
-				func(container);
-			}
-		}
+				var obj = _creator.CreateType(type);
+				obj.Position = new Vector2f(inf.X, inf.Y - obj.Size.Y);
+				obj.MapSetup(inf);
 
-		public void ClearAll()
-		{
-			Player = null;
-			ForAllContainers(c => c.Clear());
-		}
-
-		public void CleanUp()
-		{
-			ForAllContainers(c => c.CleanupMarkedForDeletion());
-		}
-
-		public void Draw(RenderWindow window)
-		{
-			ForAllContainers(c => c.Draw(window));
-			WorldParticles.Draw(window);
-
-			if (EnableDrawHitBoxes)
-			{
-				DrawHitBoxes(window);
-			}
-		}
-
-		public void Update(float time)
-		{
-			HandleQueue();
-			ForAllContainers(c => c.Update(time));
-			WorldParticles.Update(time);
-		}
-
-		public void LoadAllFromMap(Map map, bool onlyClientSideObjects)
-		{
-			Player = null;
-
-			var objects = map.Layers.Where(l => l.Type == "objectgroup").SelectMany(l => l.Objects);
-			foreach (MapObject inf in objects)
-			{
-				Types.GameObjects.TryGetValue(inf.Class, out Type type);
-				if (type != null)
+				if (!onlyClientSideObjects || obj.IsClientSide)
 				{
-					var obj = _creator.CreateType(type);
-					obj.Position = new Vector2f(inf.X, inf.Y - obj.Size.Y);
-					obj.MapSetup(inf);
+					AddGameObject(obj);
+				}
+			}
+			else
+			{
+				Debug.Fail($"Missing type {inf.Class}");
+			}
+		}
+	}
 
-					if (!onlyClientSideObjects || obj.IsClientSide)
-					{
-						AddGameObject(obj);
-					}
+	public void DrawHitBoxes(RenderWindow window)
+	{
+		foreach (var obj in PhysicsObjects)
+		{
+			obj.DrawHitbox(window, _camera.Scale);
+		}
+	}
+
+	private void HandleQueue()
+	{
+		while (_queue.Count > 0)
+		{
+			AddGameObject(_queue.Dequeue());
+		}
+	}
+
+	/// <summary>
+	/// Will add the gameobjects next frame
+	/// </summary>
+	public void QueueAddGameObject(GameObject obj) => _queue.Enqueue(obj);
+
+	public Player AddGhostForServer() => AddGhostForClient(-1);
+
+	public Player AddGhostForClient(int sharedId)
+	{
+		if (!_network.Settings.IsHost && sharedId == -1) throw new InvalidOperationException("Can only use id -1 on server");
+
+		var ghost = _creator.Create<Player>();
+		ghost.IsGhost = true;
+		ghost.SharedId = _network.Settings.IsClient ? sharedId : ghost.SharedId;
+		AddGameObject(ghost);
+
+		return ghost;
+	}
+
+	/// <summary>
+	/// Adds the object to the correct object container
+	/// </summary>
+	public void AddGameObject(GameObject obj)
+	{
+		if (_network.Settings.IsHost)
+		{
+			obj.SharedId = ++_SharedIdCounter;
+
+			if (!(obj is Player)) 
+			{
+				_network.Traffic.Send(obj.GetSpawnMessage());
+			}
+		}
+
+		switch (obj)
+		{
+			case Player player:
+
+				if (player.IsGhost)
+				{
+					Ghosts.Add(player);
 				}
 				else
 				{
-					Debug.Fail($"Missing type {inf.Class}");
+					Player = player;
 				}
-			}
+
+				Creatures.Add(player);
+				break;
+
+			case SmallBullet bullet: Projectiles.Add(bullet); break;
+			case Creature enemy: Creatures.Add(enemy); break;
+			case Movable pObj: Other.Add(pObj); break;
+			case Immovable sObj: Environment.Add(sObj); break;
+
+			default:
+				throw new KeyNotFoundException($"No container found for \"{obj.GetType().Name}\"");
 		}
+	}
 
-		public void DrawHitBoxes(RenderWindow window)
+	private void UpdateRemote()
+	{
+		if (_network.Settings.IsHost)
 		{
-			foreach (var obj in PhysicsObjects)
+			foreach (var obj in Creatures)
 			{
-				obj.DrawHitbox(window, _camera.Scale);
-			}
-		}
+				if (obj is Player)
+					continue;
 
-		private void HandleQueue()
-		{
-			while (_queue.Count > 0)
-			{
-				AddGameObject(_queue.Dequeue());
-			}
-		}
+				var message = obj.GetUpdateMessage();
 
-		/// <summary>
-		/// Will add the gameobjects next frame
-		/// </summary>
-		public void QueueAddGameObject(GameObject obj) => _queue.Enqueue(obj);
-
-		/// <summary>
-		/// Adds the object to the correct object container
-		/// </summary>
-		public void AddGameObject(GameObject obj)
-		{
-			if (_network.Settings.IsHost)
-			{
-				obj.GlobalId = ++_globalIdCounter;
-			}
-
-			switch (obj)
-			{
-				case Player player:
-
-					if (!player.IsGhost) Player = player;
-					Creatures.Add(player);
-					break;
-
-				case SmallBullet bullet: Projectiles.Add(bullet); break;
-				case Creature enemy: Creatures.Add(enemy); break;
-				case Movable pObj: Other.Add(pObj); break;
-				case Immovable sObj: Environment.Add(sObj); break;
-
-				default:
-					throw new KeyNotFoundException($"No container found for \"{obj.GetType().Name}\"");
+				if (message != null)
+				{
+					_network.Traffic.Send(message);
+				}
 			}
 		}
 	}

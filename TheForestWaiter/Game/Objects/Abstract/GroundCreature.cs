@@ -53,6 +53,15 @@ namespace TheForestWaiter.Game.Objects.Abstract
 			}
 		}
 
+		protected void DamagePlayerIfTouching(float amount, float knockback)
+		{
+			var player = GetNearestPlayer();
+			if (player.Intersects(this))
+			{
+				player.Damage(this, amount, knockback);
+			}
+		}
+
 		protected void Chase(GameObject target)
 		{
 			var targetXDirection = Math.Sign(target.Center.X - Center.X);

@@ -24,7 +24,8 @@ namespace TheForestWaiter.Game.Objects.Enemies
 		private readonly DropSpawner _dropSpawner;
 		private readonly ObjectCreator _creator;
 
-		private int PlayerDirection => Math.Sign(Game.Objects.Player.Center.X - Center.X);
+		private int PlayerDirection => Math.Sign(GetNearestPlayer().Center.X - Center.X);
+			
 		private int PlayerHeightDifference => (int)Math.Abs(Game.Objects.Player.Center.Y - AttackPoint.Y);
 
 		private Vector2f AttackPoint => Center + new Vector2f(PlayerDirection * 15, 0);
@@ -71,10 +72,10 @@ namespace TheForestWaiter.Game.Objects.Enemies
 				}
 			}
 
-			var distance = Math.Abs(Game.Objects.Player.Center.X - Center.X);
+			var distance = Math.Abs(GetNearestPlayer().Center.X - Center.X);
 			if (distance > CHASE_DISTANCE || PlayerHeightDifference > 9)
 			{
-				Chase(Game.Objects.Player);
+				Chase(GetNearestPlayer());
 			}
 			else if (distance < _avoidDistance)
 			{

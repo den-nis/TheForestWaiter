@@ -47,7 +47,7 @@ namespace TheForestWaiter.Game.Objects.Enemies
 		{
 			base.Update(time);
 
-			var distance = Math.Abs(Game.Objects.Player.Center.X - Center.X);
+			var distance = Math.Abs(GetNearestPlayer().Center.X - Center.X);
 			if (distance < ATTACK_X_DISTANCE)
 			{
 				FlyingHeight = Math.Max(_minFlyingHeight, distance);
@@ -57,11 +57,11 @@ namespace TheForestWaiter.Game.Objects.Enemies
 				FlyingHeight = _maxFlyingHeight;
 			}
 
-			Chase(Game.Objects.Player);
+			Chase(GetNearestPlayer());
 
-			if (Intersects(Game.Objects.Player))
+			if (Intersects(GetNearestPlayer()))
 			{
-				Game.Objects.Player.Damage(this, ATTACK_DAMAGE, KNOCKBACK);
+				GetNearestPlayer().Damage(this, ATTACK_DAMAGE, KNOCKBACK);
 			}
 
 			HandleAnimations(time);

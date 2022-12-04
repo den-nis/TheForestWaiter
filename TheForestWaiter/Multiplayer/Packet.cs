@@ -5,13 +5,13 @@ namespace TheForestWaiter.Multiplayer;
 
 internal class Packet
 {
-    public ushort PlayerId { get; set; }
+    public int SharedId { get; set; }
     public int Secret { get; set; }
 
     public MessageType Type { get; set; }
     public byte[] Data { get; set; }
 
-    public bool IsAnonymous => PlayerId == 0;
+    public bool IsAnonymous => SharedId == 0;
 
     public byte[] CreateDatagram()
     {
@@ -19,7 +19,7 @@ internal class Packet
         using BinaryWriter wr = new(ms);
 
         wr.Write(Secret);
-        wr.Write(PlayerId);
+        wr.Write(SharedId);
         wr.Write((short)Type);
         wr.Write(Data);
         wr.Flush();
@@ -36,7 +36,7 @@ internal class Packet
         using BinaryReader br = new(ms);
 
         var secret = br.ReadInt32();
-        var player = br.ReadUInt16();
+        var player = br.ReadInt32();
         var type = (MessageType)br.ReadInt16();
         var data = br.ReadBytes(datagram.Length - (int)ms.Position);
 
@@ -44,7 +44,7 @@ internal class Packet
         {
             Type = type,
             Data = data,
-            PlayerId = player,
+            SharedId = player,
             Secret = secret,
         };
     }

@@ -2,11 +2,14 @@
 using SFML.System;
 using System;
 using TheForestWaiter.Game.Essentials;
+using TheForestWaiter.Game.Objects.Abstract;
 
 namespace TheForestWaiter.Game
 {
 	internal class Camera
 	{
+		public bool SpectatorMode { get; set; }
+
 		private const float MAX_ZOOM_IN = 0.1f;
 		private const float ZOOM_STRENGTH = 10;
 
@@ -15,12 +18,15 @@ namespace TheForestWaiter.Game
 
 		private const float HEIGHT_OFFSET = 100;
 
+		public GameObject Focus { get; set; } 
 		public Vector2u ViewportSize => _window.SfmlWindow.Size;
 		public Vector2f MaxWorldView { get; } = new Vector2f(1920, 1080);
 		public Vector2f TargetPosition { get; set; }
 		public float TargetScale { get; set; } = 1;
 
 		private Vector2f _baseSize = default;
+		private bool _smooth;
+
 		public Vector2f BaseSize
 		{
 			get => _baseSize;
@@ -60,18 +66,12 @@ namespace TheForestWaiter.Game
 
 		public bool LockView { get; set; } = true;
 
-		private readonly UserSettings _settings;
 		private readonly WindowHandle _window;
 
 		public Camera(UserSettings settings, WindowHandle window)
 		{
-			_settings = settings;
+			_smooth = settings.GetBool("Game", "SmoothCam");
 			_window = window;
-		}
-
-		public void FollowPlayer(Vector2f position)
-		{
-			TargetPosition = position;
 		}
 
 		private void SizeChanged()
@@ -90,7 +90,9 @@ namespace TheForestWaiter.Game
 
 		public void Update(float time)
 		{
-			if (_settings.GetBool("Game", "SmoothCam")) //TODO: type safe
+			TargetPosition = Focus?.Center ?? TargetPosition;
+
+			if (_smooth || SpectatorMode)
 			{
 				float sDelta = TargetScale - Scale;
 				Scale += sDelta * (time * ZOOM_STRENGTH > 1 ? 1 : time * ZOOM_STRENGTH);
@@ -100,9 +102,12 @@ namespace TheForestWaiter.Game
 				float xDelta = offsetTarget.X - Center.X;
 				float yDelta = offsetTarget.Y - Center.Y;
 
+				float xStrength = SpectatorMode ? 4 : HORIZONTAL_MOVE_STRENGTH;
+				float yStrength = SpectatorMode ? 4 : VERTICAL_MOVE_STRENGTH;
+
 				Center = new Vector2f(
-					Center.X + xDelta * (time * HORIZONTAL_MOVE_STRENGTH > 1 ? 1 : time * HORIZONTAL_MOVE_STRENGTH),
-					Center.Y + yDelta * (time * VERTICAL_MOVE_STRENGTH > 1 ? 1 : time * VERTICAL_MOVE_STRENGTH)
+					Center.X + xDelta * (time * xStrength > 1 ? 1 : time * xStrength),
+					Center.Y + yDelta * (time * yStrength > 1 ? 1 : time * yStrength)
 				);
 			}
 			else

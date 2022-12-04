@@ -25,7 +25,7 @@ namespace TheForestWaiter
 		public static void SetupIndex(IEnumerable<Type> objects)
 		{
 			_orderedGameObjects = objects.OrderBy(x => x.Name).ToList();
-			_indexLookup = Enumerable.Range(0, _orderedGameObjects.Count - 1).ToDictionary(k => _orderedGameObjects[k], v => (ushort)v);
+			_indexLookup = Enumerable.Range(0, _orderedGameObjects.Count).ToDictionary(k => _orderedGameObjects[k], v => (ushort)v);
 		}
 
 		public static ushort GetIndexByType(Type type) => _indexLookup[type];

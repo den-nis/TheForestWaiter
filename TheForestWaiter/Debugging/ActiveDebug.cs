@@ -37,6 +37,11 @@ namespace TheForestWaiter.Debugging
 
 		}
 
+		public void InjectCommand(string command)
+		{
+			_commandHandler.InjectCommand(command);
+		}
+
 		public void Log(string message)
 		{
 			Console.WriteLine(message);

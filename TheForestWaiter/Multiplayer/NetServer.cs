@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using TheForestWaiter.Game;
@@ -18,7 +17,7 @@ internal class NetServer
 
     private List<Client> _clients = new();
     private Dictionary<int, Client> _clientsBySecret = new();
-    private Dictionary<ushort, Client> _clientsById = new();
+    private Dictionary<int, Client> _clientsBySharedId = new();
 
 	private readonly NetSettings _network;
 	private readonly IDebug _debug;
@@ -29,11 +28,11 @@ internal class NetServer
 		_debug = IoC.GetInstance<IDebug>();
 	}
 
-	public void SendToEveryoneExcept(byte[] datagram, ushort player, UdpClient udpClient)
+	public void SendToEveryoneExcept(byte[] datagram, int sharedId, UdpClient udpClient)
 	{
 		foreach (var client in _clients)
         {
-            if (player != client.PlayerId)
+            if (sharedId != client.SharedId)
             {
                 udpClient.Client.SendTo(datagram, client.EndPoint);
             }
@@ -48,9 +47,9 @@ internal class NetServer
         }
     }
 
-    public void SendTo(byte[] data, ushort playerId, UdpClient udpClient)
+    public void SendTo(byte[] data, int sharedId, UdpClient udpClient)
     {
-        var client = GetClientById(playerId);
+        var client = GetClientById(sharedId);
 
         if (client != null)
         {
@@ -61,12 +60,12 @@ internal class NetServer
     /// <summary>
     /// Returns the added client
     /// </summary>
-    public Client AddClient(EndPoint endpoint, string username)
+    public Client AddClient(EndPoint endpoint, string username, int sharedId)
     {
         var client = new Client
         {
             Secret = Rng.RangeInt(int.MinValue, int.MaxValue),
-            PlayerId = GetId(),
+            SharedId = sharedId,
             EndPoint = endpoint,
             LastMessage = DateTime.Now,
             Username = username,
@@ -76,16 +75,10 @@ internal class NetServer
         return client;
     }
 
-    private ushort GetId()
-    {
-        return (ushort)Enumerable.Range(2, short.MaxValue)
-            .First(x => GetClientById((ushort)x) == null);
-    }
-
     private void AddClient(Client client)
     {
         _clients.Add(client);
-        _clientsById.Add(client.PlayerId, client);
+        _clientsBySharedId.Add(client.SharedId, client);
         _clientsBySecret.Add(client.Secret, client);
     }
 
@@ -95,14 +88,14 @@ internal class NetServer
         return null;
     }
 
-    public Client GetClientById(ushort id)
+    public Client GetClientById(int id)
     {
-        if (_clientsById.TryGetValue(id, out Client client)) return client;
+        if (_clientsBySharedId.TryGetValue(id, out Client client)) return client;
         return null;
     }
 
     public bool VerifyPacket(Packet packet)
     {
-        return (GetClientBySecret(packet.Secret)?.PlayerId ?? 0) == packet.PlayerId;
+        return (GetClientBySecret(packet.Secret)?.SharedId ?? 0) == packet.SharedId;
     }
 }

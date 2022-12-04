@@ -8,5 +8,12 @@ enum MessageType : byte
 	PlayerAction,
 	PlayerItemAction,
 	TextMessage,
-	SpawnProjectile
+	SpawnedProjectile,
+	Spawned,
+	ObjectUpdate,
+	RemoteCommand,
+	Damaged,
+	MarkedForDeletion,
+	ObjectKilled,
+	PlayerShoot
 }

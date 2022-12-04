@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Linq;
 using TheForestWaiter.Game.Essentials;
+using TheForestWaiter.Multiplayer;
+using TheForestWaiter.Multiplayer.Messages;
 
 namespace TheForestWaiter.Game.Objects.Abstract
 {
@@ -8,6 +11,9 @@ namespace TheForestWaiter.Game.Objects.Abstract
 	/// </summary>
 	internal abstract class Creature : Movable
 	{
+		public bool IsGhost { get; set; } = false;
+
+		private const float PLAYER_SEARCH_INTERVAL = 1f;
 		private const float REMOVE_AT_Y = 6000;
 		private const float KNOCKBACK_VARIATION = 0.10f;
 		private const float MOVING_DIRECTION_THRESHOLD = 0.1f;
@@ -33,14 +39,42 @@ namespace TheForestWaiter.Game.Objects.Abstract
 
 		private float _maxHealth = 100;
 		private float _stunTimer = 0;
+		private Player _targetPlayerCache;
+		private float _playerSearchTimer = 0;
 
 		private readonly SoundSystem _sound;
+		private readonly NetContext _net;
 
 		public Creature()
 		{
 			_sound = IoC.GetInstance<SoundSystem>();
+			_net = IoC.GetInstance<NetContext>();
 
 			Health = _maxHealth;
+		}
+
+		public Player GetNearestPlayer()
+		{
+			if (_targetPlayerCache == null) CacheNearestPlayer();
+			return _targetPlayerCache;
+		}
+
+		private void CacheNearestPlayer()
+		{
+			float nearest = float.PositiveInfinity;
+			var target = _targetPlayerCache;
+			foreach (var player in Game.Objects.Players.Where(p => p.Alive))
+			{
+				var delta = player.Position - Center;
+				var distance = delta.Len();
+
+				if (distance < nearest)
+				{
+					nearest = distance;
+					target = player;
+				}
+			}
+			_targetPlayerCache = target ?? Game.Objects.Players.First();
 		}
 
 		protected void SetMaxHealth(int amount, bool fill)
@@ -58,13 +92,14 @@ namespace TheForestWaiter.Game.Objects.Abstract
 			Health = Math.Min(_maxHealth, Health);
 		}
 
-		public void Damage(Movable by, float amount, float knockback)
+		public void Damage(Movable by, float amount, float knockback, bool fromServer = false)
 		{
-			if ((InvincibleWhenStunned && IsStunned) || !Alive)
-			{
+			if (_net.Settings.IsClient && !fromServer)
 				return;
-			}
-
+				
+			if ((InvincibleWhenStunned && IsStunned) || !Alive)
+				return;
+			
 			_stunTimer = StunTime;
 
 			if (!Invincible)
@@ -72,29 +107,61 @@ namespace TheForestWaiter.Game.Objects.Abstract
 				_sound.Play(SoundOnDamage);
 				Health -= amount;
 
+				if (_net.Settings.IsHost)
+				{
+					_net.Traffic.Send(new ObjectDamaged
+					{
+						ForSharedId = SharedId,
+						BySharedId = by.SharedId,
+						Damage = amount,
+						Knockback = knockback,
+					});
+				}
+
 				if (Health <= 0)
 				{
 					Health = 0;
 				}
 			}
 
-			if (Health <= 0 && Alive)
-			{
-				Alive = false;
-				OnDeath();
-			}
+			OnDamage(by, amount);
 
-			if (by != null)
+			if (by != null && !IsGhost)
 			{
 				SetStunVelocity(by, knockback);
 			}
 
-			OnDamage(by, amount);
+			if (Health <= 0 && Alive)
+			{
+				Kill();
+				return;
+			}
+		}
+
+		public void Kill()
+		{
+			if (Net.Settings.IsHost)
+			{
+				Net.Traffic.Send(new ObjectKilled
+				{
+					SharedId = SharedId,
+				});
+			}
+
+			Health = 0;
+			Alive = false;
+			OnDeath();
 		}
 
 		public override void Update(float time)
 		{
 			base.Update(time);
+
+			_playerSearchTimer += time;
+			if (_playerSearchTimer > PLAYER_SEARCH_INTERVAL)
+			{
+				CacheNearestPlayer();
+			}
 
 			if (_stunTimer > 0)
 			{

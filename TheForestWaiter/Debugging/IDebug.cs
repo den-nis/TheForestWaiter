@@ -14,5 +14,7 @@ namespace TheForestWaiter.Game.Debugging
 		void Log(string message);
 
 		void LogNetworking(string message);
+	
+		void InjectCommand(string cmd);
 	}
 }

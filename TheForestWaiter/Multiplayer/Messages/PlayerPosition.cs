@@ -7,7 +7,7 @@ namespace TheForestWaiter.Multiplayer.Messages;
 /// </summary>
 internal class PlayerPosition : IMessage
 {
-    public ushort PlayerId { get; set; }
+    public int SharedId { get; set; }
     public float X { get; set; } //TODO: use vector2f
     public float Y { get; set; }
 
@@ -20,7 +20,7 @@ internal class PlayerPosition : IMessage
         
         return new PlayerPosition
         {
-            PlayerId = d.ReadUInt16(),
+            SharedId = d.ReadInt32(),
             X = d.ReadSingle(),
             Y = d.ReadSingle(),
         };
@@ -31,7 +31,7 @@ internal class PlayerPosition : IMessage
         using MemoryStream m = new();
         using BinaryWriter w = new(m);
         
-        w.Write(PlayerId);
+        w.Write(SharedId);
         w.Write(X);
         w.Write(Y);
 

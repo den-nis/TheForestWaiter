@@ -46,10 +46,10 @@ namespace TheForestWaiter.Game.Objects.Enemies
 			base.Update(time);
 			_jumpTrigger.Update(time);
 
-			Chase(Game.Objects.Player);
-			if (Intersects(Game.Objects.Player))
+			Chase(GetNearestPlayer());
+			if (Intersects(GetNearestPlayer()))
 			{
-				Game.Objects.Player.Damage(this, ATTACK_DAMAGE, KNOCKBACK);
+				GetNearestPlayer().Damage(this, ATTACK_DAMAGE, KNOCKBACK);
 			}
 
 			HandleAnimations(time);
@@ -60,7 +60,7 @@ namespace TheForestWaiter.Game.Objects.Enemies
 			_animation.Sprite.Color = IsStunned ? new Color(255, 0, 0) : Color.White;
 			_animation.Sprite.Position = Position;
 
-			var playerDirection = Math.Sign(Game.Objects.Player.Center.X - Center.X);
+			var playerDirection = Math.Sign(GetNearestPlayer().Center.X - Center.X);
 
 			if (FacingDirection == 0)
 			{

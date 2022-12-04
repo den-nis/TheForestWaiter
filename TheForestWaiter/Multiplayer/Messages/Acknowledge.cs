@@ -4,12 +4,12 @@ namespace TheForestWaiter.Multiplayer.Messages;
 
 /// <summary>
 /// From server to client
-/// Gives the player his PlayerId and Secret
+/// Gives the player his SharedId and Secret
 /// </summary>
 internal class Acknowledge : IMessage
 {
     public int Secret { get; set; }
-    public ushort PlayerId { get; set; }
+    public int SharedId { get; set; }
 
 	public MessageType Type => MessageType.Acknowledge;
 
@@ -20,7 +20,7 @@ internal class Acknowledge : IMessage
         
         return new Acknowledge
         {
-            PlayerId = d.ReadUInt16(),
+            SharedId = d.ReadInt32(),
             Secret = d.ReadInt32(),
         };
     }
@@ -30,7 +30,7 @@ internal class Acknowledge : IMessage
         using MemoryStream m = new();
         using BinaryWriter w = new(m);
         
-        w.Write(PlayerId);
+        w.Write(SharedId);
         w.Write(Secret);
 
         return m.ToArray();

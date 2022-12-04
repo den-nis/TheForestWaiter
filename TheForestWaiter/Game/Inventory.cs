@@ -23,10 +23,11 @@ internal class Inventory
 
     public Creature Owner { get; set; }
     public int EquipedIndex  => _equipedIndex;
+	public Weapon EquipedWeapon => _weaponInstances.ContainsKey(_equipedIndex) ? _weaponInstances[_equipedIndex] : null;
     public IEnumerable<Weapon> Weapons => _weaponInstances.Values;
     public IReadOnlyList<int> Items => _items;
 
-    private List<int> _items = new();
+	private List<int> _items = new();
     private int _equipedIndex;
 
 	private readonly ItemRepository _repostiory;

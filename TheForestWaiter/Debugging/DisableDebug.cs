@@ -16,5 +16,7 @@ namespace TheForestWaiter.Debugging
 		public void Log(string message) { }
 
 		public void LogNetworking(string message) { }
+
+		public void InjectCommand(string cmd) { }
 	}
 }

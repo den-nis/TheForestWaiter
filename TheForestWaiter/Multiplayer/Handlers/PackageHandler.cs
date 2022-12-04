@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using SFML.System;
 using System;
 using System.Collections.Concurrent;
@@ -6,6 +7,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using TheForestWaiter.Game.Debugging;
+using TheForestWaiter.Game.Objects;
 using TheForestWaiter.Multiplayer.Messages;
 
 namespace TheForestWaiter.Multiplayer.Handlers;
@@ -79,47 +81,52 @@ internal abstract class PackageHandler : IDisposable
     /// <param name="relay">Option for the host to sent messages to relay all messages to other clients</param>
     protected void HandlePlayerPacket(Packet packet, bool relay = false)
     {
-        var playerId = BitConverter.ToUInt16(packet.Data.Take(sizeof(ushort)).ToArray());
+        var sharedId = BitConverter.ToUInt16(packet.Data.Take(sizeof(int)).ToArray());
 
-        if (Network.Settings.IsClient && Objects.Ghosts.GetById(playerId) == null) //Host creates ghosts when clients connect
+        Player target = Objects.GetBySharedId(sharedId) as Player;
+        if (Network.Settings.IsClient && target == null)
         {
-            Objects.Ghosts.CreateAndAddGhost(playerId);
+            target = Objects.AddGhostForClient(sharedId);
         }
-
-        var ghost = Objects.Ghosts.GetById(playerId);
 
         IMessage message = null;
 		switch (packet.Type)
         {
             case MessageType.PlayerPosition:
                 var position = PlayerPosition.Deserialize(packet.Data);
-                ghost.Position = new Vector2f(position.X, position.Y);
+                target.Position = new Vector2f(position.X, position.Y);
                 message = position;
                 break;
 
             case MessageType.PlayerAim:
                 var aim = PlayerAim.Deserialize(packet.Data);
-                ghost.Controller.Aim(aim.Angle);
+                target.Controller.Aim(aim.Angle);
                 message = aim;
                 break;
 
             case MessageType.PlayerItemAction:
                 var itemInfo = PlayerItems.Deserialize(packet.Data);
-                ghost.Inventory.Overwrite(itemInfo.Items);
-                ghost.Inventory.Select(itemInfo.EquipedIndex);
+                target.Inventory.Overwrite(itemInfo.Items);
+                target.Inventory.Select(itemInfo.EquipedIndex);
                 message = itemInfo;
                 break;
 
             case MessageType.PlayerAction:
                 var act = PlayerAction.Deserialize(packet.Data);
-                ghost.Controller.Toggle(act.Action, act.State);
+                target.Controller.Toggle(act.Action, act.State);
                 message = act;
+                break;
+
+            //This message is only for client
+            case MessageType.PlayerShoot:
+                var shoot = PlayerShoot.Deserialize(packet.Data);
+                (target as Player)?.Inventory.EquipedWeapon?.Fire();
                 break;
         }
 
         if (relay)
         {
-            Network.Traffic.SendToEveryoneExcept(message, playerId);
+            Network.Traffic.SendToEveryoneExcept(message, sharedId);
         }
     }
 

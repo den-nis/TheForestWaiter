@@ -7,7 +7,7 @@ namespace TheForestWaiter.Multiplayer.Messages;
 /// </summary>
 internal class PlayerItems : IMessage
 {
-    public ushort PlayerId { get; set; }
+    public int SharedId { get; set; }
     public int[] Items { get; set; }
     public int EquipedIndex { get; set; }
 
@@ -18,7 +18,7 @@ internal class PlayerItems : IMessage
         using MemoryStream m = new(data);
         using BinaryReader d = new(m);
 
-        var id = d.ReadUInt16();
+        var id = d.ReadInt32();
         var size = d.ReadInt32();
         int[] items = new int[size];
         
@@ -29,7 +29,7 @@ internal class PlayerItems : IMessage
         
         return new PlayerItems 
         { 
-            PlayerId = id,
+            SharedId = id,
             Items = items,
             EquipedIndex = d.ReadInt32(),
         };
@@ -40,7 +40,7 @@ internal class PlayerItems : IMessage
         using MemoryStream m = new();
         using BinaryWriter w = new(m);
 
-        w.Write(PlayerId);
+        w.Write(SharedId);
         w.Write(Items.Length);
     
         foreach (var item in Items)

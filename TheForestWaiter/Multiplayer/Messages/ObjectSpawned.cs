@@ -4,28 +4,28 @@ using System.IO;
 namespace TheForestWaiter.Multiplayer.Messages;
 
 /// <summary>
-/// Client to host. Player wants to fire a projectile
+/// Host to client. Server letting client know about a spawned object
 /// </summary>
-internal class SpawnProjectile : IMessage
-{
-	public ushort OwnerId { get; set; }
+internal class Spawned : IMessage
+{   
+    public int SharedId { get; set; }
 	public ushort TypeIndex { get; set; }
 	public Vector2f Position { get; set; }
-	public Vector2f Speed { get; set; }
+    public Vector2f Velocity { get; set; }
 
-	public MessageType Type => MessageType.SpawnProjectile;
+	public MessageType Type => MessageType.Spawned;
 
-    public static SpawnProjectile Deserialize(byte[] data)
+    public static Spawned Deserialize(byte[] data)
     {
         using MemoryStream m = new(data);
         using BinaryReader d = new(m);
         
-        return new SpawnProjectile
+        return new Spawned
         {
-			OwnerId = d.ReadUInt16(),
+			SharedId = d.ReadInt32(),
 			TypeIndex = d.ReadUInt16(),
             Position = new Vector2f(d.ReadSingle(), d.ReadSingle()),
-            Speed = new Vector2f(d.ReadSingle(), d.ReadSingle()),
+            Velocity = new Vector2f(d.ReadSingle(), d.ReadSingle()),
         };
     }
 
@@ -34,12 +34,12 @@ internal class SpawnProjectile : IMessage
         using MemoryStream m = new();
         using BinaryWriter w = new(m);
         
-		w.Write(OwnerId);
+		w.Write(SharedId);
 		w.Write(TypeIndex);
         w.Write(Position.X);
         w.Write(Position.Y);
-        w.Write(Speed.X);
-        w.Write(Speed.Y);
+        w.Write(Velocity.X);
+        w.Write(Velocity.Y);
 
         return m.ToArray();
 	}

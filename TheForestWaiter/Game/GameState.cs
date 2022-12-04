@@ -73,7 +73,7 @@ internal class GameState : IState
 	private void SetupCamera()
 	{
 		_camera.BaseSize = _window.SfmlWindow.Size.ToVector2f();
-		_camera.Center = _game.Objects.Player.Center;
+		_camera.Focus = _game.Objects.Player;
 	}
 
 	public void Draw()
@@ -106,7 +106,6 @@ internal class GameState : IState
 		}
 
 		_game.Objects.Update(time);
-		_camera.FollowPlayer(_game.Objects.Player.Center);
 		_camera.Update(time);
 
 		_hud.Update(time);

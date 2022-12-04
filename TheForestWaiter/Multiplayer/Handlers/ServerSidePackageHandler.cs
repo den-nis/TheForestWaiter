@@ -5,6 +5,7 @@ using System.Net;
 using TheForestWaiter.Game;
 using TheForestWaiter.Game.Debugging;
 using TheForestWaiter.Game.Essentials;
+using TheForestWaiter.Game.Objects;
 using TheForestWaiter.Game.Objects.Static;
 using TheForestWaiter.Multiplayer.Messages;
 
@@ -52,51 +53,64 @@ internal class ServerSidePackageHandler : PackageHandler
 
             case MessageType.TextMessage:
                 var msg = TextMessage.Deserialize(packet.Data);
-                Network.Traffic.SendToEveryoneExcept(msg, packet.PlayerId);
+                Network.Traffic.SendToEveryoneExcept(msg, packet.SharedId);
                 _messages.PostLocal(msg.Text);
+                break;
+
+            case MessageType.RemoteCommand:
+                var command = RemoteCommand.Deserialize(packet.Data);
+                _debug.InjectCommand(command.Cmd);
                 break;
         }
 	}
 
     private void HandleGreetings(Packet packet, EndPoint endpoint)
     {
-        //TODO: rate limiting?
         var greet = Greetings.Deserialize(packet.Data);
-        var client = _server.AddClient(endpoint, greet.Username);
+        var player = Objects.AddGhostForServer();
+        var client = _server.AddClient(endpoint, greet.Username, player.SharedId);
     
         Network.Traffic.SendTo(new Acknowledge
         {
-            PlayerId = client.PlayerId,
             Secret = client.Secret,
-        }, client.PlayerId);
+            SharedId = player.SharedId,
+        }, player.SharedId);
 
-        Objects.Ghosts.CreateAndAddGhost(client.PlayerId);
-
-        SendGameInfo(client.PlayerId);
+        SendGameInfo(client.SharedId);
 
         _messages.Post($"{Color.Green.ToColorCode()}{client.Username} joined the game!");
     }
 
-    private void SendGameInfo(ushort playerId)
+    private void SendGameInfo(int sharedId)
     {
-        List<IMessage> messages = Objects.Player.GenerateInfoMessages(1).ToList();
+        List<IMessage> messages = Objects.Player.GenerateInfoMessages().ToList();
 
         foreach (var player in _server.Clients)
         {
-            if (player.PlayerId != playerId)
+            if (player.SharedId != sharedId)
             {
-                messages.AddRange(Objects.Ghosts.GetById(player.PlayerId).GenerateInfoMessages(player.PlayerId));
+                var instance = Objects.Ghosts.GetBySharedId(player.SharedId);
+
+                if (instance.Alive)
+                {
+                    messages.AddRange(instance.GenerateInfoMessages());
+                }
             }
+        }
+
+        foreach (var creature in Objects.Creatures.Where(x => x.Alive && !(x is Player)) )
+        {
+            messages.Add(creature.GetSpawnMessage());
         }
 
         foreach (var message in messages)
         {
-            Network.Traffic.SendTo(message, playerId);
+            Network.Traffic.SendTo(message, sharedId);
         }
 
         Network.Traffic.SendTo(new GameInfo
         {
             WaveNumber = _spawner.CurrentWave
-        }, playerId);
+        }, sharedId);
     }
 }
