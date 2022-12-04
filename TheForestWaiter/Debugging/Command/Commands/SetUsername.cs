@@ -2,7 +2,7 @@ using TheForestWaiter.Multiplayer;
 
 namespace TheForestWaiter.Debugging.Command.Commands
 {
-	[Command("setusername", "", "{new name}")]
+	[Command("setusername", "", "{new name}", CommandSupport.Host | CommandSupport.Client)]
 	internal class SetUsername : ICommand
 	{
 		private readonly NetSettings _network;

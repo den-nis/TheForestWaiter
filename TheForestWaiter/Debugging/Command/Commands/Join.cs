@@ -6,7 +6,7 @@ using TheForestWaiter.States;
 
 namespace TheForestWaiter.Debugging.Command.Commands
 {
-	[Command("join", "", "{ip} {port}")]
+	[Command("join", "", "{ip} {port}", CommandSupport.Client)]
 	internal class Join : ICommand
 	{
 		private readonly StateManager _stateManager;

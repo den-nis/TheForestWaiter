@@ -2,7 +2,7 @@
 
 namespace TheForestWaiter.Debugging.Command.Commands
 {
-	[Command("god", "")]
+	[Command("god")]
 	internal class GodMode : ICommand
 	{
 		private readonly GameData _game;

@@ -6,7 +6,7 @@ using TheForestWaiter.States;
 
 namespace TheForestWaiter.Debugging.Command.Commands
 {
-	[Command("host", "", "{port}")]
+	[Command("host", "", "{port}", CommandSupport.Host)]
 	internal class Host : ICommand
 	{
 		private readonly StateManager _stateManager;

@@ -71,6 +71,7 @@ namespace TheForestWaiter.Debugging.Command
 
 		private void ExecuteCommand(string command, string[] args)
 		{
+			Console.WriteLine($"Executing command \"{command} {string.Join(' ', args)}\"");
 			if (!_commands.ContainsKey(command))
 			{
 				Console.WriteLine($"Unknown command {command}, use \"help\" to get a list of commands");

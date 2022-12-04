@@ -1,12 +1,10 @@
 ﻿using LightInject;
-using System;
 using System.Linq;
 using TheForestWaiter.Game;
-using TheForestWaiter.Game.Weapons.Abstract;
 
 namespace TheForestWaiter.Debugging.Command.Commands
 {
-	[Command("give", "equip a weapon", "{weapon name}")]
+	[Command("give", "equip a weapon", "{weapon name}", CommandSupport.All)]
 	internal class Give : ICommand
 	{
 		private readonly GameData _game;

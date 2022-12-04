@@ -3,7 +3,7 @@ using TheForestWaiter.Debugging.DebugConsole;
 
 namespace TheForestWaiter.Debugging.Command.Commands
 {
-	[Command("timeinfo", "", "")]
+	[Command("timeinfo", "", "", CommandSupport.All)]
 	internal class TimeInfo : ICommand
 	{
 		private readonly TimeProcessor _time;

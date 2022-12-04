@@ -4,7 +4,7 @@ using TheForestWaiter.Game;
 
 namespace TheForestWaiter.Debugging.Command.Commands
 {
-	[Command("hitbox", "Toggle hitboxes")]
+	[Command("hitbox", "Toggle hitboxes", "", CommandSupport.All)]
 	internal class HitBoxes : ICommand
 	{
 		private readonly GameData _game;

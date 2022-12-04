@@ -2,7 +2,7 @@ using TheForestWaiter.Multiplayer;
 
 namespace TheForestWaiter.Debugging.Command.Commands
 {
-	[Command("exec", "Run a command on the host or on all clients if you are host", "{command}")]
+	[Command("exec", "Run a command on the host or on all clients if you are host", "{command}", CommandSupport.Client | CommandSupport.Host)]
 	internal class ExecCommand : ICommand
 	{
 		private readonly NetContext _context;

@@ -3,7 +3,7 @@ using TheForestWaiter.Multiplayer;
 
 namespace TheForestWaiter.Debugging.Command.Commands
 {
-	[Command("msg", "Send a message", "{message}")]
+	[Command("msg", "Send a message", "{message}", CommandSupport.All)]
 	internal class Msg : ICommand
 	{
 		private GameMessages _messages;
