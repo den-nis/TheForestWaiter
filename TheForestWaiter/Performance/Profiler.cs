@@ -69,6 +69,11 @@ internal class Profiler
 			window.Draw(_bar);
 			window.Draw(_text);
 		}
+
+		public void Reset()
+		{
+			Average = double.NaN;
+		}
 	}
 
 	private readonly Dictionary<ProfileCategory, Tracker> _trackers = new();
@@ -85,6 +90,7 @@ internal class Profiler
 
 		window.SetFramerateLimit(60);
 		window.Closed += (_, _) => window.Close();
+		window.KeyPressed += WindowKeyPressed;
 
 		while (window.IsOpen)
 		{
@@ -98,6 +104,17 @@ internal class Profiler
 			window.Clear(Color.Black);
 			Draw(window);
 			window.Display();
+		}
+	}
+
+	private void WindowKeyPressed(object sender, KeyEventArgs e)
+	{
+		if (e.Code == Keyboard.Key.R)
+		{
+			foreach (var tracker in _trackers.Values)
+			{
+				tracker.Reset();
+			}
 		}
 	}
 
