@@ -12,6 +12,7 @@ using TheForestWaiter.Game.Objects;
 using TheForestWaiter.Game.Objects.Abstract;
 using TheForestWaiter.Game.Objects.Projectiles;
 using TheForestWaiter.Game.Particles;
+using TheForestWaiter.Performance;
 
 namespace TheForestWaiter
 {
@@ -23,16 +24,16 @@ namespace TheForestWaiter
 		private readonly UserSettings _settings;
 		private readonly ObjectCreator _creator;
 		private readonly Camera _camera;
-		private readonly IDebug _debug;
 
-		public GameObjects(UserSettings settings, ObjectCreator creator, Camera camera, IDebug debug)
+		public GameObjects(UserSettings settings, ObjectCreator creator, Camera camera)
 		{
 			_settings = settings;
 			_creator = creator;
 			_camera = camera;
-			_debug = debug;
 
 			WorldParticles = new ParticleSystem(_settings.GetInt("Game", "MaxParticles"));
+
+			ConfigureProfiler();
 		}
 
 		public Player Player { get; private set; } = null;
@@ -78,8 +79,14 @@ namespace TheForestWaiter
 
 		public void Draw(RenderWindow window)
 		{
-			ForAllContainers(c => c.Draw(window));
+			ForAllContainers(c =>
+			{
+				c.Draw(window);
+			});
+
+			Profiling.Start(ProfileCategory.DrawWorldParticles);
 			WorldParticles.Draw(window);
+			Profiling.End(ProfileCategory.DrawWorldParticles);
 
 			if (EnableDrawHitBoxes)
 			{
@@ -91,7 +98,10 @@ namespace TheForestWaiter
 		{
 			HandleQueue();
 			ForAllContainers(c => c.Update(time));
+
+			Profiling.Start(ProfileCategory.UpdateWorldParticles);
 			WorldParticles.Update(time);
+			Profiling.End(ProfileCategory.UpdateWorldParticles);
 		}
 
 		public void LoadAllFromMap(Map map)
@@ -157,6 +167,19 @@ namespace TheForestWaiter
 				default:
 					throw new KeyNotFoundException($"No container found for \"{obj.GetType().Name}\"");
 			}
+		}
+
+		[Conditional("PROFILE")]
+		private void ConfigureProfiler()
+		{
+			Environment
+				.ConfigureProfiler(ProfileCategory.DrawEnvironment, ProfileCategory.UpdateEnvironment);
+			Creatures
+				.ConfigureProfiler(ProfileCategory.DrawCreatures, ProfileCategory.UpdateCreatures);
+			Projectiles
+				.ConfigureProfiler(ProfileCategory.DrawProjectiles, ProfileCategory.UpdateProjectiles);
+			Other
+				.ConfigureProfiler(ProfileCategory.DrawOther, ProfileCategory.UpdateOther);
 		}
 	}
 }

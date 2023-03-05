@@ -4,6 +4,7 @@ using TheForestWaiter.Content;
 using TheForestWaiter.Game.Environment;
 using TheForestWaiter.Game.Essentials;
 using TheForestWaiter.Game.Hud;
+using TheForestWaiter.Performance;
 using TheForestWaiter.Services;
 using TheForestWaiter.States;
 
@@ -65,6 +66,8 @@ namespace TheForestWaiter.Game
 
 		public void Draw()
 		{
+			Profiling.Start(ProfileCategory.DrawGame);
+
 			_window.SfmlWindow.SetView(_camera.GetView());
 			_window.SfmlWindow.Clear(new Color(54, 26, 103));
 
@@ -77,10 +80,14 @@ namespace TheForestWaiter.Game
 			_hud.Draw(_window.SfmlWindow);
 
 			_window.SfmlWindow.SetView(Camera.GetWindowView(_window.SfmlWindow));
+
+			Profiling.End(ProfileCategory.DrawGame);
 		}
 
 		public void Update(float time)
 		{
+			Profiling.Start(ProfileCategory.UpdateGame);
+
 			_background.Update();
 			_background.SetOffset(_camera.Center);
 			_background.UpdateSize((int)_window.SfmlWindow.Size.X, (int)_window.SfmlWindow.Size.Y);
@@ -95,6 +102,8 @@ namespace TheForestWaiter.Game
 			_game.Objects.Update(time);
 			_camera.FollowPlayer(_game.Objects.Player.Center);
 			_camera.Update(time);
+
+			Profiling.End(ProfileCategory.UpdateGame);
 		}
 	}
 }

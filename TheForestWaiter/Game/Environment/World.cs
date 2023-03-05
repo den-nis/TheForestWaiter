@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TheForestWaiter.Content;
 using TheForestWaiter.Graphics;
+using TheForestWaiter.Performance;
 
 namespace TheForestWaiter.Game.Environment
 {
@@ -91,6 +92,8 @@ namespace TheForestWaiter.Game.Environment
 
 		public void Draw(RenderWindow win, FloatRect rect, bool onlyForeground)
 		{
+			Profiling.Start(onlyForeground ? ProfileCategory.DrawWorldForeground : ProfileCategory.DrawWorldBackground);
+
 			var r = GetTileBounds(rect);
 
 			for (int y = r.Top; y < r.Top + r.Height; y++)
@@ -126,6 +129,8 @@ namespace TheForestWaiter.Game.Environment
 					}
 				}
 			}
+
+			Profiling.End(onlyForeground ? ProfileCategory.DrawWorldForeground : ProfileCategory.DrawWorldBackground);
 		}
 
 		private IntRect GetTileBounds(FloatRect bounds)

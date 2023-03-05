@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TheForestWaiter.Game.Constants;
 using TheForestWaiter.Game.Hud.Sections;
+using TheForestWaiter.Performance;
 
 namespace TheForestWaiter.Game.Hud
 {
@@ -46,6 +47,8 @@ namespace TheForestWaiter.Game.Hud
 
 		public void Draw(RenderWindow window)
 		{
+			Profiling.Start(ProfileCategory.DrawHud);
+
 			window.SetView(Camera.GetWindowView(window));
 
 			foreach (var section in _sections.Where(s => !s.Hidden))
@@ -54,6 +57,8 @@ namespace TheForestWaiter.Game.Hud
 			}
 
 			window.SetView(_camera.GetView());
+
+			Profiling.End(ProfileCategory.DrawHud);
 		}
 
 		public void PrimaryReleased()

@@ -3,14 +3,14 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
+    <Configurations>Debug;Release;Profile</Configurations>
   </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <PlatformTarget>x64</PlatformTarget>
-	<OutputType>WinExe</OutputType>
+  
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Profile|AnyCPU'">
+    <Optimize>True</Optimize>
   </PropertyGroup>
-
+	
   <ItemGroup>
     <None Remove="Content.zip" />
     <None Remove="Icon.ico" />

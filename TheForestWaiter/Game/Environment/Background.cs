@@ -1,6 +1,7 @@
 ﻿using SFML.Graphics;
 using SFML.System;
 using TheForestWaiter.Content;
+using TheForestWaiter.Performance;
 
 namespace TheForestWaiter.Game.Environment
 {
@@ -71,6 +72,8 @@ namespace TheForestWaiter.Game.Environment
 
 		public void Draw(RenderWindow window)
 		{
+			Profiling.Start(ProfileCategory.DrawBackground);
+
 			window.SetView(Camera.GetWindowView(window));
 
 			foreach (var i in _all)
@@ -79,6 +82,8 @@ namespace TheForestWaiter.Game.Environment
 			}
 
 			window.SetView(_camera.GetView());
+
+			Profiling.End(ProfileCategory.DrawBackground);
 		}
 
 		public void Update()

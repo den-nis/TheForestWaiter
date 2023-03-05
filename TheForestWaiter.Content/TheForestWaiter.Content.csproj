@@ -3,6 +3,11 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
+    <Configurations>Debug;Release;Profile</Configurations>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Profile|AnyCPU'">
+    <Optimize>True</Optimize>
   </PropertyGroup>
 
   <ItemGroup>

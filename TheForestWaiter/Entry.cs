@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using TheForestWaiter.Game.Debugging;
+using TheForestWaiter.Performance;
 using TheForestWaiter.States;
 using TheForestWaiter.UI.Menus;
 
@@ -29,6 +30,8 @@ namespace TheForestWaiter
 
 		public void Run()
 		{
+			Profiling.CreateProfiler();
+
 			Stopwatch timer = Stopwatch.StartNew();
 			float deltaTime = 0;
 
@@ -36,6 +39,8 @@ namespace TheForestWaiter
 
 			while (_window.SfmlWindow.IsOpen)
 			{
+				Profiling.Start(ProfileCategory.Tick);
+
 				timer.Restart();
 
 				_window.SfmlWindow.DispatchEvents();
@@ -46,9 +51,13 @@ namespace TheForestWaiter
 				_stateManager.Draw();
 				_debug.Draw(_window.SfmlWindow);
 
+				Profiling.End(ProfileCategory.Tick);
+
 				_window.SfmlWindow.Display();
 
 				deltaTime = _time.Process((float)timer.Elapsed.TotalSeconds);
+
+				Profiling.SendDataToProfiler();
 			}
 		}
 	}
