@@ -1,6 +1,8 @@
 # TheForestWaiter
 The Forest Waiter is a platformer made using SFML. This project initially started as a joke, but we decided to finish it. The name is a Dutch word "boswachter" poorly translated to "Forest Waiter".
 
+[![Build for windows](https://github.com/den-nis/TheForestWaiter/actions/workflows/BuildWindows.yml/badge.svg)](https://github.com/den-nis/TheForestWaiter/actions/workflows/BuildWindows.yml)
+
 ## Controls
 The following table contains the default controls. Some of these controls can be adjusted by editing the `Settings.ini` file.
 
