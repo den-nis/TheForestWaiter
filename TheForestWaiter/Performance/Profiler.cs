@@ -12,6 +12,7 @@ namespace TheForestWaiter.Performance;
 internal class Profiler
 {
 	//TODO: have a solution for linux
+	private const string FONT_NAME_LINUX = @"/usr/share/fonts/truetype/freefont/FreeMono.ttf";
 	private const string FONT_NAME_WINDOWS = @"C:\Windows\Fonts\consola.ttf";
 
 	private const int WIDTH = 1100;
@@ -21,7 +22,7 @@ internal class Profiler
 	private const float BAR_THICKNESS = 10;
 	private const float BAR_RIGHT_MARGIN = 20;
 
-	private readonly Font font = new(FONT_NAME_WINDOWS);
+	private readonly Font font;  
 
 	private class Tracker
 	{
@@ -82,6 +83,15 @@ internal class Profiler
 	public Profiler(ConcurrentQueue<ProfilerPacket[]> source)
 	{
 		_source = source;
+
+		if (OperatingSystem.IsWindows())
+		{
+			font = new(FONT_NAME_WINDOWS);
+		} 
+		else
+		{
+			font = new(FONT_NAME_LINUX);
+		}
 	}
 
 	public void Start()
