@@ -31,7 +31,7 @@ namespace TheForestWaiter
 
 		public void Play(SoundInfo soundInfo)
 		{
-			Debug.Assert(soundInfo != null, "Avoid using null soundinfo");
+			Debug.Assert(soundInfo != null, $"{nameof(soundInfo)} is null");
 
 			if (soundInfo != null && !soundInfo.IsSilent())
 			{

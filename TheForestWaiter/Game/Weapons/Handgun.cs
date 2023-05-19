@@ -22,6 +22,7 @@ namespace TheForestWaiter.Game.Weapons
 			_content = IoC.GetInstance<ContentSource>();
 			_gameData = IoC.GetInstance<GameData>();
 
+			Slot = 0;
 			AutoFire = true;
 			Cone = TrigHelper.ToRad(5);
 			FireRatePerSecond = 5;

@@ -26,5 +26,11 @@ namespace TheForestWaiter.Game.Essentials
 		{
 			return Math.Cos(radians) > 0;
 		}
+
+		public static float NormalizeRadians(float radians)
+		{
+			float c = (float)Math.PI * 2f;
+			return (radians % c + c) % c;
+		}
 	}
 }

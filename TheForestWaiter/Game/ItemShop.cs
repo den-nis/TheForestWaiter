@@ -99,7 +99,7 @@ namespace TheForestWaiter.Game
 			{
 				case "Weapon":
 					var weapon = _container.GetInstance(Types.Weapons[product.Name]) as Weapon;
-					_game.Objects.Player.Weapons.Add(weapon);
+					_game.Objects.Player.WeaponWheel.Add(weapon);
 					break;
 
 				default:

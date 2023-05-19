@@ -120,6 +120,7 @@ namespace TheForestWaiter.Game
 			var mouse = new Vector2f(e.X, e.Y);
 			var angle = (_camera.ToWorld(mouse) - _game.Objects.Player.Center).Angle() + (float)Math.PI * 2;
 			_game.Objects.Player.Controller.Aim(angle);
+			_game.Objects.Player.WeaponWheel.OnMouseMove(new Vector2i(e.X, e.Y));
 			_hud.OnMouseMove(new Vector2i(e.X, e.Y));
 		}
 
@@ -135,6 +136,7 @@ namespace TheForestWaiter.Game
 			if (c == _settings.Right) _game.Objects.Player.Controller.ToggleOff(ActionTypes.Right);
 			if (c == _settings.Left) _game.Objects.Player.Controller.ToggleOff(ActionTypes.Left);
 			if (c == _settings.ToggleShop) _hud.ToggleShopVisibility();
+			if (c == _settings.ShowWeaponWheel) _game.Objects.Player.WeaponWheel.StopSelecting();
 			if (c == _settings.FullScreen) ToggleFullscreen();
 		}
 
@@ -144,10 +146,11 @@ namespace TheForestWaiter.Game
 			if (c == _settings.Jump) _game.Objects.Player.Controller.ToggleOn(ActionTypes.Up);
 			if (c == _settings.Right) _game.Objects.Player.Controller.ToggleOn(ActionTypes.Right);
 			if (c == _settings.Left) _game.Objects.Player.Controller.ToggleOn(ActionTypes.Left);
+			if (c == _settings.ShowWeaponWheel) _game.Objects.Player.WeaponWheel.StartSelecting();
 
 			if (c >= Keyboard.Key.Num1 && c <= Keyboard.Key.Num9)
 			{
-				_game.Objects.Player.Weapons.Select(c - Keyboard.Key.Num1);
+				_game.Objects.Player.WeaponWheel.Select(c - Keyboard.Key.Num1);
 			}
 		}
 

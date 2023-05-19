@@ -15,6 +15,7 @@ namespace TheForestWaiter
 		public Key Right { get; private set; }
 		public Key Jump { get; private set; }
 		public Key ToggleShop { get; private set; }
+		public Key ShowWeaponWheel { get; private set; }
 		public Key FullScreen { get; private set; }
 		public Button Primary { get; private set; }
 
@@ -27,6 +28,7 @@ namespace TheForestWaiter
 			Right = Enum.Parse<Key>(Get("Controls", "Right"));
 			Jump = Enum.Parse<Key>(Get("Controls", "Jump"));
 			ToggleShop = Enum.Parse<Key>(Get("Controls", "ToggleShop"));
+			ShowWeaponWheel = Enum.Parse<Key>(Get("Controls", "ShowWeaponWheel"));
 			FullScreen = Enum.Parse<Key>(Get("Controls", "FullScreen"));
 			Primary = Enum.Parse<Button>(Get("Controls", "Shoot"));
 		}

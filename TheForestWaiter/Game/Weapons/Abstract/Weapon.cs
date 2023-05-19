@@ -8,6 +8,7 @@ namespace TheForestWaiter.Game.Weapons.Abstract
 {
 	internal abstract class Weapon : Drawable
 	{
+		public int Slot { get; protected set; } = 0;
 		public float Weight { get; protected set; } = 0;
 
 		public bool Firing { get; set; }

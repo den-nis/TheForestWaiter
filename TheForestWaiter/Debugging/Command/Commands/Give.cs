@@ -21,7 +21,7 @@ namespace TheForestWaiter.Debugging.Command.Commands
 		public void Execute(CommandHandler handler, string[] args)
 		{
 			var weapon = (Weapon)_container.GetInstance(Types.Weapons.Values.FirstOrDefault(t => t.Name.Equals(args[0], StringComparison.OrdinalIgnoreCase)));
-			_game.Objects.Player.Weapons.Add(weapon);
+			_game.Objects.Player.WeaponWheel.Add(weapon);
 		}
 	}
 }

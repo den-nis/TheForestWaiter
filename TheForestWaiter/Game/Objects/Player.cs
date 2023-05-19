@@ -21,7 +21,7 @@ namespace TheForestWaiter.Game.Objects
 		private const float WALK_SOUND_INTERVAL = 0.50f;
 
 		public PlayerController Controller { get; } = new();
-		public WeaponCollection Weapons { get; } = new();
+		public WeaponWheel WeaponWheel { get; } = new();
 
 		private readonly AnimatedSprite _sprite;
 		private readonly ContentSource _content;
@@ -65,26 +65,26 @@ namespace TheForestWaiter.Game.Objects
 			JumpHoldForce = 300;
 			JumpForce = 400;
 
-			Weapons.Add(creator.CreateWeapon<Handgun>());
-			Weapons.OnEquipedChanged += OnEquipmentChangedEventHandler;
+			WeaponWheel.Add(creator.CreateWeapon<Handgun>());
+			WeaponWheel.OnEquipedChanged += OnEquipmentChangedEventHandler;
 		}
 
 		public override void Update(float time)
 		{
 			base.Update(time);
 
-			var gun = Weapons.GetEquiped();
+			var weapon = WeaponWheel.Equiped;
 
 			_switchCooldown -= time;
 
-			if (gun != null)
+			if (weapon != null)
 			{
 				if (_switchCooldown <= 0)
 				{
-					gun.Firing = Controller.IsActive(ActionTypes.PrimaryAttack);
-					gun.Aim(Controller.GetAim());
+					weapon.Firing = Controller.IsActive(ActionTypes.PrimaryAttack);
+					weapon.Aim(Controller.GetAim());
 				}
-				gun.Update(time);
+				weapon.Update(time);
 			}
 
 			if (Controller.IsActive(ActionTypes.Right) != Controller.IsActive(ActionTypes.Left))
@@ -117,17 +117,17 @@ namespace TheForestWaiter.Game.Objects
 			HandleAnimations(time);
 			HandleSounds(time);
 
-			foreach (var weapon in Weapons.OwnedWeapons)
+			foreach (var i in WeaponWheel.OwnedWeapons)
 			{
-				weapon.BackgroundUpdate(time);
+				i.BackgroundUpdate(time);
 			}
 		}
 
 		public override void Draw(RenderWindow window)
 		{
-			if (_switchCooldown <= 0)
+			if (_switchCooldown <= 0 && WeaponWheel.Equiped != null)
 			{
-				window.Draw(Weapons.GetEquiped());
+				window.Draw(WeaponWheel.Equiped);
 			}
 
 			window.Draw(_sprite);
@@ -159,7 +159,7 @@ namespace TheForestWaiter.Game.Objects
 			bool isMovingLeft = FacingDirection < 0;
 			bool aimingRight = TrigHelper.IsPointingRight(Controller.GetAim());
 
-			var gun = Weapons.GetEquiped();
+			var gun = WeaponWheel.Equiped;
 
 			if (IsStunned)
 			{
@@ -199,11 +199,12 @@ namespace TheForestWaiter.Game.Objects
 
 		private void OnEquipmentChangedEventHandler(Weapon previous)
 		{
-			previous.Firing = false;
-			_switchCooldown = SWITCH_COOLDOWN_TIME;
+			if (previous != null)
+				previous.Firing = false;
 
-			var current = Weapons.GetEquiped();
-			CarryingWeight = current.Weight;
+			_switchCooldown = SWITCH_COOLDOWN_TIME;
+			var current = WeaponWheel.Equiped;
+			CarryingWeight = current?.Weight ?? 0;
 		}
 
 		protected override void OnDamage(GameObject by, float amount)
