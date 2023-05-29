@@ -11,7 +11,6 @@ namespace TheForestWaiter.Performance;
 
 internal class Profiler
 {
-	//TODO: have a solution for linux
 	private const string FONT_NAME_LINUX = @"/usr/share/fonts/truetype/freefont/FreeMono.ttf";
 	private const string FONT_NAME_WINDOWS = @"C:\Windows\Fonts\consola.ttf";
 
