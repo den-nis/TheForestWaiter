@@ -39,7 +39,7 @@ namespace TheForestWaiter.Game.Objects.Enemies
 			_minFlyingHeight = 50;
 			FlyingHeight = _maxFlyingHeight;
 
-			Speed = 150 + Rng.Var(40);
+			Speed = 220 + Rng.Var(40);
 			SetMaxHealth(300, true);
 		}
 
