@@ -11,9 +11,9 @@ namespace TheForestWaiter
 		public void Harvest()
 		{
 			var data = IoC.GetInstance<GameData>();
-			var spawner = data.Objects.Environment.First(x => x is Spawner);
+			var spawner = data.Objects.Environment.FirstOrDefault(x => x is Spawner);
 
-			Wave = (spawner as Spawner).CurrentWave;
+			Wave = (spawner as Spawner)?.CurrentWave ?? 0;
 		}
 	}
 }
