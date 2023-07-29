@@ -24,7 +24,7 @@ namespace TheForestWaiter.Game.Objects.Enemies
 			_dropSpawner = IoC.GetInstance<DropSpawner>();
 
 			_animation = _content.Textures.CreateAnimatedSprite("Textures/Enemies/minirusher.png");
-			Size = _animation.Sheet.TileSize.ToVector2f();
+			Size = _animation.Sheet.Rect.CellSize.ToVector2f();
 
 			_dropSpawner.Setup("Textures/Enemies/minirusher_gibs.png");
 			_dropSpawner.ChanceOfHeartDrop = 0.01f;
@@ -69,10 +69,10 @@ namespace TheForestWaiter.Game.Objects.Enemies
 			else
 			{
 				if (playerDirection > 0)
-					_animation.Sheet.MirrorX = true;
+					_animation.Sheet.Rect.MirrorX = true;
 
 				if (playerDirection < 0)
-					_animation.Sheet.MirrorX = false;
+					_animation.Sheet.Rect.MirrorX = false;
 
 				_animation.SetSection("walking");
 			}

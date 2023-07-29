@@ -35,7 +35,7 @@ namespace TheForestWaiter.Game.Objects.Abstract
 			_animation = content.Textures.CreateAnimatedSprite(texture);
 			_animation.CurrentFrame = Rng.RangeInt(_animation.AnimationStart, _animation.AnimationEnd);
 
-			Size = _animation.Sheet.TileSize.ToVector2f();
+			Size = _animation.Sheet.Rect.CellSize.ToVector2f();
 			Drag = new Vector2f(100, 0);
 
 			Gravity = 200;

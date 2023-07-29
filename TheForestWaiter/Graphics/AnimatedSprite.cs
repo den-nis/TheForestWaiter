@@ -1,4 +1,5 @@
 ﻿using SFML.Graphics;
+using SFML.System;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -62,16 +63,23 @@ namespace TheForestWaiter.Graphics
 
 		public AnimatedSprite(SpriteSheet sheet, int fps)
 		{
-			AnimationEnd = sheet.TotatlTiles - 1;
+			AnimationEnd = sheet.Rect.TotatlTiles - 1;
 			Framerate = fps;
 			Sheet = sheet;
 		}
 
-		public AnimatedSprite(Texture texture, int cellWidth, int cellHeight, int fps)
+		public AnimatedSprite(Texture texture, Vector2i cellSize, int fps)
 		{
-			Sheet = new SpriteSheet(texture, cellWidth, cellHeight);
+			Sheet = new SpriteSheet(texture, cellSize);
 			Framerate = fps;
-			AnimationEnd = Sheet.TotatlTiles - 1;
+			AnimationEnd = Sheet.Rect.TotatlTiles - 1;
+		}
+
+		public AnimatedSprite(Texture texture, Vector2i cellSize, Vector2i spacing, Vector2i margin, int fps)
+		{
+			Sheet = new SpriteSheet(texture, cellSize, spacing, margin);
+			Framerate = fps;
+			AnimationEnd = Sheet.Rect.TotatlTiles - 1;
 		}
 
 		public void SetSection(string name)

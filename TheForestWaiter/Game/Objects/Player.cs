@@ -52,7 +52,7 @@ namespace TheForestWaiter.Game.Objects
 			_deathSound = new("Sounds/Player/death.wav");
 
 			_sprite = _content.Textures.CreateAnimatedSprite("Textures/Player/sheet.png");
-			Size = _sprite.Sheet.TileSize.ToVector2f();
+			Size = _sprite.Sheet.Rect.CellSize.ToVector2f();
 
 			StunTime = 1;
 			AutoJumpObstacles = false;
@@ -172,7 +172,7 @@ namespace TheForestWaiter.Game.Objects
 				_sprite.Sprite.Color = Color.White;
 			}
 
-			_sprite.Sheet.MirrorX = !aimingRight;
+			_sprite.Sheet.Rect.MirrorX = !aimingRight;
 
 			if ((aimingRight && isMovingRight) || (!aimingRight && isMovingLeft))
 			{

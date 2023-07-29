@@ -1,5 +1,6 @@
 ﻿using SFML.Graphics;
 using SFML.System;
+using System;
 
 namespace TheForestWaiter.Graphics
 {
@@ -37,13 +38,14 @@ namespace TheForestWaiter.Graphics
 
 				if (character == '\n')
 				{
-					offsetY += (_sheet.TileSize.Y + Spacing.Y) * Scale;
+					offsetY += (_sheet.Rect.CellSize.Y + Spacing.Y) * Scale;
 					offsetX = 0;
 					continue;
 				}
 
 				int index = GetIndex(character);
-				if (index < 0 || index >= _sheet.TotatlTiles)
+
+				if (index < 0 || index >= _sheet.Rect.TotatlTiles)
 				{
 					continue;
 				}
@@ -53,7 +55,7 @@ namespace TheForestWaiter.Graphics
 				_sheet.Sprite.Scale = new Vector2f(Scale, Scale);
 				window.Draw(_sheet);
 
-				offsetX += (_sheet.TileSize.X + Spacing.X) * Scale;
+				offsetX += (_sheet.Rect.CellSize.X + Spacing.X) * Scale;
 			}
 		}
 

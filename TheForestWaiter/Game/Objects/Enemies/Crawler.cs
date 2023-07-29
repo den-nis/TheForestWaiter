@@ -41,7 +41,7 @@ namespace TheForestWaiter.Game.Objects.Enemies
 			_dropSpawner = IoC.GetInstance<DropSpawner>();
 
 			_animation = _content.Textures.CreateAnimatedSprite("Textures/Enemies/crawler.png");
-			Size = _animation.Sheet.TileSize.ToVector2f();
+			Size = _animation.Sheet.Rect.CellSize.ToVector2f();
 
 			SetMaxHealth(300, true);
 			JumpForce = Rng.Var(400, variation: 20);
@@ -88,7 +88,7 @@ namespace TheForestWaiter.Game.Objects.Enemies
 		{
 			_animation.Sprite.Color = IsStunned ? new Color(255, 0, 0) : Color.White;
 			_animation.Sprite.Position = Position;
-			_animation.Sheet.MirrorX = PlayerDirection == 1;
+			_animation.Sheet.Rect.MirrorX = PlayerDirection == 1;
 
 			if (_prepareAttackTime > 0)
 			{

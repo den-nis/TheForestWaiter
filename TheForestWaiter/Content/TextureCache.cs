@@ -10,6 +10,9 @@ namespace TheForestWaiter.Content
 	{
 		protected override ContentType Type => ContentType.Texture;
 
+		private readonly Vector2i TILES_SPACING = new Vector2i(2,2);
+		private readonly Vector2i TILES_MARGIN = new Vector2i(1,1);
+
 		public TextureCache(ContentConfig config) : base(config)
 		{
 		}
@@ -31,9 +34,11 @@ namespace TheForestWaiter.Content
 			Debug.Assert(meta.TextureConfig.TileWidth != 0);
 			Debug.Assert(meta.TextureConfig.TileHeight != 0);
 
-			var sheet = new SpriteSheet(Get(name), meta.TextureConfig.TileWidth, meta.TextureConfig.TileHeight);
+			var size = new Vector2i(meta.TextureConfig.TileWidth, meta.TextureConfig.TileHeight);
+			var sheet = meta.TextureConfig.HasTileSpacing 
+				? new SpriteSheet(Get(name), size, TILES_SPACING, TILES_MARGIN)
+				: new SpriteSheet(Get(name), size);
 
-			TryApplySpacing(sheet, meta);
 			return sheet;
 		}
 
@@ -44,11 +49,13 @@ namespace TheForestWaiter.Content
 			Debug.Assert(meta.TextureConfig.TileWidth != 0);
 			Debug.Assert(meta.TextureConfig.TileHeight != 0);
 
-			var animation = new AnimatedSprite(Get(name), meta.TextureConfig.TileWidth, meta.TextureConfig.TileHeight, meta.TextureConfig.Framerate);
-			TryApplySpacing(animation.Sheet, meta);
-			TryAddSections(animation, meta);
+			var size = new Vector2i(meta.TextureConfig.TileWidth, meta.TextureConfig.TileHeight);
+			var animation = meta.TextureConfig.HasTileSpacing 
+				? new AnimatedSprite(Get(name), size, TILES_SPACING, TILES_MARGIN, meta.TextureConfig.Framerate)
+				: new AnimatedSprite(Get(name), size, meta.TextureConfig.Framerate);
 
-			animation.AnimationEnd = animation.Sheet.TotatlTiles - 1;
+			TryAddSections(animation, meta);
+			animation.AnimationEnd = animation.Sheet.Rect.TotatlTiles - 1;
 			return animation;
 		}
 
@@ -57,15 +64,6 @@ namespace TheForestWaiter.Content
 			if (meta.TextureConfig.Sections != null)
 			{
 				sprite.Sections.AddRange(meta.TextureConfig.Sections);
-			}
-		}
-
-		private static void TryApplySpacing(SpriteSheet sheet, ContentMeta meta)
-		{
-			if (meta.TextureConfig.HasTileSpacing)
-			{
-				sheet.Spacing = new Vector2i(2, 2);
-				sheet.Margin = new Vector2i(1, 1);
 			}
 		}
 	}

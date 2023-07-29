@@ -28,7 +28,7 @@ namespace TheForestWaiter.Game.Objects.Enemies
 			_creator = IoC.GetInstance<ObjectCreator>();
 
 			_animation = _content.Textures.CreateAnimatedSprite("Textures/Enemies/bigrusher.png");
-			Size = _animation.Sheet.TileSize.ToVector2f();
+			Size = _animation.Sheet.Rect.CellSize.ToVector2f();
 
 			_dropSpawner.Setup("Textures/Enemies/bigrusher_gibs.png");
 			_dropSpawner.ChanceOfHeartDrop = 0.01f;
@@ -76,10 +76,10 @@ namespace TheForestWaiter.Game.Objects.Enemies
 			else
 			{
 				if (playerDirection > 0)
-					_animation.Sheet.MirrorX = true;
+					_animation.Sheet.Rect.MirrorX = true;
 
 				if (playerDirection < 0)
-					_animation.Sheet.MirrorX = false;
+					_animation.Sheet.Rect.MirrorX = false;
 
 				_animation.SetSection("walking");
 			}

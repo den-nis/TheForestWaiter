@@ -33,7 +33,7 @@ namespace TheForestWaiter.Game.Objects.Enemies
 			_animation.SetSection("flying");
 			_animation.Framerate += Rng.Float();
 
-			Size = _animation.Sheet.TileSize.ToVector2f();
+			Size = _animation.Sheet.Rect.CellSize.ToVector2f();
 
 			_maxFlyingHeight = 180 + Rng.Var(80);
 			_minFlyingHeight = 50;
@@ -71,7 +71,7 @@ namespace TheForestWaiter.Game.Objects.Enemies
 		{
 			_animation.Sprite.Color = IsStunned ? new Color(255, 0, 0) : Color.White;
 			_animation.Sprite.Position = Position;
-			_animation.Sheet.MirrorX = FacingDirection > 0;
+			_animation.Sheet.Rect.MirrorX = FacingDirection > 0;
 
 			_animation.Update(time);
 		}

@@ -18,7 +18,7 @@ namespace TheForestWaiter.Game.Objects.Static
 			var content = IoC.GetInstance<ContentSource>();
 
 			Animation = content.Textures.CreateAnimatedSprite("Textures/World/tree.png");
-			Size = Animation.Sheet.TileSize.ToVector2f();
+			Size = Animation.Sheet.Rect.CellSize.ToVector2f();
 			Animation.Framerate = (int)Rng.Range(FRAME_RATE_MIN, FRAME_RATE_MAX);
 			Animation.CurrentFrame = (int)Rng.Range(Animation.AnimationStart, Animation.AnimationEnd);
 		}

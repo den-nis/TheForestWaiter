@@ -22,7 +22,7 @@ namespace TheForestWaiter.Game.Hud.Sections
 			var numberSheet = content.Textures.CreateSpriteSheet("Textures/Hud/wave_numbers.png");
 			_waveText = new SpriteFont(numberSheet);
 
-			Size = numberSheet.TileSize
+			Size = numberSheet.Rect.CellSize
 				.ToVector2f()
 				.Multiply(new Vector2f(3, 1));
 		}

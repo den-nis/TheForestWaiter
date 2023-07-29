@@ -15,6 +15,19 @@ namespace TheForestWaiter.Game.Essentials
 			return new Vector2f(vec.X, vec.Y);
 		}
 
+		/// <summary>
+		/// Does NOT round, just casts to int.
+		/// </summar>
+		public static Vector2i ToVector2i(this Vector2f vec)
+		{
+			return new Vector2i((int)vec.X, (int)vec.Y);
+		}		
+		
+		public static Vector2i ToVector2i(this Vector2u vec)
+		{
+			return new Vector2i((int)vec.X, (int)vec.Y);
+		}
+
 		public static float Angle(this Vector2f vec)
 		{
 			return (float)Math.Atan2(vec.Y, vec.X);

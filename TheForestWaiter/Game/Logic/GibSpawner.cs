@@ -37,9 +37,9 @@ namespace TheForestWaiter.Game.Gibs
 		{
 			if (_sheet == null) throw new InvalidOperationException(NO_SHEET_SET);
 
-			for (int i = 0; i < _sheet.TotatlTiles * _gibMultiplier; i++)
+			for (int i = 0; i < _sheet.Rect.TotatlTiles * _gibMultiplier; i++)
 			{
-				Spawn(at, i % _sheet.TotatlTiles);
+				Spawn(at, i % _sheet.Rect.TotatlTiles);
 			}
 		}
 
@@ -64,7 +64,7 @@ namespace TheForestWaiter.Game.Gibs
 		{
 			for (int i = 0; i < count * _gibMultiplier; i++)
 			{
-				Spawn(at, (int)Math.Round(Rng.Range(0, _sheet.TotatlTiles - 1)));
+				Spawn(at, (int)Math.Round(Rng.Range(0, _sheet.Rect.TotatlTiles - 1)));
 			}
 		}
 	}
