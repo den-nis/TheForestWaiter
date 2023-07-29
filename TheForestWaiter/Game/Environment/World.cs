@@ -15,11 +15,27 @@ namespace TheForestWaiter.Game.Environment
 		public Vector2i Size => new(_tiles.GetLength(0), _tiles.GetLength(1));
 
 		private Tile[,] _tiles;
+		private Camera _camera;
+
 		private SpriteSheet Sheet { get; set; }
+
+		private IntRect cachePreviousVertexRect = new IntRect();
+		private int cacheVertCount = 0;
+		private VertexArray background = new VertexArray();
+		private VertexArray middleground = new VertexArray();
+		private VertexArray foreground = new VertexArray();
+		private RenderStates renderStates;
 
 		public World(ContentSource content)
 		{
+			_camera = IoC.GetInstance<Camera>();
 			Sheet = content.Textures.CreateSpriteSheet("Textures/world.png");
+			renderStates = new RenderStates
+			{
+				Texture = Sheet.Sprite.Texture,
+				BlendMode = BlendMode.Alpha,
+				Transform = Transform.Identity,
+			};
 		}
 
 		public void LoadFromMap(Map map)
@@ -90,47 +106,61 @@ namespace TheForestWaiter.Game.Environment
 			return _tiles[tx, ty].Solid;
 		}
 
-		public void Draw(RenderWindow win, FloatRect rect, bool onlyForeground)
+		public void Draw(RenderWindow win, bool onlyForeground)
 		{
 			Profiling.Start(onlyForeground ? ProfileCategory.DrawWorldForeground : ProfileCategory.DrawWorldBackground);
 
-			var r = GetTileBounds(rect);
+			BuildVertexArrays(new FloatRect(_camera.Position, _camera.Size));
 
-			for (int y = r.Top; y < r.Top + r.Height; y++)
+			if (onlyForeground)
 			{
-				for (int x = r.Left; x < r.Left + r.Width; x++)
-				{
-					if (!_tiles[x, y].Air)
-					{
-						Sheet.Sprite.Position = new Vector2f(x * TILE_SIZE, y * TILE_SIZE);
-
-						if (onlyForeground)
-						{
-							if (_tiles[x, y].HasForeground)
-							{
-								Sheet.SetRect(_tiles[x, y].ForegroundTileId - 1);
-								win.Draw(Sheet.Sprite);
-							}
-						}
-						else
-						{
-							if (_tiles[x, y].HasBackground)
-							{
-								Sheet.SetRect(_tiles[x, y].BackgroundTileId - 1);
-								win.Draw(Sheet.Sprite);
-							}
-
-							if (_tiles[x, y].HasMiddleground)
-							{
-								Sheet.SetRect(_tiles[x, y].MiddlegroundTileId - 1);
-								win.Draw(Sheet.Sprite);
-							}
-						}
-					}
-				}
+				win.Draw(foreground, renderStates);
+			}
+			else
+			{
+				win.Draw(middleground, renderStates);
+				win.Draw(background, renderStates);
 			}
 
 			Profiling.End(onlyForeground ? ProfileCategory.DrawWorldForeground : ProfileCategory.DrawWorldBackground);
+		}
+
+		private void BuildVertexArrays(FloatRect rect)
+		{
+			static void SetVerts(VertexArray array, IntRect rect, Vector2i cellSize, Vector2f tl, uint index)
+			{
+				array[index + 0] = new Vertex(tl                                     , new Vector2f(rect.Left, rect.Top));
+				array[index + 1] = new Vertex(tl + new Vector2f(TILE_SIZE, 0)        , new Vector2f(rect.Left + cellSize.X, rect.Top));
+				array[index + 2] = new Vertex(tl + new Vector2f(TILE_SIZE, TILE_SIZE), new Vector2f(rect.Left + cellSize.X, rect.Top + cellSize.Y));
+				array[index + 3] = new Vertex(tl + new Vector2f(0, TILE_SIZE)        , new Vector2f(rect.Left, rect.Top + cellSize.Y));
+			}
+
+			var vertexRect = GetTileBounds(rect);
+			if (vertexRect.Equals(cachePreviousVertexRect)) return;
+			cachePreviousVertexRect = vertexRect;
+
+			int verts = vertexRect.Height * vertexRect.Width * 4;
+			if (cacheVertCount != verts)
+			{
+				background   = new VertexArray(PrimitiveType.Quads, (uint)verts);
+				middleground = new VertexArray(PrimitiveType.Quads, (uint)verts);
+				foreground   = new VertexArray(PrimitiveType.Quads, (uint)verts);
+				cacheVertCount = verts;
+			}
+
+			for (int y = vertexRect.Top; y < vertexRect.Top + vertexRect.Height; y++)
+			{
+				for (int x = vertexRect.Left; x < vertexRect.Left + vertexRect.Width; x++)
+				{
+					uint index = (uint)(((x - vertexRect.Left) + (y - vertexRect.Top) * vertexRect.Width) * 4);
+					
+					Vector2f topLeft = new Vector2f(x * TILE_SIZE, y * TILE_SIZE);
+					
+					SetVerts(background,   Sheet.Rect.GetRect(_tiles[x,y].BackgroundTileId   - 1), Sheet.Rect.CellSize, topLeft, index);
+					SetVerts(middleground, Sheet.Rect.GetRect(_tiles[x,y].MiddlegroundTileId - 1), Sheet.Rect.CellSize, topLeft, index);
+					SetVerts(foreground,   Sheet.Rect.GetRect(_tiles[x,y].ForegroundTileId   - 1), Sheet.Rect.CellSize, topLeft, index);
+				}
+			}
 		}
 
 		private IntRect GetTileBounds(FloatRect bounds)

@@ -73,9 +73,10 @@ namespace TheForestWaiter.Game
 
 			_background.Draw(_window.SfmlWindow);
 
-			_game.World.Draw(_window.SfmlWindow, new FloatRect(_camera.Position, _camera.Size), false);
+
+			_game.World.Draw(_window.SfmlWindow, false);
 			_game.Objects.Draw(_window.SfmlWindow);
-			_game.World.Draw(_window.SfmlWindow, new FloatRect(_camera.Position, _camera.Size), true);
+			_game.World.Draw(_window.SfmlWindow, true);
 
 			_hud.Draw(_window.SfmlWindow);
 
