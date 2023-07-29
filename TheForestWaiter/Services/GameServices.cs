@@ -3,6 +3,7 @@ using System;
 using System.Diagnostics;
 using TheForestWaiter.Game;
 using TheForestWaiter.Game.Environment;
+using TheForestWaiter.Game.Environment.Spawning;
 using TheForestWaiter.Game.Gibs;
 using TheForestWaiter.Game.Hud;
 using TheForestWaiter.Game.Logic;
@@ -37,6 +38,8 @@ namespace TheForestWaiter.Services
 				.RegisterScoped<World>()
 				.RegisterScoped<ObjectCreator>()
 				.RegisterScoped<ItemShop>()
+				.RegisterScoped<SpawnContext>()
+				.RegisterScoped<SpawnScheduler>()
 				.Register<PickupSpawner>()
 				.Register<DropSpawner>()
 				.Register<GibSpawner>()
@@ -66,6 +69,8 @@ namespace TheForestWaiter.Services
 		public void Setup()
 		{
 			_container.GetInstance<GameController>().Setup();
+			_container.GetInstance<SpawnContext>().Setup();
+			_container.GetInstance<SpawnScheduler>().Setup();
 		}
 	}
 }

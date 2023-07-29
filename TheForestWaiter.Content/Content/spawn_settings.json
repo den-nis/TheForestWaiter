@@ -1,0 +1,34 @@
+﻿{
+	"leftSpawn": "32,-250",
+	"rightSpawn": "9568,-250",
+	"waveDuration": 60,
+	"initialBudget": 5,
+	"budgetIncrement": 22,
+	"spawnable": [
+		"Minirusher",
+		"Bigrusher",
+		"Crawler",
+		"Vortex"
+	],
+	"enemyBudget": {
+		"Minirusher": 1,
+		"Bigrusher": 25,
+		"Crawler": 7,
+		"Vortex": 5
+	},
+	"enemyIntroductionAtWave": {
+		"Minirusher": 0,
+		"Bigrusher": 20,
+		"Crawler": 4,
+		"Vortex": 7
+	},
+	"pickerChances": {
+		"RandomSpawnPicker": 0.8,
+		"SpamSPawnPicker": 0.2
+	},
+	"intervalChances": {
+		"LinearSpawnIntervals": 0.3,
+		"RandomSpawnIntervals": 0.5,
+		"RushSpawnIntervals": 0.2
+	}
+}

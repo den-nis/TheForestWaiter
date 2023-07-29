@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using TheForestWaiter.Game;
-using TheForestWaiter.Game.Objects.Static;
+﻿using TheForestWaiter.Game.Environment.Spawning;
 
 namespace TheForestWaiter
 {
@@ -10,10 +8,8 @@ namespace TheForestWaiter
 
 		public void Harvest()
 		{
-			var data = IoC.GetInstance<GameData>();
-			var spawner = data.Objects.Environment.FirstOrDefault(x => x is Spawner);
-
-			Wave = (spawner as Spawner)?.CurrentWave ?? 0;
+			var scheduler = IoC.GetInstance<SpawnScheduler>();
+			Wave = scheduler.WaveNumber;
 		}
 	}
 }

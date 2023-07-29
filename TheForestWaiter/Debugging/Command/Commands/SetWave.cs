@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using TheForestWaiter.Game;
-using TheForestWaiter.Game.Objects.Static;
+using TheForestWaiter.Game.Environment.Spawning;
 
 namespace TheForestWaiter.Debugging.Command.Commands
 {
@@ -9,10 +9,12 @@ namespace TheForestWaiter.Debugging.Command.Commands
 	internal class SetWave : ICommand
 	{
 		private readonly GameData _gameData;
+		private readonly SpawnScheduler _schedule;
 
 		public SetWave(GameData gameData)
 		{
 			_gameData = gameData;
+			_schedule = IoC.GetInstance<SpawnScheduler>();
 		}
 
 		public void Execute(CommandHandler handler, string[] args)
@@ -23,8 +25,7 @@ namespace TheForestWaiter.Debugging.Command.Commands
 				Console.WriteLine($"Deleted {creature.GetType().Name} ({creature.GameObjectId})");
 			}
 
-			var spawner = _gameData.Objects.Environment.FirstOrDefault(o => o is Spawner) as Spawner;
-			spawner.StartWave(int.Parse(args[0]));
+			_schedule.FastForwardToWave(int.Parse(args[0]));
 		}
 	}
 }

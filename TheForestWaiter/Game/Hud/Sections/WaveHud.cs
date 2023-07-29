@@ -1,9 +1,8 @@
 ﻿using SFML.Graphics;
 using SFML.System;
-using System.Linq;
 using TheForestWaiter.Content;
+using TheForestWaiter.Game.Environment.Spawning;
 using TheForestWaiter.Game.Essentials;
-using TheForestWaiter.Game.Objects.Static;
 using TheForestWaiter.Graphics;
 
 namespace TheForestWaiter.Game.Hud.Sections
@@ -12,12 +11,13 @@ namespace TheForestWaiter.Game.Hud.Sections
 	{
 		private readonly SpriteFont _waveText;
 		private readonly GameData _game;
-		private Spawner _spawner;
+		private SpawnScheduler _scheduler;
 
 		public WaveHud(float scale) : base(scale)
 		{
 			var content = IoC.GetInstance<ContentSource>();
-			_game = IoC.GetInstance<GameData>(); ;
+			_game = IoC.GetInstance<GameData>();
+			_scheduler = IoC.GetInstance<SpawnScheduler>();
 
 			var numberSheet = content.Textures.CreateSpriteSheet("Textures/Hud/wave_numbers.png");
 			_waveText = new SpriteFont(numberSheet);
@@ -31,17 +31,9 @@ namespace TheForestWaiter.Game.Hud.Sections
 		{
 			_waveText.Position = GetPosition(window);
 			_waveText.Scale = Scale;
-			_waveText.SetText(GetWaveNumber().ToString());
+			_waveText.SetText(_scheduler.WaveNumber.ToString());
 
 			_waveText.Draw(window);
-		}
-
-		private int GetWaveNumber()
-		{
-			if (_spawner == null)
-				_spawner = (Spawner)_game.Objects.Environment.First(x => x is Spawner);
-
-			return _spawner?.CurrentWave ?? 0;
 		}
 
 		public override bool IsMouseOnAnyButton() => false;

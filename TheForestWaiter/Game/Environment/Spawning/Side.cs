@@ -1,9 +1,12 @@
-﻿namespace TheForestWaiter.Game.Environment.Spawning
+﻿using Newtonsoft.Json.Converters;
+using System.Text.Json.Serialization;
+
+namespace TheForestWaiter.Game.Environment.Spawning
 {
+	[JsonConverter(typeof(StringEnumConverter))]
 	internal enum SpawnSide
 	{
 		Left = -1,
-		Both = 0,
 		Right = 1,
 	}
 }
