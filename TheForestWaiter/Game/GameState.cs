@@ -73,7 +73,6 @@ namespace TheForestWaiter.Game
 
 			_background.Draw(_window.SfmlWindow);
 
-
 			_game.World.Draw(_window.SfmlWindow, false);
 			_game.Objects.Draw(_window.SfmlWindow);
 			_game.World.Draw(_window.SfmlWindow, true);
