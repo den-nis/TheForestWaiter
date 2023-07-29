@@ -12,7 +12,5 @@ namespace TheForestWaiter.Debugging
 		public void Setup() { }
 
 		public void Dispose() { }
-
-		public void Log(string message) { }
 	}
 }
